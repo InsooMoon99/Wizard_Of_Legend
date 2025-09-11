@@ -29,5 +29,4 @@ public:
 	LayerType				m_Layer = LayerType::Layer_Object;
 	vector<CComponent*>		m_Components;
 };
-};
 

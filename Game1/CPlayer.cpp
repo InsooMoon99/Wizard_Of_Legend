@@ -25,6 +25,7 @@ void CPlayer::Render()
 {
 	CCharacter::Render();
 
+	int a = 32;
 }
 
 void CPlayer::Release()

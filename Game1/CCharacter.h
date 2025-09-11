@@ -14,7 +14,6 @@ public:
 	void Render() override;
 	void Release() override;
 
-
 public:
 	void  SetHp(float _Hp) { m_Hp = _Hp; }
 

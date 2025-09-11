@@ -23,3 +23,9 @@ void CCharacter::Render()
 {
 	CActor::Render();
 }
+
+void CCharacter::Release()
+{
+	CActor::Release();
+
+}
