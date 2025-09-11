@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="Main.h">
+      <Filter>00. MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CDefine.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnums.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CHelper.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CStruct.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneManager.h">
+      <Filter>01. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CStage01.h">
+      <Filter>02. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene.h">
+      <Filter>02. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CStage_Start.h">
+      <Filter>02. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CStage02.h">
+      <Filter>02. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CActor.h">
+      <Filter>03. Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CComponent.h">
+      <Filter>04. Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CResourceManager.h">
+      <Filter>01. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CCharacter.h">
+      <Filter>03. Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>03. Objects</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="00. MainGame">
+      <UniqueIdentifier>{0b906646-38c7-4516-bdfc-4280f4548209}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Manager">
+      <UniqueIdentifier>{f73a86ce-8d9d-4d2b-b15b-a9e78f3da950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Scene">
+      <UniqueIdentifier>{c9a9ad40-2284-4efb-937d-97348fceef29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Objects">
+      <UniqueIdentifier>{497c369d-3a55-4db3-b6d3-055847128d9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Headers">
+      <UniqueIdentifier>{8798797c-7351-43ae-8850-33e9dcada52c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Component">
+      <UniqueIdentifier>{1da90cf3-063d-486f-b0f7-c728d8db6230}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>00. MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneManager.cpp">
+      <Filter>01. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage01.cpp">
+      <Filter>02. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene.cpp">
+      <Filter>02. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage_Start.cpp">
+      <Filter>02. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage02.cpp">
+      <Filter>02. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CActor.cpp">
+      <Filter>03. Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CComponent.cpp">
+      <Filter>04. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CResourceManager.cpp">
+      <Filter>01. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CCharacter.cpp">
+      <Filter>03. Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>03. Objects</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
