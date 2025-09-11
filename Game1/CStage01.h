@@ -2,6 +2,9 @@
 
 #include "CScene.h"
 
+class CPlayer;
+class CActor;
+
 class CStage01 : public CScene
 {
 public:
@@ -14,5 +17,8 @@ public:
 	void LateUpdate() override;
 	void Render() override;
 	void Release() override;
+
+private:
+	CActor* player;
 };
 

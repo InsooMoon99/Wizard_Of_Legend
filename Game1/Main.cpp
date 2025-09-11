@@ -5,7 +5,6 @@
 
 void Main::Init()
 {
-	//CSceneManager::Get_Instance()->Change_Scene(SceneType::Start);
 	SCENE->Change_Scene(SceneType::Stage01);
 }
 

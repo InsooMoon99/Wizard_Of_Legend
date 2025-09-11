@@ -14,11 +14,11 @@ public:
 	void Render() override;
 	void Release() override;
 
-
 public:
 
 
-private:
+public:
+	ObRect* testRect;
 
 };
 

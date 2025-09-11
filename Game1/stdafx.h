@@ -5,6 +5,8 @@
 extern int loadingCount;
 extern mutex m;
 
+using Vec2 = Vector2;
+
 #include <iostream>
 
 #include "CEnums.h"
