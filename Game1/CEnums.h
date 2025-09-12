@@ -18,3 +18,23 @@ enum class LayerType
 
 	Layer_MaxCount,
 };
+
+enum class PlayerState
+{
+	Idle = 0,
+	Walk,
+	Run,
+	Attack,
+
+	PS_END
+};
+
+enum class PlayerDir
+{
+	Front,
+	Back,
+	Left,
+	Right,
+
+	PD_END
+};

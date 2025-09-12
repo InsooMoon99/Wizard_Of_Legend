@@ -39,7 +39,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR param, in
 {
     app.SetAppName(L"Game1");
     app.SetInstance(instance);
-	app.InitWidthHeight(1400,800.0f);
+	app.InitWidthHeight(1200,800.0f);
 	Main* main = new Main();
 	int wParam = (int)WIN->Run(main);
 	WIN->DeleteSingleton();

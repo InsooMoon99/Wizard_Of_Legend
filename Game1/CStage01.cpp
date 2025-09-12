@@ -38,7 +38,7 @@ void CStage01::Render()
 {
 	CScene::Render();
 
-	cout << "스테이지 1" << endl;
+	//cout << "스테이지 1" << endl;
 
 	player->Render();
 }

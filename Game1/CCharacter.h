@@ -9,10 +9,13 @@ public:
 	virtual ~CCharacter() override;
 
 public:
-	void BeginPlay() override;
-	void Tick() override;
-	void Render() override;
-	void Release() override;
+	void BeginPlay() override abstract {}
+	void Tick()		 override abstract {}
+	void Render()	 override abstract {}
+	void Release()	 override abstract {}
+
+protected:
+	virtual void Resource_Settings() abstract;
 
 public:
 	void  SetHp(float _Hp) { m_Hp = _Hp; }
@@ -20,8 +23,8 @@ public:
 public:
 	float GetHp()		  { return m_Hp; }
 
-
-private:
-	float m_Hp = 100.f;
+protected:
+	float m_Hp;
+	float m_Speed;
 };
 

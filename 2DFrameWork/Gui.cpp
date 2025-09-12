@@ -66,20 +66,11 @@ void Gui::ResizeScreen()
 	ImGui_ImplDX11_CreateDeviceObjects();
 }
 
-
 void Gui::Update()
 {
-	fileID = 0;
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
-
-
-
-	ImGui::Begin("Detail");
-	//if (target)
-	//	target->RenderDetail();
-	ImGui::End();
 }
 
 void Gui::Render()

@@ -1,31 +1,10 @@
 #include "stdafx.h"
 #include "CCharacter.h"
 
-CCharacter::CCharacter()
+CCharacter::CCharacter() : m_Hp(0.f), m_Speed(0.f)
 {
 }
 
 CCharacter::~CCharacter()
 {
-}
-
-void CCharacter::BeginPlay()
-{
-	CActor::BeginPlay();
-}
-
-void CCharacter::Tick()
-{
-	CActor::Tick();
-}
-
-void CCharacter::Render()
-{
-	CActor::Render();
-}
-
-void CCharacter::Release()
-{
-	CActor::Release();
-
 }

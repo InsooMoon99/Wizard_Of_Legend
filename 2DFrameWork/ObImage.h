@@ -26,9 +26,9 @@ private:
     D3D11_SAMPLER_DESC	        samplerDesc;
 
     ANIMSTATE                   animState;
-    float                       animTime; //재생시킬 때 필요한 변수
+    float                       animTime;     //재생시킬 때 필요한 변수
     float                       animInterval; //재생간격
-    bool                        animXAxis; //가로재생?
+    bool                        animXAxis;    //가로재생?
 
 public:
     Vector4                     uv;
