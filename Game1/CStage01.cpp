@@ -31,7 +31,7 @@ void CStage01::LateUpdate()
 {
 	CScene::LateUpdate();
 
-	
+	player->LateUpdate();
 }
 
 void CStage01::Render()

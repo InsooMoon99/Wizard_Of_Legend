@@ -34,6 +34,7 @@
     <ClInclude Include="CStage02.h" />
     <ClInclude Include="CStage_Start.h" />
     <ClInclude Include="CStruct.h" />
+    <ClInclude Include="CUiManager.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
@@ -49,6 +50,7 @@
     <ClCompile Include="CStage01.cpp" />
     <ClCompile Include="CStage02.cpp" />
     <ClCompile Include="CStage_Start.cpp" />
+    <ClCompile Include="CUiManager.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

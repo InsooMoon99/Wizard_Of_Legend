@@ -11,6 +11,7 @@ public:
 public:
 	virtual void BeginPlay();
 	virtual void Tick();
+	virtual void LateUpdate() {};
 	virtual void Render();
 	virtual void Release();
 

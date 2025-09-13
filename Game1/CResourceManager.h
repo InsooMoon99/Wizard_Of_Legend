@@ -7,11 +7,23 @@ private:
 	~CResourceManager() = default;
 
 public:
-	void		Init();
-	void		Update();
-	void		LateUpdate();
-	void		Render();
-	void		Release();
+
+
+public:
+	ObImage* CreateImage(
+		const wstring& _path,
+		const Vec2& _scale,
+		bool _visible = false
+	);
+
+	ObImage* CreateSprite(
+		const wstring& _path, 
+		const Vec2& _scale, 
+		const Int2& _maxFrame, 
+		bool _visible = false);
+
+	void     AddImage(PlayerState _state, PlayerDir _dir, ObImage* _img);
+	ObImage* GetImage(PlayerState _state, PlayerDir _dir);
 
 public:
 	static CResourceManager* Get_Instance()

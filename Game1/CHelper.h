@@ -7,12 +7,13 @@ public:
 	{
 		switch (_State)
 		{
-		case PlayerState::Idle:   return "Idle";
-		case PlayerState::Walk:   return "Walk";
-		case PlayerState::Run:    return "Run";
-		case PlayerState::Attack: return "Attack";
+		case PlayerState::Idle:		return "Idle";
+		case PlayerState::Walk:		return "Walk";
+		case PlayerState::Run:		return "Run";
+		case PlayerState::Dash:		return "Dash";
+		case PlayerState::Attack:	return "Attack";
 
-		default:                  return "None";
+		default:					 return "None";
 		}
 	}
 
@@ -24,6 +25,7 @@ public:
 		case PlayerDir::Back:	return "Back";
 		case PlayerDir::Left:	return "Left";
 		case PlayerDir::Right:	return "Right";
+		case PlayerDir::Stop:	return "Stop";
 
 		case PlayerDir::PD_END:	return "PD_End";
 		default: return "None";

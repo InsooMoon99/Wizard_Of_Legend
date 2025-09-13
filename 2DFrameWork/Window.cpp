@@ -214,6 +214,22 @@ LRESULT Window::WndProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam)
 		return 0;
 	}
 
+	//switch (message)
+	//{
+	//case WM_ACTIVATE:
+	//	// 창이 활성화될 때 (WA_ACTIVE 또는 WA_CLICKACTIVE)
+	//	if (LOWORD(wParam) == WA_ACTIVE || LOWORD(wParam) == WA_CLICKACTIVE)
+	//	{
+	//		ShowCursor(FALSE);
+	//	}
+	//	// 창이 비활성화될 때
+	//	else
+	//	{
+	//		ShowCursor(TRUE);
+	//	}
+	//	break;
+	//}
+
 	return DefWindowProc(handle, message, wParam, lParam);
 }
 

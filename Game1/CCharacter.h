@@ -11,6 +11,7 @@ public:
 public:
 	void BeginPlay() override abstract {}
 	void Tick()		 override abstract {}
+	void LateUpdate() override abstract {}
 	void Render()	 override abstract {}
 	void Release()	 override abstract {}
 

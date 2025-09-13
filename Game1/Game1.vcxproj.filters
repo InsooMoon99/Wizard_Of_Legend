@@ -49,7 +49,10 @@
     <ClInclude Include="CPlayer.h">
       <Filter>03. Objects</Filter>
     </ClInclude>
-    <ClInclude Include="CImGuiManager.h" />
+    <ClInclude Include="CImGuiManager.h">
+      <Filter>01. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CUiManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -105,6 +108,9 @@
     <ClCompile Include="CPlayer.cpp">
       <Filter>03. Objects</Filter>
     </ClCompile>
-    <ClCompile Include="CImGuiManager.cpp" />
+    <ClCompile Include="CImGuiManager.cpp">
+      <Filter>01. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CUiManager.cpp" />
   </ItemGroup>
 </Project>
