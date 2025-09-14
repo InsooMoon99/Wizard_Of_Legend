@@ -37,7 +37,7 @@ void CSceneManager::Release()
 		m_Scene->Release();
 }
 
-void CSceneManager::Change_Scene(SceneType _SceneType)
+void CSceneManager::Change_Scene(ESceneType _SceneType)
 {
 	if (m_SceneType == _SceneType)
 		return;
@@ -46,22 +46,22 @@ void CSceneManager::Change_Scene(SceneType _SceneType)
 
 	switch (_SceneType)
 	{
-	case SceneType::Start:
+	case ESceneType::Start:
 		newScene = new CStage_Start();
-		m_SceneType = SceneType::Start;
+		m_SceneType = ESceneType::Start;
 		break;
 
-	case SceneType::Stage01:
+	case ESceneType::Stage01:
 		newScene = new CStage01();
-		m_SceneType = SceneType::Stage01;
+		m_SceneType = ESceneType::Stage01;
 		break;
 
-	case SceneType::Stage02:
+	case ESceneType::Stage02:
 		newScene = new CStage02();
-		m_SceneType = SceneType::Stage02;
+		m_SceneType = ESceneType::Stage02;
 		break;
 
-	case SceneType::Stage_End: 
+	case ESceneType::Stage_End: 
 		break;
 	}
 

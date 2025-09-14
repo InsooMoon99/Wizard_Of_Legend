@@ -38,7 +38,7 @@
       <Filter>03. Objects</Filter>
     </ClInclude>
     <ClInclude Include="CComponent.h">
-      <Filter>04. Component</Filter>
+      <Filter>04. Components</Filter>
     </ClInclude>
     <ClInclude Include="CResourceManager.h">
       <Filter>01. Manager</Filter>
@@ -52,7 +52,21 @@
     <ClInclude Include="CImGuiManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CUiManager.h" />
+    <ClInclude Include="CUiManager.h">
+      <Filter>01. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CInventoryComponent.h">
+      <Filter>04. Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CItemComponent.h">
+      <Filter>04. Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CStateComponent.h">
+      <Filter>04. Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CWeaponComponent.h">
+      <Filter>04. Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -70,7 +84,7 @@
     <Filter Include="99. Headers">
       <UniqueIdentifier>{8798797c-7351-43ae-8850-33e9dcada52c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Component">
+    <Filter Include="04. Components">
       <UniqueIdentifier>{1da90cf3-063d-486f-b0f7-c728d8db6230}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -97,7 +111,7 @@
       <Filter>03. Objects</Filter>
     </ClCompile>
     <ClCompile Include="CComponent.cpp">
-      <Filter>04. Component</Filter>
+      <Filter>04. Components</Filter>
     </ClCompile>
     <ClCompile Include="CResourceManager.cpp">
       <Filter>01. Manager</Filter>
@@ -111,6 +125,20 @@
     <ClCompile Include="CImGuiManager.cpp">
       <Filter>01. Manager</Filter>
     </ClCompile>
-    <ClCompile Include="CUiManager.cpp" />
+    <ClCompile Include="CUiManager.cpp">
+      <Filter>01. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CInventoryComponent.cpp">
+      <Filter>04. Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CItemComponent.cpp">
+      <Filter>04. Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CStateComponent.cpp">
+      <Filter>04. Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CWeaponComponent.cpp">
+      <Filter>04. Components</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

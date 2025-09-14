@@ -10,20 +10,20 @@ public:
 
 
 public:
-	ObImage* CreateImage(
+	shared_ptr<ObImage> CreateImage(
 		const wstring& _path,
 		const Vec2& _scale,
 		bool _visible = false
 	);
 
-	ObImage* CreateSprite(
+	shared_ptr<ObImage> CreateSprite(
 		const wstring& _path, 
 		const Vec2& _scale, 
 		const Int2& _maxFrame, 
 		bool _visible = false);
 
-	void     AddImage(PlayerState _state, PlayerDir _dir, ObImage* _img);
-	ObImage* GetImage(PlayerState _state, PlayerDir _dir);
+	void     AddImage(EPlayerState _state, EPlayerDir _dir, ObImage* _img);
+	ObImage* GetImage(EPlayerState _state, EPlayerDir _dir);
 
 public:
 	static CResourceManager* Get_Instance()

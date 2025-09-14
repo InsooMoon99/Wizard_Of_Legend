@@ -26,6 +26,8 @@
     <ClInclude Include="CHelper.h" />
     <ClInclude Include="CCharacter.h" />
     <ClInclude Include="CImGuiManager.h" />
+    <ClInclude Include="CInventoryComponent.h" />
+    <ClInclude Include="CItemComponent.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CResourceManager.h" />
     <ClInclude Include="CScene.h" />
@@ -33,8 +35,10 @@
     <ClInclude Include="CStage01.h" />
     <ClInclude Include="CStage02.h" />
     <ClInclude Include="CStage_Start.h" />
+    <ClInclude Include="CStateComponent.h" />
     <ClInclude Include="CStruct.h" />
     <ClInclude Include="CUiManager.h" />
+    <ClInclude Include="CWeaponComponent.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
@@ -43,6 +47,8 @@
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CImGuiManager.cpp" />
+    <ClCompile Include="CInventoryComponent.cpp" />
+    <ClCompile Include="CItemComponent.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CResourceManager.cpp" />
     <ClCompile Include="CScene.cpp" />
@@ -50,7 +56,9 @@
     <ClCompile Include="CStage01.cpp" />
     <ClCompile Include="CStage02.cpp" />
     <ClCompile Include="CStage_Start.cpp" />
+    <ClCompile Include="CStateComponent.cpp" />
     <ClCompile Include="CUiManager.cpp" />
+    <ClCompile Include="CWeaponComponent.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

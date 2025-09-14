@@ -5,7 +5,7 @@
 
 void Main::Init()
 {
-	SCENE->Change_Scene(SceneType::Stage01);
+	SCENE->Change_Scene(ESceneType::Stage01);
 	ShowCursor(false);
 }
 
@@ -41,7 +41,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR param, in
 {
     app.SetAppName(L"Game1");
     app.SetInstance(instance);
-	app.InitWidthHeight(800.f,600.f);
+	app.InitWidthHeight(1200.f,800.f);
 	Main* main = new Main();
 	int wParam = (int)WIN->Run(main);
 	WIN->DeleteSingleton();

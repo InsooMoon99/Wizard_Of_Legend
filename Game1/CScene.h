@@ -12,5 +12,8 @@ public:
 	virtual void LateUpdate() abstract {}
 	virtual void Render() abstract     {}
 	virtual void Release()abstract     {}
+
+protected:
+	CActor* m_Player;
 };
 

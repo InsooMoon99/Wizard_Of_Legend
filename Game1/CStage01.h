@@ -18,7 +18,14 @@ public:
 	void Render() override;
 	void Release() override;
 
+public:
+	void Resource_Setting();
+
 private:
-	CActor* player;
+	unordered_map<ESceneType, shared_ptr<ObImage>> m_Map;
+
+
+	Vec2 m_MapSize;
+
 };
 

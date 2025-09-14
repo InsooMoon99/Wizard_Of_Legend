@@ -24,7 +24,13 @@ public:
 public:
 	float GetHp()		  { return m_Hp; }
 
+public:
+	virtual void AddComponent(CComponent* _Component);
+	virtual void RemoveComponent(CComponent* _Component);
+
 protected:
+	vector<CComponent*> m_Components;
+
 	float m_Hp;
 	float m_Speed;
 };

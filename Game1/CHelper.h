@@ -1,35 +1,65 @@
 #pragma once
+#include "CActor.h"
+#include "CComponent.h"
 
 class CHelper
 {
 public:
-	static const char* ToString_PlayerState(PlayerState _State)
+	static const char* ToString_PlayerState(EPlayerState _State)
 	{
 		switch (_State)
 		{
-		case PlayerState::Idle:		return "Idle";
-		case PlayerState::Walk:		return "Walk";
-		case PlayerState::Run:		return "Run";
-		case PlayerState::Dash:		return "Dash";
-		case PlayerState::Attack:	return "Attack";
+		case EPlayerState::Idle:		return "State_Idle";
+		case EPlayerState::Walk:		return "State_Walk";
+		case EPlayerState::Dash:		return "State_Dash";
+		case EPlayerState::Attack:		return "State_Attack";
 
-		default:					 return "None";
+		default:						return "None";
 		}
 	}
 
-	static const char* ToString_PlayerDir(PlayerDir _Dir)
+	static const char* ToString_PlayerDir(EPlayerDir _Dir)
 	{
 		switch (_Dir)
 		{
-		case PlayerDir::Front:	return "Front";
-		case PlayerDir::Back:	return "Back";
-		case PlayerDir::Left:	return "Left";
-		case PlayerDir::Right:	return "Right";
-		case PlayerDir::Stop:	return "Stop";
+		case EPlayerDir::Front:			return "Front";
+		case EPlayerDir::Back:			return "Back";
+		case EPlayerDir::Left:			return "Left";
+		case EPlayerDir::Right:			return "Right";
+		case EPlayerDir::Front_Left:	return "Front_Left";
+		case EPlayerDir::Front_Right:	return "Front_Right";
+		case EPlayerDir::Back_Left:		return "Back_Left";
+		case EPlayerDir::Back_Right:	return "Back_Right";
+		//case EPlayerDir::Stop:	return "Stop";
 
-		case PlayerDir::PD_END:	return "PD_End";
+		case EPlayerDir::PD_END:		return "PD_End";
 		default: return "None";
 		}
 	}
+
+	template<typename T>
+	static T* CreateComponent(CActor* _Owner)
+	{
+		if (_Owner == nullptr)
+			return nullptr;
+
+		CComponent* component = new T();
+		component->BeginPlay();
+		component->SetOwner(_Owner);
+
+		auto componentType = dynamic_cast<T*>(component);
+
+		if (componentType)
+			_Owner->AddComponent(componentType);
+
+		return componentType;
+	}
+
+	template<typename T>
+	static T* GetComponent(CActor* _Owner)
+	{
+		
+	}
+
 
 };

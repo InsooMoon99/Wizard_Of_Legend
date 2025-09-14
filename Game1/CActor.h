@@ -22,12 +22,12 @@ public:
 	void AddComponent(CComponent* _Component);
 	void RemoveComponent(CComponent* _Component);
 
-	void SetLayer(LayerType layer) { m_Layer = layer; }
-	LayerType GetLayer() { return m_Layer; }
+	void SetLayer(ELayerType layer) { m_Layer = layer; }
+	ELayerType GetLayer() { return m_Layer; }
 
 public:
 	Vector2					m_Pos = { 0,0 };
-	LayerType				m_Layer = LayerType::Layer_Object;
+	ELayerType				m_Layer = ELayerType::Layer_Object;
 	vector<CComponent*>		m_Components;
 };
 

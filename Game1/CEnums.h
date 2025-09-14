@@ -1,6 +1,6 @@
 #pragma once
 
-enum class SceneType
+enum class ESceneType
 {
 	Start = 0,
 	Stage01,
@@ -9,7 +9,8 @@ enum class SceneType
 	Stage_End
 };
 
-enum class LayerType
+// TODO : 렌더링 순서 문제 생기면 ELayerType 사용하기
+enum class ELayerType
 {
 	Layer_BackGround,
 	Layer_Object,
@@ -19,24 +20,27 @@ enum class LayerType
 	Layer_MaxCount,
 };
 
-enum class PlayerState
+enum class EPlayerState
 {
 	Idle = 0,
 	Walk,
-	Run,
 	Dash,
 	Attack,
 
 	PS_END
 };
 
-enum class PlayerDir
+enum class EPlayerDir
 {
 	Front,
 	Back,
 	Left,
 	Right,
-	Stop,
+
+	Front_Left,
+	Front_Right,
+	Back_Left,
+	Back_Right,
 
 	PD_END
 };

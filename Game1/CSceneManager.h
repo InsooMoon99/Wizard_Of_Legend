@@ -16,7 +16,7 @@ public:
 	void		Render();
 	void		Release();
 
-	void		Change_Scene(SceneType _SceneType);
+	void		Change_Scene(ESceneType _SceneType);
 
 
 public:
@@ -43,6 +43,6 @@ private:
 	static CSceneManager* Instance;
 
 	CScene*	  m_Scene;
-	SceneType m_SceneType = SceneType::Stage_End;
+	ESceneType m_SceneType = ESceneType::Stage_End;
 };
 
