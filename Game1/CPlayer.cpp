@@ -582,6 +582,7 @@ void CPlayer::Resource_Settings()
 			Int2(11, 1), false);
 
 		dash_Front_Effect->rotation = -(PI / 2.f);
+		dash_Front_Effect->color.A(0.5f);
 		m_Dash.insert({ EPlayerDir::Front, dash_Front_Effect });
 
 		// 좌하단
@@ -590,6 +591,7 @@ void CPlayer::Resource_Settings()
 			dash_Effect_Size,
 			Int2(11, 1), false);
 		dash_Front_Left_Effect->rotation = -3.f * PI / 4.f;
+		dash_Front_Left_Effect->color.A(0.5f);
 		m_Dash.insert({ EPlayerDir::Front_Left, dash_Front_Left_Effect });
 
 		// 우하단
@@ -598,6 +600,7 @@ void CPlayer::Resource_Settings()
 			dash_Effect_Size,
 			Int2(11, 1), false);
 		dash_Front_Right_Effect->rotation = -(PI / 4.f);
+		dash_Front_Right_Effect->color.A(0.5f);
 		m_Dash.insert({ EPlayerDir::Front_Right, dash_Front_Right_Effect });
 
 		shared_ptr<ObImage> dash_Back_Effect = RESOURCE->CreateSprite(
@@ -606,6 +609,7 @@ void CPlayer::Resource_Settings()
 			Int2(11, 1), false);
 
 		dash_Back_Effect->rotation = PI / 2.f;
+		dash_Back_Effect->color.A(0.5f);
 		m_Dash.insert({ EPlayerDir::Back, dash_Back_Effect });
 
 		// 좌상단
@@ -614,6 +618,7 @@ void CPlayer::Resource_Settings()
 			dash_Effect_Size,
 			Int2(11, 1), false);
 		dash_Back_Left_Effect->rotation = 3.f * PI / 4.f;
+		dash_Back_Left_Effect->color.A(0.5f);
 		m_Dash.insert({ EPlayerDir::Back_Left, dash_Back_Left_Effect });
 
 		// 우상단
@@ -622,6 +627,7 @@ void CPlayer::Resource_Settings()
 			dash_Effect_Size,
 			Int2(11, 1), false);
 		dash_Back_Right_Effect->rotation = PI / 4.f;
+		dash_Back_Right_Effect->color.A(0.5f);
 		m_Dash.insert({ EPlayerDir::Back_Right, dash_Back_Right_Effect });
 
 		shared_ptr<ObImage> dash_Right_Effect = RESOURCE->CreateSprite(
@@ -629,6 +635,7 @@ void CPlayer::Resource_Settings()
 			Vec2(220.f / 11.f, 60.f) * 3.5f,
 			Int2(11, 1), false);
 
+		dash_Right_Effect->color.A(0.5f);
 		m_Dash.insert({ EPlayerDir::Right, dash_Right_Effect });
 
 		shared_ptr<ObImage> dash_Left_Effect = RESOURCE->CreateSprite(
@@ -636,6 +643,7 @@ void CPlayer::Resource_Settings()
 			Vec2(220.f / 11.f, 60.f) * 3.5f,
 			Int2(11, 1), false);
 
+		dash_Left_Effect->color.A(0.5f);
 		m_Dash.insert({ EPlayerDir::Left, dash_Left_Effect });
 	}
 

@@ -6,6 +6,7 @@ enum class ESceneType
 	Stage01,
 	Stage02,
 
+	Shadow,
 	Stage_End
 };
 

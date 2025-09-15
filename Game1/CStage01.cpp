@@ -9,7 +9,7 @@ CStage01::CStage01()
 {
 	m_Player = new CPlayer();
 
-	m_MapSize = Vec2(1184.f, 688.f) * 5.f;
+	m_MapSize = Vec2(1184.f, 688.f) * 4.f;
 
 	Resource_Setting();
 }
@@ -26,7 +26,7 @@ void CStage01::Init()
 	m_Player->BeginPlay();
 
 	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
-	player->Get_PlayerCollision()->SetWorldPos(Vec2(-2300.f, -970.f));
+	player->Get_PlayerCollision()->SetWorldPos(Vec2(-1790.f, -790.f));
 
 }
 
@@ -85,11 +85,17 @@ void CStage01::Release()
 void CStage01::Resource_Setting()
 {
 	// Map
-	
+	shared_ptr<ObImage> mapShadow = RESOURCE->CreateImage(
+		L"Edit\\SHADOW.bmp", m_MapSize * 5.f, true);
+
+	mapShadow->SetWorldPos(Vec2(0, 0));
+	mapShadow->color = Color(0.0f, 0.0f, 0.0f, 1.0f);
+	m_Map.insert({ ESceneType::Shadow, mapShadow });
 
 	shared_ptr<ObImage> map = RESOURCE->CreateImage(
 		L"Edit\\TutorialCourse.png", m_MapSize,true);
 
 	map->SetWorldPos(Vec2(0,0));
 	m_Map.insert({ ESceneType::Stage01, map });
+	
 }
