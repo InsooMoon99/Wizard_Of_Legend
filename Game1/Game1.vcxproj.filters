@@ -35,7 +35,7 @@
       <Filter>02. Scene</Filter>
     </ClInclude>
     <ClInclude Include="CActor.h">
-      <Filter>03. Objects</Filter>
+      <Filter>03. Actors</Filter>
     </ClInclude>
     <ClInclude Include="CComponent.h">
       <Filter>04. Components</Filter>
@@ -44,21 +44,21 @@
       <Filter>01. Manager</Filter>
     </ClInclude>
     <ClInclude Include="CCharacter.h">
-      <Filter>03. Objects</Filter>
+      <Filter>03. Actors</Filter>
     </ClInclude>
     <ClInclude Include="CPlayer.h">
-      <Filter>03. Objects</Filter>
+      <Filter>03. Actors</Filter>
     </ClInclude>
     <ClInclude Include="CImGuiManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CUiManager.h">
+    <ClInclude Include="CUIManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
     <ClInclude Include="CInventoryComponent.h">
       <Filter>04. Components</Filter>
     </ClInclude>
-    <ClInclude Include="CItemComponent.h">
+    <ClInclude Include="CItem.h">
       <Filter>04. Components</Filter>
     </ClInclude>
     <ClInclude Include="CStateComponent.h">
@@ -66,6 +66,18 @@
     </ClInclude>
     <ClInclude Include="CWeaponComponent.h">
       <Filter>04. Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIComponent.h">
+      <Filter>04. Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CStatusComponent.h">
+      <Filter>04. Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CDummy.h">
+      <Filter>03. Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="CObject.h">
+      <Filter>05. Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -78,14 +90,17 @@
     <Filter Include="02. Scene">
       <UniqueIdentifier>{c9a9ad40-2284-4efb-937d-97348fceef29}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Objects">
-      <UniqueIdentifier>{497c369d-3a55-4db3-b6d3-055847128d9a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="99. Headers">
       <UniqueIdentifier>{8798797c-7351-43ae-8850-33e9dcada52c}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. Components">
       <UniqueIdentifier>{1da90cf3-063d-486f-b0f7-c728d8db6230}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Actors">
+      <UniqueIdentifier>{497c369d-3a55-4db3-b6d3-055847128d9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Objects">
+      <UniqueIdentifier>{9742eb28-8211-428f-888e-3569b011ff50}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -108,7 +123,7 @@
       <Filter>02. Scene</Filter>
     </ClCompile>
     <ClCompile Include="CActor.cpp">
-      <Filter>03. Objects</Filter>
+      <Filter>03. Actors</Filter>
     </ClCompile>
     <ClCompile Include="CComponent.cpp">
       <Filter>04. Components</Filter>
@@ -117,21 +132,21 @@
       <Filter>01. Manager</Filter>
     </ClCompile>
     <ClCompile Include="CCharacter.cpp">
-      <Filter>03. Objects</Filter>
+      <Filter>03. Actors</Filter>
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
-      <Filter>03. Objects</Filter>
+      <Filter>03. Actors</Filter>
     </ClCompile>
     <ClCompile Include="CImGuiManager.cpp">
       <Filter>01. Manager</Filter>
     </ClCompile>
-    <ClCompile Include="CUiManager.cpp">
+    <ClCompile Include="CUIManager.cpp">
       <Filter>01. Manager</Filter>
     </ClCompile>
     <ClCompile Include="CInventoryComponent.cpp">
       <Filter>04. Components</Filter>
     </ClCompile>
-    <ClCompile Include="CItemComponent.cpp">
+    <ClCompile Include="CItem.cpp">
       <Filter>04. Components</Filter>
     </ClCompile>
     <ClCompile Include="CStateComponent.cpp">
@@ -139,6 +154,18 @@
     </ClCompile>
     <ClCompile Include="CWeaponComponent.cpp">
       <Filter>04. Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIComponent.cpp">
+      <Filter>04. Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CStatusComponent.cpp">
+      <Filter>04. Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CDummy.cpp">
+      <Filter>03. Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="CObject.cpp">
+      <Filter>05. Objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

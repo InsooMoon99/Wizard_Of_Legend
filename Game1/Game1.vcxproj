@@ -22,12 +22,14 @@
     <ClInclude Include="CActor.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CDefine.h" />
+    <ClInclude Include="CDummy.h" />
     <ClInclude Include="CEnums.h" />
     <ClInclude Include="CHelper.h" />
     <ClInclude Include="CCharacter.h" />
     <ClInclude Include="CImGuiManager.h" />
     <ClInclude Include="CInventoryComponent.h" />
-    <ClInclude Include="CItemComponent.h" />
+    <ClInclude Include="CItem.h" />
+    <ClInclude Include="CObject.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CResourceManager.h" />
     <ClInclude Include="CScene.h" />
@@ -36,8 +38,10 @@
     <ClInclude Include="CStage02.h" />
     <ClInclude Include="CStage_Start.h" />
     <ClInclude Include="CStateComponent.h" />
+    <ClInclude Include="CStatusComponent.h" />
     <ClInclude Include="CStruct.h" />
-    <ClInclude Include="CUiManager.h" />
+    <ClInclude Include="CUIComponent.h" />
+    <ClInclude Include="CUIManager.h" />
     <ClInclude Include="CWeaponComponent.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="stdafx.h" />
@@ -46,9 +50,11 @@
     <ClCompile Include="CActor.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CCharacter.cpp" />
+    <ClCompile Include="CDummy.cpp" />
     <ClCompile Include="CImGuiManager.cpp" />
     <ClCompile Include="CInventoryComponent.cpp" />
-    <ClCompile Include="CItemComponent.cpp" />
+    <ClCompile Include="CItem.cpp" />
+    <ClCompile Include="CObject.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CResourceManager.cpp" />
     <ClCompile Include="CScene.cpp" />
@@ -57,7 +63,9 @@
     <ClCompile Include="CStage02.cpp" />
     <ClCompile Include="CStage_Start.cpp" />
     <ClCompile Include="CStateComponent.cpp" />
-    <ClCompile Include="CUiManager.cpp" />
+    <ClCompile Include="CStatusComponent.cpp" />
+    <ClCompile Include="CUIComponent.cpp" />
+    <ClCompile Include="CUIManager.cpp" />
     <ClCompile Include="CWeaponComponent.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>

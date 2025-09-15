@@ -12,7 +12,8 @@ public:
 		case EPlayerState::Idle:		return "State_Idle";
 		case EPlayerState::Walk:		return "State_Walk";
 		case EPlayerState::Dash:		return "State_Dash";
-		case EPlayerState::Attack:		return "State_Attack";
+		case EPlayerState::Attack1:		return "State_Attack1";
+		case EPlayerState::Attack2:		return "State_Attack2";
 
 		default:						return "None";
 		}

@@ -5,6 +5,8 @@ CStateComponent::CStateComponent()
 {
 	m_PlayerState = EPlayerState::Idle;
 	m_PlayerDir = EPlayerDir::Front;
+
+	m_LastAttackType = EPlayerState::Attack2;
 }
 
 CStateComponent::~CStateComponent()
@@ -40,6 +42,14 @@ void CStateComponent::Change_State(EPlayerState _State)
 	if (m_PlayerState == _State)
 		return;
 
+	switch (_State)
+	{
+	case EPlayerState::Attack1:
+	case EPlayerState::Attack2:
+		m_LastAttackType = _State;
+		break;
+	}
+
 	m_PlayerState = _State;
 }
 
@@ -50,3 +60,12 @@ void CStateComponent::Change_Dir(EPlayerDir _Dir)
 
 	m_PlayerDir = _Dir;
 }
+
+EPlayerState CStateComponent::Next_AttackType()
+{
+	EPlayerState next =(m_LastAttackType == EPlayerState::Attack1) ? EPlayerState::Attack2 : EPlayerState::Attack1;
+	m_LastAttackType = next;
+
+	return next;
+}
+

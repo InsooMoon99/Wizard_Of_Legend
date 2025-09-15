@@ -1,12 +1,11 @@
 #pragma once
-
 #include "CComponent.h"
 
-class CItemComponent : public CComponent
+class CUIComponent : public CComponent
 {
 public:
-	CItemComponent();
-	~CItemComponent() override;
+	CUIComponent();
+	virtual ~CUIComponent();
 
 public:
 	void BeginPlay() override;
@@ -14,9 +13,11 @@ public:
 	void Render() override;
 	void Release() override;
 
-private:
+public:
+	void Resource_Settings();
 
+private:
+	vector<shared_ptr<ObImage>> m_HUD;
 
 };
-
 

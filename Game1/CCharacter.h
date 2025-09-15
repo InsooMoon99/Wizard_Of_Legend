@@ -2,6 +2,8 @@
 
 #include "CActor.h"
 
+class CStatusComponent;
+
 class CCharacter : public CActor
 {
 public:
@@ -19,19 +21,13 @@ protected:
 	virtual void Resource_Settings() abstract;
 
 public:
-	void  SetHp(float _Hp) { m_Hp = _Hp; }
-
-public:
-	float GetHp()		  { return m_Hp; }
-
-public:
 	virtual void AddComponent(CComponent* _Component);
 	virtual void RemoveComponent(CComponent* _Component);
 
 protected:
 	vector<CComponent*> m_Components;
 
-	float m_Hp;
-	float m_Speed;
+	CStatusComponent* m_Status;
+
 };
 

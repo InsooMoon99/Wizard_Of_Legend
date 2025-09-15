@@ -26,7 +26,8 @@ enum class EPlayerState
 	Idle = 0,
 	Walk,
 	Dash,
-	Attack,
+	Attack1,
+	Attack2,
 
 	PS_END
 };

@@ -4,6 +4,7 @@
 
 class CPlayer;
 class CActor;
+class CDummy;
 
 class CStage01 : public CScene
 {
@@ -22,10 +23,16 @@ public:
 	void Resource_Setting();
 
 private:
-	unordered_map<ESceneType, shared_ptr<ObImage>> m_Map;
+	vector<CActor*> m_Actors;
 
-
+	Vec2 m_PlayerPos;
 	Vec2 m_MapSize;
+
+	unordered_map<ESceneType, shared_ptr<ObImage>> m_Map;
+	vector<shared_ptr<ObImage>> m_Objects;
+
+	CActor* m_TestDummy;
+
 
 };
 

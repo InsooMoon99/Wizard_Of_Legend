@@ -1,9 +1,9 @@
 #pragma once
-class CUiManager
+class CUIManager
 {
 private:
-	CUiManager()  = default;
-	~CUiManager() = default;
+	CUIManager()  = default;
+	~CUIManager() = default;
 
 public:
 	void		Init();
@@ -12,11 +12,11 @@ public:
 	void		Release();
 
 public:
-	static CUiManager* Get_Instance()
+	static CUIManager* Get_Instance()
 	{
 		if (Instance == nullptr)
 		{
-			Instance = new CUiManager();
+			Instance = new CUIManager();
 		}
 
 		return Instance;
@@ -32,6 +32,6 @@ public:
 	}
 
 private:
-	static CUiManager* Instance;
+	static CUIManager* Instance;
 };
 

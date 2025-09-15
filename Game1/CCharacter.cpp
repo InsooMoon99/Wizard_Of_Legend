@@ -1,8 +1,11 @@
 #include "stdafx.h"
 #include "CCharacter.h"
+#include "CStateComponent.h"
+#include "CStatusComponent.h"
 
-CCharacter::CCharacter() : m_Hp(0.f), m_Speed(0.f)
+CCharacter::CCharacter()
 {
+	m_Status = CHelper::CreateComponent<CStatusComponent>(this);
 }
 
 CCharacter::~CCharacter()

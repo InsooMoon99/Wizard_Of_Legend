@@ -8,7 +8,8 @@ class CComponent;
 class CStateComponent;
 class CWeaponComponent;
 class CInventoryComponent;
-class CItemComponent;
+class CUIComponent;
+class CItem;
 
 class CPlayer : public CCharacter
 {
@@ -28,7 +29,7 @@ private:
 	CStateComponent*		m_State;
 	CWeaponComponent*		m_Weapon;
 	CInventoryComponent*	m_Inventory;
-	CItemComponent*			m_Item;
+	CUIComponent*			m_UI;
 
 public:
 	void Key_Input();
@@ -41,8 +42,10 @@ public:
 	void SetSprite(EPlayerState _State, EPlayerDir _Dir);
 	void State_Sprite(EPlayerState _State);
 
+public:
+	void Attack_Sprite();
 	void Shadow_Size();
-	void Dash_Effect();
+	void Dash_Sprite();
 
 	ObRect* Get_PlayerCollision() { return m_PlayerCol.get(); }
 
@@ -55,8 +58,9 @@ private:
 	void Print_ImGui();
 
 private:
-	Vec2 m_MoveDir = { 0, 0 };
-	Vec2 m_LastDir = { 0, 0 };
+	Vec2 m_MoveDir   =	{ 0, 0 };
+	Vec2 m_LastDir   =	{ 0, 0 };
+	Vec2 m_AttackDir =	{ 0, 0 };
 
 	float m_DashDistance = 1200.f;
 
@@ -68,7 +72,9 @@ private:
 	// Image
 	unordered_map<EPlayerState, unordered_map<EPlayerDir, shared_ptr<ObImage>>> m_Sprites;
 	unordered_map<EPlayerState, shared_ptr<ObImage>> m_Shadow;
-	unordered_map<EPlayerDir, shared_ptr<ObImage>> m_Dash;
+	unordered_map<EPlayerDir, shared_ptr<ObImage>>   m_Dash;
+
+	shared_ptr<ObImage> m_Player_Marker = nullptr;
 
 	shared_ptr<ObImage> m_CurImg = nullptr;
 

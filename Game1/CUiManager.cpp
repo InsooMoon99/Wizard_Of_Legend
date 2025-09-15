@@ -1,24 +1,24 @@
 #include "stdafx.h"
-#include "CUiManager.h"
+#include "CUIManager.h"
 
-CUiManager* CUiManager::Instance = nullptr;
+CUIManager* CUIManager::Instance = nullptr;
 
-void CUiManager::Init()
+void CUIManager::Init()
 {
 
 }
 
-void CUiManager::Update()
+void CUIManager::Update()
 {
 
 }
 
-void CUiManager::Render()
+void CUIManager::Render()
 {
 
 }
 
-void CUiManager::Release()
+void CUIManager::Release()
 {
 
 }
