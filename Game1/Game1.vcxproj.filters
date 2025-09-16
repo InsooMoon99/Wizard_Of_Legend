@@ -52,13 +52,7 @@
     <ClInclude Include="CImGuiManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CUIManager.h">
-      <Filter>01. Manager</Filter>
-    </ClInclude>
     <ClInclude Include="CInventoryComponent.h">
-      <Filter>04. Components</Filter>
-    </ClInclude>
-    <ClInclude Include="CItem.h">
       <Filter>04. Components</Filter>
     </ClInclude>
     <ClInclude Include="CStateComponent.h">
@@ -78,6 +72,33 @@
     </ClInclude>
     <ClInclude Include="CObject.h">
       <Filter>05. Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI.h">
+      <Filter>98.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_PlayerStatus.h">
+      <Filter>98.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_PlayerHUD.h">
+      <Filter>98.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoxCollision.h">
+      <Filter>06. Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollision.h">
+      <Filter>06. Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CSphereCollision.h">
+      <Filter>06. Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CItem.h">
+      <Filter>05. Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_HUD.h">
+      <Filter>98.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CEdit.h">
+      <Filter>02. Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +122,12 @@
     </Filter>
     <Filter Include="05. Objects">
       <UniqueIdentifier>{9742eb28-8211-428f-888e-3569b011ff50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Collision">
+      <UniqueIdentifier>{47109e2f-9d75-42f1-b7f7-fa513be56a0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.UI">
+      <UniqueIdentifier>{56ba5894-483a-4f7a-b00e-71ff49fa9d74}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -140,13 +167,7 @@
     <ClCompile Include="CImGuiManager.cpp">
       <Filter>01. Manager</Filter>
     </ClCompile>
-    <ClCompile Include="CUIManager.cpp">
-      <Filter>01. Manager</Filter>
-    </ClCompile>
     <ClCompile Include="CInventoryComponent.cpp">
-      <Filter>04. Components</Filter>
-    </ClCompile>
-    <ClCompile Include="CItem.cpp">
       <Filter>04. Components</Filter>
     </ClCompile>
     <ClCompile Include="CStateComponent.cpp">
@@ -166,6 +187,33 @@
     </ClCompile>
     <ClCompile Include="CObject.cpp">
       <Filter>05. Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI.cpp">
+      <Filter>98.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_PlayerStatus.cpp">
+      <Filter>98.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_PlayerHUD.cpp">
+      <Filter>98.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoxCollision.cpp">
+      <Filter>06. Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollision.cpp">
+      <Filter>06. Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="CSphereCollision.cpp">
+      <Filter>06. Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="CItem.cpp">
+      <Filter>05. Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_HUD.cpp">
+      <Filter>98.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CEdit.cpp">
+      <Filter>02. Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

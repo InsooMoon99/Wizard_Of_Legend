@@ -1,5 +1,6 @@
 #pragma once
 #include "CActor.h"
+#include "CCharacter.h"
 #include "CComponent.h"
 
 class CHelper
@@ -59,8 +60,21 @@ public:
 	template<typename T>
 	static T* GetComponent(CActor* _Owner)
 	{
-		
-	}
+		if (_Owner == nullptr)
+			return nullptr;
 
+		const auto& components = _Owner->GetAllComponents();
+
+		for (CComponent* component : components)
+		{
+			T* foundComponent = dynamic_cast<T*>(component);
+			if (foundComponent)
+			{
+				return foundComponent;
+			}
+		}
+
+		return nullptr;
+	}
 
 };

@@ -8,10 +8,11 @@
 CStage01::CStage01()
 {
 	m_Player = new CPlayer();
-	m_Actors.push_back(m_Player);
-
 	m_TestDummy = new CDummy();
+
+
 	m_Actors.push_back(m_TestDummy);
+	m_Actors.push_back(m_Player);
 
 	m_MapSize = Vec2(1184.f, 688.f) * 4.f;
 	m_PlayerPos = Vec2(-1790.f, -790.f);

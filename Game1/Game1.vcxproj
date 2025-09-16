@@ -20,9 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CActor.h" />
+    <ClInclude Include="CBoxCollision.h" />
+    <ClInclude Include="CCollision.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CDefine.h" />
     <ClInclude Include="CDummy.h" />
+    <ClInclude Include="CEdit.h" />
     <ClInclude Include="CEnums.h" />
     <ClInclude Include="CHelper.h" />
     <ClInclude Include="CCharacter.h" />
@@ -34,23 +37,30 @@
     <ClInclude Include="CResourceManager.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneManager.h" />
+    <ClInclude Include="CSphereCollision.h" />
     <ClInclude Include="CStage01.h" />
     <ClInclude Include="CStage02.h" />
     <ClInclude Include="CStage_Start.h" />
     <ClInclude Include="CStateComponent.h" />
     <ClInclude Include="CStatusComponent.h" />
     <ClInclude Include="CStruct.h" />
+    <ClInclude Include="CUI.h" />
     <ClInclude Include="CUIComponent.h" />
-    <ClInclude Include="CUIManager.h" />
+    <ClInclude Include="CUI_HUD.h" />
+    <ClInclude Include="CUI_PlayerStatus.h" />
     <ClInclude Include="CWeaponComponent.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="CUI_PlayerHUD.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CActor.cpp" />
+    <ClCompile Include="CBoxCollision.cpp" />
+    <ClCompile Include="CCollision.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CDummy.cpp" />
+    <ClCompile Include="CEdit.cpp" />
     <ClCompile Include="CImGuiManager.cpp" />
     <ClCompile Include="CInventoryComponent.cpp" />
     <ClCompile Include="CItem.cpp" />
@@ -59,15 +69,19 @@
     <ClCompile Include="CResourceManager.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneManager.cpp" />
+    <ClCompile Include="CSphereCollision.cpp" />
     <ClCompile Include="CStage01.cpp" />
     <ClCompile Include="CStage02.cpp" />
     <ClCompile Include="CStage_Start.cpp" />
     <ClCompile Include="CStateComponent.cpp" />
     <ClCompile Include="CStatusComponent.cpp" />
+    <ClCompile Include="CUI.cpp" />
     <ClCompile Include="CUIComponent.cpp" />
-    <ClCompile Include="CUIManager.cpp" />
+    <ClCompile Include="CUI_HUD.cpp" />
+    <ClCompile Include="CUI_PlayerStatus.cpp" />
     <ClCompile Include="CWeaponComponent.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="CUI_PlayerHUD.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -20,10 +20,6 @@ public:
 protected:
 	virtual void Resource_Settings() abstract;
 
-public:
-	virtual void AddComponent(CComponent* _Component);
-	virtual void RemoveComponent(CComponent* _Component);
-
 protected:
 	vector<CComponent*> m_Components;
 

@@ -1,10 +1,17 @@
 #include "stdafx.h"
 #include "CUIComponent.h"
 #include "CResourceManager.h"
+#include "CCharacter.h"
+#include "CUI.h"
+#include "CUI_PlayerStatus.h"
+#include "CStatusComponent.h"
 
 CUIComponent::CUIComponent()
 {
-	Resource_Settings();
+	m_PlayerHUD = new CUI_PlayerStatus();
+
+	m_HUD.push_back(m_PlayerHUD);
+
 }
 
 CUIComponent::~CUIComponent()
@@ -14,6 +21,11 @@ CUIComponent::~CUIComponent()
 void CUIComponent::BeginPlay()
 {
 	CComponent::BeginPlay();
+
+	SetPlayerStatus();
+
+	for (auto& hud : m_HUD)
+		hud->BeginPlay();
 }
 
 void CUIComponent::TickComponent()
@@ -38,16 +50,12 @@ void CUIComponent::TickComponent()
 #endif
 
 	for (auto& hud : m_HUD)
-		hud->Update();
+		hud->Tick();
 }
 
 void CUIComponent::Render()
 {
 	CComponent::Render();
-
-	// ³ªÁß¿¡ Ã³¸®
-	//DWRITE->RenderText(L"HP : ", RECT{ 150, 30,(long)app.GetWidth(),(long)app.GetHalfHeight() },
-	//	25.0f, L"¸¼Àº °íµñ", Color(1, 1, 1, 1), DWRITE_FONT_WEIGHT_SEMI_BOLD);
 
 	for (auto& hud : m_HUD)
 		hud->Render();
@@ -60,33 +68,14 @@ void CUIComponent::Release()
 	m_HUD.clear();
 }
 
-void CUIComponent::Resource_Settings()
+void CUIComponent::SetPlayerStatus()
 {
-	shared_ptr<ObImage> playerHUD = RESOURCE->CreateImage(L"UI\\UI_PLAYERBAR.bmp", Vec2(82.f, 20.f) * 4.f, true);
-	playerHUD->SetWorldPos(Vec2(-450.f, 300.f));
-	playerHUD->collider = COLLIDER::NONE;
-	playerHUD->visible = true;
-	playerHUD->space = SPACE::SCREEN;
+	if (m_PlayerHUD && GetOwner())
+	{
+		CStatusComponent* status = CHelper::GetComponent<CStatusComponent>(GetOwner());
+		if (status == nullptr)
+			return;
 
-	m_HUD.push_back(playerHUD);
-
-	shared_ptr<ObImage> playerHp = RESOURCE->CreateImage(L"UI\\UI_HPBAR.bmp", Vec2(122.f, 16.f) * 2.f, true);
-	playerHp->SetParentRT(*playerHUD);
-	playerHp->SetLocalPos(Vec2(34.f, 12.f));
-	playerHp->collider = COLLIDER::NONE;
-	playerHp->visible = true;
-	playerHp->space = SPACE::SCREEN;
-
-	m_HUD.push_back(playerHp);
-
-	shared_ptr<ObImage> playerMp = RESOURCE->CreateImage(L"UI\\UI_MANABAR.bmp", Vec2(96.f, 8.f) * 2.f, true);
-	playerMp->SetParentRT(*playerHUD);
-	playerMp->SetLocalPos(Vec2(9.f, -20.f));
-	playerMp->collider = COLLIDER::NONE;
-	playerMp->visible = true;
-	playerMp->space = SPACE::SCREEN;
-
-	m_HUD.push_back(playerMp);
-
-
+		m_PlayerHUD->SetStatus(status);
+	}
 }

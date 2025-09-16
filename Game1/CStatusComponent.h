@@ -15,17 +15,22 @@ public:
 	void Release() override;
 
 public:
+	void	SetMaxHp(float _Hp) { m_MaxHp = _Hp; }
+	void	SetMaxMp(float _Mp) { m_MaxMp = _Mp; }
 	void	SetHp(float _Hp) { m_Hp = _Hp; }
 	void	SetMp(float _Mp) { m_Mp = _Mp; }
 	void	SetSpeed(float _Speed) { m_Speed = _Speed; }
 
 public:
+	float GetMaxHp() { return m_MaxHp; }
+	float GetMaxMp() {return m_MaxMp;}
 	float GetHp() { return m_Hp; }
 	float GetMp() { return m_Mp; }
 	float GetSpeed() { return m_Speed; }
 
 private:
-
+	float m_MaxHp;
+	float m_MaxMp;
 	float m_Hp;
 	float m_Mp;
 	float m_Speed;

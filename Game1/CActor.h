@@ -19,8 +19,10 @@ public:
 	void SetPos(Vector2 pos) { m_Pos = pos; }
 	Vector2 GetPos() { return m_Pos; }
 
-	void AddComponent(CComponent* _Component);
-	void RemoveComponent(CComponent* _Component);
+	virtual void AddComponent(CComponent* _Component);
+	virtual void RemoveComponent(CComponent* _Component);
+
+	const vector<CComponent*>& GetAllComponents() const { return m_Components; }
 
 	void SetLayer(ELayerType layer) { m_Layer = layer; }
 	ELayerType GetLayer() { return m_Layer; }

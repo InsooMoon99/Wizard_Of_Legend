@@ -1,6 +1,10 @@
 #pragma once
 #include "CComponent.h"
 
+class CUI;
+class CUI_PlayerStatus;
+class CStatusComponent;
+
 class CUIComponent : public CComponent
 {
 public:
@@ -14,10 +18,11 @@ public:
 	void Release() override;
 
 public:
-	void Resource_Settings();
+	void SetPlayerStatus();
 
 private:
-	vector<shared_ptr<ObImage>> m_HUD;
+	vector<CUI*> m_HUD;
+	CUI_PlayerStatus* m_PlayerHUD;
 
 };
 

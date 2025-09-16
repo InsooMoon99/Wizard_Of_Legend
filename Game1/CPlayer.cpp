@@ -16,7 +16,8 @@ CPlayer::CPlayer()
 	m_Inventory = CHelper::CreateComponent<CInventoryComponent>(this);
 	m_UI		= CHelper::CreateComponent<CUIComponent>(this);
 
-	m_Status->SetHp(100.f);
+	m_Status->SetMaxHp(100.f);
+	m_Status->SetMaxMp(100.f);
 	m_Status->SetSpeed(500.f);
 
 	// 컴포넌트 세팅하고 호출해야함
@@ -89,6 +90,8 @@ void CPlayer::Tick()
 	{
 		SetSprite(m_State->Get_State(), m_State->Get_Dir());
 	}
+
+	cout << m_Status->GetHp() << endl;
 
 	// 마우스로 방향 조절 / 그런데 키보드로 하는게 나을듯
 	{
@@ -629,8 +632,6 @@ void CPlayer::Resource_Settings()
 		shared_ptr<ObImage> attack_Back1 = RESOURCE->CreateSprite(L"Player\\Back\\Back_Attack1.png", attack_Size, Int2(8, 1), false);
 		attack_Back1->SetParentRT(*m_PlayerCol);
 		m_Sprites[EPlayerState::Attack1][EPlayerDir::Back] = attack_Back1;
-		m_Sprites[EPlayerState::Attack1][EPlayerDir::Back_Left] = attack_Back1;
-		m_Sprites[EPlayerState::Attack1][EPlayerDir::Back_Right] = attack_Back1;
 
 		shared_ptr<ObImage> attack_Back2 = RESOURCE->CreateSprite(L"Player\\Back\\Back_Attack2.png", attack_Size, Int2(8, 1), false);
 		attack_Back2->SetParentRT(*m_PlayerCol);
@@ -642,19 +643,24 @@ void CPlayer::Resource_Settings()
 		shared_ptr<ObImage> attack_Left1 = RESOURCE->CreateSprite(L"Player\\Left\\Left_Attack1.png", attack_Size, Int2(8, 1), false);
 		attack_Left1->SetParentRT(*m_PlayerCol);
 		m_Sprites[EPlayerState::Attack1][EPlayerDir::Left] = attack_Left1;
+		m_Sprites[EPlayerState::Attack1][EPlayerDir::Back_Left] = attack_Left1;
+
 
 		shared_ptr<ObImage> attack_Left2 = RESOURCE->CreateSprite(L"Player\\Left\\Left_Attack2.png", attack_Size, Int2(8, 1), false);
 		attack_Left2->SetParentRT(*m_PlayerCol);
 		m_Sprites[EPlayerState::Attack2][EPlayerDir::Left] = attack_Left2;
+		m_Sprites[EPlayerState::Attack2][EPlayerDir::Back_Left] = attack_Left2;
 
 		// Right
 		auto attack_Right1 = RESOURCE->CreateSprite(L"Player\\Right\\Right_Attack1.png", attack_Size, Int2(8, 1), false);
 		attack_Right1->SetParentRT(*m_PlayerCol);
 		m_Sprites[EPlayerState::Attack1][EPlayerDir::Right] = attack_Right1;
+		m_Sprites[EPlayerState::Attack1][EPlayerDir::Back_Right] = attack_Right1;
 
 		auto attack_Right2 = RESOURCE->CreateSprite(L"Player\\Right\\Right_Attack2.png", attack_Size, Int2(8, 1), false);
 		attack_Right2->SetParentRT(*m_PlayerCol);
 		m_Sprites[EPlayerState::Attack2][EPlayerDir::Right] = attack_Right2;
+		m_Sprites[EPlayerState::Attack2][EPlayerDir::Back_Right] = attack_Right2;
 
 	}
 
@@ -662,7 +668,7 @@ void CPlayer::Resource_Settings()
 	{
 		m_Player_Marker = RESOURCE->CreateImage(L"UI\\Player_Marker.png", Vec2(32.f, 33.f) * 3.f);
 		m_Player_Marker->SetParentRT(*m_PlayerCol);
-		m_Player_Marker->SetLocalPos(Vec2(-2.f, -15.f));
+		m_Player_Marker->SetLocalPos(Vec2(-2.f, -35.f));
 		m_Player_Marker->rotation = -PI;
 		m_Player_Marker->color.A(0.15f);
 		m_Player_Marker->visible = true;
@@ -677,8 +683,20 @@ void CPlayer::Print_ImGui()
 {
 	if (ImGui::Begin("Player"))
 	{
-		ImGui::Text("Hp    : %.2f", m_Status->GetHp());
-		ImGui::Text("Speed : %.2f", m_Status->GetSpeed());
+		float hp = m_Status->GetHp();
+		float mp = m_Status->GetMp();
+		float speed = m_Status->GetSpeed();
+
+		ImGui::Text("Hp : %f : ", m_Status->GetMaxHp());
+		ImGui::InputFloat("Hp : ", &hp);
+		m_Status->SetHp(hp);
+
+		ImGui::InputFloat("Mp : ", &mp);
+		m_Status->SetMp(mp);
+
+		ImGui::InputFloat("Speed : ", &speed);
+		m_Status->SetSpeed(speed);
+
 		ImGui::Text("State : %s", CHelper::ToString_PlayerState(m_State->Get_State()));
 		ImGui::Text("Dir   : %s", CHelper::ToString_PlayerDir(m_State->Get_Dir()));
 		ImGui::Text("LastDir.x : %f", m_LastDir.x);
