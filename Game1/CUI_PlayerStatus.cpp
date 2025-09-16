@@ -8,7 +8,6 @@ CUI_PlayerStatus::CUI_PlayerStatus()
 	m_Background = RESOURCE->CreateImage(L"UI\\UI_PLAYERBAR.bmp", Vec2(82.f, 20.f) * 4.f, true);
 	m_Background->SetWorldPos(Vec2(-450.f, 300.f));
 	m_Background->collider = COLLIDER::NONE;
-	m_Background->visible = true;
 	m_Background->space = SPACE::SCREEN;
 
 	m_PlayerStatus.push_back(m_Background);

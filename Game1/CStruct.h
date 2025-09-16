@@ -1,13 +1,11 @@
 #pragma once
 
-struct AnimDesc
+struct SkillInfo
 {
-	int		line;
-	float	interval;
-};
+	CActor*	Owner = nullptr;
+	Vec2	SpawnPos {};
+	Vec2	Dir {};
 
-struct RenderEntry
-{
-	int		 Z_Order;
-	ObImage* Img;
+	float	Damage = 0.f;
+	float	Mp = 0.f;
 };

@@ -53,7 +53,7 @@ void CDummy::Release()
 void CDummy::Resource_Settings()
 {
 	m_DummyCol = new ObRect();
-	m_DummyCol->scale = Vec2(200.f, 200.f);
+	m_DummyCol->scale = Vec2(100.f, 150.f);
 	m_DummyCol->visible = true;
 	m_DummyCol->isFilled = false;
 	m_DummyCol->collider = COLLIDER::RECT;

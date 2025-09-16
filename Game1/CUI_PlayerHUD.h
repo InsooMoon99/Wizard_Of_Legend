@@ -3,6 +3,8 @@
 #include "CUI_HUD.h"
 
 class CStatusComponent;
+class CUI_PlayerStatus;
+class CUI_Skill_Pannel;
 
 class CUI_PlayerHUD : public CUI_HUD
 {
@@ -19,9 +21,11 @@ public:
 	void Release() override;
 
 public:
+	shared_ptr<CUI_PlayerStatus> Get_PlayerStatus() { return m_PlayerStatus; }
 
 private:
-	shared_ptr<CUI> m_PlayerStatus;
+	shared_ptr<CUI_PlayerStatus> m_PlayerStatus;
+	shared_ptr<CUI_Skill_Pannel> m_Skill_Pannel;
 
 };
 

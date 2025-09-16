@@ -2,6 +2,8 @@
 
 #include "CComponent.h"
 
+class CSkill;
+
 class CWeaponComponent : public CComponent
 {
 public:
@@ -14,5 +16,10 @@ public:
 	void Render() override;
 	void Release() override;
 
+public:
+	void Fire_Ball();
+
+private:
+	shared_ptr<CSkill> testFireBall;
 };
 

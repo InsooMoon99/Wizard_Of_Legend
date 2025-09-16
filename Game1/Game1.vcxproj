@@ -27,9 +27,9 @@
     <ClInclude Include="CDummy.h" />
     <ClInclude Include="CEdit.h" />
     <ClInclude Include="CEnums.h" />
+    <ClInclude Include="CFireBall.h" />
     <ClInclude Include="CHelper.h" />
     <ClInclude Include="CCharacter.h" />
-    <ClInclude Include="CImGuiManager.h" />
     <ClInclude Include="CInventoryComponent.h" />
     <ClInclude Include="CItem.h" />
     <ClInclude Include="CObject.h" />
@@ -37,6 +37,8 @@
     <ClInclude Include="CResourceManager.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneManager.h" />
+    <ClInclude Include="CSkill.h" />
+    <ClInclude Include="CSkill_FireBall.h" />
     <ClInclude Include="CSphereCollision.h" />
     <ClInclude Include="CStage01.h" />
     <ClInclude Include="CStage02.h" />
@@ -48,6 +50,7 @@
     <ClInclude Include="CUIComponent.h" />
     <ClInclude Include="CUI_HUD.h" />
     <ClInclude Include="CUI_PlayerStatus.h" />
+    <ClInclude Include="CUI_Skill_Pannel.h" />
     <ClInclude Include="CWeaponComponent.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="CUI_PlayerHUD.h" />
@@ -61,7 +64,7 @@
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CDummy.cpp" />
     <ClCompile Include="CEdit.cpp" />
-    <ClCompile Include="CImGuiManager.cpp" />
+    <ClCompile Include="CFireBall.cpp" />
     <ClCompile Include="CInventoryComponent.cpp" />
     <ClCompile Include="CItem.cpp" />
     <ClCompile Include="CObject.cpp" />
@@ -69,6 +72,8 @@
     <ClCompile Include="CResourceManager.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneManager.cpp" />
+    <ClCompile Include="CSkill.cpp" />
+    <ClCompile Include="CSkill_FireBall.cpp" />
     <ClCompile Include="CSphereCollision.cpp" />
     <ClCompile Include="CStage01.cpp" />
     <ClCompile Include="CStage02.cpp" />
@@ -79,9 +84,13 @@
     <ClCompile Include="CUIComponent.cpp" />
     <ClCompile Include="CUI_HUD.cpp" />
     <ClCompile Include="CUI_PlayerStatus.cpp" />
+    <ClCompile Include="CUI_Skill_Pannel.cpp" />
     <ClCompile Include="CWeaponComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="CUI_PlayerHUD.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -184,7 +193,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "CComponent.h"
+#include "CObject.h"
 
-class CItem : public CComponent
+class CItem : public CObject
 {
 public:
 	CItem();
@@ -10,9 +10,9 @@ public:
 
 public:
 	void BeginPlay() override;
-	void TickComponent() override;
+	void Tick() override;
 	void Render() override;
-	void Release() override;
+
 
 private:
 

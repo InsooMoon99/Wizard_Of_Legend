@@ -2,7 +2,7 @@
 #include "CComponent.h"
 
 class CUI;
-class CUI_PlayerStatus;
+class CUI_PlayerHUD;
 class CStatusComponent;
 
 class CUIComponent : public CComponent
@@ -22,7 +22,8 @@ public:
 
 private:
 	vector<CUI*> m_HUD;
-	CUI_PlayerStatus* m_PlayerHUD;
+
+	CUI_PlayerHUD* m_PlayerHUD;
 
 };
 

@@ -49,9 +49,6 @@
     <ClInclude Include="CPlayer.h">
       <Filter>03. Actors</Filter>
     </ClInclude>
-    <ClInclude Include="CImGuiManager.h">
-      <Filter>01. Manager</Filter>
-    </ClInclude>
     <ClInclude Include="CInventoryComponent.h">
       <Filter>04. Components</Filter>
     </ClInclude>
@@ -100,6 +97,18 @@
     <ClInclude Include="CEdit.h">
       <Filter>02. Scene</Filter>
     </ClInclude>
+    <ClInclude Include="CFireBall.h">
+      <Filter>07. Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill.h">
+      <Filter>07. Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_Skill_Pannel.h">
+      <Filter>98.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_FireBall.h">
+      <Filter>07. Skill</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -128,6 +137,9 @@
     </Filter>
     <Filter Include="98.UI">
       <UniqueIdentifier>{56ba5894-483a-4f7a-b00e-71ff49fa9d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Skill">
+      <UniqueIdentifier>{dc470261-2663-40de-bcbc-9067b6556096}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -163,9 +175,6 @@
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
       <Filter>03. Actors</Filter>
-    </ClCompile>
-    <ClCompile Include="CImGuiManager.cpp">
-      <Filter>01. Manager</Filter>
     </ClCompile>
     <ClCompile Include="CInventoryComponent.cpp">
       <Filter>04. Components</Filter>
@@ -214,6 +223,21 @@
     </ClCompile>
     <ClCompile Include="CEdit.cpp">
       <Filter>02. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CFireBall.cpp">
+      <Filter>07. Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>99. Headers</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill.cpp">
+      <Filter>07. Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_Skill_Pannel.cpp">
+      <Filter>98.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_FireBall.cpp">
+      <Filter>07. Skill</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

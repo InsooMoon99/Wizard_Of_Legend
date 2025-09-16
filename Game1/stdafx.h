@@ -7,7 +7,6 @@ extern mutex m;
 
 using Vec2 = Vector2;
 
-#include <iostream>
 #include <map>
 #include <unordered_map>
 

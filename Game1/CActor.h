@@ -16,8 +16,8 @@ public:
 	virtual void Release();
 
 public:
-	void SetPos(Vector2 pos) { m_Pos = pos; }
-	Vector2 GetPos() { return m_Pos; }
+	void Set_WorldPos(Vector2 pos) { m_Pos = pos; }
+	Vector2 Get_WorldPos() { return m_Pos; }
 
 	virtual void AddComponent(CComponent* _Component);
 	virtual void RemoveComponent(CComponent* _Component);

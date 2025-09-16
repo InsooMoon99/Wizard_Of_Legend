@@ -18,6 +18,9 @@ CPlayer::CPlayer()
 
 	m_Status->SetMaxHp(100.f);
 	m_Status->SetMaxMp(100.f);
+
+	m_Status->SetHp(80.f);
+	m_Status->SetMp(60.f);
 	m_Status->SetSpeed(500.f);
 
 	// 컴포넌트 세팅하고 호출해야함
@@ -41,6 +44,9 @@ void CPlayer::Tick()
 	CActor::Tick();
 
 	Print_ImGui();
+
+	if (m_PlayerCol)
+		m_Pos = m_PlayerCol->GetWorldPos();
 
 	EPlayerState prevState = m_State->Get_State();
 	EPlayerDir   prevDir = m_State->Get_Dir();
@@ -185,6 +191,15 @@ void CPlayer::Key_Input()
 		if (INPUT->KeyPress('S')) { m_MoveDir.y = -1.f; }
 		if (INPUT->KeyPress('A')) { m_MoveDir.x = -1.f; }
 		if (INPUT->KeyPress('D')) { m_MoveDir.x = +1.f; }
+	}
+
+	if (INPUT->KeyDown('Q'))
+	{
+		m_State->Change_State(m_State->Next_AttackType());
+
+		m_Weapon->Fire_Ball();
+
+		return;
 	}
 
 	if (INPUT->KeyDown(VK_LBUTTON))
@@ -496,9 +511,9 @@ void CPlayer::Resource_Settings()
 		shadow_Idle->visible = true;
 		m_Shadow.insert({ EPlayerState::Idle, shadow_Idle });
 
-		shared_ptr<ObImage> shadow_Attack = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(80.f, 80.f) * 1.2f);
+		shared_ptr<ObImage> shadow_Attack = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(80.f, 80.f) * 1.4f);
 		shadow_Attack->SetParentRT(*m_PlayerCol);
-		shadow_Attack->SetLocalPos(Vec2(-2.5f, -40.f));
+		shadow_Attack->SetLocalPos(Vec2(0.0f, -40.f));
 		shadow_Attack->color = Color(0.0f, 0.0f, 0.0f, 0.15f);
 		m_Shadow.insert({ EPlayerState::Attack1, shadow_Attack });
 		m_Shadow.insert({ EPlayerState::Attack2, shadow_Attack });
@@ -688,13 +703,13 @@ void CPlayer::Print_ImGui()
 		float speed = m_Status->GetSpeed();
 
 		ImGui::Text("Hp : %f : ", m_Status->GetMaxHp());
-		ImGui::InputFloat("Hp : ", &hp);
+		ImGui::InputFloat("Hp", &hp);
 		m_Status->SetHp(hp);
 
-		ImGui::InputFloat("Mp : ", &mp);
+		ImGui::InputFloat("Mp", &mp);
 		m_Status->SetMp(mp);
 
-		ImGui::InputFloat("Speed : ", &speed);
+		ImGui::InputFloat("Speed", &speed);
 		m_Status->SetSpeed(speed);
 
 		ImGui::Text("State : %s", CHelper::ToString_PlayerState(m_State->Get_State()));

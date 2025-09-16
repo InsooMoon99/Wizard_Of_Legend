@@ -1,12 +1,15 @@
 #include "stdafx.h"
 #include "CUI_PlayerHUD.h"
 #include "CUI_PlayerStatus.h"
+#include "CUI_Skill_Pannel.h"
 
 CUI_PlayerHUD::CUI_PlayerHUD()
 {
 	m_PlayerStatus = make_shared<CUI_PlayerStatus>();
+	m_Skill_Pannel = make_shared<CUI_Skill_Pannel>();
 
 	AddChild(m_PlayerStatus);
+	AddChild(m_Skill_Pannel);
 
 
 }

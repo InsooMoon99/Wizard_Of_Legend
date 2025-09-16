@@ -5,13 +5,13 @@
 #include "CUI.h"
 #include "CUI_PlayerStatus.h"
 #include "CStatusComponent.h"
+#include "CUI_PlayerHUD.h"
 
 CUIComponent::CUIComponent()
 {
-	m_PlayerHUD = new CUI_PlayerStatus();
+	m_PlayerHUD = new CUI_PlayerHUD();
 
 	m_HUD.push_back(m_PlayerHUD);
-
 }
 
 CUIComponent::~CUIComponent()
@@ -76,6 +76,6 @@ void CUIComponent::SetPlayerStatus()
 		if (status == nullptr)
 			return;
 
-		m_PlayerHUD->SetStatus(status);
+		m_PlayerHUD->Get_PlayerStatus()->SetStatus(status);
 	}
 }

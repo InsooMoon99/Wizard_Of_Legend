@@ -11,20 +11,16 @@ CItem::~CItem()
 
 void CItem::BeginPlay()
 {
-	CComponent::BeginPlay();
+
 }
 
-void CItem::TickComponent()
+void CItem::Tick()
 {
-	CComponent::TickComponent();
+
 }
 
 void CItem::Render()
 {
-	CComponent::Render();
+
 }
 
-void CItem::Release()
-{
-	CComponent::Release();
-}
