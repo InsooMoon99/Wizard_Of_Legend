@@ -32,10 +32,62 @@ public:
 		case EPlayerDir::Front_Right:	return "Front_Right";
 		case EPlayerDir::Back_Left:		return "Back_Left";
 		case EPlayerDir::Back_Right:	return "Back_Right";
-		//case EPlayerDir::Stop:	return "Stop";
+			//case EPlayerDir::Stop:	return "Stop";
 
 		case EPlayerDir::PD_END:		return "PD_End";
 		default: return "None";
+		}
+	}
+
+	static Vec2 DirToVec(EPlayerDir _dir)
+	{
+		switch (_dir)
+		{
+		case EPlayerDir::Front:
+			return Vec2(0.0f, -1.0f);
+		case EPlayerDir::Back:
+			return Vec2(0.0f, 1.0f);
+		case EPlayerDir::Left:
+			return Vec2(-1.0f, 0.0f);
+		case EPlayerDir::Right:
+			return Vec2(1.0f, 0.0f);
+
+		case EPlayerDir::Front_Left:
+		{
+			{
+				Vector2 frontLeft = Vec2(-1.0f, -1.0f);
+				frontLeft.Normalize();
+				return frontLeft;
+			}
+		}
+
+		case EPlayerDir::Front_Right:
+		{
+			{
+				Vector2 frontRight = Vec2(1.0f, -1.0f);
+				frontRight.Normalize();
+				return frontRight;
+			}
+		}
+		case EPlayerDir::Back_Left:
+		{
+			{
+				Vector2 backLeft = Vector2(-1.0f, 1.0f);
+				backLeft.Normalize();
+				return backLeft;
+			}
+		}
+
+		case EPlayerDir::Back_Right:
+		{
+			{
+				Vector2 backRight = Vec2(1.0f, 1.0f);
+				backRight.Normalize();
+				return backRight;
+			}
+		}
+		default:
+			return Vec2(1.0f, 0.0f); // 기본값 오른쪽으로
 		}
 	}
 

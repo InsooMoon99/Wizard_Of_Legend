@@ -16,6 +16,10 @@ public:
 	virtual void Release();
 
 public:
+	virtual void OnComponentBeginOverlap(GameObject* collider, GameObject* other);
+	virtual void OnComponentEndOverlap(GameObject* collider, GameObject* other);
+
+public:
 	void Set_WorldPos(Vector2 pos) { m_Pos = pos; }
 	Vector2 Get_WorldPos() { return m_Pos; }
 

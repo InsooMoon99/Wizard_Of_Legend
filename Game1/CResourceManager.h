@@ -22,6 +22,13 @@ public:
 		const Int2& _maxFrame, 
 		bool _visible = false);
 
+	shared_ptr<ObImage> CreateUI(
+		const wstring& _path,
+		const Vec2& _scale,
+		bool _visible = false,
+		COLLIDER _collider = COLLIDER::NONE
+	);
+
 	void     AddImage(EPlayerState _state, EPlayerDir _dir, ObImage* _img);
 	ObImage* GetImage(EPlayerState _state, EPlayerDir _dir);
 

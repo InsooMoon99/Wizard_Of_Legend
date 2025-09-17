@@ -1,4 +1,7 @@
 #pragma once
+
+#include <unordered_set>
+
 class ObLine;
 enum class SPACE
 {
@@ -87,5 +90,20 @@ public:
 	//부모행렬 만들기
 	void	SetParentRT(GameObject& src)	{ P = &src.RT; }
 	void	SetParentT(GameObject& src)	{ P = &src.T; }
+
+public:
+	unordered_set<GameObject*>& Get_CollisionMap()  { return m_CollisionMap; }
+
+	class CActor* Get_Owner() { return m_Owner; }
+	void Set_Owner(CActor* _Owner) { m_Owner = _Owner; }
+
+	class CActor* Get_Instigator() { return m_Owner; }
+	void Set_Instigator(CActor* _Instigator) { m_Instigator = _Instigator; }
+
+private:
+	unordered_set<GameObject*> m_CollisionMap;
+
+	CActor* m_Owner = nullptr;
+	CActor* m_Instigator = nullptr;
 };
 

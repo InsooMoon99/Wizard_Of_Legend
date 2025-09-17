@@ -6,15 +6,15 @@
 #include "CStateComponent.h"
 #include "CWeaponComponent.h"
 #include "CUIComponent.h"
-#include "CItem.h"
 #include "CStatusComponent.h"
+#include "CCollisionManager.h"
 
 CPlayer::CPlayer()
 {
 	m_State		= CHelper::CreateComponent<CStateComponent>(this);
 	m_Weapon	= CHelper::CreateComponent<CWeaponComponent>(this);
-	m_Inventory = CHelper::CreateComponent<CInventoryComponent>(this);
 	m_UI		= CHelper::CreateComponent<CUIComponent>(this);
+	m_Inventory = CHelper::CreateComponent<CInventoryComponent>(this);
 
 	m_Status->SetMaxHp(100.f);
 	m_Status->SetMaxMp(100.f);
@@ -22,6 +22,8 @@ CPlayer::CPlayer()
 	m_Status->SetHp(80.f);
 	m_Status->SetMp(60.f);
 	m_Status->SetSpeed(500.f);
+
+	m_Status->SetGold(100);
 
 	// 컴포넌트 세팅하고 호출해야함
 	Resource_Settings();
@@ -96,8 +98,6 @@ void CPlayer::Tick()
 	{
 		SetSprite(m_State->Get_State(), m_State->Get_Dir());
 	}
-
-	cout << m_Status->GetHp() << endl;
 
 	// 마우스로 방향 조절 / 그런데 키보드로 하는게 나을듯
 	{
@@ -313,7 +313,6 @@ void CPlayer::State_Attack()
 	if (it != map.end() && m_CurImg != it->second)
 		return;
 
-	// 정상 공격 스프라이트일 때만 종료 체크
 	if (m_CurImg && m_CurImg->frame.x >= m_CurImg->maxFrame.x - 1)
 		m_State->Change_State(EPlayerState::Idle);
 }
@@ -357,7 +356,6 @@ void CPlayer::State_Sprite(EPlayerState _State)
 		break;
 
 	case EPlayerState::Dash:
-		// Dash 스프라이트
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.03f);
 		m_CurImg->frame = Int2(0, 0);
 		m_DashEndFrame = m_CurImg->maxFrame.x - 1;
@@ -418,6 +416,8 @@ void CPlayer::Resource_Settings()
 	m_PlayerCol->isFilled = false;
 	m_PlayerCol->pivot = OFFSET_N;
 	m_PlayerCol->collider = COLLIDER::RECT;
+	m_PlayerCol->Set_Owner(this);
+	COLLISION->AddCollider(m_PlayerCol.get());
 
 	m_vecRect.push_back(m_PlayerCol.get());
 
@@ -525,8 +525,8 @@ void CPlayer::Resource_Settings()
 		shadow_Walk->visible = true;
 		m_Shadow.insert({ EPlayerState::Walk, shadow_Walk });
 
-		m_StartShadowScale = Vec2(60.f, 60.f) * 1.2f;
-		m_EndShadowScale = Vec2(100.f, 60.f) * 1.8f;
+		m_StartShadowScale = Vec2(60.f, 60.f) * 1.4f;
+		m_EndShadowScale = Vec2(80.f, 60.f) * 1.6f;
 
 		shared_ptr<ObImage> shadow_Dash = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(60.f, 60.f) * 1.2f, false);
 		shadow_Dash->SetParentRT(*m_PlayerCol);
@@ -563,6 +563,7 @@ void CPlayer::Resource_Settings()
 
 		shared_ptr<ObImage> right_Dash = RESOURCE->CreateSprite(L"Player\\Right\\Right_Dash_long.png",dash_Size,Int2(11, 1), false);
 		right_Dash->SetParentRT(*m_PlayerCol);
+		right_Dash->SetLocalPosX(-10.f);
 
 		m_Sprites[EPlayerState::Dash][EPlayerDir::Front] = front_Dash;
 		m_Sprites[EPlayerState::Dash][EPlayerDir::Front_Left] = front_Left_Dash;
@@ -681,6 +682,7 @@ void CPlayer::Resource_Settings()
 
 	// Direction Overlay
 	{
+		// TODO : Glory 도 추가하기?
 		m_Player_Marker = RESOURCE->CreateImage(L"UI\\Player_Marker.png", Vec2(32.f, 33.f) * 3.f);
 		m_Player_Marker->SetParentRT(*m_PlayerCol);
 		m_Player_Marker->SetLocalPos(Vec2(-2.f, -35.f));
@@ -700,9 +702,10 @@ void CPlayer::Print_ImGui()
 	{
 		float hp = m_Status->GetHp();
 		float mp = m_Status->GetMp();
+		int gold = m_Status->GetGold();
 		float speed = m_Status->GetSpeed();
 
-		ImGui::Text("Hp : %f : ", m_Status->GetMaxHp());
+		ImGui::Text("MaxHp", m_Status->GetMaxHp());
 		ImGui::InputFloat("Hp", &hp);
 		m_Status->SetHp(hp);
 
@@ -712,6 +715,9 @@ void CPlayer::Print_ImGui()
 		ImGui::InputFloat("Speed", &speed);
 		m_Status->SetSpeed(speed);
 
+		ImGui::InputInt("Gold", &gold);
+		m_Status->SetGold(gold);
+
 		ImGui::Text("State : %s", CHelper::ToString_PlayerState(m_State->Get_State()));
 		ImGui::Text("Dir   : %s", CHelper::ToString_PlayerDir(m_State->Get_Dir()));
 		ImGui::Text("LastDir.x : %f", m_LastDir.x);
@@ -720,7 +726,7 @@ void CPlayer::Print_ImGui()
 		if (m_CurImg)
 		{
 			Vec2 localPos = m_CurImg->GetLocalPos();
-			ImGui::InputFloat2("Sprite Local Position", &localPos.x);
+			ImGui::InputFloat2("Sprite Pos", &localPos.x);
 			m_CurImg->SetLocalPos(localPos);
 		}
 
@@ -730,7 +736,6 @@ void CPlayer::Print_ImGui()
 		{
 			m_PlayerCol->SetWorldPos(worldPos);
 		}
-
 	}
 
 	ImGui::End();

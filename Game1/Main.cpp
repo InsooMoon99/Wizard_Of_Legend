@@ -2,17 +2,20 @@
 #include "Main.h"
 
 #include "CSceneManager.h"
+#include "CCollisionManager.h"
+#include "CParticleManager.h"
 
 void Main::Init()
 {
 	SCENE->Change_Scene(ESceneType::Stage01);
-	
+	PARTICLE->Init();
 }
 
 void Main::Update()
 {
 	SCENE->Update();
-
+	COLLISION->Update();
+	PARTICLE->Update();
 }
 
 void Main::LateUpdate()
@@ -24,12 +27,26 @@ void Main::LateUpdate()
 void Main::Render()
 {
 	SCENE->Render();
-	 
+	PARTICLE->Render();
+
+	if (ImGui::Begin("Player"))
+	{
+		ImGui::NewLine();
+
+		Vec2 pos = INPUT->GetMouseScreenPos();
+		ImGui::Text("Mouse Local : x %f, y %f", pos.x, pos.y);
+
+		Vec2 worldpos = INPUT->GetMouseWorldPos();
+		ImGui::Text("Mouse World : x %f, y %f", worldpos.x, worldpos.y);
+	}
+
+	ImGui::End();
 }
 
 void Main::Release()
 {
-	SCENE->Release();
+	SCENE->Destroy_Instance();
+	PARTICLE->Destroy_Instance();
 
 }
 

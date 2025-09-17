@@ -2,10 +2,12 @@
 
 struct SkillInfo
 {
-	CActor*	Owner = nullptr;
+	CActor*	Instigator = nullptr;
 	Vec2	SpawnPos {};
-	Vec2	Dir {};
+	Vec2	Aim_Dir	 {};
+	Vec2	Amount	 {};
 
+	float	Angle = 0.f;
 	float	Damage = 0.f;
 	float	Mp = 0.f;
 };

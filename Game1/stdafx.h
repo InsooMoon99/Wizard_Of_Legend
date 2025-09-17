@@ -9,6 +9,9 @@ using Vec2 = Vector2;
 
 #include <map>
 #include <unordered_map>
+#include <set>
+#include <unordered_set>
+#include <algorithm>
 
 #include "CEnums.h"
 #include "CDefine.h"

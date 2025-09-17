@@ -16,14 +16,13 @@ public:
 	void Release() override;
 
 public:
-	ObRect* Get_DummyCol() { return m_DummyCol; }
+	shared_ptr<ObRect> Get_DummyCol() { return m_DummyCol; }
 
 protected:
 	void Resource_Settings() override;
 
 private:
-	ObRect* m_DummyCol;
-
+	shared_ptr<ObRect> m_DummyCol;
 	shared_ptr<ObImage> Dummy_Image;
 
 

@@ -14,5 +14,15 @@ public:
 	void LateUpdate() override;
 	void Render() override;
 	void Release() override;
+
+private:
+	vector<shared_ptr<ObImage>> m_Images;
+
+	shared_ptr<ObImage> m_Title_Image;
+	shared_ptr<ObImage> m_Title_Text;
+
+	shared_ptr<ObImage> m_Test_Start;
+	shared_ptr<ObImage> m_Test_Edit;
+	shared_ptr<ObImage> m_Test_Exit;
 };
 

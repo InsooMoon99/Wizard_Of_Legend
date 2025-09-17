@@ -79,15 +79,6 @@
     <ClInclude Include="CUI_PlayerHUD.h">
       <Filter>98.UI</Filter>
     </ClInclude>
-    <ClInclude Include="CBoxCollision.h">
-      <Filter>06. Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="CCollision.h">
-      <Filter>06. Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="CSphereCollision.h">
-      <Filter>06. Collision</Filter>
-    </ClInclude>
     <ClInclude Include="CItem.h">
       <Filter>05. Objects</Filter>
     </ClInclude>
@@ -98,17 +89,24 @@
       <Filter>02. Scene</Filter>
     </ClInclude>
     <ClInclude Include="CFireBall.h">
-      <Filter>07. Skill</Filter>
+      <Filter>06. Skill</Filter>
     </ClInclude>
     <ClInclude Include="CSkill.h">
-      <Filter>07. Skill</Filter>
+      <Filter>06. Skill</Filter>
     </ClInclude>
     <ClInclude Include="CUI_Skill_Pannel.h">
       <Filter>98.UI</Filter>
     </ClInclude>
     <ClInclude Include="CSkill_FireBall.h">
-      <Filter>07. Skill</Filter>
+      <Filter>06. Skill</Filter>
     </ClInclude>
+    <ClInclude Include="CCollisionManager.h">
+      <Filter>01. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_Actor.h">
+      <Filter>06. Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="CParticleManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -132,22 +130,16 @@
     <Filter Include="05. Objects">
       <UniqueIdentifier>{9742eb28-8211-428f-888e-3569b011ff50}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06. Collision">
-      <UniqueIdentifier>{47109e2f-9d75-42f1-b7f7-fa513be56a0d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="98.UI">
       <UniqueIdentifier>{56ba5894-483a-4f7a-b00e-71ff49fa9d74}</UniqueIdentifier>
     </Filter>
-    <Filter Include="07. Skill">
+    <Filter Include="06. Skill">
       <UniqueIdentifier>{dc470261-2663-40de-bcbc-9067b6556096}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>00. MainGame</Filter>
-    </ClCompile>
-    <ClCompile Include="CSceneManager.cpp">
-      <Filter>01. Manager</Filter>
     </ClCompile>
     <ClCompile Include="CStage01.cpp">
       <Filter>02. Scene</Filter>
@@ -171,9 +163,6 @@
       <Filter>01. Manager</Filter>
     </ClCompile>
     <ClCompile Include="CCharacter.cpp">
-      <Filter>03. Actors</Filter>
-    </ClCompile>
-    <ClCompile Include="CPlayer.cpp">
       <Filter>03. Actors</Filter>
     </ClCompile>
     <ClCompile Include="CInventoryComponent.cpp">
@@ -206,15 +195,6 @@
     <ClCompile Include="CUI_PlayerHUD.cpp">
       <Filter>98.UI</Filter>
     </ClCompile>
-    <ClCompile Include="CBoxCollision.cpp">
-      <Filter>06. Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="CCollision.cpp">
-      <Filter>06. Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="CSphereCollision.cpp">
-      <Filter>06. Collision</Filter>
-    </ClCompile>
     <ClCompile Include="CItem.cpp">
       <Filter>05. Objects</Filter>
     </ClCompile>
@@ -225,19 +205,32 @@
       <Filter>02. Scene</Filter>
     </ClCompile>
     <ClCompile Include="CFireBall.cpp">
-      <Filter>07. Skill</Filter>
+      <Filter>06. Skill</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>99. Headers</Filter>
     </ClCompile>
     <ClCompile Include="CSkill.cpp">
-      <Filter>07. Skill</Filter>
+      <Filter>06. Skill</Filter>
     </ClCompile>
     <ClCompile Include="CUI_Skill_Pannel.cpp">
       <Filter>98.UI</Filter>
     </ClCompile>
     <ClCompile Include="CSkill_FireBall.cpp">
-      <Filter>07. Skill</Filter>
+      <Filter>06. Skill</Filter>
     </ClCompile>
+    <ClCompile Include="CCollisionManager.cpp">
+      <Filter>01. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>03. Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneManager.cpp">
+      <Filter>01. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_Actor.cpp">
+      <Filter>06. Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticleManager.cpp" />
   </ItemGroup>
 </Project>

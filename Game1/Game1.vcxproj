@@ -20,8 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CActor.h" />
-    <ClInclude Include="CBoxCollision.h" />
-    <ClInclude Include="CCollision.h" />
+    <ClInclude Include="CCollisionManager.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CDefine.h" />
     <ClInclude Include="CDummy.h" />
@@ -33,13 +32,14 @@
     <ClInclude Include="CInventoryComponent.h" />
     <ClInclude Include="CItem.h" />
     <ClInclude Include="CObject.h" />
+    <ClInclude Include="CParticleManager.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CResourceManager.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneManager.h" />
     <ClInclude Include="CSkill.h" />
+    <ClInclude Include="CSkill_Actor.h" />
     <ClInclude Include="CSkill_FireBall.h" />
-    <ClInclude Include="CSphereCollision.h" />
     <ClInclude Include="CStage01.h" />
     <ClInclude Include="CStage02.h" />
     <ClInclude Include="CStage_Start.h" />
@@ -58,8 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CActor.cpp" />
-    <ClCompile Include="CBoxCollision.cpp" />
-    <ClCompile Include="CCollision.cpp" />
+    <ClCompile Include="CCollisionManager.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CDummy.cpp" />
@@ -68,13 +67,14 @@
     <ClCompile Include="CInventoryComponent.cpp" />
     <ClCompile Include="CItem.cpp" />
     <ClCompile Include="CObject.cpp" />
+    <ClCompile Include="CParticleManager.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CResourceManager.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneManager.cpp" />
     <ClCompile Include="CSkill.cpp" />
+    <ClCompile Include="CSkill_Actor.cpp" />
     <ClCompile Include="CSkill_FireBall.cpp" />
-    <ClCompile Include="CSphereCollision.cpp" />
     <ClCompile Include="CStage01.cpp" />
     <ClCompile Include="CStage02.cpp" />
     <ClCompile Include="CStage_Start.cpp" />

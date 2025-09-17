@@ -181,13 +181,10 @@ ObImage::ObImage(wstring file)
     samplerDesc.MinLOD = -FLT_MAX;
     samplerDesc.MaxLOD = FLT_MAX;
 
-    //하나 이상의 샘플러 만들어 두기
     D3D->GetDevice()->CreateSamplerState(&samplerDesc, &sampler);
 
-    //텍스쳐 로드
     SRV = TEXTURE->LoadTexture(file);
 
-    //           (최소좌표)   (최대좌표)
     uv = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
     animTime = 0.0f;
     animInterval = 0.0f;
@@ -197,16 +194,69 @@ ObImage::ObImage(wstring file)
     reverseLR = false;
 }
 
+ObImage::ObImage(const ObImage& other) : GameObject(other)
+{
+    SRV = other.SRV;     if (SRV)     SRV->AddRef();
+    sampler = other.sampler; if (sampler) sampler->AddRef();
+    samplerDesc = other.samplerDesc;
+
+    animState = other.animState;
+    animInterval = other.animInterval;
+    animXAxis = other.animXAxis;
+
+    uv = other.uv;
+    maxFrame = other.maxFrame;
+    frame = other.frame;
+    reverseLR = other.reverseLR;
+    file = other.file;
+
+    animTime = 0.f;
+
+}
+
+ObImage& ObImage::operator=(const ObImage& other)
+{
+    if (this == &other) return *this;
+
+    GameObject::operator=(other);
+
+    if (SRV) { SRV->Release();     SRV = nullptr; }
+    if (sampler) { sampler->Release(); sampler = nullptr; }
+
+    SRV = other.SRV;     if (SRV)     SRV->AddRef();
+    sampler = other.sampler; if (sampler) sampler->AddRef();
+    samplerDesc = other.samplerDesc;
+
+    animState = other.animState;
+    animInterval = other.animInterval;
+    animXAxis = other.animXAxis;
+
+    uv = other.uv;
+    maxFrame = other.maxFrame;
+    frame = other.frame;
+    reverseLR = other.reverseLR;
+    file = other.file;
+
+    animTime = 0.f;
+    return *this;
+}
+
 ObImage::~ObImage()
 {
     sampler->Release();
+}
+
+void ObImage::Update()
+{
+	GameObject::Update();
+
+    PlayAnim();
 }
 
 void ObImage::Render()
 {
     if (!visible)return;
 
-    PlayAnim();
     GameObject::Render();
 
     imageShader->Set();

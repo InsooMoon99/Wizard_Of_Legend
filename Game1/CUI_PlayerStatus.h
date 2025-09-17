@@ -22,6 +22,7 @@ private:
 	shared_ptr<ObImage> m_Background;
 	shared_ptr<ObImage> m_PlayerHp;
 	shared_ptr<ObImage> m_PlayerMp;
+	shared_ptr<ObImage> m_PlayerGold;
 
 	CStatusComponent* m_Status;
 

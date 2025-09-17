@@ -20,6 +20,11 @@ public:
     static void CreateStaticMember();
     static void DeleteStaticMember();
 
+public:
+    ANIMSTATE   Get_AnimState()     { return animState; }
+    float       Get_AnimTime()      { return animTime; }
+    float       Get_AnimInterval()  { return animInterval; }
+
 private:
     ID3D11ShaderResourceView*   SRV;
     ID3D11SamplerState*         sampler;
@@ -42,10 +47,14 @@ private:
 
 public:
     ObImage(wstring file);
+    ObImage(const ObImage& other);              // 복사 생성자
+    ObImage& operator=(const ObImage& other);   // 복사 대입 연산자
+
     ~ObImage();
 
-    void Render()override;
-    void ChangeAnim(ANIMSTATE anim, float interval, bool xAxis = true); //set함수 기능
+    void Update() override;
+    void Render() override;
+    void ChangeAnim(ANIMSTATE anim, float interval, bool xAxis = true);
     void ChangeSampler(D3D11_FILTER filter = D3D11_FILTER_MIN_MAG_MIP_POINT,
         D3D11_TEXTURE_ADDRESS_MODE addressU = D3D11_TEXTURE_ADDRESS_WRAP,
         D3D11_TEXTURE_ADDRESS_MODE addressV = D3D11_TEXTURE_ADDRESS_WRAP);

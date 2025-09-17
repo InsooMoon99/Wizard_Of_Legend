@@ -1,9 +1,11 @@
 #pragma once
 
-#include "CActor.h"
+#include "CSkill_Actor.h"
 
-class CFireBall : public CActor
+class CFireBall : public CSkill_Actor
 {
+	using Super = CSkill_Actor;
+
 public:
 	CFireBall(SkillInfo& _Info);
 	virtual ~CFireBall() override;
@@ -16,11 +18,19 @@ public:
 	void Release() override;
 
 public:
+	virtual void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
+	virtual void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
+
+	bool IsDestroy() const {return m_PendingKill;}
+
+public:
 	shared_ptr<ObCircle> m_FireBall_Col;
 	shared_ptr<ObImage> m_FireBall;
 
-	Vec2	m_MoveDir;
-	float	m_Damage = 0.f;
+	SkillInfo m_Skill_Info;
+
+	float   m_SpawnLife = 0.f;
+	bool	m_PendingKill = false;
 
 };
 

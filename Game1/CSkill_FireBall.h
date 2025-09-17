@@ -24,7 +24,7 @@ public:
 
 private:
 	SkillInfo m_Skill_Info;
+	vector<shared_ptr<CFireBall>> m_FireBall;
 
-	shared_ptr<CActor> m_FireBall;
 };
 

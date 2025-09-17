@@ -43,6 +43,16 @@ void CActor::Release()
 
 }
 
+void CActor::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
+{
+
+}
+
+void CActor::OnComponentEndOverlap(GameObject* collider, GameObject* other)
+{
+
+}
+
 void CActor::AddComponent(CComponent* _Component)
 {
 	if (_Component == nullptr)

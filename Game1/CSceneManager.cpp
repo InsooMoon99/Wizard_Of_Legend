@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CSceneManager.h"
 
+#include "CEdit.h"
 #include "CStage01.h"
 #include "CStage02.h"
 #include "CStage_Start.h"
@@ -10,7 +11,7 @@ CSceneManager* CSceneManager::Instance = nullptr;
 
 void CSceneManager::Init()
 {
-
+	
 }
 
 void CSceneManager::Update()
@@ -59,6 +60,11 @@ void CSceneManager::Change_Scene(ESceneType _SceneType)
 	case ESceneType::Stage02:
 		newScene = new CStage02();
 		m_SceneType = ESceneType::Stage02;
+		break;
+
+	case ESceneType::Edit:
+		newScene = new CEdit();
+		m_SceneType = ESceneType::Edit;
 		break;
 
 	case ESceneType::Stage_End: 

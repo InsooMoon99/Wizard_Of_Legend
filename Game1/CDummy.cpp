@@ -39,6 +39,13 @@ void CDummy::Render()
 {
 	CCharacter::Render();
 
+	if (ImGui::Begin("Dummy"))
+	{
+		ImGui::Text("Hp : %f", m_Status->GetHp());
+	}
+
+	ImGui::End();
+
 	m_DummyCol->Render();
 	Dummy_Image->Render();
 }
@@ -47,16 +54,17 @@ void CDummy::Release()
 {
 	CCharacter::Release();
 
-	SafeDelete(m_DummyCol);
 }
 
 void CDummy::Resource_Settings()
 {
-	m_DummyCol = new ObRect();
+	m_DummyCol = make_shared<ObRect>();
 	m_DummyCol->scale = Vec2(100.f, 150.f);
 	m_DummyCol->visible = true;
 	m_DummyCol->isFilled = false;
 	m_DummyCol->collider = COLLIDER::RECT;
+	m_DummyCol->Set_Owner(this);
+	COLLISION->AddCollider(m_DummyCol.get());
 
 	Dummy_Image = RESOURCE->CreateImage(L"Object\\BossDummy.png", Vec2(29.f, 48.f), true);
 	Dummy_Image->SetParentRT(*m_DummyCol);
