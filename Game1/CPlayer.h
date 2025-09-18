@@ -24,9 +24,14 @@ public:
 	void Render() override;
 	void Release() override;
 
+public:
+	// Interface
+	void Update_Hit() override;
+	void Hit_Color() override;
+	void Hit_Effect() override;
+
 private:
 	// Components
-	CStateComponent*		m_State;
 	CWeaponComponent*		m_Weapon;
 	CInventoryComponent*	m_Inventory;
 	CUIComponent*			m_UI;
@@ -40,7 +45,7 @@ public:
 	void State_Attack();
 
 	virtual void SetSprite(EPlayerState _State, EPlayerDir _Dir) override;
-	void Play_Sprite(EPlayerState _State);
+	virtual void Play_Sprite(EPlayerState _State);
 
 public:
 	void Attack_Sprite();
@@ -48,6 +53,8 @@ public:
 	void Dash_Sprite();
 
 	//ObRect* Get_PlayerCollision() { return m_PlayerCol.get(); }
+	void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
+	void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 
 protected:
 	// Player 한테 리소스 세팅을 할지?
@@ -56,6 +63,7 @@ protected:
 
 private:
 	void Print_ImGui();
+	void MoveWithTileBlocking(const Vec2& dir, float speed);
 
 private:
 	Vec2 m_MoveDir   =	{ 0, 0 };
@@ -64,19 +72,11 @@ private:
 
 	float m_DashDistance = 1200.f;
 
-	// Collision
-	vector<ObRect*>		m_vecRect;
-	vector<ObCircle*>	m_vecCircle;
-	//unique_ptr<ObRect>	m_PlayerCol;
-
 	// Image
-	unordered_map<EPlayerState, unordered_map<EPlayerDir, shared_ptr<ObImage>>> m_Sprites;
 	unordered_map<EPlayerState, shared_ptr<ObImage>> m_Shadow;
 	unordered_map<EPlayerDir, shared_ptr<ObImage>>   m_Dash;
 
 	shared_ptr<ObImage> m_Player_Marker = nullptr;
-
-	shared_ptr<ObImage> m_CurImg = nullptr;
 
 private:
 	Vec2	m_StartShadowScale;

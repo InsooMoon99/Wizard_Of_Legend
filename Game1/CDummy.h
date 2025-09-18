@@ -16,12 +16,17 @@ public:
 	void Release() override;
 
 public:
+	// Interface
+	void Update_Hit() override;
+	void Hit_Color() override;
+	void Hit_Effect() override;
 
 protected:
 	void Resource_Settings() override;
 
 private:
 	void SetSprite(EPlayerState _State, EPlayerDir _Dir) override;
+	void Play_Sprite(EPlayerState _State) override;
 
 private:
 	shared_ptr<ObImage> Dummy_Image;

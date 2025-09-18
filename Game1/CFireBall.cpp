@@ -53,8 +53,6 @@ void CFireBall::Tick()
 	if (m_FireBall_Col)
 		m_Pos = m_FireBall_Col->GetWorldPos();
 
-
-
 	// Life Time
 	m_SpawnLife += DELTA;
 
@@ -107,17 +105,19 @@ void CFireBall::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 	// TODO : 벽이랑도 충돌되도록 타입 변경
 	CCharacter* hit = dynamic_cast<CCharacter*>(other->Get_Owner());
 	if (!hit)return;
-	
+
 	// TODO : 팀킬/자기 무시
 	if (hit == m_Skill_Info.Instigator) return;
 	//if (IsSameTeam(hit, m_FireBall_Col->Get_Instigator())) return;
 
-
-	// TODO : 시작 위치로 하는게 맞나? FireBall의 각도에 따라서 처리하는거로 변경하는게 나을수도
 	Vec2 dir = hit->Get_WorldPos() - m_StartPos;
 	dir.Normalize();
-
 	hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
+
+	// 색 변경
+	IColorChanger* colorChanger = dynamic_cast<IColorChanger*>(hit);
+	if (colorChanger)
+		colorChanger->Hit_Color();
 
 	auto* status = CHelper::GetComponent<CStatusComponent>(hit);
 	if (!status) return;
@@ -127,6 +127,7 @@ void CFireBall::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 	// Particle
 	Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
 	PARTICLE->Spawn_Particle(L"HitSpark", particlePos);
+	PARTICLE->Spawn_Particle(L"Fire_HitEffect", other->GetWorldPos());
 
 	m_PendingKill = true;
 }

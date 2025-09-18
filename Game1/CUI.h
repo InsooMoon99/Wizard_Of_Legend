@@ -12,14 +12,10 @@ public:
 	virtual void Render();
 	virtual void Release();
 
-	void SetPos(Vec2 pos) { m__Pos = pos; }
-	Vec2 GetPos() { return m__Pos; }
-
-	ObRect* GetRect();
-	bool IsMouseInRect();
+	void SetPos(Vec2 pos) { m_Pos = pos; }
+	Vec2 GetPos() { return m_Pos; }
 
 protected:
-	Vec2	m__Pos = { -1700, -800 };
-	Vec2    m_Size = { 150.f, 150.f };
+	Vec2	m_Pos = { -1700, -800 };
 };
 

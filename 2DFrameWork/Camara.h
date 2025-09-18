@@ -6,8 +6,12 @@ private:
     Matrix              V, P, VP;       //View x Proj
 
 public:
+    Vector2             GetCameraPos() { return position; }
+
+public:
     //카메라위치
     Vector2             position;
+
 
 public:
     Camera();

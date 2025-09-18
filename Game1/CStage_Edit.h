@@ -2,11 +2,11 @@
 
 #include "CScene.h"
 
-class CEdit : public CScene
+class CStage_Edit : public CScene
 {
 public:
-	CEdit();
-	virtual ~CEdit();
+	CStage_Edit();
+	virtual ~CStage_Edit();
 
 public:
 	void Init() override;
@@ -14,5 +14,13 @@ public:
 	void LateUpdate() override;
 	void Render() override;
 	void Release() override;
+
+public:
+	void Key_Input();
+
+private:
+	vector<CActor*> m_Actors;
+
+	Vec2 m_PlayerPos;
 };
 

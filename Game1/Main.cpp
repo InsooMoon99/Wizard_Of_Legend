@@ -7,7 +7,7 @@
 
 void Main::Init()
 {
-	SCENE->Change_Scene(ESceneType::Stage01);
+	SCENE->Change_Scene(ESceneType::Start);
 	PARTICLE->Init();
 }
 

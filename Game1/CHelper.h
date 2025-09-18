@@ -91,11 +91,20 @@ public:
 		}
 	}
 
-	static void HitAlpha(ObImage* _Img)
+	static void HitColor(ObImage* _Img)
 	{
 		if (_Img == nullptr) return;
 
-		_Img->color = Color(1.f, 1.f, 1.f, 1.f);
+		Color hit_Color = Color(1.f, 1.f, 1.f, 0.5f);
+		_Img->color = hit_Color;
+	}
+
+	static void OrignColor(ObImage* _Img)
+	{
+		if (_Img == nullptr) return;
+
+		Color origin_Color = Color(0.5f, 0.5f, 0.5f, 0.5f);
+		_Img->color = origin_Color;
 	}
 
 	template<typename T>

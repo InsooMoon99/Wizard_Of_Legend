@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CPlayer.h"
-
+#include "CCharacter.h"
 #include "CResourceManager.h"
 #include "CInventoryComponent.h"
 #include "CStateComponent.h"
@@ -11,7 +11,6 @@
 
 CPlayer::CPlayer()
 {
-	m_State		= CHelper::CreateComponent<CStateComponent>(this);
 	m_Weapon	= CHelper::CreateComponent<CWeaponComponent>(this);
 	m_UI		= CHelper::CreateComponent<CUIComponent>(this);
 	m_Inventory = CHelper::CreateComponent<CInventoryComponent>(this);
@@ -38,7 +37,8 @@ void CPlayer::BeginPlay()
 {
 	CActor::BeginPlay();
 
-
+	if (m_UI)
+		m_UI->SetPlayerStatus();
 }
 
 void CPlayer::Tick()
@@ -50,8 +50,8 @@ void CPlayer::Tick()
 	if (m_Collision)
 		m_Pos = m_Collision->GetWorldPos();
 
-	EPlayerState prevState = m_State->Get_State();
-	EPlayerDir   prevDir = m_State->Get_Dir();
+	m_prevState = m_State->Get_State();
+	m_prevDir = m_State->Get_Dir();
 
 	Key_Input();
 
@@ -94,12 +94,12 @@ void CPlayer::Tick()
 		break;
 	}
 
-	if (prevState != m_State->Get_State() || prevDir != m_State->Get_Dir())
+	if (m_prevState != m_State->Get_State() || m_prevDir != m_State->Get_Dir())
 	{
 		SetSprite(m_State->Get_State(), m_State->Get_Dir());
 	}
 
-	// 마우스로 방향 조절 / 그런데 키보드로 하는게 나을듯
+	// 마우스로 방향 조절
 	{
 		//m_AttackDir = INPUT->GetMouseWorldPos() - m_PlayerCol->GetWorldPos();
 		//m_AttackDir.Normalize();
@@ -109,7 +109,7 @@ void CPlayer::Tick()
 	}
 
 	// Update
-	for (auto& Rect : m_vecRect)
+	for (auto& Rect : m_vecRectCol)
 		Rect->Update();
 
 	for (auto& shadow : m_Shadow)
@@ -138,7 +138,7 @@ void CPlayer::Render()
 {
 	CActor::Render();
 
-	for (auto& Rect : m_vecRect)
+	for (auto& Rect : m_vecRectCol)
 		Rect->Render();
 
 	for (auto& shadow : m_Shadow)
@@ -170,8 +170,26 @@ void CPlayer::Release()
 	for (auto& component : m_Components)
 		SafeDelete(component);
 
-	for (auto Rect : m_vecRect)
+	for (auto Rect : m_vecRectCol)
 		SafeDelete(Rect);
+}
+
+void CPlayer::Update_Hit()
+{
+	CCharacter::Update_Hit();
+
+}
+
+void CPlayer::Hit_Color()
+{
+	CCharacter::Hit_Color();
+
+}
+
+void CPlayer::Hit_Effect()
+{
+	CCharacter::Hit_Effect();
+
 }
 
 void CPlayer::Key_Input()
@@ -273,9 +291,7 @@ void CPlayer::State_Walk()
 {
 	if (m_MoveDir.Length() > 0.f)
 	{
-		m_MoveDir.Normalize();
-
-		m_Collision->MoveWorldPos(m_MoveDir * m_Status->GetSpeed() * DELTA);
+		MoveWithTileBlocking(m_MoveDir, m_Status->GetSpeed());
 	}
 }
 
@@ -376,8 +392,6 @@ void CPlayer::Play_Sprite(EPlayerState _State)
 	}
 }
 
-
-
 void CPlayer::Shadow_Size()
 {
 	// Shadow
@@ -408,6 +422,19 @@ void CPlayer::Dash_Sprite()
 
 }
 
+void CPlayer::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
+{
+	CCharacter::OnComponentBeginOverlap(collider, other);
+
+	int a = 3;
+}
+
+void CPlayer::OnComponentEndOverlap(GameObject* collider, GameObject* other)
+{
+	CCharacter::OnComponentEndOverlap(collider, other);
+
+}
+
 void CPlayer::Resource_Settings()
 {
 	// Player Collision
@@ -420,7 +447,7 @@ void CPlayer::Resource_Settings()
 	m_Collision->Set_Owner(this);
 	COLLISION->AddCollider(m_Collision.get());
 
-	m_vecRect.push_back(m_Collision.get());
+	m_vecRectCol.push_back(m_Collision.get());
 
 	// State_Idle
 	{
@@ -741,3 +768,55 @@ void CPlayer::Print_ImGui()
 
 	ImGui::End();
 }
+
+void CPlayer::MoveWithTileBlocking(const Vec2& dir, float speed)
+{
+	if (!m_Collision) return;
+	
+	ObRect* col = m_Collision.get();
+	
+	// 이동량(상대)
+	Vec2 nDir = dir;
+	if (nDir.LengthSquared() > 0.f) nDir.Normalize();
+	const Vec2 delta = nDir * speed * DELTA;
+	
+	// 콜라이더 AABB 반폭 (피벗이 OFFSET_M 기준)
+	Vec2 half = col->scale * 0.5f;
+	
+	// --- X축 시도 ---
+	if (delta.x != 0.f)
+	{
+		Vec2 pos = col->GetWorldPos();
+		Vec2 dx = Vec2(delta.x, 0.f);
+		Vec2 next = pos + dx;
+	
+		Vec2 minW = next - half;
+		Vec2 maxW = next + half;
+	
+		if (!TILE->IsBlockedAABB(minW, maxW))
+		{
+			col->MoveWorldPos(dx);   
+		}
+		// else : 막히면 X축 이동 스킵
+	}
+	
+	// --- Y축 시도 ---
+	if (delta.y != 0.f)
+	{
+		Vec2 pos = col->GetWorldPos(); // X축 반영 후 최신 위치
+		Vec2 dy = Vec2(0.f, delta.y);
+		Vec2 next = pos + dy;
+	
+		Vec2 minW = next - half;
+		Vec2 maxW = next + half;
+	
+		if (!TILE->IsBlockedAABB(minW, maxW))
+		{
+			col->MoveWorldPos(dy);   
+		}
+		// else : 막히면 Y축 이동 스킵
+	}
+
+	// 필요 시: col->Update(); // 부모-자식 갱신 필요하면 호출
+}
+

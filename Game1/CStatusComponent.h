@@ -36,6 +36,6 @@ private:
 	float m_Hp = 0.f;
 	float m_Mp = 0.f;
 	float m_Speed = 0.f;
-	int   m_Gold = 0.f;
+	int   m_Gold = 0;
 };
 

@@ -85,7 +85,7 @@
     <ClInclude Include="CUI_HUD.h">
       <Filter>98.UI</Filter>
     </ClInclude>
-    <ClInclude Include="CEdit.h">
+    <ClInclude Include="CStage_Edit.h">
       <Filter>02. Scene</Filter>
     </ClInclude>
     <ClInclude Include="CFireBall.h">
@@ -108,6 +108,15 @@
     </ClInclude>
     <ClInclude Include="CParticleManager.h">
       <Filter>01. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="IColorChanger.h">
+      <Filter>07. Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="CTileManager.h">
+      <Filter>01. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CTile.h">
+      <Filter>03. Actors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -138,11 +147,14 @@
     <Filter Include="06. Skill">
       <UniqueIdentifier>{dc470261-2663-40de-bcbc-9067b6556096}</UniqueIdentifier>
     </Filter>
+    <Filter Include="07. Interface">
+      <UniqueIdentifier>{b9fec5c7-3bc4-4bd3-9e48-20107b812eec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Tile">
+      <UniqueIdentifier>{31d31c9a-ed8d-418e-a36a-8e88e325666f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>00. MainGame</Filter>
-    </ClCompile>
     <ClCompile Include="CStage01.cpp">
       <Filter>02. Scene</Filter>
     </ClCompile>
@@ -203,7 +215,7 @@
     <ClCompile Include="CUI_HUD.cpp">
       <Filter>98.UI</Filter>
     </ClCompile>
-    <ClCompile Include="CEdit.cpp">
+    <ClCompile Include="CStage_Edit.cpp">
       <Filter>02. Scene</Filter>
     </ClCompile>
     <ClCompile Include="CFireBall.cpp">
@@ -235,6 +247,18 @@
     </ClCompile>
     <ClCompile Include="CParticleManager.cpp">
       <Filter>01. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="IColorChanger.cpp">
+      <Filter>07. Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>01. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileManager.cpp">
+      <Filter>01. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CTile.cpp">
+      <Filter>03. Actors</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

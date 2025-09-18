@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CSceneManager.h"
 
-#include "CEdit.h"
+#include "CStage_Edit.h"
 #include "CStage01.h"
 #include "CStage02.h"
 #include "CStage_Start.h"
@@ -63,7 +63,7 @@ void CSceneManager::Change_Scene(ESceneType _SceneType)
 		break;
 
 	case ESceneType::Edit:
-		newScene = new CEdit();
+		newScene = new CStage_Edit();
 		m_SceneType = ESceneType::Edit;
 		break;
 

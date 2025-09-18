@@ -50,8 +50,12 @@ void CParticleManager::Resource_Settings()
 	shared_ptr<ObImage> hit_Spark = RESOURCE->CreateSprite(L"Particle\\HitSpark.png", Vec2(400.f / 8.f, 50.f) * 3.0f, Int2(8, 1), true);
 	hit_Spark->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
 
+	shared_ptr<ObImage> fire_hitEffect = RESOURCE->CreateSprite(L"Particle\\Fire_HitEffect.png", Vec2(910.f / 7.f, 110.f) * 1.5f, Int2(7, 1), true);
+	fire_hitEffect->ChangeAnim(ANIMSTATE::ONCE, 0.07f);
+
 	m_Particles.insert({ L"HitEffect", hit_Effect });
 	m_Particles.insert({ L"HitSpark", hit_Spark });
+	m_Particles.insert({ L"Fire_HitEffect", fire_hitEffect });
 }
 
 shared_ptr<ObImage> CParticleManager::Spawn_Particle(const wstring& _Key, const Vec2& _Pos)

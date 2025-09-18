@@ -47,3 +47,11 @@ enum class EPlayerDir
 
 	PD_END
 };
+
+enum class ETileType
+{
+	TILE1,
+	TILE2,
+
+	TILE_END
+};

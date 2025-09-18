@@ -28,12 +28,22 @@ public:
 
 	const vector<CComponent*>& GetAllComponents() const { return m_Components; }
 
-	void SetLayer(ELayerType layer) { m_Layer = layer; }
-	ELayerType GetLayer() { return m_Layer; }
+	virtual shared_ptr<ObRect>  Get_Collision() { return m_Collision; }
+	virtual shared_ptr<ObImage> Get_CurImage() { return m_CurImg; }
+
+protected:
+	// Collision
+	vector<ObRect*>		m_vecRectCol;
+	vector<ObCircle*>	m_vecCircleCol;
+
+	shared_ptr<ObRect>	m_Collision = nullptr;
+	shared_ptr<ObImage> m_CurImg = nullptr;
+
+	vector<CComponent*>		m_Components;
+	Vector2					m_Pos = { 0,0 };
 
 public:
-	Vector2					m_Pos = { 0,0 };
-	ELayerType				m_Layer = ELayerType::Layer_Object;
-	vector<CComponent*>		m_Components;
+
+
 };
 

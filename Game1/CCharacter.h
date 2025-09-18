@@ -1,35 +1,46 @@
 #pragma once
 
 #include "CActor.h"
+#include "IColorChanger.h"
 
 class CStatusComponent;
+class CStateComponent;
 
-class CCharacter : public CActor
+class CCharacter : public CActor, public IColorChanger
 {
 public:
 	CCharacter();
 	virtual ~CCharacter() override;
 
 public:
-	void BeginPlay() override abstract  {}
-	void Tick()		 override abstract  {}
-	void LateUpdate() override abstract {}
-	void Render()	 override abstract  {}
-	void Release()	 override abstract  {}
+	void BeginPlay() override;
+	void Tick()		 override;
+	void LateUpdate() override;
+	void Render()	 override;
+	void Release()	 override;
 
 public:
-	virtual shared_ptr<ObRect> Get_Collision() { return m_Collision; }
-	virtual shared_ptr<ObImage> Get_CurImage() { return m_CurrentImage; }
+	void Hit_Color()  override abstract {};
+	void Hit_Effect() override abstract {};
 
+protected:
+	CStatusComponent* m_Status = nullptr;
+	CStateComponent* m_State = nullptr;
+	
 protected:
 	virtual void Resource_Settings() abstract;
 	virtual void SetSprite(EPlayerState _State, EPlayerDir _Dir) abstract {};
+	virtual void Play_Sprite(EPlayerState _State) abstract {}
 
 protected:
-	vector<CComponent*> m_Components = {};
-	CStatusComponent*	m_Status = nullptr;
-	shared_ptr<ObRect>	m_Collision = nullptr;
-	shared_ptr<ObImage> m_CurrentImage = nullptr;
+	unordered_map<EPlayerState, unordered_map<EPlayerDir, shared_ptr<ObImage>>> m_Sprites;
 
+	// Components
+	vector<CComponent*> m_Components = {};
+
+	EPlayerState m_prevState;
+	EPlayerDir   m_prevDir;
+
+	float m_HitTimer = 0.f;
 };
 

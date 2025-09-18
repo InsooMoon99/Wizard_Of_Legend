@@ -22,7 +22,7 @@ void CUIComponent::BeginPlay()
 {
 	CComponent::BeginPlay();
 
-	SetPlayerStatus();
+	//SetPlayerStatus(true);
 
 	for (auto& hud : m_HUD)
 		hud->BeginPlay();

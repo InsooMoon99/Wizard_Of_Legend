@@ -4,6 +4,7 @@
 #include "CDummy.h"
 #include "CPlayer.h"
 #include "CResourceManager.h"
+#include "CUIComponent.h"
 
 CStage01::CStage01()
 {
@@ -29,8 +30,8 @@ void CStage01::Init()
 {
 	CScene::Init();
 
-	m_Player->BeginPlay();
-	m_TestDummy->BeginPlay();
+	for (auto& actor : m_Actors)
+		actor->BeginPlay();
 
 	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
 	player->Get_Collision()->SetWorldPos(m_PlayerPos);
@@ -61,7 +62,6 @@ void CStage01::LateUpdate()
 
 	//m_Player->LateUpdate();
 
-	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
 
 	//플레이어 가두기 이건 딱히 필요 없을듯. 타일맵으로 충돌처리
 	//player->Get_PlayerCollision()->SetWorldPosX(Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().x, -3800.0f * 1.5f / 2.0f, 3840.0f * 1.5f / 2.0f));
@@ -69,6 +69,7 @@ void CStage01::LateUpdate()
 	//CAM->position.x = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().x, -m_MapSize.x + app.GetHalfWidth(), m_MapSize.x - app.GetHalfWidth());
 	//CAM->position.y = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().y + 500.0f, m_MapSize.y, 950.0f - app.GetHalfHeight());
 
+	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
 	CAM->position = player->Get_Collision()->GetWorldPos();
 }
 
