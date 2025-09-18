@@ -25,7 +25,9 @@ void CDummy::Tick()
 {
 	CCharacter::Tick();
 
-	m_DummyCol->Update();
+	Set_WorldPos(m_Collision->GetWorldPos());
+
+	m_Collision->Update();
 	Dummy_Image->Update();
 }
 
@@ -42,11 +44,12 @@ void CDummy::Render()
 	if (ImGui::Begin("Dummy"))
 	{
 		ImGui::Text("Hp : %f", m_Status->GetHp());
+		ImGui::Text("Dummy Pos x : %f, y : %f", m_Collision->GetWorldPos().x, m_Collision->GetWorldPos().y);
 	}
 
 	ImGui::End();
 
-	m_DummyCol->Render();
+	m_Collision->Render();
 	Dummy_Image->Render();
 }
 
@@ -58,16 +61,23 @@ void CDummy::Release()
 
 void CDummy::Resource_Settings()
 {
-	m_DummyCol = make_shared<ObRect>();
-	m_DummyCol->scale = Vec2(100.f, 150.f);
-	m_DummyCol->visible = true;
-	m_DummyCol->isFilled = false;
-	m_DummyCol->collider = COLLIDER::RECT;
-	m_DummyCol->Set_Owner(this);
-	COLLISION->AddCollider(m_DummyCol.get());
+	m_Collision = make_shared<ObRect>();
+	m_Collision->scale = Vec2(100.f, 150.f);
+	m_Collision->visible = true;
+	m_Collision->isFilled = false;
+	m_Collision->collider = COLLIDER::RECT;
+	m_Collision->Set_Owner(this);
+	COLLISION->AddCollider(m_Collision.get());
 
 	Dummy_Image = RESOURCE->CreateImage(L"Object\\BossDummy.png", Vec2(29.f, 48.f), true);
-	Dummy_Image->SetParentRT(*m_DummyCol);
+	Dummy_Image->SetParentRT(*m_Collision);
 	Dummy_Image->scale = Vec2(29.f, 48.f) * 3.0f;
 	Dummy_Image->visible = true;
+}
+
+void CDummy::SetSprite(EPlayerState _State, EPlayerDir _Dir)
+{
+	CCharacter::SetSprite(_State, _Dir);
+
+
 }

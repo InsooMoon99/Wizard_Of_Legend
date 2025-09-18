@@ -47,7 +47,11 @@ void CParticleManager::Resource_Settings()
 	shared_ptr<ObImage> hit_Effect = RESOURCE->CreateSprite(L"Particle\\HitEffect.png", Vec2(840.f / 4.f, 200.f), Int2(4, 1), true);
 	hit_Effect->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
 
-	m_Particles.insert({ L"Particle", hit_Effect });
+	shared_ptr<ObImage> hit_Spark = RESOURCE->CreateSprite(L"Particle\\HitSpark.png", Vec2(400.f / 8.f, 50.f) * 3.0f, Int2(8, 1), true);
+	hit_Spark->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+
+	m_Particles.insert({ L"HitEffect", hit_Effect });
+	m_Particles.insert({ L"HitSpark", hit_Spark });
 }
 
 shared_ptr<ObImage> CParticleManager::Spawn_Particle(const wstring& _Key, const Vec2& _Pos)
@@ -56,7 +60,7 @@ shared_ptr<ObImage> CParticleManager::Spawn_Particle(const wstring& _Key, const 
 	if (find_iter == m_Particles.end()) return nullptr;
 	
 	auto particle = find_iter->second;
-	auto newParticle = make_shared<ObImage>(*particle);
+	auto newParticle = make_shared<ObImage>(*particle); // 복사 생성자
 	
 	newParticle->SetWorldPos(_Pos);
 	

@@ -39,15 +39,15 @@ public:
 	void State_Dash();
 	void State_Attack();
 
-	void SetSprite(EPlayerState _State, EPlayerDir _Dir);
-	void State_Sprite(EPlayerState _State);
+	virtual void SetSprite(EPlayerState _State, EPlayerDir _Dir) override;
+	void Play_Sprite(EPlayerState _State);
 
 public:
 	void Attack_Sprite();
 	void Shadow_Size();
 	void Dash_Sprite();
 
-	ObRect* Get_PlayerCollision() { return m_PlayerCol.get(); }
+	//ObRect* Get_PlayerCollision() { return m_PlayerCol.get(); }
 
 protected:
 	// Player 한테 리소스 세팅을 할지?
@@ -67,7 +67,7 @@ private:
 	// Collision
 	vector<ObRect*>		m_vecRect;
 	vector<ObCircle*>	m_vecCircle;
-	unique_ptr<ObRect>	m_PlayerCol;
+	//unique_ptr<ObRect>	m_PlayerCol;
 
 	// Image
 	unordered_map<EPlayerState, unordered_map<EPlayerDir, shared_ptr<ObImage>>> m_Sprites;

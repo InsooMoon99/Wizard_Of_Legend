@@ -47,8 +47,8 @@ void CPlayer::Tick()
 
 	Print_ImGui();
 
-	if (m_PlayerCol)
-		m_Pos = m_PlayerCol->GetWorldPos();
+	if (m_Collision)
+		m_Pos = m_Collision->GetWorldPos();
 
 	EPlayerState prevState = m_State->Get_State();
 	EPlayerDir   prevDir = m_State->Get_Dir();
@@ -275,7 +275,7 @@ void CPlayer::State_Walk()
 	{
 		m_MoveDir.Normalize();
 
-		m_PlayerCol->MoveWorldPos(m_MoveDir * m_Status->GetSpeed() * DELTA);
+		m_Collision->MoveWorldPos(m_MoveDir * m_Status->GetSpeed() * DELTA);
 	}
 }
 
@@ -286,7 +286,7 @@ void CPlayer::State_Dash()
 
 	else
 	{
-		m_PlayerCol->MoveWorldPos(m_LastDir * m_DashDistance * DELTA);
+		m_Collision->MoveWorldPos(m_LastDir * m_DashDistance * DELTA);
 
 		// 그림자 크기 조절
 		{
@@ -319,6 +319,8 @@ void CPlayer::State_Attack()
 
 void CPlayer::SetSprite(EPlayerState _State, EPlayerDir _Dir)
 {
+	CCharacter::SetSprite(_State, _Dir);
+
 	if (m_CurImg)
 		m_CurImg->visible = false;
 
@@ -336,14 +338,13 @@ void CPlayer::SetSprite(EPlayerState _State, EPlayerDir _Dir)
 		m_CurImg = imgIter->second;
 		m_CurImg->visible = true;
 
-		State_Sprite(_State);
+		Play_Sprite(_State);
 	}
 
 	Shadow_Size();
-
 }
 
-void CPlayer::State_Sprite(EPlayerState _State)
+void CPlayer::Play_Sprite(EPlayerState _State)
 {
 	switch (_State)
 	{
@@ -399,7 +400,7 @@ void CPlayer::Dash_Sprite()
 	if (iter != m_Dash.end())
 	{
 		shared_ptr<ObImage> dashEffect = iter->second;
-		dashEffect->SetWorldPos(m_PlayerCol->GetWorldPos());
+		dashEffect->SetWorldPos(m_Collision->GetWorldPos());
 		dashEffect->visible = true;
 		dashEffect->ChangeAnim(ANIMSTATE::ONCE, 0.03f);
 		dashEffect->frame = Int2(0, 0);
@@ -410,54 +411,54 @@ void CPlayer::Dash_Sprite()
 void CPlayer::Resource_Settings()
 {
 	// Player Collision
-	m_PlayerCol = make_unique<ObRect>();
-	m_PlayerCol->scale = Vec2(100.f, 100.f);
-	m_PlayerCol->visible = true;
-	m_PlayerCol->isFilled = false;
-	m_PlayerCol->pivot = OFFSET_N;
-	m_PlayerCol->collider = COLLIDER::RECT;
-	m_PlayerCol->Set_Owner(this);
-	COLLISION->AddCollider(m_PlayerCol.get());
+	m_Collision = make_shared<ObRect>();
+	m_Collision->scale = Vec2(100.f, 100.f);
+	m_Collision->visible = true;
+	m_Collision->isFilled = false;
+	m_Collision->pivot = OFFSET_N;
+	m_Collision->collider = COLLIDER::RECT;
+	m_Collision->Set_Owner(this);
+	COLLISION->AddCollider(m_Collision.get());
 
-	m_vecRect.push_back(m_PlayerCol.get());
+	m_vecRect.push_back(m_Collision.get());
 
 	// State_Idle
 	{
 		Vec2 idle_Size = Vec2(90.f, 93.f) * 1.6f;
 		shared_ptr<ObImage> front_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),true);
-		front_Idle->SetParentRT(*m_PlayerCol);
+		front_Idle->SetParentRT(*m_Collision);
 		front_Idle->SetLocalPos(Vec2(-10.f, 10.f));
 
 		shared_ptr<ObImage> front_Left_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),true);
-		front_Left_Idle->SetParentRT(*m_PlayerCol);
+		front_Left_Idle->SetParentRT(*m_Collision);
 		front_Left_Idle->SetLocalPos(Vec2(-10.f, 10.f));
 
 		shared_ptr<ObImage> front_Right_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),true);
-		front_Right_Idle->SetParentRT(*m_PlayerCol);
+		front_Right_Idle->SetParentRT(*m_Collision);
 		front_Right_Idle->SetLocalPos(Vec2(-10.f, 10.f));
 
 		shared_ptr<ObImage> back_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),false);
-		back_Idle->SetParentRT(*m_PlayerCol);
+		back_Idle->SetParentRT(*m_Collision);
 		back_Idle->SetLocalPos(Vec2(1.5f, 10.f));
 		back_Idle->frame = Int2(1, 1);
 
 		shared_ptr<ObImage> back_Left_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),false);
-		back_Left_Idle->SetParentRT(*m_PlayerCol);
+		back_Left_Idle->SetParentRT(*m_Collision);
 		back_Left_Idle->SetLocalPos(Vec2(1.5f, 10.f));
 		back_Left_Idle->frame = Int2(1, 1);
 
 		shared_ptr<ObImage> back_Right_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),false);
-		back_Right_Idle->SetParentRT(*m_PlayerCol);
+		back_Right_Idle->SetParentRT(*m_Collision);
 		back_Right_Idle->SetLocalPos(Vec2(1.5f, 10.f));
 		back_Right_Idle->frame = Int2(1, 1);
 
 		shared_ptr<ObImage> left_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),false);
-		left_Idle->SetParentRT(*m_PlayerCol);
+		left_Idle->SetParentRT(*m_Collision);
 		left_Idle->SetLocalPos(Vec2(-15.f, 10.f));
 		left_Idle->frame = Int2(2, 1);
 
 		shared_ptr<ObImage> right_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),false);
-		right_Idle->SetParentRT(*m_PlayerCol);
+		right_Idle->SetParentRT(*m_Collision);
 		right_Idle->SetLocalPos(Vec2(-21.f, 10.f));
 		right_Idle->frame = Int2(3, 1);
 
@@ -476,7 +477,7 @@ void CPlayer::Resource_Settings()
 		Vec2 walkSize = Vec2(900.f / 10.f, 93.f) * 1.4f;
 
 		shared_ptr<ObImage> front_Walk = RESOURCE->CreateSprite(L"Player\\Front\\Front_Walk.png", walkSize,Int2(10, 1), false);
-		front_Walk->SetParentRT(*m_PlayerCol);
+		front_Walk->SetParentRT(*m_Collision);
 		front_Walk->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 
 		m_Sprites[EPlayerState::Walk][EPlayerDir::Front] = front_Walk;
@@ -484,7 +485,7 @@ void CPlayer::Resource_Settings()
 		m_Sprites[EPlayerState::Walk][EPlayerDir::Front_Right] = front_Walk;
 
 		shared_ptr<ObImage> back_Walk = RESOURCE->CreateSprite(L"Player\\Back\\Back_Walk.png", walkSize,Int2(10, 1), false);
-		back_Walk->SetParentRT(*m_PlayerCol);
+		back_Walk->SetParentRT(*m_Collision);
 		back_Walk->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 
 		m_Sprites[EPlayerState::Walk][EPlayerDir::Back] = back_Walk;
@@ -492,12 +493,12 @@ void CPlayer::Resource_Settings()
 		m_Sprites[EPlayerState::Walk][EPlayerDir::Back_Right] = back_Walk;
 
 		shared_ptr<ObImage> left_Walk = RESOURCE->CreateSprite(L"Player\\Left\\Left_Walk.png", walkSize,Int2(10, 1), false);
-		left_Walk->SetParentRT(*m_PlayerCol);
+		left_Walk->SetParentRT(*m_Collision);
 		left_Walk->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 		m_Sprites[EPlayerState::Walk][EPlayerDir::Left] = left_Walk;
 
 		shared_ptr<ObImage> right_Walk = RESOURCE->CreateSprite(L"Player\\Right\\Right_Walk.png", walkSize,Int2(10, 1), false);
-		right_Walk->SetParentRT(*m_PlayerCol);
+		right_Walk->SetParentRT(*m_Collision);
 		right_Walk->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 		m_Sprites[EPlayerState::Walk][EPlayerDir::Right] = right_Walk;
 	}
@@ -505,21 +506,21 @@ void CPlayer::Resource_Settings()
 	// Shadow
 	{
 		shared_ptr<ObImage> shadow_Idle = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(60.f, 60.f) * 1.2f);
-		shadow_Idle->SetParentRT(*m_PlayerCol);
+		shadow_Idle->SetParentRT(*m_Collision);
 		shadow_Idle->SetLocalPos(Vec2(-2.5f, -40.f));
 		shadow_Idle->color = Color(0.0f, 0.0f, 0.0f, 0.25f);
 		shadow_Idle->visible = true;
 		m_Shadow.insert({ EPlayerState::Idle, shadow_Idle });
 
 		shared_ptr<ObImage> shadow_Attack = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(80.f, 80.f) * 1.4f);
-		shadow_Attack->SetParentRT(*m_PlayerCol);
+		shadow_Attack->SetParentRT(*m_Collision);
 		shadow_Attack->SetLocalPos(Vec2(0.0f, -40.f));
 		shadow_Attack->color = Color(0.0f, 0.0f, 0.0f, 0.15f);
 		m_Shadow.insert({ EPlayerState::Attack1, shadow_Attack });
 		m_Shadow.insert({ EPlayerState::Attack2, shadow_Attack });
 
 		shared_ptr<ObImage> shadow_Walk = RESOURCE->CreateImage(L"Shadow\\MIDDLE_SHADOW.bmp", Vec2(60.f, 60.f) * 1.2f);
-		shadow_Walk->SetParentRT(*m_PlayerCol);
+		shadow_Walk->SetParentRT(*m_Collision);
 		shadow_Walk->SetLocalPos(Vec2(-2.5f, -40.f));
 		shadow_Walk->color = Color(0.0f, 0.0f, 0.0f, 0.25f);
 		shadow_Walk->visible = true;
@@ -529,7 +530,7 @@ void CPlayer::Resource_Settings()
 		m_EndShadowScale = Vec2(80.f, 60.f) * 1.6f;
 
 		shared_ptr<ObImage> shadow_Dash = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(60.f, 60.f) * 1.2f, false);
-		shadow_Dash->SetParentRT(*m_PlayerCol);
+		shadow_Dash->SetParentRT(*m_Collision);
 		shadow_Dash->SetLocalPos(Vec2(-2.5f, -40.f));
 		shadow_Dash->color = Color(0.0f, 0.0f, 0.0f, 0.25f);
 
@@ -541,28 +542,28 @@ void CPlayer::Resource_Settings()
 		Vec2 dash_Size = Vec2(1100.f / 11, 104.f) * 1.5f;
 
 		shared_ptr<ObImage> front_Dash = RESOURCE->CreateSprite(L"Player\\front\\Front_Dash_long.png",dash_Size,Int2(11, 1), false);
-		front_Dash->SetParentRT(*m_PlayerCol);
+		front_Dash->SetParentRT(*m_Collision);
 
 		shared_ptr<ObImage> front_Left_Dash = RESOURCE->CreateSprite(L"Player\\front\\Front_Dash_long.png",dash_Size,Int2(11, 1), false);
-		front_Left_Dash->SetParentRT(*m_PlayerCol);
+		front_Left_Dash->SetParentRT(*m_Collision);
 
 		shared_ptr<ObImage> front_Right_Dash = RESOURCE->CreateSprite(L"Player\\front\\Front_Dash_long.png",dash_Size,Int2(11, 1), false);
-		front_Right_Dash->SetParentRT(*m_PlayerCol);
+		front_Right_Dash->SetParentRT(*m_Collision);
 
 		shared_ptr<ObImage> back_Dash = RESOURCE->CreateSprite(L"Player\\Back\\Back_Dash_long.png",dash_Size,Int2(11, 1), false);
-		back_Dash->SetParentRT(*m_PlayerCol);
+		back_Dash->SetParentRT(*m_Collision);
 
 		shared_ptr<ObImage> back_Left_Dash = RESOURCE->CreateSprite(L"Player\\Back\\Back_Dash_long.png",dash_Size,Int2(11, 1), false);
-		back_Left_Dash->SetParentRT(*m_PlayerCol);
+		back_Left_Dash->SetParentRT(*m_Collision);
 
 		shared_ptr<ObImage> back_Right_Dash = RESOURCE->CreateSprite(L"Player\\Back\\Back_Dash_long.png",dash_Size,Int2(11, 1), false);
-		back_Right_Dash->SetParentRT(*m_PlayerCol);
+		back_Right_Dash->SetParentRT(*m_Collision);
 
 		shared_ptr<ObImage> left_Dash = RESOURCE->CreateSprite(L"Player\\Left\\Left_Dash_long.png",dash_Size,Int2(11, 1), false);
-		left_Dash->SetParentRT(*m_PlayerCol);
+		left_Dash->SetParentRT(*m_Collision);
 
 		shared_ptr<ObImage> right_Dash = RESOURCE->CreateSprite(L"Player\\Right\\Right_Dash_long.png",dash_Size,Int2(11, 1), false);
-		right_Dash->SetParentRT(*m_PlayerCol);
+		right_Dash->SetParentRT(*m_Collision);
 		right_Dash->SetLocalPosX(-10.f);
 
 		m_Sprites[EPlayerState::Dash][EPlayerDir::Front] = front_Dash;
@@ -632,49 +633,49 @@ void CPlayer::Resource_Settings()
 		Vec2 attack_Size{ (720.f / 8.f, 93.f) * 1.4f };
 
 		shared_ptr<ObImage> attack_Front1 = RESOURCE->CreateSprite(L"Player\\Front\\Front_Left_Attack1.png", attack_Size, Int2(8, 1), false);
-		attack_Front1->SetParentRT(*m_PlayerCol);
+		attack_Front1->SetParentRT(*m_Collision);
 		m_Sprites[EPlayerState::Attack1][EPlayerDir::Front] = attack_Front1;
 		m_Sprites[EPlayerState::Attack1][EPlayerDir::Front_Left] = attack_Front1;
 		m_Sprites[EPlayerState::Attack1][EPlayerDir::Front_Right] = attack_Front1;
 
 
 		shared_ptr<ObImage> attack_Front2 = RESOURCE->CreateSprite(L"Player\\Front\\Front_Left_Attack2.png", attack_Size, Int2(8, 1), false);
-		attack_Front2->SetParentRT(*m_PlayerCol);
+		attack_Front2->SetParentRT(*m_Collision);
 		m_Sprites[EPlayerState::Attack2][EPlayerDir::Front] = attack_Front2;
 		m_Sprites[EPlayerState::Attack2][EPlayerDir::Front_Left] = attack_Front2;
 		m_Sprites[EPlayerState::Attack2][EPlayerDir::Front_Right] = attack_Front2;
 
 		// Back
 		shared_ptr<ObImage> attack_Back1 = RESOURCE->CreateSprite(L"Player\\Back\\Back_Attack1.png", attack_Size, Int2(8, 1), false);
-		attack_Back1->SetParentRT(*m_PlayerCol);
+		attack_Back1->SetParentRT(*m_Collision);
 		m_Sprites[EPlayerState::Attack1][EPlayerDir::Back] = attack_Back1;
 
 		shared_ptr<ObImage> attack_Back2 = RESOURCE->CreateSprite(L"Player\\Back\\Back_Attack2.png", attack_Size, Int2(8, 1), false);
-		attack_Back2->SetParentRT(*m_PlayerCol);
+		attack_Back2->SetParentRT(*m_Collision);
 		m_Sprites[EPlayerState::Attack2][EPlayerDir::Back] = attack_Back2;
 		m_Sprites[EPlayerState::Attack2][EPlayerDir::Back_Left] = attack_Back2;
 		m_Sprites[EPlayerState::Attack2][EPlayerDir::Back_Right] = attack_Back2;
 
 		// Left
 		shared_ptr<ObImage> attack_Left1 = RESOURCE->CreateSprite(L"Player\\Left\\Left_Attack1.png", attack_Size, Int2(8, 1), false);
-		attack_Left1->SetParentRT(*m_PlayerCol);
+		attack_Left1->SetParentRT(*m_Collision);
 		m_Sprites[EPlayerState::Attack1][EPlayerDir::Left] = attack_Left1;
 		m_Sprites[EPlayerState::Attack1][EPlayerDir::Back_Left] = attack_Left1;
 
 
 		shared_ptr<ObImage> attack_Left2 = RESOURCE->CreateSprite(L"Player\\Left\\Left_Attack2.png", attack_Size, Int2(8, 1), false);
-		attack_Left2->SetParentRT(*m_PlayerCol);
+		attack_Left2->SetParentRT(*m_Collision);
 		m_Sprites[EPlayerState::Attack2][EPlayerDir::Left] = attack_Left2;
 		m_Sprites[EPlayerState::Attack2][EPlayerDir::Back_Left] = attack_Left2;
 
 		// Right
 		auto attack_Right1 = RESOURCE->CreateSprite(L"Player\\Right\\Right_Attack1.png", attack_Size, Int2(8, 1), false);
-		attack_Right1->SetParentRT(*m_PlayerCol);
+		attack_Right1->SetParentRT(*m_Collision);
 		m_Sprites[EPlayerState::Attack1][EPlayerDir::Right] = attack_Right1;
 		m_Sprites[EPlayerState::Attack1][EPlayerDir::Back_Right] = attack_Right1;
 
 		auto attack_Right2 = RESOURCE->CreateSprite(L"Player\\Right\\Right_Attack2.png", attack_Size, Int2(8, 1), false);
-		attack_Right2->SetParentRT(*m_PlayerCol);
+		attack_Right2->SetParentRT(*m_Collision);
 		m_Sprites[EPlayerState::Attack2][EPlayerDir::Right] = attack_Right2;
 		m_Sprites[EPlayerState::Attack2][EPlayerDir::Back_Right] = attack_Right2;
 
@@ -684,7 +685,7 @@ void CPlayer::Resource_Settings()
 	{
 		// TODO : Glory 도 추가하기?
 		m_Player_Marker = RESOURCE->CreateImage(L"UI\\Player_Marker.png", Vec2(32.f, 33.f) * 3.f);
-		m_Player_Marker->SetParentRT(*m_PlayerCol);
+		m_Player_Marker->SetParentRT(*m_Collision);
 		m_Player_Marker->SetLocalPos(Vec2(-2.f, -35.f));
 		m_Player_Marker->rotation = -PI;
 		m_Player_Marker->color.A(0.15f);
@@ -731,10 +732,10 @@ void CPlayer::Print_ImGui()
 		}
 
 		// 위치 세팅
-		Vec2 worldPos = m_PlayerCol->GetWorldPos();
+		Vec2 worldPos = m_Collision->GetWorldPos();
 		if (ImGui::InputFloat2("Player Pos", &worldPos.x))
 		{
-			m_PlayerCol->SetWorldPos(worldPos);
+			m_Collision->SetWorldPos(worldPos);
 		}
 	}
 

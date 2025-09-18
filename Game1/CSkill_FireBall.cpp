@@ -81,8 +81,7 @@ void CSkill_FireBall::Activate(CActor* _Owner)
 	m_Skill_Info.Aim_Dir = dir;
 	m_Skill_Info.Angle = radian;
 	m_Skill_Info.Damage = 10.f;
-
-	//m_Skill_Info.Amount = Aim_Dir 방향값 * 넉백수치로 세팅;
+	m_Skill_Info.Amount = 1000.f;
 
 	auto fireBall = make_shared<CFireBall>(m_Skill_Info);
 	fireBall->BeginPlay();

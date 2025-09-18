@@ -5,7 +5,7 @@ struct SkillInfo
 	CActor*	Instigator = nullptr;
 	Vec2	SpawnPos {};
 	Vec2	Aim_Dir	 {};
-	Vec2	Amount	 {};
+	float	Amount	 {};
 
 	float	Angle = 0.f;
 	float	Damage = 0.f;

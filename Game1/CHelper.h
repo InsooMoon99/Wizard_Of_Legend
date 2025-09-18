@@ -91,6 +91,13 @@ public:
 		}
 	}
 
+	static void HitAlpha(ObImage* _Img)
+	{
+		if (_Img == nullptr) return;
+
+		_Img->color = Color(1.f, 1.f, 1.f, 1.f);
+	}
+
 	template<typename T>
 	static T* CreateComponent(CActor* _Owner)
 	{

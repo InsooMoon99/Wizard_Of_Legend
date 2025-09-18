@@ -16,13 +16,14 @@ public:
 	void Release() override;
 
 public:
-	shared_ptr<ObRect> Get_DummyCol() { return m_DummyCol; }
 
 protected:
 	void Resource_Settings() override;
 
 private:
-	shared_ptr<ObRect> m_DummyCol;
+	void SetSprite(EPlayerState _State, EPlayerDir _Dir) override;
+
+private:
 	shared_ptr<ObImage> Dummy_Image;
 
 

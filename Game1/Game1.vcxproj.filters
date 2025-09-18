@@ -106,7 +106,9 @@
     <ClInclude Include="CSkill_Actor.h">
       <Filter>06. Skill</Filter>
     </ClInclude>
-    <ClInclude Include="CParticleManager.h" />
+    <ClInclude Include="CParticleManager.h">
+      <Filter>01. Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -231,6 +233,8 @@
     <ClCompile Include="CSkill_Actor.cpp">
       <Filter>06. Skill</Filter>
     </ClCompile>
-    <ClCompile Include="CParticleManager.cpp" />
+    <ClCompile Include="CParticleManager.cpp">
+      <Filter>01. Manager</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -33,10 +33,10 @@ void CStage01::Init()
 	m_TestDummy->BeginPlay();
 
 	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
-	player->Get_PlayerCollision()->SetWorldPos(m_PlayerPos);
+	player->Get_Collision()->SetWorldPos(m_PlayerPos);
 
 	CDummy* dummy = dynamic_cast<CDummy*>(m_TestDummy);
-	dummy->Get_DummyCol()->SetWorldPos(m_PlayerPos + Vec2(250.f, 150.f));
+	dummy->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(250.f, 150.f));
 
 }
 
@@ -69,7 +69,7 @@ void CStage01::LateUpdate()
 	//CAM->position.x = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().x, -m_MapSize.x + app.GetHalfWidth(), m_MapSize.x - app.GetHalfWidth());
 	//CAM->position.y = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().y + 500.0f, m_MapSize.y, 950.0f - app.GetHalfHeight());
 
-	CAM->position = player->Get_PlayerCollision()->GetWorldPos();
+	CAM->position = player->Get_Collision()->GetWorldPos();
 }
 
 void CStage01::Render()
