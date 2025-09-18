@@ -18,6 +18,10 @@ public:
 	void Release() override;
 
 public:
+	bool CheckHitWall();
+	void OnHitWall(const Vec2& hitPos);
+
+public:
 	virtual void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
 	virtual void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 

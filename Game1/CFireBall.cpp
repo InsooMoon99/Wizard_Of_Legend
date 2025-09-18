@@ -3,6 +3,7 @@
 #include "CResourceManager.h"
 #include "CCharacter.h"
 #include "CStatusComponent.h"
+#include "CTile.h"
 
 CFireBall::CFireBall(SkillInfo& _Info)
 {
@@ -53,6 +54,10 @@ void CFireBall::Tick()
 	if (m_FireBall_Col)
 		m_Pos = m_FireBall_Col->GetWorldPos();
 
+	// 이동 후, 벽 충돌 먼저 체크
+	if (CheckHitWall()) 
+		return;
+
 	// Life Time
 	m_SpawnLife += DELTA;
 
@@ -98,11 +103,53 @@ void CFireBall::Release()
 	m_FireBall.reset();
 }
 
+bool CFireBall::CheckHitWall()
+{
+	if (!m_FireBall_Col) return false;
+
+	const Vec2 fireball_Col = m_FireBall_Col->GetWorldPos();
+	const float radius = m_FireBall_Col->scale.x * 0.5f;
+	
+	const Vec2 min = fireball_Col - Vec2(radius, radius);
+	const Vec2 max = fireball_Col + Vec2(radius, radius);
+
+	vector<CTile*> canDir;
+	TILE->QueryTilesAABB(min, max, canDir);
+
+	for (CTile* tile : canDir)
+	{
+		if (tile->Get_DrawID() != (int)ETileType::WALL)
+			continue;
+
+		auto tileCol = tile->Get_Collision().get();
+		tileCol->SetWorldPos(tile->Get_WorldPos());
+
+		if (m_FireBall_Col->Intersect(tileCol))
+		{
+			Vec2 pos;
+			pos.x = (tile->Get_WorldPos().x + m_FireBall_Col->GetWorldPos().x) / 2.f;
+			pos.y = (tile->Get_WorldPos().y + m_FireBall_Col->GetWorldPos().y) / 2.f;
+
+			OnHitWall(pos);
+			return true;
+		}
+	}
+	return false;
+}
+
+void CFireBall::OnHitWall(const Vec2& hitPos)
+{
+	PARTICLE->Spawn_Particle(L"HitSpark", hitPos);
+	PARTICLE->Spawn_Particle(L"Fire_HitEffect", hitPos);
+
+	m_PendingKill = true;
+}
+
 void CFireBall::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 {
 	Super::OnComponentBeginOverlap(collider, other);
 
-	// TODO : 벽이랑도 충돌되도록 타입 변경
+	// TODO : 벽이랑도 충돌되도록 타입 변경해야함
 	CCharacter* hit = dynamic_cast<CCharacter*>(other->Get_Owner());
 	if (!hit)return;
 
@@ -120,9 +167,8 @@ void CFireBall::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 		colorChanger->Hit_Color();
 
 	auto* status = CHelper::GetComponent<CStatusComponent>(hit);
-	if (!status) return;
-	
-	status->SetHp(status->GetHp() - m_Skill_Info.Damage);
+	if (status)
+		status->SetHp(status->GetHp() - m_Skill_Info.Damage);
 
 	// Particle
 	Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;

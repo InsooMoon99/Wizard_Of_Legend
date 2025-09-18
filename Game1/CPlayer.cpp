@@ -289,9 +289,10 @@ void CPlayer::State_Idle()
 
 void CPlayer::State_Walk()
 {
+	// 방향이 있으면 ㄱㄱ
 	if (m_MoveDir.Length() > 0.f)
 	{
-		MoveWithTileBlocking(m_MoveDir, m_Status->GetSpeed());
+		MoveTile(m_MoveDir, m_Status->GetSpeed());
 	}
 }
 
@@ -302,7 +303,9 @@ void CPlayer::State_Dash()
 
 	else
 	{
-		m_Collision->MoveWorldPos(m_LastDir * m_DashDistance * DELTA);
+		// 대시 중에 벽에 닿으면 멈추도록 MoveTile 함수 호출
+		MoveTile(m_LastDir, m_DashDistance);
+		//m_Collision->MoveWorldPos(m_LastDir * m_DashDistance * DELTA);
 
 		// 그림자 크기 조절
 		{
@@ -439,7 +442,7 @@ void CPlayer::Resource_Settings()
 {
 	// Player Collision
 	m_Collision = make_shared<ObRect>();
-	m_Collision->scale = Vec2(100.f, 100.f);
+	m_Collision->scale = Vec2(60.f, 80.f);
 	m_Collision->visible = true;
 	m_Collision->isFilled = false;
 	m_Collision->pivot = OFFSET_N;
@@ -454,7 +457,7 @@ void CPlayer::Resource_Settings()
 		Vec2 idle_Size = Vec2(90.f, 93.f) * 1.6f;
 		shared_ptr<ObImage> front_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),true);
 		front_Idle->SetParentRT(*m_Collision);
-		front_Idle->SetLocalPos(Vec2(-10.f, 10.f));
+		front_Idle->SetLocalPos(Vec2(-7.f, 10.f));
 
 		shared_ptr<ObImage> front_Left_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),true);
 		front_Left_Idle->SetParentRT(*m_Collision);
@@ -466,7 +469,7 @@ void CPlayer::Resource_Settings()
 
 		shared_ptr<ObImage> back_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),false);
 		back_Idle->SetParentRT(*m_Collision);
-		back_Idle->SetLocalPos(Vec2(1.5f, 10.f));
+		back_Idle->SetLocalPos(Vec2(5.f, 10.f));
 		back_Idle->frame = Int2(1, 1);
 
 		shared_ptr<ObImage> back_Left_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),false);
@@ -534,7 +537,7 @@ void CPlayer::Resource_Settings()
 	{
 		shared_ptr<ObImage> shadow_Idle = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(60.f, 60.f) * 1.2f);
 		shadow_Idle->SetParentRT(*m_Collision);
-		shadow_Idle->SetLocalPos(Vec2(-2.5f, -40.f));
+		shadow_Idle->SetLocalPos(Vec2(0.5f, -40.f));
 		shadow_Idle->color = Color(0.0f, 0.0f, 0.0f, 0.25f);
 		shadow_Idle->visible = true;
 		m_Shadow.insert({ EPlayerState::Idle, shadow_Idle });
@@ -769,54 +772,53 @@ void CPlayer::Print_ImGui()
 	ImGui::End();
 }
 
-void CPlayer::MoveWithTileBlocking(const Vec2& dir, float speed)
+void CPlayer::MoveTile(const Vec2& dir, float speed)
 {
 	if (!m_Collision) return;
+
+	EPlayerState playerState = m_State->Get_State();
 	
 	ObRect* col = m_Collision.get();
 	
-	// 이동량(상대)
 	Vec2 nDir = dir;
-	if (nDir.LengthSquared() > 0.f) nDir.Normalize();
-	const Vec2 delta = nDir * speed * DELTA;
+	if (nDir.LengthSquared() > 0.f) 
+		nDir.Normalize();
+
+	const Vec2 nextMove = nDir * speed * DELTA;
 	
-	// 콜라이더 AABB 반폭 (피벗이 OFFSET_M 기준)
 	Vec2 half = col->scale * 0.5f;
 	
-	// --- X축 시도 ---
-	if (delta.x != 0.f)
+	if (nextMove.x != 0.f)
 	{
 		Vec2 pos = col->GetWorldPos();
-		Vec2 dx = Vec2(delta.x, 0.f);
-		Vec2 next = pos + dx;
+		Vec2 dirX = Vec2(nextMove.x, 0.f);
+		Vec2 next = pos + dirX;
 	
 		Vec2 minW = next - half;
 		Vec2 maxW = next + half;
 	
-		if (!TILE->IsBlockedAABB(minW, maxW))
+		if (!TILE->IsBlocked_ExceptFall(minW, maxW, playerState == EPlayerState::Dash))
 		{
-			col->MoveWorldPos(dx);   
+			col->MoveWorldPos(dirX);
 		}
 		// else : 막히면 X축 이동 스킵
 	}
 	
-	// --- Y축 시도 ---
-	if (delta.y != 0.f)
+	if (nextMove.y != 0.f)
 	{
-		Vec2 pos = col->GetWorldPos(); // X축 반영 후 최신 위치
-		Vec2 dy = Vec2(0.f, delta.y);
-		Vec2 next = pos + dy;
+		Vec2 pos = col->GetWorldPos(); 
+		Vec2 dirY = Vec2(0.f, nextMove.y);
+		Vec2 next = pos + dirY;
 	
 		Vec2 minW = next - half;
 		Vec2 maxW = next + half;
 	
-		if (!TILE->IsBlockedAABB(minW, maxW))
+		if (!TILE->IsBlocked_ExceptFall(minW, maxW, playerState == EPlayerState::Dash))
 		{
-			col->MoveWorldPos(dy);   
+			col->MoveWorldPos(dirY);
 		}
 		// else : 막히면 Y축 이동 스킵
 	}
 
-	// 필요 시: col->Update(); // 부모-자식 갱신 필요하면 호출
 }
 

@@ -50,8 +50,9 @@ enum class EPlayerDir
 
 enum class ETileType
 {
-	TILE1,
+	WALL,
 	TILE2,
+	FALL,
 
 	TILE_END
 };

@@ -36,15 +36,14 @@ public:
 	}
 
 public:
-	void	QueryTilesAABB(const Vec2& minW, const Vec2& maxW, vector<CTile*>& out);
-	bool	IsBlockedAABB(const Vec2& minW, const Vec2& maxW);
+	void	QueryTilesAABB(const Vec2& _Min, const Vec2& _Max, vector<CTile*>& out);
+	bool	IsBlocked(const Vec2& _Min, const Vec2& _Max);
+	bool	IsBlocked_ExceptFall(const Vec2& _Min, const Vec2& _Max, bool isDashing);
 
 	void	Picking(Vec2 _Pos, int _DrawID, int _Option);
 
 	void	Save_Data();
 	void	Load_Data();
-
-
 
 private:
 	static CTileManager*	Instance;

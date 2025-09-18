@@ -23,16 +23,17 @@ public:
 	int& Get_DrawID() { return m_DrawID; }
 	int& Get_OptionID() { return m_Option; }
 
+	ETileType GetTileType() { return m_TileType; }
 public:
 
 private:
 	unordered_map<ETileType, shared_ptr<ObImage>> m_Tiles;
-	Vec2	m_Size;
+	ETileType	m_TileType;
 
+	Vec2	m_Size;
 	int     m_DrawID = 0;
 	int     m_Option = 0;
 
-	ETileType	m_TileType;
 
 };
 

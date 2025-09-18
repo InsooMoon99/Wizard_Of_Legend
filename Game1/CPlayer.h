@@ -63,7 +63,7 @@ protected:
 
 private:
 	void Print_ImGui();
-	void MoveWithTileBlocking(const Vec2& dir, float speed);
+	void MoveTile(const Vec2& dir, float speed);
 
 private:
 	Vec2 m_MoveDir   =	{ 0, 0 };
