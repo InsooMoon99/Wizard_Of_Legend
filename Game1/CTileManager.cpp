@@ -17,23 +17,24 @@ CTileManager::~CTileManager()
 
 void CTileManager::Init()
 {
-	m_vecTile.reserve(TILEX * TILEY);
+	m_vecTile.clear();
 
-	for (int i = 0; i < TILEY; ++i)
-	{
-		for (int j = 0; j <  TILEX; ++j)
-		{
-			float fX = (float)(TILECX >> 1) + (TILECX * j);
-			float fY = (float)(TILECY >> 1) + (TILECY * i);
-
-			CActor* tile = new CTile();
-			tile->BeginPlay();
-			tile->Get_Collision()->SetWorldPos(Vec2(fX, fY));
-			tile->Set_WorldPos(Vec2(fX, fY));
-
-			m_vecTile.push_back(tile);
-		}
-	}
+	// 타일 초기 생성 X
+	//for (int i = 0; i < TILEY; ++i)
+	//{
+	//	for (int j = 0; j <  TILEX; ++j)
+	//	{
+	//		float fX = (float)(TILECX >> 1) + (TILECX * j);
+	//		float fY = (float)(TILECY >> 1) + (TILECY * i);
+	//
+	//		CActor* tile = new CTile();
+	//		tile->BeginPlay();
+	//		tile->Get_Collision()->SetWorldPos(Vec2(fX, fY));
+	//		tile->Set_WorldPos(Vec2(fX, fY));
+	//
+	//		m_vecTile.push_back(tile);
+	//	}
+	//}
 }
 
 void CTileManager::Update()
@@ -50,38 +51,30 @@ void CTileManager::LateUpdate()
 
 void CTileManager::Render()
 {
-	Vector2 camPos = CAM->GetCameraPos(); 
+	Vector2 camPos = CAM->GetCameraPos();
 	const float halfW = WINCX * 0.5f;
 	const float halfH = WINCY * 0.5f;
 
-	// 최소 여유 일단 1칸
 	int minTileX = (int)floorf((camPos.x - halfW) / TILECX) - 1;
 	int maxTileX = (int)floorf((camPos.x + halfW) / TILECX) + 1;
 	int minTileY = (int)floorf((camPos.y - halfH) / TILECY) - 1;
 	int maxTileY = (int)floorf((camPos.y + halfH) / TILECY) + 1;
 
-	minTileX = max(0, minTileX);
-	minTileY = max(0, minTileY);
-	maxTileX = min(TILEX - 1, maxTileX);
-	maxTileY = min(TILEY - 1, maxTileY);
-
-	for (int y = minTileY; y <= maxTileY; ++y)
+	for (auto& pActor : m_vecTile)
 	{
-		for (int x = minTileX; x <= maxTileX; ++x)
+		if (auto* tile = dynamic_cast<CTile*>(pActor))
 		{
-			const int idx = y * TILEX + x;
+			Vec2 tilePos = tile->Get_WorldPos();
+			int x = (int)floorf(tilePos.x / TILECX);
+			int y = (int)floorf(tilePos.y / TILECY);
 
-			if ((size_t)idx >= m_vecTile.size())
-				continue;
-
-			CActor* tile = m_vecTile[idx];
-			if (!tile) continue;
-
-			tile->Render();
+			if (x >= minTileX && x <= maxTileX && y >= minTileY && y <= maxTileY)
+			{
+				tile->Render();
+			}
 		}
 	}
 }
-
 
 void CTileManager::Release()
 {
@@ -98,28 +91,23 @@ void CTileManager::Release()
 
 void CTileManager::QueryTilesAABB(const Vec2& _Min, const Vec2& _Max, vector<CTile*>& out)
 {
-	int minX = (int)floorf(_Min.x / TILECX);
-	int maxX = (int)floorf(_Max.x / TILECX);
-	int minY = (int)floorf(_Min.y / TILECY);
-	int maxY = (int)floorf(_Max.y / TILECY);
-
-	minX = max(minX, 0);
-	minY = max(minY, 0);
-	maxX = min(maxX, TILEX - 1);
-	maxY = min(maxY, TILEY - 1);
-
-	for (int y = minY; y <= maxY; ++y)
+	for (auto& pActor : m_vecTile)
 	{
-		for (int x = minX; x <= maxX; ++x)
+		auto* tile = dynamic_cast<CTile*>(pActor);
+
+		if (tile)
 		{
-			int iIndex = y * TILEX + x;
-			if ((size_t)iIndex >= m_vecTile.size())
-				continue;
+			Vec2 tilePos = tile->Get_WorldPos();
+			Vec2 halfSize = tile->Get_Size() * 0.5f;
 
-			auto* tile = dynamic_cast<CTile*>(m_vecTile[iIndex]);
+			Vec2 tileMin = tilePos - halfSize;
+			Vec2 tileMax = tilePos + halfSize;
 
-			if (tile)
+			if (!(_Max.x <= tileMin.x || _Min.x >= tileMax.x ||
+				_Max.y <= tileMin.y || _Min.y >= tileMax.y))
+			{
 				out.push_back(tile);
+			}
 		}
 	}
 		
@@ -127,41 +115,12 @@ void CTileManager::QueryTilesAABB(const Vec2& _Min, const Vec2& _Max, vector<CTi
 
 bool CTileManager::IsBlocked(const Vec2& _Min, const Vec2& _Max)
 {
-	vector<CTile*> canDir;
-	QueryTilesAABB(_Min, _Max, canDir);
+	vector<CTile*> collidableTiles;
+	QueryTilesAABB(_Min, _Max, collidableTiles);
 
-	for (auto* tile : canDir)
+	for (auto* tile : collidableTiles)
 	{
-		bool bWallCheck = tile->Get_DrawID() != (int)ETileType::WALL;
-		bool bFallCheck = tile->Get_DrawID() != (int)ETileType::FALL;
-
-		if (bWallCheck && bFallCheck) continue;
-
-		Vec2 tilePos = tile->Get_WorldPos();
-		Vec2 height(TILECX * 0.5f, TILECY * 0.5f);
-		Vec2 tileMin = tilePos - height, tileMax = tilePos + height;
-
-		if (!(_Max.x <= tileMin.x || _Min.x >= tileMax.x ||
-			_Max.y <= tileMin.y || _Min.y >= tileMax.y))
-			return true; 
-	}
-	return false;
-}
-
-bool CTileManager::IsBlocked_ExceptFall(const Vec2& _Min, const Vec2& _Max, bool isDashing)
-{
-	vector<CTile*> canDir;
-	QueryTilesAABB(_Min, _Max, canDir);
-
-	for (auto* tile : canDir)
-	{
-		if (isDashing && tile->Get_DrawID() == (int)ETileType::FALL)
-			continue;
-
-		bool bWallCheck = tile->Get_DrawID() == (int)ETileType::WALL;
-		bool bFallCheck = tile->Get_DrawID() == (int)ETileType::FALL;
-
-		if (bWallCheck || bFallCheck)
+		if (tile->Get_DrawID() == (int)ETileType::WALL || tile->Get_DrawID() == (int)ETileType::FALL)
 		{
 			Vec2 tilePos = tile->Get_WorldPos();
 			Vec2 height(TILECX * 0.5f, TILECY * 0.5f);
@@ -171,7 +130,29 @@ bool CTileManager::IsBlocked_ExceptFall(const Vec2& _Min, const Vec2& _Max, bool
 				return true;
 		}
 	}
+	return false;
+}
 
+bool CTileManager::IsBlocked_ExceptFall(const Vec2& _Min, const Vec2& _Max, bool isDashing)
+{
+	vector<CTile*> collidableTiles;
+	QueryTilesAABB(_Min, _Max, collidableTiles);
+
+	for (auto* tile : collidableTiles)
+	{
+		if (isDashing && tile->Get_DrawID() == (int)ETileType::FALL)
+			continue;
+
+		if (tile->Get_DrawID() == (int)ETileType::WALL || tile->Get_DrawID() == (int)ETileType::FALL)
+		{
+			Vec2 tilePos = tile->Get_WorldPos();
+			Vec2 height(TILECX * 0.5f, TILECY * 0.5f);
+			Vec2 tileMin = tilePos - height, tileMax = tilePos + height;
+
+			if (!(_Max.x <= tileMin.x || _Min.x >= tileMax.x || _Max.y <= tileMin.y || _Min.y >= tileMax.y))
+				return true;
+		}
+	}
 	return false;
 }
 
@@ -182,41 +163,162 @@ void CTileManager::Picking(Vec2 _Pos, int _DrawID, int _Option)
 	int x = (int)floorf(worldPos.x / TILECX);
 	int y = (int)floorf(worldPos.y / TILECY);
 
-	if (x < 0 || x >= TILEX || y < 0 || y >= TILEY) return;
 
-	int index = y * TILEX + x;
-	if ((size_t)index >= m_vecTile.size()) return;
-
-	if (auto* tile = dynamic_cast<CTile*>(m_vecTile[index]))
+	CTile* foundTile = nullptr;
+	for (auto& pActor : m_vecTile)
 	{
-		int cur = tile->Get_DrawID();
+		if (auto* tile = dynamic_cast<CTile*>(pActor))
+		{
+			Vec2 tilePos = tile->Get_WorldPos();
+			if (floorf(tilePos.x / TILECX) == x && floorf(tilePos.y / TILECY) == y)
+			{
+				foundTile = tile;
+				break;
+			}
+		}
+	}
+
+	if (foundTile)
+	{
+		int cur = foundTile->Get_DrawID();
 
 		if (cur == (int)ETileType::WALL)
-		{
 			cur = (int)ETileType::TILE2;
-		}
 
 		else if (cur == (int)ETileType::TILE2)
-		{
 			cur = (int)ETileType::FALL;
-		}
 
 		else if (cur == (int)ETileType::FALL)
-		{
 			cur = (int)ETileType::WALL;
-		}
 
-		tile->Set_DrawID(cur);
-		tile->Set_Option(_Option);
+		foundTile->Set_DrawID(cur);
+		foundTile->Set_Option(_Option);
 	}
+
+	else
+	{
+		float fX = (float)(TILECX >> 1) + (TILECX * x);
+		float fY = (float)(TILECY >> 1) + (TILECY * y);
+
+		CActor* newTile = new CTile();
+		newTile->BeginPlay();
+		newTile->Get_Collision()->SetWorldPos(Vec2(fX, fY));
+		newTile->Set_WorldPos(Vec2(fX, fY));
+
+		dynamic_cast<CTile*>(newTile)->Set_DrawID(_DrawID);
+		dynamic_cast<CTile*>(newTile)->Set_Option(_Option);
+
+		m_vecTile.push_back(newTile);
+	}		
+
 }
 
 void CTileManager::Save_Data()
 {
+	HANDLE	hFile = CreateFile(L"../Data/Tile.dat", // 파일 경로(이름까지 명시)
+		GENERIC_WRITE,		// 파일 접근 모드(GENERIC_WRITE : 쓰기 전용, GENERIC_READ : 읽기 전용)
+		NULL,				// 공유 모드 설정 : 공유하지 않음
+		NULL,				// 보안 속성 설정 : 기본 값 설정
+		CREATE_ALWAYS,		// 생성 방식 : 쓰기 전용인 경우 파일이 없으면 생성하여 저장, OPEN_EXISTING : 읽기 전용 모드일 때 파일이 있을 경우에만 불러오기 실행)
+		FILE_ATTRIBUTE_NORMAL,	// 파일 속성 : 일반 파일
+		NULL); // 생성될 파일의 속성을 제공할 템플릿 파일 주소(사용하지 않기 때문에 null)
 
+	DWORD	dwByte(0);
+	int iDrawID(0), iOption(0);
+	Vec2 pos {};
+
+	for (auto& pTile : m_vecTile)
+	{
+		iDrawID = dynamic_cast<CTile*>(pTile)->Get_DrawID();
+		iOption = dynamic_cast<CTile*>(pTile)->Get_Option();
+		pos = dynamic_cast<CTile*>(pTile)->Get_WorldPos();
+
+		WriteFile(hFile, &pos, sizeof(Vec2), &dwByte, nullptr);
+		WriteFile(hFile, &iDrawID, sizeof(int), &dwByte, nullptr);
+		WriteFile(hFile, &iOption, sizeof(int), &dwByte, nullptr);
+	}
+
+	CloseHandle(hFile);
+	
 }
 
 void CTileManager::Load_Data()
 {
+	HANDLE	hFile = CreateFile(L"../Data/Tile.dat", // 파일 경로(이름까지 명시)
+		GENERIC_READ,		// 파일 접근 모드(GENERIC_WRITE : 쓰기 전용, GENERIC_READ : 읽기 전용)
+		NULL,				// 공유 모드 설정 : 공유하지 않음
+		NULL,				// 보안 속성 설정 : 기본 값 설정
+		OPEN_EXISTING,		// 생성 방식 : 쓰기 전용인 경우 파일이 없으면 생성하여 저장, OPEN_EXISTING : 읽기 전용 모드일 때 파일이 있을 경우에만 불러오기 실행)
+		FILE_ATTRIBUTE_NORMAL,	// 파일 속성 : 일반 파일
+		NULL); // 생성될 파일의 속성을 제공할 템플릿 파일 주소(사용하지 않기 때문에 null)
 
+	if (hFile == INVALID_HANDLE_VALUE)
+		return;
+
+	DWORD	dwByte(0);
+	//INFO	tInfo{};
+	int		iDrawID(0), iOption(0);
+	Vec2	pos {};
+
+	Release();
+
+	while (true)
+	{
+		ReadFile(hFile, &pos, sizeof(Vec2), &dwByte, nullptr);
+		ReadFile(hFile, &iDrawID, sizeof(int), &dwByte, nullptr);
+		ReadFile(hFile, &iOption, sizeof(int), &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		CActor* pTile = new CTile();
+		pTile->BeginPlay();
+		pTile->Set_WorldPos(pos);
+
+		// 위치 동기화
+		if (auto* tile = dynamic_cast<CTile*>(pTile))
+			if (auto col = tile->Get_Collision())
+				col->SetWorldPos(pos);
+
+		dynamic_cast<CTile*>(pTile)->Set_DrawID(iDrawID);
+		dynamic_cast<CTile*>(pTile)->Set_Option(iOption);
+		m_vecTile.push_back(pTile);
+	}
+
+	CloseHandle(hFile);
+
+}
+
+void CTileManager::Erase_Tile()
+{
+	Vec2 mousePos = INPUT->GetMouseWorldPos();
+
+	// 클릭된 위치에 해당하는 그리드 좌표를 계산합니다.
+	int x = (int)floorf(mousePos.x / TILECX);
+	int y = (int)floorf(mousePos.y / TILECY);
+
+	// 삭제할 타일의 이터레이터를 찾습니다.
+	auto it = m_vecTile.begin();
+	for (; it != m_vecTile.end(); ++it)
+	{
+		if (auto* tile = dynamic_cast<CTile*>(*it))
+		{
+			Vec2 tilePos = tile->Get_WorldPos();
+			if (floorf(tilePos.x / TILECX) == x && floorf(tilePos.y / TILECY) == y)
+			{
+				// 타일을 찾았으므로 루프를 종료합니다.
+				break;
+			}
+		}
+	}
+
+	// 이터레이터가 유효하다면(타일을 찾았다면) 타일을 삭제합니다.
+	if (it != m_vecTile.end())
+	{
+		// 메모리 해제
+		delete (*it);
+
+		// 벡터에서 제거
+		m_vecTile.erase(it);
+	}
 }

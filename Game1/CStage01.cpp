@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CStage01.h"
 #include "CActor.h"
+#include "CBoss.h"
 #include "CDummy.h"
 #include "CPlayer.h"
 #include "CResourceManager.h"
@@ -10,9 +11,10 @@ CStage01::CStage01()
 {
 	m_Player = new CPlayer();
 	m_TestDummy = new CDummy();
-
+	m_Boss = new CBoss();
 
 	m_Actors.push_back(m_TestDummy);
+	m_Actors.push_back(m_Boss);
 	m_Actors.push_back(m_Player);
 
 	m_MapSize = Vec2(1184.f, 688.f) * 4.f;
@@ -39,19 +41,25 @@ void CStage01::Init()
 	CDummy* dummy = dynamic_cast<CDummy*>(m_TestDummy);
 	dummy->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(250.f, 150.f));
 
+	CBoss* boss = dynamic_cast<CBoss*>(m_Boss);
+	boss->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(100.f, 200.f));
 }
 
 void CStage01::Update()
 {
 	CScene::Update();
 
+	if (INPUT->KeyDown('L'))
+	{
+		TILE->Load_Data();
+	}
 
 	for (auto& actor : m_Actors)
 		actor->Tick();
 
 	for (auto& map : m_Map)
 		map.second->Update();
-
+	
 	for (auto& object : m_Objects)
 		object->Update();
 }
@@ -79,6 +87,8 @@ void CStage01::Render()
 
 	for (auto& map : m_Map)
 		map.second->Render();
+	
+	TILE->Render();
 
 	for (auto& object : m_Objects)
 		object->Render();
@@ -107,6 +117,7 @@ void CStage01::Resource_Setting()
 
 	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\TutorialCourse.png", m_MapSize, true);
 	map->SetWorldPos(Vec2(0, 0));
+	map->SetLocalPos(Vec2(0, 30));
 	m_Map.insert({ ESceneType::Stage01, map });
 
 	shared_ptr<ObImage> teleport = RESOURCE->CreateImage(L"Object\\TELEPORT.png", Vec2(311.f, 298.f), true);

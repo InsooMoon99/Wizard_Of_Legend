@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "CSkill_Actor.h"
 
-CSkill_Actor::CSkill_Actor()
+CSkill_Actor::CSkill_Actor(SkillInfo& _Info)
+	: m_Skill_Info(_Info)
 {
-}
+
+}	
 
 CSkill_Actor::~CSkill_Actor()
 {

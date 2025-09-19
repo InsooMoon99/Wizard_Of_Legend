@@ -25,17 +25,8 @@ public:
 	virtual void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
 	virtual void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 
-	bool IsDestroy() const {return m_PendingKill;}
-
 public:
-	shared_ptr<ObCircle> m_FireBall_Col;
 	shared_ptr<ObImage> m_FireBall;
 
-	SkillInfo m_Skill_Info;
-	Vec2	m_StartPos;
-
-	float   m_SpawnLife = 0.f;
-
-	bool	m_PendingKill = false;
 };
 

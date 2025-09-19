@@ -8,6 +8,7 @@
 #include "CUIComponent.h"
 #include "CStatusComponent.h"
 #include "CCollisionManager.h"
+#include "CTile.h"
 
 CPlayer::CPlayer()
 {
@@ -39,6 +40,12 @@ void CPlayer::BeginPlay()
 
 	if (m_UI)
 		m_UI->SetPlayerStatus();
+
+	if (m_Weapon)
+	{
+		m_Weapon->Equip_Skill(ESkillType::FireBall);
+		m_Weapon->Equip_Skill(ESkillType::WindSlash);
+	}
 }
 
 void CPlayer::Tick()
@@ -109,8 +116,8 @@ void CPlayer::Tick()
 	}
 
 	// Update
-	for (auto& Rect : m_vecRectCol)
-		Rect->Update();
+	for (auto& col : m_vecCol)
+		col->Update();
 
 	for (auto& shadow : m_Shadow)
 		shadow.second->Update();
@@ -132,14 +139,15 @@ void CPlayer::Tick()
 void CPlayer::LateUpdate()
 {
 	CActor::LateUpdate();
+
 }
 
 void CPlayer::Render()
 {
 	CActor::Render();
 
-	for (auto& Rect : m_vecRectCol)
-		Rect->Render();
+	for (auto& col : m_vecCol)
+		col->Render();
 
 	for (auto& shadow : m_Shadow)
 		shadow.second->Render();
@@ -170,8 +178,8 @@ void CPlayer::Release()
 	for (auto& component : m_Components)
 		SafeDelete(component);
 
-	for (auto Rect : m_vecRectCol)
-		SafeDelete(Rect);
+	for (auto col : m_vecCol)
+		SafeDelete(col);
 }
 
 void CPlayer::Update_Hit()
@@ -201,7 +209,9 @@ void CPlayer::Key_Input()
 	EPlayerDir		curtDir = m_State->Get_Dir();
 	EPlayerState	curState = m_State->Get_State();
 
-	bool bCheck = m_State->Get_State() != EPlayerState::Attack1 && m_State->Get_State() != EPlayerState::Attack2;
+	// TODO : 공격 중일 때 못움직이는게 아니라, 따로 조금씩 움직일수 있도록 처리해주기 ? 
+	bool bCheck =	m_State->Get_State() != EPlayerState::Attack1 && 
+					m_State->Get_State() != EPlayerState::Attack2;
 
 	if (bCheck)
 	{
@@ -213,16 +223,16 @@ void CPlayer::Key_Input()
 
 	if (INPUT->KeyDown('Q'))
 	{
-		m_State->Change_State(m_State->Next_AttackType());
-
-		m_Weapon->Fire_Ball();
+		m_State->Change_State(m_State->Set_AttackType());
+		m_Weapon->Activate_Skill(ESkillType::FireBall);
 
 		return;
 	}
 
 	if (INPUT->KeyDown(VK_LBUTTON))
 	{
-		m_State->Change_State(m_State->Next_AttackType());
+		m_State->Change_State(m_State->Set_AttackType());
+		m_Weapon->Activate_Skill(ESkillType::WindSlash);
 
 		return;
 	}
@@ -303,9 +313,7 @@ void CPlayer::State_Dash()
 
 	else
 	{
-		// 대시 중에 벽에 닿으면 멈추도록 MoveTile 함수 호출
 		MoveTile(m_LastDir, m_DashDistance);
-		//m_Collision->MoveWorldPos(m_LastDir * m_DashDistance * DELTA);
 
 		// 그림자 크기 조절
 		{
@@ -326,9 +334,9 @@ void CPlayer::State_Dash()
 
 void CPlayer::State_Attack()
 {
-	// 재확인 코드
 	auto& map = m_Sprites[m_State->Get_State()];
 	auto it = map.find(m_State->Get_Dir());
+
 	if (it != map.end() && m_CurImg != it->second)
 		return;
 
@@ -429,7 +437,7 @@ void CPlayer::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 {
 	CCharacter::OnComponentBeginOverlap(collider, other);
 
-	int a = 3;
+	// TODO : Player Hit
 }
 
 void CPlayer::OnComponentEndOverlap(GameObject* collider, GameObject* other)
@@ -442,15 +450,16 @@ void CPlayer::Resource_Settings()
 {
 	// Player Collision
 	m_Collision = make_shared<ObRect>();
-	m_Collision->scale = Vec2(60.f, 80.f);
-	m_Collision->visible = true;
+	m_Collision->scale = Vec2(60.f, 60.f);
+	m_Collision->SetLocalPosY(-30.f);
+	m_Collision->visible = false;
 	m_Collision->isFilled = false;
 	m_Collision->pivot = OFFSET_N;
 	m_Collision->collider = COLLIDER::RECT;
 	m_Collision->Set_Owner(this);
 	COLLISION->AddCollider(m_Collision.get());
 
-	m_vecRectCol.push_back(m_Collision.get());
+	m_vecCol.push_back(m_Collision.get());
 
 	// State_Idle
 	{
@@ -729,14 +738,14 @@ void CPlayer::Resource_Settings()
 
 void CPlayer::Print_ImGui()
 {
-	if (ImGui::Begin("Player"))
+#ifdef _DEBUG
+	if (ImGui::Begin("Debug"))
 	{
 		float hp = m_Status->GetHp();
 		float mp = m_Status->GetMp();
 		int gold = m_Status->GetGold();
 		float speed = m_Status->GetSpeed();
 
-		ImGui::Text("MaxHp", m_Status->GetMaxHp());
 		ImGui::InputFloat("Hp", &hp);
 		m_Status->SetHp(hp);
 
@@ -770,6 +779,8 @@ void CPlayer::Print_ImGui()
 	}
 
 	ImGui::End();
+
+#endif
 }
 
 void CPlayer::MoveTile(const Vec2& dir, float speed)
@@ -778,7 +789,7 @@ void CPlayer::MoveTile(const Vec2& dir, float speed)
 
 	EPlayerState playerState = m_State->Get_State();
 	
-	ObRect* col = m_Collision.get();
+	GameObject* col = m_Collision.get();
 	
 	Vec2 nDir = dir;
 	if (nDir.LengthSquared() > 0.f) 
@@ -819,6 +830,25 @@ void CPlayer::MoveTile(const Vec2& dir, float speed)
 		}
 		// else : 막히면 Y축 이동 스킵
 	}
+
+	//Vec2 currentPos = col->GetWorldPos();
+	//Vec2 currentMin = Vec2(currentPos.x - half.x - 5.0f, currentPos.y - half.y - 5.0f);
+	//Vec2 currentMax = Vec2(currentPos.x + half.x - 5.0f, currentPos.y + half.y - 5.0f);
+	//
+	//vector<CTile*> overlappedTiles;
+	//TILE->QueryTilesAABB(currentMin, currentMax, overlappedTiles);
+	//
+	//for (auto* tile : overlappedTiles)
+	//{
+	//	if (tile->Get_DrawID() == (int)ETileType::FALL)
+	//	{
+	//		if (playerState == EPlayerState::Idle || playerState == EPlayerState::Walk)
+	//		{
+	//			// TODO: 플레이어 낙하 로직 구현
+	//			m_Collision->SetWorldPos(Vec2(0.f, 0.f));
+	//		}
+	//	}
+	//}
 
 }
 

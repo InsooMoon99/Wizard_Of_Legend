@@ -68,7 +68,6 @@ private:
 private:
 	Vec2 m_MoveDir   =	{ 0, 0 };
 	Vec2 m_LastDir   =	{ 0, -1.f };
-	Vec2 m_AttackDir =	{ 0, 0 };
 
 	float m_DashDistance = 1200.f;
 

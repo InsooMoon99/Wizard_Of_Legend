@@ -5,7 +5,7 @@ CTile::CTile()
 {
 	m_Collision = make_shared<ObRect>();
 	m_Collision->scale = Vec2(TILECX, TILECY);
-	m_Collision->visible = true;          
+	m_Collision->visible = false;          
 	m_Collision->isFilled = false;
 	m_Collision->pivot = OFFSET_N;      
 	m_Collision->collider = COLLIDER::RECT;
@@ -82,7 +82,7 @@ void CTile::Render()
 
 	m_TileType = (ETileType)m_DrawID;
 	
-	auto it = m_Tiles.find(m_TileType);
+	auto it = m_Tiles.find(static_cast<ETileType>(m_DrawID));
 	if (it != m_Tiles.end())
 	{
 		it->second->Render();

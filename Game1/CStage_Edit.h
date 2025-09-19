@@ -22,5 +22,6 @@ private:
 	vector<CActor*> m_Actors;
 
 	Vec2 m_PlayerPos;
+	Vec2 m_MapSize;
 };
 

@@ -56,3 +56,11 @@ enum class ETileType
 
 	TILE_END
 };
+
+enum class ESkillType
+{
+	WindSlash,
+	FireBall,
+
+	SKILL_END
+};

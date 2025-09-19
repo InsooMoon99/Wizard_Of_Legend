@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CACtor.h"
+#include "CActor.h"
 #include "CEnums.h"
 
 class CTile : public CActor
@@ -20,8 +20,9 @@ public:
 	void Set_DrawID(int _DrawID) { m_DrawID = _DrawID; }
 	void Set_Option(int _Option) { m_Option = _Option; }
 
-	int& Get_DrawID() { return m_DrawID; }
-	int& Get_OptionID() { return m_Option; }
+	int& Get_DrawID()	{ return m_DrawID; }
+	int& Get_Option()	{ return m_Option; }
+	Vec2 Get_Size()		{ return m_Size; }
 
 	ETileType GetTileType() { return m_TileType; }
 public:

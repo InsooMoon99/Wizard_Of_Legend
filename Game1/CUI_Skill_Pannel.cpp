@@ -27,18 +27,18 @@ void CUI_Skill_Pannel::Tick()
 {
 	CUI::Tick();
 
-#ifdef _DEBUG
-	if (ImGui::Begin("UI"))
-	{
-		Vec2 temp = m_Pannel->GetWorldPos();
-		if(ImGui::InputFloat2("Pannel", &temp.x))
-		{
-			m_Pannel->SetWorldPos(temp);
-		}
-	}
-
-	ImGui::End();
-#endif
+//#ifdef _DEBUG
+//	if (ImGui::Begin("UI"))
+//	{
+//		Vec2 temp = m_Pannel->GetWorldPos();
+//		if(ImGui::InputFloat2("Pannel", &temp.x))
+//		{
+//			m_Pannel->SetWorldPos(temp);
+//		}
+//	}
+//
+//	ImGui::End();
+//#endif
 
 
 	for(auto& skill : m_Skill_UI)

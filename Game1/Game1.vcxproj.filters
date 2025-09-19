@@ -88,9 +88,6 @@
     <ClInclude Include="CStage_Edit.h">
       <Filter>02. Scene</Filter>
     </ClInclude>
-    <ClInclude Include="CFireBall.h">
-      <Filter>06. Skill</Filter>
-    </ClInclude>
     <ClInclude Include="CSkill.h">
       <Filter>06. Skill</Filter>
     </ClInclude>
@@ -103,9 +100,6 @@
     <ClInclude Include="CCollisionManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CSkill_Actor.h">
-      <Filter>06. Skill</Filter>
-    </ClInclude>
     <ClInclude Include="CParticleManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
@@ -115,9 +109,25 @@
     <ClInclude Include="CTileManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CTile.h">
-      <Filter>03. Actors</Filter>
+    <ClInclude Include="CSkill_WindSlash.h">
+      <Filter>06. Skill</Filter>
     </ClInclude>
+    <ClInclude Include="CFireBall.h">
+      <Filter>06. Skill\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_Actor.h">
+      <Filter>06. Skill\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="CWindSlash.h">
+      <Filter>06. Skill\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_Factory.h">
+      <Filter>97. Design</Filter>
+    </ClInclude>
+    <ClInclude Include="CTile.h">
+      <Filter>08. Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoss.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -152,6 +162,12 @@
     </Filter>
     <Filter Include="08. Tile">
       <UniqueIdentifier>{31d31c9a-ed8d-418e-a36a-8e88e325666f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\Actor">
+      <UniqueIdentifier>{92107b01-bb86-4170-81c9-27645edd90ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Design">
+      <UniqueIdentifier>{a337d175-f853-41b1-ad20-4a89aee752ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -218,9 +234,6 @@
     <ClCompile Include="CStage_Edit.cpp">
       <Filter>02. Scene</Filter>
     </ClCompile>
-    <ClCompile Include="CFireBall.cpp">
-      <Filter>06. Skill</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>99. Headers</Filter>
     </ClCompile>
@@ -242,23 +255,36 @@
     <ClCompile Include="CSceneManager.cpp">
       <Filter>01. Manager</Filter>
     </ClCompile>
-    <ClCompile Include="CSkill_Actor.cpp">
-      <Filter>06. Skill</Filter>
-    </ClCompile>
     <ClCompile Include="CParticleManager.cpp">
       <Filter>01. Manager</Filter>
     </ClCompile>
     <ClCompile Include="IColorChanger.cpp">
       <Filter>07. Interface</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>01. Manager</Filter>
-    </ClCompile>
     <ClCompile Include="CTileManager.cpp">
       <Filter>01. Manager</Filter>
     </ClCompile>
-    <ClCompile Include="CTile.cpp">
-      <Filter>03. Actors</Filter>
+    <ClCompile Include="Main.cpp">
+      <Filter>00. MainGame</Filter>
     </ClCompile>
+    <ClCompile Include="CSkill_WindSlash.cpp">
+      <Filter>06. Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="CFireBall.cpp">
+      <Filter>06. Skill\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_Actor.cpp">
+      <Filter>06. Skill\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CWindSlash.cpp">
+      <Filter>06. Skill\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_Factory.cpp">
+      <Filter>97. Design</Filter>
+    </ClCompile>
+    <ClCompile Include="CTile.cpp">
+      <Filter>08. Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoss.cpp" />
   </ItemGroup>
 </Project>

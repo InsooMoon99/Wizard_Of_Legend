@@ -28,11 +28,11 @@ private:
 	Vec2 m_PlayerPos;
 	Vec2 m_MapSize;
 
-	unordered_map<ESceneType, shared_ptr<ObImage>> m_Map;
 	vector<shared_ptr<ObImage>> m_Objects;
 
 	CActor* m_TestDummy;
 
+	CActor* m_Boss;
 
 };
 

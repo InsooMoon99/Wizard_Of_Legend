@@ -27,6 +27,15 @@ void CDummy::Tick()
 {
 	CCharacter::Tick();
 
+#ifdef _DEBUG
+	if (ImGui::Begin("Debug"))
+	{
+		ImGui::Text("Dummy Hp : %f", m_Status->GetHp());
+	}
+	ImGui::End();
+#endif
+
+
 	// 위치 세팅
 	Set_WorldPos(m_Collision->GetWorldPos());
 
@@ -37,7 +46,7 @@ void CDummy::Tick()
 	// Color 변경
 	Update_Hit();
 
-	for (auto& col : m_vecRectCol)
+	for (auto& col : m_vecCol)
 		col->Update();
 
 	if (m_CurImg)
@@ -58,20 +67,7 @@ void CDummy::Render()
 {
 	CCharacter::Render();
 
-	if (ImGui::Begin("Dummy"))
-	{
-		ImGui::Text("Hp : %f", m_Status->GetHp());
-		ImGui::Text("Dummy Pos x : %f, y : %f", m_Collision->GetWorldPos().x, m_Collision->GetWorldPos().y);
-
-		ImGui::NewLine();
-
-		ImGui::Text("State : %s", CHelper::ToString_PlayerState(m_State->Get_State()));
-		ImGui::Text("Dir   : %s", CHelper::ToString_PlayerDir(m_State->Get_Dir()));
-	}
-
-	ImGui::End();
-
-	for (auto& col : m_vecRectCol)
+	for (auto& col : m_vecCol)
 		col->Render();
 
 	if (m_CurImg)
@@ -122,13 +118,13 @@ void CDummy::Resource_Settings()
 {
 	m_Collision = make_shared<ObRect>();
 	m_Collision->scale = Vec2(100.f, 150.f);
-	m_Collision->visible = true;
+	m_Collision->visible = false;
 	m_Collision->isFilled = false;
 	m_Collision->collider = COLLIDER::RECT;
 	m_Collision->Set_Owner(this);
 	COLLISION->AddCollider(m_Collision.get());
 
-	m_vecRectCol.push_back(m_Collision.get());
+	m_vecCol.push_back(m_Collision.get());
 
 	Dummy_Image = RESOURCE->CreateImage(L"Object\\BossDummy.png", Vec2(29.f, 48.f), true);
 	Dummy_Image->SetParentRT(*m_Collision);

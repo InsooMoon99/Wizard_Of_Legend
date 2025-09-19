@@ -28,7 +28,7 @@ protected:
 	CStateComponent* m_State = nullptr;
 	
 protected:
-	virtual void Resource_Settings() abstract;
+	virtual void Resource_Settings() abstract {};
 	virtual void SetSprite(EPlayerState _State, EPlayerDir _Dir) abstract {};
 	virtual void Play_Sprite(EPlayerState _State) abstract {}
 

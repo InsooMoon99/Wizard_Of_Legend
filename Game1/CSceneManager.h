@@ -17,7 +17,7 @@ public:
 	void		Release();
 
 	void		Change_Scene(ESceneType _SceneType);
-
+	ESceneType	Get_CurScene() { return m_SceneType; }
 
 public:
 	static CSceneManager* Get_Instance()

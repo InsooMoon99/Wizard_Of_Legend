@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Main.h"
-
 #include "CSceneManager.h"
 #include "CCollisionManager.h"
 #include "CParticleManager.h"
@@ -9,6 +8,8 @@ void Main::Init()
 {
 	SCENE->Change_Scene(ESceneType::Start);
 	PARTICLE->Init();
+	TILE->Init();
+
 }
 
 void Main::Update()
@@ -16,21 +17,34 @@ void Main::Update()
 	SCENE->Update();
 	COLLISION->Update();
 	PARTICLE->Update();
+	TILE->Update();
+
 }
 
 void Main::LateUpdate()
 {
+	if (INPUT->KeyDown(VK_ESCAPE))
+	{
+		if (SCENE->Get_CurScene() != ESceneType::Start)
+		{
+			SCENE->Change_Scene(ESceneType::Start);
+		}
+	}
+
 	SCENE->LateUpdate();
+	TILE->LateUpdate();
 
 }
 
 void Main::Render()
 {
 	SCENE->Render();
+
 	PARTICLE->Render();
 
-	if (ImGui::Begin("Player"))
+	if (ImGui::Begin("Debug"))
 	{
+		ImGui::Text("FPS : %d", TIMER->GetFramePerSecond());
 		ImGui::NewLine();
 
 		Vec2 pos = INPUT->GetMouseScreenPos();

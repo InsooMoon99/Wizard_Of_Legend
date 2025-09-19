@@ -5,7 +5,7 @@
 class CSkill_Actor : public CActor
 {
 public:
-	CSkill_Actor();
+	CSkill_Actor(SkillInfo& _Info);
 	virtual ~CSkill_Actor();
 
 public:
@@ -20,6 +20,15 @@ public:
 	void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 
 public:
+	bool IsDestroy() const { return m_PendingKill; }
+
+protected:
+	SkillInfo m_Skill_Info;
+	Vec2	m_StartPos;
+
+	float   m_SpawnLife = 0.f;
+	bool	m_PendingKill = false;
+
 };
 
 

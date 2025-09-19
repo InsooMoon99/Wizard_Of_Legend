@@ -19,6 +19,7 @@ public:
 
 public:
 	void SetPlayerStatus();
+	void SetBossStatus();
 
 private:
 	vector<CUI*> m_HUD;

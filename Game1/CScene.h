@@ -15,5 +15,6 @@ public:
 
 protected:
 	CActor* m_Player;
+	unordered_map<ESceneType, shared_ptr<ObImage>> m_Map;
 };
 

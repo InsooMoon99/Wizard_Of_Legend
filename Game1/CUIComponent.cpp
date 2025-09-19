@@ -79,3 +79,16 @@ void CUIComponent::SetPlayerStatus()
 		m_PlayerHUD->Get_PlayerStatus()->SetStatus(status);
 	}
 }
+
+void CUIComponent::SetBossStatus()
+{
+	if (m_PlayerHUD && GetOwner())
+	{
+		CStatusComponent* status = CHelper::GetComponent<CStatusComponent>(GetOwner());
+		if (status == nullptr)
+			return;
+
+		// TODO : BossHUD
+		//m_PlayerHUD->Get_PlayerStatus()->SetStatus(status);
+	}
+}

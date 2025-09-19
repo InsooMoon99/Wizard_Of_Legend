@@ -45,6 +45,8 @@ public:
 	void	Save_Data();
 	void	Load_Data();
 
+	void	Erase_Tile();
+
 private:
 	static CTileManager*	Instance;
 

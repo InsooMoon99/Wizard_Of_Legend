@@ -20,10 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CActor.h" />
+    <ClInclude Include="CBoss.h" />
     <ClInclude Include="CCollisionManager.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CDefine.h" />
     <ClInclude Include="CDummy.h" />
+    <ClInclude Include="CSkill_Factory.h" />
+    <ClInclude Include="CSkill_WindSlash.h" />
     <ClInclude Include="CStage_Edit.h" />
     <ClInclude Include="CEnums.h" />
     <ClInclude Include="CFireBall.h" />
@@ -54,6 +57,7 @@
     <ClInclude Include="CUI_PlayerStatus.h" />
     <ClInclude Include="CUI_Skill_Pannel.h" />
     <ClInclude Include="CWeaponComponent.h" />
+    <ClInclude Include="CWindSlash.h" />
     <ClInclude Include="IColorChanger.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="CUI_PlayerHUD.h" />
@@ -61,10 +65,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CActor.cpp" />
+    <ClCompile Include="CBoss.cpp" />
     <ClCompile Include="CCollisionManager.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CDummy.cpp" />
+    <ClCompile Include="CSkill_Factory.cpp" />
+    <ClCompile Include="CSkill_WindSlash.cpp" />
     <ClCompile Include="CStage_Edit.cpp" />
     <ClCompile Include="CFireBall.cpp" />
     <ClCompile Include="CInventoryComponent.cpp" />
@@ -91,6 +98,7 @@
     <ClCompile Include="CUI_PlayerStatus.cpp" />
     <ClCompile Include="CUI_Skill_Pannel.cpp" />
     <ClCompile Include="CWeaponComponent.cpp" />
+    <ClCompile Include="CWindSlash.cpp" />
     <ClCompile Include="IColorChanger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="CUI_PlayerHUD.cpp" />

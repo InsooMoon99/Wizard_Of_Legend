@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "CSkill.h"
-
-#include "CFireBall.h"
+#include "CPlayer.h"
 
 CSkill::CSkill()
 {
@@ -23,6 +22,14 @@ void CSkill::Tick()
 
 }
 
+void CSkill::LateUpdate()
+{
+}
+
+void CSkill::Release()
+{
+}
+
 void CSkill::Render()
 {
 
@@ -30,10 +37,7 @@ void CSkill::Render()
 
 bool CSkill::CanActivate(const SkillInfo& _Info)
 {
-	// TODO : _Info 구조체 점점 제대로 세팅시켜주기
-	//if (_Info.Owner == nullptr) return false;
-	// if (_Info.Aim_Dir.LengthSquared) // 방향 0 방지 추가하기
-	// if(_Info.Mp > Owner->StatusComponent 가셔와서 마나 비교 후 false)
+	// TODO : 쿨타임만 구현하면 될거같다.
 
 	return true;
 }
@@ -41,4 +45,6 @@ bool CSkill::CanActivate(const SkillInfo& _Info)
 void CSkill::Activate(CActor* _Owner)
 {
 	
+
+
 }

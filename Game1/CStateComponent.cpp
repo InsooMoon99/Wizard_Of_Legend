@@ -61,7 +61,7 @@ void CStateComponent::Change_Dir(EPlayerDir _Dir)
 	m_PlayerDir = _Dir;
 }
 
-EPlayerState CStateComponent::Next_AttackType()
+EPlayerState CStateComponent::Set_AttackType()
 {
 	EPlayerState next =(m_LastAttackType == EPlayerState::Attack1) ? EPlayerState::Attack2 : EPlayerState::Attack1;
 	m_LastAttackType = next;

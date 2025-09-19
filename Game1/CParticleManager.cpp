@@ -53,9 +53,16 @@ void CParticleManager::Resource_Settings()
 	shared_ptr<ObImage> fire_hitEffect = RESOURCE->CreateSprite(L"Particle\\Fire_HitEffect.png", Vec2(910.f / 7.f, 110.f) * 1.5f, Int2(7, 1), true);
 	fire_hitEffect->ChangeAnim(ANIMSTATE::ONCE, 0.07f);
 
+	shared_ptr<ObImage> wind_Slash = RESOURCE->CreateSprite(L"Skill\\WinSlash_Large_Alt.png", Vec2(300.f / 5.f, 60.f) * 3.f, Int2(5, 1), true);
+	wind_Slash->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+
+	// Effect
 	m_Particles.insert({ L"HitEffect", hit_Effect });
 	m_Particles.insert({ L"HitSpark", hit_Spark });
 	m_Particles.insert({ L"Fire_HitEffect", fire_hitEffect });
+
+	// Player
+	m_Particles.insert({ L"Wind_Slash", wind_Slash });
 }
 
 shared_ptr<ObImage> CParticleManager::Spawn_Particle(const wstring& _Key, const Vec2& _Pos)

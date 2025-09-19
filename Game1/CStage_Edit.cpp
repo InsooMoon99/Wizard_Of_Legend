@@ -7,8 +7,14 @@
 CStage_Edit::CStage_Edit()
 {
 	m_Player = new CPlayer();
-
+	m_PlayerPos = Vec2(-1790.f, -790.f);
 	m_Actors.push_back(m_Player);
+
+	m_MapSize = Vec2(1184.f, 688.f) * 4.f;
+
+	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\TutorialCourse.png", m_MapSize, true);
+	map->SetLocalPos(Vec2(0, 30));
+	m_Map.insert({ ESceneType::Edit, map });
 }
 
 CStage_Edit::~CStage_Edit()
@@ -20,10 +26,11 @@ void CStage_Edit::Init()
 {
 	CScene::Init();
 
-	TILE->Init();
-
 	for (auto& actor : m_Actors)
 		actor->BeginPlay();
+
+	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
+	player->Get_Collision()->SetWorldPos(m_PlayerPos);
 
 }
 
@@ -33,10 +40,11 @@ void CStage_Edit::Update()
 
 	Key_Input();
 
-	TILE->Update();
-
 	for (auto& actor : m_Actors)
 		actor->Tick();
+
+	for (auto& map : m_Map)
+		map.second->Update();
 }
 
 void CStage_Edit::LateUpdate()
@@ -46,24 +54,41 @@ void CStage_Edit::LateUpdate()
 	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
 	CAM->position = player->Get_Collision()->GetWorldPos();
 
-
-	TILE->LateUpdate();
 }
 
 void CStage_Edit::Render()
 {
 	CScene::Render();
 
+	Vec2 pos = m_Map[ESceneType::Edit]->GetWorldPos();
+	Vec2 size = m_MapSize;
+
+	if (ImGui::Begin("Stage"))
+	{
+		Vec2 min_pos = -size * 0.5f;
+		Vec2 max_pos = size * 0.5f;
+
+		ImGui::SliderFloat2("Stage Position", (float*)&pos, -200.f, +200.f);
+
+		//m_Map[ESceneType::Edit]->SetWorldPos(pos);
+	}
+
+	ImGui::End();
+
+	for (auto& map : m_Map)
+		map.second->Render();
+
 	TILE->Render();
 
 	for (auto& actor : m_Actors)
 		actor->Render();
+
+	
 }
 
 void CStage_Edit::Release()
 {
 	CScene::Release();
-
 
 }
 
@@ -76,13 +101,20 @@ void CStage_Edit::Key_Input()
 		TILE->Picking(mousePos, 0, 1);
 	}
 
-	if (INPUT->KeyDown('S'))
+	if (INPUT->KeyDown(VK_RBUTTON))
 	{
-		
+		Vec2 mousePos = INPUT->GetMouseWorldPos();
+
+		TILE->Erase_Tile();
+	}
+
+	if (INPUT->KeyDown('T'))
+	{
+		TILE->Save_Data();
 	}
 
 	if (INPUT->KeyDown('L'))
 	{
-
+		TILE->Load_Data();
 	}
 }

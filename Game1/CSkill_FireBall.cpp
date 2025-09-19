@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "CSkill_FireBall.h"
-
 #include "CFireBall.h"
-#include "CPlayer.h"
+#include "CCharacter.h"
 #include "CStateComponent.h"
 
 CSkill_FireBall::CSkill_FireBall()
@@ -20,7 +19,7 @@ void CSkill_FireBall::BeginPlay()
 {
 	CSkill::BeginPlay();
 
-	
+
 }
 
 void CSkill_FireBall::Tick()
@@ -42,6 +41,18 @@ void CSkill_FireBall::Tick()
 
 }
 
+void CSkill_FireBall::LateUpdate()
+{
+	CSkill::LateUpdate();
+
+}
+
+void CSkill_FireBall::Release()
+{
+	CSkill::Release();
+
+}
+
 void CSkill_FireBall::Render()
 {
 	CSkill::Render();
@@ -53,9 +64,9 @@ void CSkill_FireBall::Render()
 	}
 }
 
-bool CSkill_FireBall::CanActivate(const SkillInfo& _Skill)
+bool CSkill_FireBall::CanActivate(const SkillInfo& _Info)
 {
-	if (!CSkill::CanActivate(_Skill))
+	if (!CSkill::CanActivate(_Info))
 		return false;
 
 	// TODO : 나중에 스킬 쿨타임에 따라서 판단
@@ -67,10 +78,10 @@ void CSkill_FireBall::Activate(CActor* _Owner)
 {
 	CSkill::Activate(_Owner);
 
-	CPlayer* player = dynamic_cast<CPlayer*>(_Owner);
-	if (!player) return;
-
-	auto* state = CHelper::GetComponent<CStateComponent>(player);
+	CCharacter* character = dynamic_cast<CCharacter*>(_Owner);
+	if (!character) return;
+	
+	auto* state = CHelper::GetComponent<CStateComponent>(character);
 	if (!state) return;
 
 	Vec2 dir = CHelper::DirToVec(state->Get_Dir());

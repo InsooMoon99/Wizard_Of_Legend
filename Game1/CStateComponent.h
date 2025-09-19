@@ -18,7 +18,7 @@ public:
 	void Change_State(EPlayerState _State);
 	void Change_Dir(EPlayerDir _Dir);
 
-	EPlayerState Next_AttackType();
+	EPlayerState Set_AttackType();
 	void Set_AttackType(EPlayerState _State) { m_LastAttackType = _State; }
 
 public:

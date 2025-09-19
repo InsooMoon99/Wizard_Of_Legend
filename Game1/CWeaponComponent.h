@@ -17,9 +17,12 @@ public:
 	void Release() override;
 
 public:
-	void Fire_Ball();
+	void Equip_Skill(ESkillType _SkillType);
+	void Activate_Skill(ESkillType _SkillType);
 
 private:
 	shared_ptr<CSkill> testFireBall;
+
+	unordered_map<ESkillType, shared_ptr<CSkill>> m_Skills;
 };
 
