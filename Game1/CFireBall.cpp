@@ -11,12 +11,12 @@ CFireBall::CFireBall(SkillInfo& _Info) : CSkill_Actor(_Info)
 	m_Pos = _Info.SpawnPos;
 	m_StartPos = m_Pos;
 
-	// FireBall Collision
+	// Fire_Ball Collision
 	{
 		m_Collision = make_shared<ObCircle>();
 		m_Collision->scale = Vec2(80.f, 80.f);
 		m_Collision->SetWorldPos(Vec2(m_Pos.x, m_Pos.y));
-		m_Collision->visible = false;
+		m_Collision->visible = true;
 		m_Collision->collider = COLLIDER::CIRCLE;
 		m_Collision->isFilled = false;
 		m_Collision->rotation = m_Skill_Info.Angle;
@@ -28,6 +28,7 @@ CFireBall::CFireBall(SkillInfo& _Info) : CSkill_Actor(_Info)
 
 	m_FireBall = RESOURCE->CreateSprite(L"Skill\\FireBall.png", Vec2(980.f / 14.f, 50.f) * 2.5f, Int2(14,1), true);
 	m_FireBall->SetParentRT(*m_Collision);
+	m_FireBall->SetLocalPosX(10.f);
 	m_FireBall->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
 
 }
@@ -67,7 +68,7 @@ void CFireBall::Tick()
 		return;
 	}
 
-	m_Collision->MoveWorldPos(m_Skill_Info.Aim_Dir * 800.f * DELTA);
+	m_Collision->MoveWorldPos(m_Skill_Info.Aim_Dir * 1000.f * DELTA);
 
 	m_Collision->Update();
 	m_FireBall->Update();
@@ -174,7 +175,7 @@ void CFireBall::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 	Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
 	Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
 	PARTICLE->Spawn_Particle(L"HitSpark", particlePos + randomVec);
-	PARTICLE->Spawn_Particle(L"Fire_HitEffect", other->GetWorldPos());
+	PARTICLE->Spawn_Particle(L"Fire_HitEffect", collider->GetWorldPos());
 
 	m_PendingKill = true;
 }

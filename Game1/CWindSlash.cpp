@@ -13,20 +13,17 @@ CWindSlash::CWindSlash(SkillInfo& _Info)
 
 	Vec2 pos = Vec2(m_Pos.x + pos_Offset.x, m_Pos.y + pos_Offset.y);
 
-	// Wind Collision
-	{
-		m_Collision = make_shared<ObCircle>();
-		m_Collision->scale = Vec2(80.f, 80.f);
-		m_Collision->SetWorldPos(pos);
-		m_Collision->visible = false;
-		m_Collision->collider = COLLIDER::CIRCLE;
-		m_Collision->isFilled = false;
-		m_Collision->rotation = m_Skill_Info.Angle + rotation_Offset;
-		m_Collision->Set_Owner(this);
-		m_Collision->Set_Instigator(m_Skill_Info.Instigator);
+	m_Collision = make_shared<ObCircle>();
+	m_Collision->scale = Vec2(80.f, 80.f);
+	m_Collision->SetWorldPos(pos);
+	m_Collision->visible = false;
+	m_Collision->collider = COLLIDER::CIRCLE;
+	m_Collision->isFilled = false;
+	m_Collision->rotation = m_Skill_Info.Angle + rotation_Offset;
+	m_Collision->Set_Owner(this);
+	m_Collision->Set_Instigator(m_Skill_Info.Instigator);
 
-		COLLISION->AddCollider(m_Collision.get());
-	}
+	COLLISION->AddCollider(m_Collision.get());
 
 	shared_ptr<ObImage> wind = PARTICLE->Spawn_Particle(L"Wind_Slash", pos);
 	wind->rotation = m_Collision->rotation;
@@ -48,8 +45,7 @@ void CWindSlash::Tick()
 {
 	CSkill_Actor::Tick();
 
-	if (m_PendingKill)
-		return;
+	if (m_PendingKill) return;
 
 	// 위치 갱신
 	if (m_Collision)

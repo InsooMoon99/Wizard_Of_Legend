@@ -25,7 +25,9 @@
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CDefine.h" />
     <ClInclude Include="CDummy.h" />
+    <ClInclude Include="CGaia_Armor.h" />
     <ClInclude Include="CSkill_Factory.h" />
+    <ClInclude Include="CSkill_Gaia_Armor.h" />
     <ClInclude Include="CSkill_WindSlash.h" />
     <ClInclude Include="CStage_Edit.h" />
     <ClInclude Include="CEnums.h" />
@@ -70,7 +72,9 @@
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CDummy.cpp" />
+    <ClCompile Include="CGaia_Armor.cpp" />
     <ClCompile Include="CSkill_Factory.cpp" />
+    <ClCompile Include="CSkill_Gaia_Armor.cpp" />
     <ClCompile Include="CSkill_WindSlash.cpp" />
     <ClCompile Include="CStage_Edit.cpp" />
     <ClCompile Include="CFireBall.cpp" />

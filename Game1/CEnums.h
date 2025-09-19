@@ -59,8 +59,10 @@ enum class ETileType
 
 enum class ESkillType
 {
-	WindSlash,
-	FireBall,
+	Wind_Slash,
+	Fire_Ball,
+	Gaia_Armor,
+
 
 	SKILL_END
 };

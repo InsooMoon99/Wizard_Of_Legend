@@ -43,8 +43,9 @@ void CPlayer::BeginPlay()
 
 	if (m_Weapon)
 	{
-		m_Weapon->Equip_Skill(ESkillType::FireBall);
-		m_Weapon->Equip_Skill(ESkillType::WindSlash);
+		m_Weapon->Equip_Skill(ESkillType::Fire_Ball);
+		m_Weapon->Equip_Skill(ESkillType::Wind_Slash);
+		m_Weapon->Equip_Skill(ESkillType::Gaia_Armor);
 	}
 }
 
@@ -224,7 +225,7 @@ void CPlayer::Key_Input()
 	if (INPUT->KeyDown('Q'))
 	{
 		m_State->Change_State(m_State->Set_AttackType());
-		m_Weapon->Activate_Skill(ESkillType::FireBall);
+		m_Weapon->Activate_Skill(ESkillType::Fire_Ball);
 
 		return;
 	}
@@ -232,7 +233,15 @@ void CPlayer::Key_Input()
 	if (INPUT->KeyDown(VK_LBUTTON))
 	{
 		m_State->Change_State(m_State->Set_AttackType());
-		m_Weapon->Activate_Skill(ESkillType::WindSlash);
+		m_Weapon->Activate_Skill(ESkillType::Wind_Slash);
+
+		return;
+	}
+
+	if (INPUT->KeyDown('E'))
+	{
+		m_State->Change_State(m_State->Set_AttackType());
+		m_Weapon->Activate_Skill(ESkillType::Gaia_Armor);
 
 		return;
 	}
