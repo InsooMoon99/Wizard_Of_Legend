@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CStage01.h"
 #include "CActor.h"
-#include "CBoss.h"
+#include "CBoss_Light.h"
 #include "CDummy.h"
 #include "CPlayer.h"
 #include "CResourceManager.h"
@@ -10,8 +10,10 @@
 CStage01::CStage01()
 {
 	m_Player = new CPlayer();
+	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player);
 	m_TestDummy = new CDummy();
-	m_Boss = new CBoss();
+	m_Boss = new CBoss_Light();
+	m_BossUI = CHelper::GetComponent<CUIComponent>(m_Boss);
 
 	m_Actors.push_back(m_TestDummy);
 	m_Actors.push_back(m_Boss);
@@ -41,7 +43,7 @@ void CStage01::Init()
 	CDummy* dummy = dynamic_cast<CDummy*>(m_TestDummy);
 	dummy->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(250.f, 150.f));
 
-	CBoss* boss = dynamic_cast<CBoss*>(m_Boss);
+	CBoss_Light* boss = dynamic_cast<CBoss_Light*>(m_Boss);
 	boss->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(100.f, 200.f));
 }
 
@@ -49,19 +51,31 @@ void CStage01::Update()
 {
 	CScene::Update();
 
+	RENDER->Release();
+
 	if (INPUT->KeyDown('L'))
 	{
 		TILE->Load_Data();
 	}
 
 	for (auto& actor : m_Actors)
+	{
 		actor->Tick();
+		RENDER->AddRenderObject(actor);
+	}
+
+	for (const auto& hud : m_BossUI->GetHUD())
+		RENDER->AddRenderObject(hud.get());
+
+	for (const auto& hud : m_PlayerUI->GetHUD())
+		RENDER->AddRenderObject(hud.get());
 
 	for (auto& map : m_Map)
 		map.second->Update();
 	
 	for (auto& object : m_Objects)
 		object->Update();
+
 }
 
 void CStage01::LateUpdate()
@@ -93,8 +107,9 @@ void CStage01::Render()
 	for (auto& object : m_Objects)
 		object->Render();
 
-	for (auto& actor : m_Actors)
-		actor->Render();
+	//for (auto& actor : m_Actors)
+	//	actor->Render();
+	RENDER->Render();
 }
 
 void CStage01::Release()

@@ -8,7 +8,7 @@ CWindSlash::CWindSlash(SkillInfo& _Info)
 	m_Pos = _Info.SpawnPos;
 	m_StartPos = _Info.SpawnPos;
 
-	Vec2 pos_Offset = m_Skill_Info.Aim_Dir * 50.f;
+	Vec2 pos_Offset = m_Skill_Info.Aim_Dir * 80.f;
 	float rotation_Offset = - PI / 2;
 
 	Vec2 pos = Vec2(m_Pos.x + pos_Offset.x, m_Pos.y + pos_Offset.y);

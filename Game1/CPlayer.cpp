@@ -63,41 +63,41 @@ void CPlayer::Tick()
 
 	Key_Input();
 
-	if (m_State->Get_State() == EPlayerState::Idle || m_State->Get_State() == EPlayerState::Walk)
+	if (m_State->Get_State() == ECharacterState::Idle || m_State->Get_State() == ECharacterState::Walk)
 	{
 		if (INPUT->KeyDown(VK_SPACE))
 		{
-			m_State->Change_State(EPlayerState::Dash);
+			m_State->Change_State(ECharacterState::Dash);
 		}
 		else if (m_MoveDir.x != 0 || m_MoveDir.y != 0)
 		{
-			m_State->Change_State(EPlayerState::Walk);
+			m_State->Change_State(ECharacterState::Walk);
 
 			m_LastDir = m_MoveDir;
 			m_LastDir.Normalize();
 		}
 		else
 		{
-			m_State->Change_State(EPlayerState::Idle);
+			m_State->Change_State(ECharacterState::Idle);
 		}
 	}
 
 	switch (m_State->Get_State())
 	{
-	case EPlayerState::Idle:
+	case ECharacterState::Idle:
 		State_Idle();
 		break;
 
-	case EPlayerState::Walk:
+	case ECharacterState::Walk:
 		State_Walk();
 		break;
 
-	case EPlayerState::Dash:
+	case ECharacterState::Dash:
 		State_Dash();
 		break;
 
-	case EPlayerState::Attack1:
-	case EPlayerState::Attack2:
+	case ECharacterState::Attack1:
+	case ECharacterState::Attack2:
 		State_Attack();
 		break;
 	}
@@ -203,16 +203,16 @@ void CPlayer::Hit_Effect()
 
 void CPlayer::Key_Input()
 {
-	if (m_State->Get_State() == EPlayerState::Dash)
+	if (m_State->Get_State() == ECharacterState::Dash)
 		return;
 
 	m_MoveDir = Vec2(0.f, 0.f);
 	EPlayerDir		curtDir = m_State->Get_Dir();
-	EPlayerState	curState = m_State->Get_State();
+	ECharacterState	curState = m_State->Get_State();
 
 	// TODO : 공격 중일 때 못움직이는게 아니라, 따로 조금씩 움직일수 있도록 처리해주기 ? 
-	bool bCheck =	m_State->Get_State() != EPlayerState::Attack1 && 
-					m_State->Get_State() != EPlayerState::Attack2;
+	bool bCheck =	m_State->Get_State() != ECharacterState::Attack1 && 
+					m_State->Get_State() != ECharacterState::Attack2;
 
 	if (bCheck)
 	{
@@ -318,7 +318,7 @@ void CPlayer::State_Walk()
 void CPlayer::State_Dash()
 {
 	if (m_CurImg->frame.x >= m_DashEndFrame)
-		m_State->Change_State(EPlayerState::Idle);
+		m_State->Change_State(ECharacterState::Idle);
 
 	else
 	{
@@ -329,12 +329,12 @@ void CPlayer::State_Dash()
 			if (m_CurImg->frame.x < 5)
 			{
 				float lerpTime = (float)m_CurImg->frame.x / 5.0f;
-				m_Shadow[EPlayerState::Dash]->scale = Vec2::Lerp(m_StartShadowScale, m_EndShadowScale, lerpTime);
+				m_Shadow[ECharacterState::Dash]->scale = Vec2::Lerp(m_StartShadowScale, m_EndShadowScale, lerpTime);
 			}
 			else if (m_CurImg->frame.x < m_DashEndFrame)
 			{
 				float lerpTime = (float)(m_CurImg->frame.x - 5) / (float)(m_DashEndFrame - 5);
-				m_Shadow[EPlayerState::Dash]->scale = Vec2::Lerp(m_EndShadowScale, m_StartShadowScale, lerpTime);
+				m_Shadow[ECharacterState::Dash]->scale = Vec2::Lerp(m_EndShadowScale, m_StartShadowScale, lerpTime);
 			}
 		}
 
@@ -350,10 +350,10 @@ void CPlayer::State_Attack()
 		return;
 
 	if (m_CurImg && m_CurImg->frame.x >= m_CurImg->maxFrame.x - 1)
-		m_State->Change_State(EPlayerState::Idle);
+		m_State->Change_State(ECharacterState::Idle);
 }
 
-void CPlayer::SetSprite(EPlayerState _State, EPlayerDir _Dir)
+void CPlayer::SetSprite(ECharacterState _State, EPlayerDir _Dir)
 {
 	CCharacter::SetSprite(_State, _Dir);
 
@@ -380,19 +380,19 @@ void CPlayer::SetSprite(EPlayerState _State, EPlayerDir _Dir)
 	Shadow_Size();
 }
 
-void CPlayer::Play_Sprite(EPlayerState _State)
+void CPlayer::Play_Sprite(ECharacterState _State)
 {
 	switch (_State)
 	{
-	case EPlayerState::Idle:
+	case ECharacterState::Idle:
 		m_CurImg->ChangeAnim(ANIMSTATE::STOP, 0.0f);
 		break;
 
-	case EPlayerState::Walk:
+	case ECharacterState::Walk:
 		m_CurImg->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 		break;
 
-	case EPlayerState::Dash:
+	case ECharacterState::Dash:
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.03f);
 		m_CurImg->frame = Int2(0, 0);
 		m_DashEndFrame = m_CurImg->maxFrame.x - 1;
@@ -400,12 +400,12 @@ void CPlayer::Play_Sprite(EPlayerState _State)
 		Dash_Sprite();
 		break;
 
-	case EPlayerState::Attack1:
+	case ECharacterState::Attack1:
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.06f);
 		m_CurImg->frame = Int2(0, 0);
 		break;
 
-	case EPlayerState::Attack2:
+	case ECharacterState::Attack2:
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.06f);
 		m_CurImg->frame = Int2(0, 0);
 		break;
@@ -417,9 +417,9 @@ void CPlayer::Shadow_Size()
 	// Shadow
 	if (m_Shadow.find(m_State->Get_State()) != m_Shadow.end())
 	{
-		if (m_State->Get_State() == EPlayerState::Dash)
+		if (m_State->Get_State() == ECharacterState::Dash)
 		{
-			m_Shadow[EPlayerState::Dash]->scale = m_StartShadowScale;
+			m_Shadow[ECharacterState::Dash]->scale = m_StartShadowScale;
 		}
 
 		m_Shadow[m_State->Get_State()]->visible = true;
@@ -510,14 +510,14 @@ void CPlayer::Resource_Settings()
 		right_Idle->SetLocalPos(Vec2(-21.f, 10.f));
 		right_Idle->frame = Int2(3, 1);
 
-		m_Sprites[EPlayerState::Idle][EPlayerDir::Front]		= front_Idle;
-		m_Sprites[EPlayerState::Idle][EPlayerDir::Front_Left]	= front_Left_Idle;
-		m_Sprites[EPlayerState::Idle][EPlayerDir::Front_Right]	= front_Right_Idle;
-		m_Sprites[EPlayerState::Idle][EPlayerDir::Back]			= back_Idle;
-		m_Sprites[EPlayerState::Idle][EPlayerDir::Back_Left]	= back_Left_Idle;
-		m_Sprites[EPlayerState::Idle][EPlayerDir::Back_Right]	= back_Right_Idle;
-		m_Sprites[EPlayerState::Idle][EPlayerDir::Left]			= left_Idle;
-		m_Sprites[EPlayerState::Idle][EPlayerDir::Right]		= right_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Front]		= front_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Front_Left]	= front_Left_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Front_Right]	= front_Right_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Back]			= back_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Back_Left]	= back_Left_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Back_Right]	= back_Right_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Left]			= left_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Right]		= right_Idle;
 	}
 
 	// State_Walk
@@ -528,27 +528,27 @@ void CPlayer::Resource_Settings()
 		front_Walk->SetParentRT(*m_Collision);
 		front_Walk->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 
-		m_Sprites[EPlayerState::Walk][EPlayerDir::Front] = front_Walk;
-		m_Sprites[EPlayerState::Walk][EPlayerDir::Front_Left] = front_Walk;
-		m_Sprites[EPlayerState::Walk][EPlayerDir::Front_Right] = front_Walk;
+		m_Sprites[ECharacterState::Walk][EPlayerDir::Front] = front_Walk;
+		m_Sprites[ECharacterState::Walk][EPlayerDir::Front_Left] = front_Walk;
+		m_Sprites[ECharacterState::Walk][EPlayerDir::Front_Right] = front_Walk;
 
 		shared_ptr<ObImage> back_Walk = RESOURCE->CreateSprite(L"Player\\Back\\Back_Walk.png", walkSize,Int2(10, 1), false);
 		back_Walk->SetParentRT(*m_Collision);
 		back_Walk->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 
-		m_Sprites[EPlayerState::Walk][EPlayerDir::Back] = back_Walk;
-		m_Sprites[EPlayerState::Walk][EPlayerDir::Back_Left] = back_Walk;
-		m_Sprites[EPlayerState::Walk][EPlayerDir::Back_Right] = back_Walk;
+		m_Sprites[ECharacterState::Walk][EPlayerDir::Back] = back_Walk;
+		m_Sprites[ECharacterState::Walk][EPlayerDir::Back_Left] = back_Walk;
+		m_Sprites[ECharacterState::Walk][EPlayerDir::Back_Right] = back_Walk;
 
 		shared_ptr<ObImage> left_Walk = RESOURCE->CreateSprite(L"Player\\Left\\Left_Walk.png", walkSize,Int2(10, 1), false);
 		left_Walk->SetParentRT(*m_Collision);
 		left_Walk->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
-		m_Sprites[EPlayerState::Walk][EPlayerDir::Left] = left_Walk;
+		m_Sprites[ECharacterState::Walk][EPlayerDir::Left] = left_Walk;
 
 		shared_ptr<ObImage> right_Walk = RESOURCE->CreateSprite(L"Player\\Right\\Right_Walk.png", walkSize,Int2(10, 1), false);
 		right_Walk->SetParentRT(*m_Collision);
 		right_Walk->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
-		m_Sprites[EPlayerState::Walk][EPlayerDir::Right] = right_Walk;
+		m_Sprites[ECharacterState::Walk][EPlayerDir::Right] = right_Walk;
 	}
 
 	// Shadow
@@ -558,21 +558,21 @@ void CPlayer::Resource_Settings()
 		shadow_Idle->SetLocalPos(Vec2(0.5f, -40.f));
 		shadow_Idle->color = Color(0.0f, 0.0f, 0.0f, 0.25f);
 		shadow_Idle->visible = true;
-		m_Shadow.insert({ EPlayerState::Idle, shadow_Idle });
+		m_Shadow.insert({ ECharacterState::Idle, shadow_Idle });
 
 		shared_ptr<ObImage> shadow_Attack = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(80.f, 80.f) * 1.4f);
 		shadow_Attack->SetParentRT(*m_Collision);
 		shadow_Attack->SetLocalPos(Vec2(0.0f, -40.f));
 		shadow_Attack->color = Color(0.0f, 0.0f, 0.0f, 0.15f);
-		m_Shadow.insert({ EPlayerState::Attack1, shadow_Attack });
-		m_Shadow.insert({ EPlayerState::Attack2, shadow_Attack });
+		m_Shadow.insert({ ECharacterState::Attack1, shadow_Attack });
+		m_Shadow.insert({ ECharacterState::Attack2, shadow_Attack });
 
 		shared_ptr<ObImage> shadow_Walk = RESOURCE->CreateImage(L"Shadow\\MIDDLE_SHADOW.bmp", Vec2(60.f, 60.f) * 1.2f);
 		shadow_Walk->SetParentRT(*m_Collision);
 		shadow_Walk->SetLocalPos(Vec2(-2.5f, -40.f));
 		shadow_Walk->color = Color(0.0f, 0.0f, 0.0f, 0.25f);
 		shadow_Walk->visible = true;
-		m_Shadow.insert({ EPlayerState::Walk, shadow_Walk });
+		m_Shadow.insert({ ECharacterState::Walk, shadow_Walk });
 
 		m_StartShadowScale = Vec2(60.f, 60.f) * 1.4f;
 		m_EndShadowScale = Vec2(80.f, 60.f) * 1.6f;
@@ -582,7 +582,7 @@ void CPlayer::Resource_Settings()
 		shadow_Dash->SetLocalPos(Vec2(-2.5f, -40.f));
 		shadow_Dash->color = Color(0.0f, 0.0f, 0.0f, 0.25f);
 
-		m_Shadow.insert({ EPlayerState::Dash, shadow_Dash });
+		m_Shadow.insert({ ECharacterState::Dash, shadow_Dash });
 	}
 
 	// State_Dash
@@ -614,16 +614,16 @@ void CPlayer::Resource_Settings()
 		right_Dash->SetParentRT(*m_Collision);
 		right_Dash->SetLocalPosX(-10.f);
 
-		m_Sprites[EPlayerState::Dash][EPlayerDir::Front] = front_Dash;
-		m_Sprites[EPlayerState::Dash][EPlayerDir::Front_Left] = front_Left_Dash;
-		m_Sprites[EPlayerState::Dash][EPlayerDir::Front_Right] = front_Right_Dash;
+		m_Sprites[ECharacterState::Dash][EPlayerDir::Front] = front_Dash;
+		m_Sprites[ECharacterState::Dash][EPlayerDir::Front_Left] = front_Left_Dash;
+		m_Sprites[ECharacterState::Dash][EPlayerDir::Front_Right] = front_Right_Dash;
 
-		m_Sprites[EPlayerState::Dash][EPlayerDir::Back] = back_Dash;
-		m_Sprites[EPlayerState::Dash][EPlayerDir::Back_Left] = back_Left_Dash;
-		m_Sprites[EPlayerState::Dash][EPlayerDir::Back_Right] = back_Right_Dash;
+		m_Sprites[ECharacterState::Dash][EPlayerDir::Back] = back_Dash;
+		m_Sprites[ECharacterState::Dash][EPlayerDir::Back_Left] = back_Left_Dash;
+		m_Sprites[ECharacterState::Dash][EPlayerDir::Back_Right] = back_Right_Dash;
 
-		m_Sprites[EPlayerState::Dash][EPlayerDir::Left] = left_Dash;
-		m_Sprites[EPlayerState::Dash][EPlayerDir::Right] = right_Dash;
+		m_Sprites[ECharacterState::Dash][EPlayerDir::Left] = left_Dash;
+		m_Sprites[ECharacterState::Dash][EPlayerDir::Right] = right_Dash;
 
 	}
 
@@ -682,50 +682,50 @@ void CPlayer::Resource_Settings()
 
 		shared_ptr<ObImage> attack_Front1 = RESOURCE->CreateSprite(L"Player\\Front\\Front_Left_Attack1.png", attack_Size, Int2(8, 1), false);
 		attack_Front1->SetParentRT(*m_Collision);
-		m_Sprites[EPlayerState::Attack1][EPlayerDir::Front] = attack_Front1;
-		m_Sprites[EPlayerState::Attack1][EPlayerDir::Front_Left] = attack_Front1;
-		m_Sprites[EPlayerState::Attack1][EPlayerDir::Front_Right] = attack_Front1;
+		m_Sprites[ECharacterState::Attack1][EPlayerDir::Front] = attack_Front1;
+		m_Sprites[ECharacterState::Attack1][EPlayerDir::Front_Left] = attack_Front1;
+		m_Sprites[ECharacterState::Attack1][EPlayerDir::Front_Right] = attack_Front1;
 
 
 		shared_ptr<ObImage> attack_Front2 = RESOURCE->CreateSprite(L"Player\\Front\\Front_Left_Attack2.png", attack_Size, Int2(8, 1), false);
 		attack_Front2->SetParentRT(*m_Collision);
-		m_Sprites[EPlayerState::Attack2][EPlayerDir::Front] = attack_Front2;
-		m_Sprites[EPlayerState::Attack2][EPlayerDir::Front_Left] = attack_Front2;
-		m_Sprites[EPlayerState::Attack2][EPlayerDir::Front_Right] = attack_Front2;
+		m_Sprites[ECharacterState::Attack2][EPlayerDir::Front] = attack_Front2;
+		m_Sprites[ECharacterState::Attack2][EPlayerDir::Front_Left] = attack_Front2;
+		m_Sprites[ECharacterState::Attack2][EPlayerDir::Front_Right] = attack_Front2;
 
 		// Back
 		shared_ptr<ObImage> attack_Back1 = RESOURCE->CreateSprite(L"Player\\Back\\Back_Attack1.png", attack_Size, Int2(8, 1), false);
 		attack_Back1->SetParentRT(*m_Collision);
-		m_Sprites[EPlayerState::Attack1][EPlayerDir::Back] = attack_Back1;
+		m_Sprites[ECharacterState::Attack1][EPlayerDir::Back] = attack_Back1;
 
 		shared_ptr<ObImage> attack_Back2 = RESOURCE->CreateSprite(L"Player\\Back\\Back_Attack2.png", attack_Size, Int2(8, 1), false);
 		attack_Back2->SetParentRT(*m_Collision);
-		m_Sprites[EPlayerState::Attack2][EPlayerDir::Back] = attack_Back2;
-		m_Sprites[EPlayerState::Attack2][EPlayerDir::Back_Left] = attack_Back2;
-		m_Sprites[EPlayerState::Attack2][EPlayerDir::Back_Right] = attack_Back2;
+		m_Sprites[ECharacterState::Attack2][EPlayerDir::Back] = attack_Back2;
+		m_Sprites[ECharacterState::Attack2][EPlayerDir::Back_Left] = attack_Back2;
+		m_Sprites[ECharacterState::Attack2][EPlayerDir::Back_Right] = attack_Back2;
 
 		// Left
 		shared_ptr<ObImage> attack_Left1 = RESOURCE->CreateSprite(L"Player\\Left\\Left_Attack1.png", attack_Size, Int2(8, 1), false);
 		attack_Left1->SetParentRT(*m_Collision);
-		m_Sprites[EPlayerState::Attack1][EPlayerDir::Left] = attack_Left1;
-		m_Sprites[EPlayerState::Attack1][EPlayerDir::Back_Left] = attack_Left1;
+		m_Sprites[ECharacterState::Attack1][EPlayerDir::Left] = attack_Left1;
+		m_Sprites[ECharacterState::Attack1][EPlayerDir::Back_Left] = attack_Left1;
 
 
 		shared_ptr<ObImage> attack_Left2 = RESOURCE->CreateSprite(L"Player\\Left\\Left_Attack2.png", attack_Size, Int2(8, 1), false);
 		attack_Left2->SetParentRT(*m_Collision);
-		m_Sprites[EPlayerState::Attack2][EPlayerDir::Left] = attack_Left2;
-		m_Sprites[EPlayerState::Attack2][EPlayerDir::Back_Left] = attack_Left2;
+		m_Sprites[ECharacterState::Attack2][EPlayerDir::Left] = attack_Left2;
+		m_Sprites[ECharacterState::Attack2][EPlayerDir::Back_Left] = attack_Left2;
 
 		// Right
 		auto attack_Right1 = RESOURCE->CreateSprite(L"Player\\Right\\Right_Attack1.png", attack_Size, Int2(8, 1), false);
 		attack_Right1->SetParentRT(*m_Collision);
-		m_Sprites[EPlayerState::Attack1][EPlayerDir::Right] = attack_Right1;
-		m_Sprites[EPlayerState::Attack1][EPlayerDir::Back_Right] = attack_Right1;
+		m_Sprites[ECharacterState::Attack1][EPlayerDir::Right] = attack_Right1;
+		m_Sprites[ECharacterState::Attack1][EPlayerDir::Back_Right] = attack_Right1;
 
 		auto attack_Right2 = RESOURCE->CreateSprite(L"Player\\Right\\Right_Attack2.png", attack_Size, Int2(8, 1), false);
 		attack_Right2->SetParentRT(*m_Collision);
-		m_Sprites[EPlayerState::Attack2][EPlayerDir::Right] = attack_Right2;
-		m_Sprites[EPlayerState::Attack2][EPlayerDir::Back_Right] = attack_Right2;
+		m_Sprites[ECharacterState::Attack2][EPlayerDir::Right] = attack_Right2;
+		m_Sprites[ECharacterState::Attack2][EPlayerDir::Back_Right] = attack_Right2;
 
 	}
 
@@ -741,7 +741,7 @@ void CPlayer::Resource_Settings()
 	}
 
 	// Start Image Setting
-	m_CurImg = m_Sprites[EPlayerState::Idle][EPlayerDir::Front];
+	m_CurImg = m_Sprites[ECharacterState::Idle][EPlayerDir::Front];
 	SetSprite(m_State->Get_State(), m_State->Get_Dir());
 }
 
@@ -796,7 +796,7 @@ void CPlayer::MoveTile(const Vec2& dir, float speed)
 {
 	if (!m_Collision) return;
 
-	EPlayerState playerState = m_State->Get_State();
+	ECharacterState playerState = m_State->Get_State();
 	
 	GameObject* col = m_Collision.get();
 	
@@ -817,7 +817,7 @@ void CPlayer::MoveTile(const Vec2& dir, float speed)
 		Vec2 minW = next - half;
 		Vec2 maxW = next + half;
 	
-		if (!TILE->IsBlocked_ExceptFall(minW, maxW, playerState == EPlayerState::Dash))
+		if (!TILE->IsBlocked_ExceptFall(minW, maxW, playerState == ECharacterState::Dash))
 		{
 			col->MoveWorldPos(dirX);
 		}
@@ -833,7 +833,7 @@ void CPlayer::MoveTile(const Vec2& dir, float speed)
 		Vec2 minW = next - half;
 		Vec2 maxW = next + half;
 	
-		if (!TILE->IsBlocked_ExceptFall(minW, maxW, playerState == EPlayerState::Dash))
+		if (!TILE->IsBlocked_ExceptFall(minW, maxW, playerState == ECharacterState::Dash))
 		{
 			col->MoveWorldPos(dirY);
 		}

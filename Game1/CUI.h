@@ -1,6 +1,8 @@
 #pragma once
 
-class CUI
+#include "CGameObject.h"
+
+class CUI : public CGameObject
 {
 public:
 	CUI();

@@ -29,16 +29,16 @@ protected:
 	
 protected:
 	virtual void Resource_Settings() abstract {};
-	virtual void SetSprite(EPlayerState _State, EPlayerDir _Dir) abstract {};
-	virtual void Play_Sprite(EPlayerState _State) abstract {}
+	virtual void SetSprite(ECharacterState _State, EPlayerDir _Dir) abstract {};
+	virtual void Play_Sprite(ECharacterState _State) abstract {}
 
 protected:
-	unordered_map<EPlayerState, unordered_map<EPlayerDir, shared_ptr<ObImage>>> m_Sprites;
+	unordered_map<ECharacterState, unordered_map<EPlayerDir, shared_ptr<ObImage>>> m_Sprites;
 
 	// Components
 	vector<CComponent*> m_Components = {};
 
-	EPlayerState m_prevState;
+	ECharacterState m_prevState;
 	EPlayerDir   m_prevDir;
 
 	float m_HitTimer = 0.f;

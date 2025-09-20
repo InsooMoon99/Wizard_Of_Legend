@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CFireBall.h"
 #include "CResourceManager.h"
 #include "CCharacter.h"
@@ -16,7 +16,7 @@ CFireBall::CFireBall(SkillInfo& _Info) : CSkill_Actor(_Info)
 		m_Collision = make_shared<ObCircle>();
 		m_Collision->scale = Vec2(80.f, 80.f);
 		m_Collision->SetWorldPos(Vec2(m_Pos.x, m_Pos.y));
-		m_Collision->visible = true;
+		m_Collision->visible = false;
 		m_Collision->collider = COLLIDER::CIRCLE;
 		m_Collision->isFilled = false;
 		m_Collision->rotation = m_Skill_Info.Angle;
@@ -31,6 +31,9 @@ CFireBall::CFireBall(SkillInfo& _Info) : CSkill_Actor(_Info)
 	m_FireBall->SetLocalPosX(10.f);
 	m_FireBall->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
 
+	m_FireBall_Particle.resize(4);
+
+
 }
 
 CFireBall::~CFireBall()
@@ -42,6 +45,44 @@ void CFireBall::BeginPlay()
 {
 	Super::BeginPlay();
 
+	const Vec2 offset[4] =
+	{
+		{ +40.f,  -20.f },  
+		{ +40.f,  -10.f }, 
+		{ +40.f, +10.f }, 
+		{ +40.f, +20.f }, 
+	};
+
+	Vec2 fwd = m_Skill_Info.Aim_Dir; fwd.Normalize();
+	Vec2 right(fwd.y, -fwd.x);
+
+	auto ToWorld = [&](const Vec2& local) {
+		return m_Pos + fwd * local.x + right * local.y;
+		};
+
+	for (int i = 0; i < 4; ++i)
+	{
+		wstring key;
+
+		switch (i)
+		{
+		case 0: key = L"Fire4";  break;
+		case 1: key = L"Fire1"; break;
+		case 2: key = L"Fire3"; break;
+		case 3: key = L"Fire2"; break;
+		}
+
+		Vec2 worldPos = ToWorld(offset[i]);
+
+		auto particle = PARTICLE->Spawn_Particle(key, worldPos);
+		if (!particle) continue;
+
+		particle->rotation = m_Skill_Info.Angle; 
+		particle->visible = true;
+
+		m_FireBall_Particle[i] = particle; 
+	}
+
 }
 
 void CFireBall::Tick()
@@ -51,11 +92,11 @@ void CFireBall::Tick()
 	if (m_PendingKill)
 		return;
 
-	// À§Ä¡ °»½Å
+	// ìœ„ì¹˜ ê°±ì‹ 
 	if (m_Collision)
 		m_Pos = m_Collision->GetWorldPos();
 
-	// ÀÌµ¿ ÈÄ, º® Ãæµ¹ ¸ÕÀú Ã¼Å©
+	// ì´ë™ í›„, ë²½ ì¶©ëŒ ë¨¼ì € ì²´í¬
 	if (CheckHitWall()) 
 		return;
 
@@ -72,6 +113,8 @@ void CFireBall::Tick()
 
 	m_Collision->Update();
 	m_FireBall->Update();
+
+
 }
 
 void CFireBall::LateUpdate()
@@ -85,10 +128,12 @@ void CFireBall::Render()
 {
 	Super::Render();
 
-	if (m_PendingKill) return;
+	//if (m_PendingKill) return;
 
 	m_Collision->Render();
 	m_FireBall->Render();
+
+
 }
 
 void CFireBall::Release()
@@ -154,7 +199,7 @@ void CFireBall::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 	CCharacter* hit = dynamic_cast<CCharacter*>(other->Get_Owner());
 	if (!hit)return;
 
-	// TODO : ÆÀÅ³/ÀÚ±â ¹«½Ã
+	// TODO : íŒ€í‚¬/ìžê¸° ë¬´ì‹œ
 	if (hit == m_Skill_Info.Instigator) return;
 	//if (IsSameTeam(hit, m_Collision->Get_Instigator())) return;
 
@@ -162,7 +207,7 @@ void CFireBall::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 	dir.Normalize();
 	hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
 
-	// »ö º¯°æ : Hit Monster¿¡¼­ ÀÎÅÍÆäÀÌ½º »ó¼Ó¹Þ¾Æ¾ßÇÔ
+	// ìƒ‰ ë³€ê²½ : Hit Monsterì—ì„œ ì¸í„°íŽ˜ì´ìŠ¤ ìƒì†ë°›ì•„ì•¼í•¨
 	IColorChanger* colorChanger = hit;
 	if (colorChanger) 
 		colorChanger->Hit_Color();

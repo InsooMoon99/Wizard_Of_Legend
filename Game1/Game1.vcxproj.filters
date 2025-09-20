@@ -127,12 +127,26 @@
     <ClInclude Include="CTile.h">
       <Filter>08. Tile</Filter>
     </ClInclude>
-    <ClInclude Include="CBoss.h" />
-    <ClInclude Include="CGaia_Armor.h">
+    <ClInclude Include="CEarth_Shield.h">
       <Filter>06. Skill\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="CSkill_Gaia_Armor.h">
+    <ClInclude Include="CSkill_Earth_Shield.h">
       <Filter>06. Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderManager.h">
+      <Filter>01. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_BossHUD.h">
+      <Filter>98.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_BossStatus.h">
+      <Filter>98.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoss_Light.h">
+      <Filter>03. Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameObject.h">
+      <Filter>00. MainGame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -222,9 +236,6 @@
     <ClCompile Include="CObject.cpp">
       <Filter>05. Objects</Filter>
     </ClCompile>
-    <ClCompile Include="CUI.cpp">
-      <Filter>98.UI</Filter>
-    </ClCompile>
     <ClCompile Include="CUI_PlayerStatus.cpp">
       <Filter>98.UI</Filter>
     </ClCompile>
@@ -291,12 +302,29 @@
     <ClCompile Include="CTile.cpp">
       <Filter>08. Tile</Filter>
     </ClCompile>
-    <ClCompile Include="CBoss.cpp" />
-    <ClCompile Include="CGaia_Armor.cpp">
+    <ClCompile Include="CEarth_Shield.cpp">
       <Filter>06. Skill\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="CSkill_Gaia_Armor.cpp">
+    <ClCompile Include="CSkill_Earth_Shield.cpp">
       <Filter>06. Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderManager.cpp">
+      <Filter>01. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_BossHUD.cpp">
+      <Filter>98.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_BossStatus.cpp">
+      <Filter>98.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoss_Light.cpp">
+      <Filter>03. Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI.cpp">
+      <Filter>00. MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameObject.cpp">
+      <Filter>00. MainGame</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

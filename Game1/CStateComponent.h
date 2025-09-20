@@ -15,20 +15,20 @@ public:
 	void Release() override;
 
 public:
-	void Change_State(EPlayerState _State);
+	void Change_State(ECharacterState _State);
 	void Change_Dir(EPlayerDir _Dir);
 
-	EPlayerState Set_AttackType();
-	void Set_AttackType(EPlayerState _State) { m_LastAttackType = _State; }
+	ECharacterState Set_AttackType();
+	void Set_AttackType(ECharacterState _State) { m_LastAttackType = _State; }
 
 public:
-	EPlayerState Get_State()		{ return m_PlayerState; }
+	ECharacterState Get_State()		{ return m_PlayerState; }
 
 	EPlayerDir	 Get_Dir()			{ return m_PlayerDir; }
 
 private:
-	EPlayerState m_PlayerState;
-	EPlayerState m_LastAttackType;
+	ECharacterState m_PlayerState;
+	ECharacterState m_LastAttackType;
 
 	EPlayerDir	 m_PlayerDir;
 

@@ -2,6 +2,12 @@
 
 #include "CScene.h"
 
+class CPlayer;
+class CActor;
+class CBoss_Light;
+class CUIComponent;
+
+
 class CStage02 : public CScene
 {
 public:
@@ -14,5 +20,21 @@ public:
 	void LateUpdate() override;
 	void Render() override;
 	void Release() override;
+
+public:
+	void Resource_Setting();
+
+private:
+	vector<CActor*> m_Actors;
+	vector<shared_ptr<ObImage>> m_Objects;
+
+	Vec2 m_PlayerPos;
+	Vec2 m_MapSize;
+
+	CActor* m_Boss;
+
+	CUIComponent* m_BossUI;
+	CUIComponent* m_PlayerUI;
+
 };
 

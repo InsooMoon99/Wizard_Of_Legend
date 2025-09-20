@@ -3,7 +3,7 @@
 
 #include "CComponent.h"
 
-CActor::CActor()
+CActor::CActor() : CGameObject(ERenderLayer::Render_GameObject)
 {
 
 }

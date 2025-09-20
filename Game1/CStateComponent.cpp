@@ -3,10 +3,10 @@
 
 CStateComponent::CStateComponent()
 {
-	m_PlayerState = EPlayerState::Idle;
+	m_PlayerState = ECharacterState::Idle;
 	m_PlayerDir = EPlayerDir::Front;
 
-	m_LastAttackType = EPlayerState::Attack2;
+	m_LastAttackType = ECharacterState::Attack2;
 }
 
 CStateComponent::~CStateComponent()
@@ -37,15 +37,15 @@ void CStateComponent::Release()
 
 }
 
-void CStateComponent::Change_State(EPlayerState _State)
+void CStateComponent::Change_State(ECharacterState _State)
 {
 	if (m_PlayerState == _State)
 		return;
 
 	switch (_State)
 	{
-	case EPlayerState::Attack1:
-	case EPlayerState::Attack2:
+	case ECharacterState::Attack1:
+	case ECharacterState::Attack2:
 		m_LastAttackType = _State;
 		break;
 	}
@@ -61,9 +61,9 @@ void CStateComponent::Change_Dir(EPlayerDir _Dir)
 	m_PlayerDir = _Dir;
 }
 
-EPlayerState CStateComponent::Set_AttackType()
+ECharacterState CStateComponent::Set_AttackType()
 {
-	EPlayerState next =(m_LastAttackType == EPlayerState::Attack1) ? EPlayerState::Attack2 : EPlayerState::Attack1;
+	ECharacterState next =(m_LastAttackType == ECharacterState::Attack1) ? ECharacterState::Attack2 : ECharacterState::Attack1;
 	m_LastAttackType = next;
 
 	return next;

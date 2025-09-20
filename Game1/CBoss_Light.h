@@ -5,11 +5,11 @@
 class CWeaponComponent;
 class CUIComponent;
 
-class CBoss : public CCharacter
+class CBoss_Light : public CCharacter
 {
 public:
-	CBoss();
-	virtual ~CBoss();
+	CBoss_Light();
+	virtual ~CBoss_Light();
 
 public:
 	void BeginPlay() override;
@@ -37,14 +37,21 @@ public:
 	void State_Walk();
 	void State_Attack();
 
+	void Set_ManPos(Vec2 _pos) { m_Twin_ManPos; }
+	void Set_GirlPos(Vec2 _pos) { m_Twin_GirlPos; }
+
 protected:
-	void SetSprite(EPlayerState _State, EPlayerDir _Dir) override;
-	void Play_Sprite(EPlayerState _State) override;
+	void SetSprite(ECharacterState _State, EPlayerDir _Dir) override;
+	void Play_Sprite(ECharacterState _State) override;
 
 	void Resource_Settings() override;
 
-
 private:
+	shared_ptr<GameObject> m_GirCollision;
+
+	Vec2 m_Twin_ManPos;
+	Vec2 m_Twin_GirlPos;
+
 
 };
 

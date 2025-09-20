@@ -2,7 +2,7 @@
 #include "CSkill_Factory.h"
 
 #include "CSkill_FireBall.h"
-#include "CSkill_Gaia_Armor.h"
+#include "CSkill_Earth_Shield.h"
 #include "CSkill_WindSlash.h"
 
 shared_ptr<CSkill> CSkill_Factory::CreateSkill(ESkillType _SkillType)
@@ -16,7 +16,7 @@ shared_ptr<CSkill> CSkill_Factory::CreateSkill(ESkillType _SkillType)
 		return make_shared<CSkill_FireBall>();
 
 	case ESkillType::Gaia_Armor:
-		return make_shared<CSkill_Gaia_Armor>();
+		return make_shared<CSkill_Earth_Shield>();
 
 	case ESkillType::SKILL_END:
 		break;

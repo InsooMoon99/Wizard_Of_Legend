@@ -1,5 +1,15 @@
 #pragma once
 
+enum class ERenderLayer
+{
+	Render_Background,
+	Render_GameObject,
+	Render_Effect,
+	Render_UI,
+
+	Render_END
+};
+
 enum class ESceneType
 {
 	Start = 0,
@@ -11,24 +21,15 @@ enum class ESceneType
 	Stage_End
 };
 
-// TODO : 렌더링 순서 문제 생기면 ELayerType 사용하기
-enum class ELayerType
-{
-	Layer_BackGround,
-	Layer_Object,
-	Layer_Player,
-	Layer_UI,
-
-	Layer_MaxCount,
-};
-
-enum class EPlayerState
+enum class ECharacterState
 {
 	Idle = 0,
 	Walk,
 	Dash,
 	Attack1,
 	Attack2,
+
+	Boss_Start,
 
 	PS_END
 };

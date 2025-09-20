@@ -3,10 +3,11 @@
 #include "CSceneManager.h"
 #include "CCollisionManager.h"
 #include "CParticleManager.h"
+#include "CRenderManager.h"
 
 void Main::Init()
 {
-	SCENE->Change_Scene(ESceneType::Start);
+	SCENE->Change_Scene(ESceneType::Stage02);
 	PARTICLE->Init();
 	TILE->Init();
 
@@ -60,7 +61,10 @@ void Main::Render()
 void Main::Release()
 {
 	SCENE->Destroy_Instance();
+	TILE->Destroy_Instance();
+	COLLISION->Destroy_Instance();
 	PARTICLE->Destroy_Instance();
+	RENDER->Destroy_Instance();
 
 }
 

@@ -131,14 +131,14 @@ void CDummy::Resource_Settings()
 	Dummy_Image->scale = Vec2(29.f, 48.f) * 3.0f;
 	Dummy_Image->visible = true;
 
-	m_Sprites[EPlayerState::Idle][EPlayerDir::Front] = Dummy_Image;
+	m_Sprites[ECharacterState::Idle][EPlayerDir::Front] = Dummy_Image;
 	
 	// Start Image Setting
-	m_CurImg = m_Sprites[EPlayerState::Idle][EPlayerDir::Front];
+	m_CurImg = m_Sprites[ECharacterState::Idle][EPlayerDir::Front];
 	SetSprite(m_State->Get_State(), m_State->Get_Dir());
 }
 
-void CDummy::SetSprite(EPlayerState _State, EPlayerDir _Dir)
+void CDummy::SetSprite(ECharacterState _State, EPlayerDir _Dir)
 {
 	CCharacter::SetSprite(_State, _Dir);
 
@@ -157,13 +157,13 @@ void CDummy::SetSprite(EPlayerState _State, EPlayerDir _Dir)
 	}
 }
 
-void CDummy::Play_Sprite(EPlayerState _State)
+void CDummy::Play_Sprite(ECharacterState _State)
 {
 	CCharacter::Play_Sprite(_State);
 
 	switch (_State)
 	{
-	case EPlayerState::Idle:
+	case ECharacterState::Idle:
 		m_CurImg->ChangeAnim(ANIMSTATE::STOP, 0.0f);
 		break;
 	}

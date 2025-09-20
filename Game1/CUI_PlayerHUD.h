@@ -21,7 +21,7 @@ public:
 	void Release() override;
 
 public:
-	shared_ptr<CUI_PlayerStatus> Get_PlayerStatus() { return m_PlayerStatus; }
+	shared_ptr<CUI_PlayerStatus> Get_Status() { return m_PlayerStatus; }
 
 private:
 	shared_ptr<CUI_PlayerStatus> m_PlayerStatus;

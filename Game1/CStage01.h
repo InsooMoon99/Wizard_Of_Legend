@@ -5,6 +5,7 @@
 class CPlayer;
 class CActor;
 class CDummy;
+class CUIComponent;
 
 class CStage01 : public CScene
 {
@@ -24,15 +25,16 @@ public:
 
 private:
 	vector<CActor*> m_Actors;
+	vector<shared_ptr<ObImage>> m_Objects;
 
 	Vec2 m_PlayerPos;
 	Vec2 m_MapSize;
 
-	vector<shared_ptr<ObImage>> m_Objects;
-
 	CActor* m_TestDummy;
-
 	CActor* m_Boss;
+
+	CUIComponent* m_BossUI;
+	CUIComponent* m_PlayerUI;
 
 };
 

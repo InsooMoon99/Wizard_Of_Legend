@@ -2,11 +2,11 @@
 
 #include "CSkill_Actor.h"
 
-class CGaia_Armor : public CSkill_Actor
+class CEarth_Shield : public CSkill_Actor
 {
 public:
-	CGaia_Armor(SkillInfo& _Info);
-	virtual ~CGaia_Armor();
+	CEarth_Shield(SkillInfo& _Info);
+	virtual ~CEarth_Shield();
 
 public:
 	void BeginPlay() override;
@@ -20,11 +20,12 @@ public:
 	void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 
 private:
-	shared_ptr<ObImage>  m_Armor_Img[8];
-	shared_ptr<ObCircle> m_Armor[8];
+	vector<shared_ptr<ObCircle>> m_Armor;
+	vector<shared_ptr<ObImage>> m_Armor_Img;
 
-	float m_Angle[8] = { 0.f };
+	float m_Angle[EARTH_SHIELD] = { 0.f };
 	float m_Radius = 100.f;
 
+	float m_SpawnTime = 4.f;
 };
 

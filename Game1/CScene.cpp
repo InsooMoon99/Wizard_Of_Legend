@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CScene.h"
 
-CScene::CScene()
+CScene::CScene() : CGameObject(ERenderLayer::Render_Background)
 {
 
 }

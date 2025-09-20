@@ -28,5 +28,7 @@ public:
 public:
 	shared_ptr<ObImage> m_FireBall;
 
+	vector<shared_ptr<ObImage>> m_FireBall_Particle;
+
 };
 

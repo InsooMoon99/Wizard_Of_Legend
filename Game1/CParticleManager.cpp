@@ -56,6 +56,30 @@ void CParticleManager::Resource_Settings()
 	shared_ptr<ObImage> wind_Slash = RESOURCE->CreateSprite(L"Skill\\WinSlash_Large_Alt.png", Vec2(300.f / 5.f, 60.f) * 3.f, Int2(5, 1), true);
 	wind_Slash->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
 
+	// Fire Particle
+	{
+		shared_ptr<ObImage> fire1 = RESOURCE->CreateSprite(L"Particle\\FIRE_PARTICLE.bmp", Vec2(175.f / 5.f, 140.f / 4.f), Int2(5, 4), true);
+		fire1->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+		fire1->frame.y = 0;
+
+		shared_ptr<ObImage> fire2 = RESOURCE->CreateSprite(L"Particle\\FIRE_PARTICLE.bmp", Vec2(175.f / 5.f, 140.f / 4.f), Int2(5, 4), true);
+		fire2->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+		fire2->frame.y = 1;
+
+		shared_ptr<ObImage> fire3 = RESOURCE->CreateSprite(L"Particle\\FIRE_PARTICLE.bmp", Vec2(175.f / 5.f, 140.f / 4.f), Int2(5, 4), true);
+		fire3->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+		fire3->frame.y = 2;
+
+		shared_ptr<ObImage> fire4 = RESOURCE->CreateSprite(L"Particle\\FIRE_PARTICLE.bmp", Vec2(175.f / 5.f, 140.f / 4.f), Int2(5, 4), true);
+		fire4->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+		fire4->frame.y = 3;
+
+		m_Particles.insert({ L"Fire1", fire1 });
+		m_Particles.insert({ L"Fire2", fire2 });
+		m_Particles.insert({ L"Fire3", fire3 });
+		m_Particles.insert({ L"Fire4", fire4 });
+	}
+
 	// Effect
 	m_Particles.insert({ L"HitEffect", hit_Effect });
 	m_Particles.insert({ L"HitSpark", hit_Spark });

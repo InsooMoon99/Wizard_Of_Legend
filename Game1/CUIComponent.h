@@ -3,6 +3,7 @@
 
 class CUI;
 class CUI_PlayerHUD;
+class CUI_BossHUD;
 class CStatusComponent;
 
 class CUIComponent : public CComponent
@@ -21,10 +22,13 @@ public:
 	void SetPlayerStatus();
 	void SetBossStatus();
 
-private:
-	vector<CUI*> m_HUD;
+	const vector<shared_ptr<CGameObject>>& GetHUD() { return m_HUD; }
 
-	CUI_PlayerHUD* m_PlayerHUD;
+private:
+	vector<shared_ptr<CGameObject>> m_HUD;
+
+	shared_ptr<CUI_PlayerHUD>	m_PlayerHUD;
+	shared_ptr<CUI_BossHUD>		m_BossHUD;
 
 };
 

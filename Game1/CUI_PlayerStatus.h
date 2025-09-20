@@ -20,9 +20,9 @@ private:
 	vector<shared_ptr<ObImage>> m_PlayerStatus;
 
 	shared_ptr<ObImage> m_Background;
-	shared_ptr<ObImage> m_PlayerHp;
-	shared_ptr<ObImage> m_PlayerMp;
-	shared_ptr<ObImage> m_PlayerGold;
+	shared_ptr<ObImage> m_Hp;
+	shared_ptr<ObImage> m_Mp;
+	shared_ptr<ObImage> m_Gold;
 
 	CStatusComponent* m_Status;
 

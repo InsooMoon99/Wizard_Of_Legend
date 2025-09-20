@@ -2,13 +2,13 @@
 
 #include "CSkill.h"
 
-class CGaia_Armor;
+class CEarth_Shield;
 
-class CSkill_Gaia_Armor : public CSkill
+class CSkill_Earth_Shield : public CSkill
 {
 public:
-	CSkill_Gaia_Armor();
-	~CSkill_Gaia_Armor() override;
+	CSkill_Earth_Shield();
+	~CSkill_Earth_Shield() override;
 
 public:
 	void BeginPlay() override;
@@ -22,7 +22,7 @@ public:
 	void Activate(CActor* _Owner) override;
 
 private:
-	vector<shared_ptr<CGaia_Armor>> m_Armor;
+	vector<shared_ptr<CEarth_Shield>> m_Armor;
 
 };
 

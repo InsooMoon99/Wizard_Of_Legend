@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CUI.h"
 
-CUI::CUI()
+CUI::CUI() : CGameObject(ERenderLayer::Render_UI)
 {
 
 }

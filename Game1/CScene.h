@@ -1,6 +1,8 @@
 #pragma once
 
-class CScene
+#include "CGameObject.h"
+
+class CScene : CGameObject
 {
 public:
 	CScene();

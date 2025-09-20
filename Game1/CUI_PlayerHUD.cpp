@@ -11,7 +11,6 @@ CUI_PlayerHUD::CUI_PlayerHUD()
 	AddChild(m_PlayerStatus);
 	AddChild(m_Skill_Pannel);
 
-
 }
 
 CUI_PlayerHUD::~CUI_PlayerHUD()

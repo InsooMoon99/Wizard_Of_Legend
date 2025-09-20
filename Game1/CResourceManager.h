@@ -29,8 +29,8 @@ public:
 		COLLIDER _collider = COLLIDER::NONE
 	);
 
-	void     AddImage(EPlayerState _state, EPlayerDir _dir, ObImage* _img);
-	ObImage* GetImage(EPlayerState _state, EPlayerDir _dir);
+	void     AddImage(ECharacterState _state, EPlayerDir _dir, ObImage* _img);
+	ObImage* GetImage(ECharacterState _state, EPlayerDir _dir);
 
 public:
 	static CResourceManager* Get_Instance()

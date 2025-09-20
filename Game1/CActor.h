@@ -1,8 +1,10 @@
 #pragma once
 
+#include "CGameObject.h"
+
 class CComponent;
 
-class CActor
+class CActor : public CGameObject
 {
 public:
 	CActor();
@@ -31,6 +33,7 @@ public:
 	virtual shared_ptr<GameObject>  Get_Collision() { return m_Collision; }
 	virtual shared_ptr<ObImage>		Get_CurImage() { return m_CurImg; }
 
+
 protected:
 	// Collision
 	vector<GameObject*>		m_vecCol;
@@ -40,9 +43,6 @@ protected:
 
 	vector<CComponent*>		m_Components;
 	Vector2					m_Pos = { 0,0 };
-
-public:
-
 
 };
 

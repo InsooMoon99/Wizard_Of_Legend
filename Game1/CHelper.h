@@ -6,15 +6,15 @@
 class CHelper
 {
 public:
-	static const char* ToString_PlayerState(EPlayerState _State)
+	static const char* ToString_PlayerState(ECharacterState _State)
 	{
 		switch (_State)
 		{
-		case EPlayerState::Idle:		return "State_Idle";
-		case EPlayerState::Walk:		return "State_Walk";
-		case EPlayerState::Dash:		return "State_Dash";
-		case EPlayerState::Attack1:		return "State_Attack1";
-		case EPlayerState::Attack2:		return "State_Attack2";
+		case ECharacterState::Idle:		return "State_Idle";
+		case ECharacterState::Walk:		return "State_Walk";
+		case ECharacterState::Dash:		return "State_Dash";
+		case ECharacterState::Attack1:		return "State_Attack1";
+		case ECharacterState::Attack2:		return "State_Attack2";
 
 		default:						return "None";
 		}

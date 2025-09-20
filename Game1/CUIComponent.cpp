@@ -5,13 +5,13 @@
 #include "CUI.h"
 #include "CUI_PlayerStatus.h"
 #include "CStatusComponent.h"
+#include "CUI_BossHUD.h"
+#include "CUI_BossStatus.h"
 #include "CUI_PlayerHUD.h"
 
 CUIComponent::CUIComponent()
 {
-	m_PlayerHUD = new CUI_PlayerHUD();
-
-	m_HUD.push_back(m_PlayerHUD);
+	
 }
 
 CUIComponent::~CUIComponent()
@@ -21,8 +21,6 @@ CUIComponent::~CUIComponent()
 void CUIComponent::BeginPlay()
 {
 	CComponent::BeginPlay();
-
-	//SetPlayerStatus(true);
 
 	for (auto& hud : m_HUD)
 		hud->BeginPlay();
@@ -57,8 +55,8 @@ void CUIComponent::Render()
 {
 	CComponent::Render();
 
-	for (auto& hud : m_HUD)
-		hud->Render();
+	//for (auto& hud : m_HUD)
+	//	hud->Render();
 }
 
 void CUIComponent::Release()
@@ -70,25 +68,31 @@ void CUIComponent::Release()
 
 void CUIComponent::SetPlayerStatus()
 {
-	if (m_PlayerHUD && GetOwner())
+	if (GetOwner())
 	{
-		CStatusComponent* status = CHelper::GetComponent<CStatusComponent>(GetOwner());
+		m_PlayerHUD = make_shared<CUI_PlayerHUD>();
+		m_HUD.push_back(m_PlayerHUD);
+
+
+		auto* status = CHelper::GetComponent<CStatusComponent>(GetOwner());
 		if (status == nullptr)
 			return;
 
-		m_PlayerHUD->Get_PlayerStatus()->SetStatus(status);
+		m_PlayerHUD->Get_Status()->SetStatus(status);
 	}
 }
 
 void CUIComponent::SetBossStatus()
 {
-	if (m_PlayerHUD && GetOwner())
+	if (GetOwner())
 	{
-		CStatusComponent* status = CHelper::GetComponent<CStatusComponent>(GetOwner());
+		m_BossHUD = make_shared<CUI_BossHUD>();
+		m_HUD.push_back(m_BossHUD);
+
+		auto* status = CHelper::GetComponent<CStatusComponent>(GetOwner());
 		if (status == nullptr)
 			return;
 
-		// TODO : BossHUD
-		//m_PlayerHUD->Get_PlayerStatus()->SetStatus(status);
+		m_BossHUD->Get_Status()->SetStatus(status);
 	}
 }

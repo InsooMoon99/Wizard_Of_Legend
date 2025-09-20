@@ -25,8 +25,8 @@ protected:
 	void Resource_Settings() override;
 
 private:
-	void SetSprite(EPlayerState _State, EPlayerDir _Dir) override;
-	void Play_Sprite(EPlayerState _State) override;
+	void SetSprite(ECharacterState _State, EPlayerDir _Dir) override;
+	void Play_Sprite(ECharacterState _State) override;
 
 private:
 	shared_ptr<ObImage> Dummy_Image;

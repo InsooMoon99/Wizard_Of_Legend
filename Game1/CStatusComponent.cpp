@@ -26,10 +26,12 @@ void CStatusComponent::TickComponent()
 {
 	CComponent::TickComponent();
 
-	m_MaxHp = ::clamp(m_MaxHp, 0.f, 100.f);
-	m_Hp	= ::clamp(m_Hp, 0.f, 100.f);
-	m_MaxMp = ::clamp(m_MaxMp, 0.f, 100.f);
-	m_Mp	= ::clamp(m_Mp, 0.f, 100.f);
+	//m_MaxHp = ::clamp(m_MaxHp, 0.f, 100.f);
+	//m_Hp	= ::clamp(m_Hp, 0.f, 100.f);
+	//m_MaxMp = ::clamp(m_MaxMp, 0.f, 100.f);
+	//m_Mp	= ::clamp(m_Mp, 0.f, 100.f);
+
+	m_Hp = max(0, m_Hp);
 
 }
 

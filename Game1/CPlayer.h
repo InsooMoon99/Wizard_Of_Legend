@@ -44,8 +44,8 @@ public:
 	void State_Dash();
 	void State_Attack();
 
-	virtual void SetSprite(EPlayerState _State, EPlayerDir _Dir) override;
-	virtual void Play_Sprite(EPlayerState _State);
+	virtual void SetSprite(ECharacterState _State, EPlayerDir _Dir) override;
+	virtual void Play_Sprite(ECharacterState _State);
 
 public:
 	void Attack_Sprite();
@@ -72,7 +72,7 @@ private:
 	float m_DashDistance = 1200.f;
 
 	// Image
-	unordered_map<EPlayerState, shared_ptr<ObImage>> m_Shadow;
+	unordered_map<ECharacterState, shared_ptr<ObImage>> m_Shadow;
 	unordered_map<EPlayerDir, shared_ptr<ObImage>>   m_Dash;
 
 	shared_ptr<ObImage> m_Player_Marker = nullptr;

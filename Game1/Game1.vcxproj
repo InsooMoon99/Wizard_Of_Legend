@@ -20,14 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CActor.h" />
-    <ClInclude Include="CBoss.h" />
+    <ClInclude Include="CBoss_Light.h" />
     <ClInclude Include="CCollisionManager.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CDefine.h" />
     <ClInclude Include="CDummy.h" />
-    <ClInclude Include="CGaia_Armor.h" />
+    <ClInclude Include="CEarth_Shield.h" />
+    <ClInclude Include="CGameObject.h" />
+    <ClInclude Include="CRenderManager.h" />
     <ClInclude Include="CSkill_Factory.h" />
-    <ClInclude Include="CSkill_Gaia_Armor.h" />
+    <ClInclude Include="CSkill_Earth_Shield.h" />
     <ClInclude Include="CSkill_WindSlash.h" />
     <ClInclude Include="CStage_Edit.h" />
     <ClInclude Include="CEnums.h" />
@@ -55,6 +57,8 @@
     <ClInclude Include="CTileManager.h" />
     <ClInclude Include="CUI.h" />
     <ClInclude Include="CUIComponent.h" />
+    <ClInclude Include="CUI_BossHUD.h" />
+    <ClInclude Include="CUI_BossStatus.h" />
     <ClInclude Include="CUI_HUD.h" />
     <ClInclude Include="CUI_PlayerStatus.h" />
     <ClInclude Include="CUI_Skill_Pannel.h" />
@@ -67,14 +71,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CActor.cpp" />
-    <ClCompile Include="CBoss.cpp" />
+    <ClCompile Include="CBoss_Light.cpp" />
     <ClCompile Include="CCollisionManager.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CDummy.cpp" />
-    <ClCompile Include="CGaia_Armor.cpp" />
+    <ClCompile Include="CEarth_Shield.cpp" />
+    <ClCompile Include="CGameObject.cpp" />
+    <ClCompile Include="CRenderManager.cpp" />
     <ClCompile Include="CSkill_Factory.cpp" />
-    <ClCompile Include="CSkill_Gaia_Armor.cpp" />
+    <ClCompile Include="CSkill_Earth_Shield.cpp" />
     <ClCompile Include="CSkill_WindSlash.cpp" />
     <ClCompile Include="CStage_Edit.cpp" />
     <ClCompile Include="CFireBall.cpp" />
@@ -98,6 +104,8 @@
     <ClCompile Include="CTileManager.cpp" />
     <ClCompile Include="CUI.cpp" />
     <ClCompile Include="CUIComponent.cpp" />
+    <ClCompile Include="CUI_BossHUD.cpp" />
+    <ClCompile Include="CUI_BossStatus.cpp" />
     <ClCompile Include="CUI_HUD.cpp" />
     <ClCompile Include="CUI_PlayerStatus.cpp" />
     <ClCompile Include="CUI_Skill_Pannel.cpp" />
