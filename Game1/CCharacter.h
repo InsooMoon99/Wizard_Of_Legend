@@ -24,8 +24,8 @@ public:
 	void Hit_Effect() override abstract {};
 
 protected:
-	CStatusComponent* m_Status = nullptr;
-	CStateComponent* m_State = nullptr;
+	shared_ptr<CStatusComponent> m_Status;
+	shared_ptr<CStateComponent> m_State;
 	
 protected:
 	virtual void Resource_Settings() abstract {};

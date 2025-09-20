@@ -25,10 +25,10 @@ public:
 	void	Set_WorldPos(Vector2 pos) { m_Pos = pos; }
 	Vector2	Get_WorldPos() { return m_Pos; }
 
-	virtual void AddComponent(CComponent* _Component);
+	virtual void AddComponent(shared_ptr<CComponent> _Component);
 	virtual void RemoveComponent(CComponent* _Component);
 
-	const vector<CComponent*>& GetAllComponents() const { return m_Components; }
+	const vector<shared_ptr<CComponent>>& GetAllComponents() const { return m_Components; }
 
 	virtual shared_ptr<GameObject>  Get_Collision() { return m_Collision; }
 	virtual shared_ptr<ObImage>		Get_CurImage() { return m_CurImg; }
@@ -41,7 +41,7 @@ protected:
 	shared_ptr<GameObject>	m_Collision = nullptr;
 	shared_ptr<ObImage>		m_CurImg = nullptr;
 
-	vector<CComponent*>		m_Components;
+	vector<shared_ptr<CComponent>>		m_Components;
 	Vector2					m_Pos = { 0,0 };
 
 };

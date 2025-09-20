@@ -171,7 +171,7 @@ void CEarth_Shield::OnComponentBeginOverlap(GameObject* collider, GameObject* ot
 	if (colorChanger)
 		colorChanger->Hit_Color();
 
-	auto* status = CHelper::GetComponent<CStatusComponent>(hit);
+	auto status = CHelper::GetComponent<CStatusComponent>(hit);
 	if (status)
 		status->SetHp(status->GetHp() - m_Skill_Info.Damage);
 

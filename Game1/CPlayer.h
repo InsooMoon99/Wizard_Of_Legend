@@ -32,9 +32,9 @@ public:
 
 private:
 	// Components
-	CWeaponComponent*		m_Weapon;
-	CInventoryComponent*	m_Inventory;
-	CUIComponent*			m_UI;
+	shared_ptr<CWeaponComponent>		m_Weapon;
+	shared_ptr<CInventoryComponent>	m_Inventory;
+	shared_ptr<CUIComponent>			m_UI;
 
 public:
 	void Key_Input();

@@ -114,7 +114,7 @@ public:
 			return nullptr;
 
 		CComponent* component = new T();
-		component->BeginPlay();
+		//component->BeginPlay();
 		component->SetOwner(_Owner);
 
 		auto componentType = dynamic_cast<T*>(component);
@@ -126,16 +126,31 @@ public:
 	}
 
 	template<typename T>
-	static T* GetComponent(CActor* _Owner)
+	static shared_ptr<T> CreateSharedComponent(CActor* _Owner)
+	{
+		if (_Owner == nullptr)
+			return nullptr;
+
+		auto component = make_shared<T>();
+		//component->BeginPlay();
+		component->SetOwner(_Owner);
+
+		_Owner->AddComponent(component);
+
+		return component;
+	}
+
+	template<typename T>
+	static shared_ptr<T> GetComponent(CActor* _Owner)
 	{
 		if (_Owner == nullptr)
 			return nullptr;
 
 		const auto& components = _Owner->GetAllComponents();
 
-		for (CComponent* component : components)
+		for (const auto& component : components)
 		{
-			T* foundComponent = dynamic_cast<T*>(component);
+			shared_ptr<T> foundComponent = dynamic_pointer_cast<T>(component);
 			if (foundComponent)
 			{
 				return foundComponent;

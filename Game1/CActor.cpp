@@ -15,7 +15,7 @@ CActor::~CActor()
 
 void CActor::BeginPlay()
 {
-	for (auto* component : m_Components)
+	for (auto component : m_Components)
 	{
 		component->BeginPlay();
 	}
@@ -23,7 +23,7 @@ void CActor::BeginPlay()
 
 void CActor::Tick()
 {
-	for (auto* component : m_Components)
+	for (auto component : m_Components)
 	{
 		component->TickComponent();
 	}
@@ -31,7 +31,7 @@ void CActor::Tick()
 
 void CActor::Render()
 {
-	for (auto* component : m_Components)
+	for (auto component : m_Components)
 	{
 		component->Render();
 	}
@@ -53,7 +53,7 @@ void CActor::OnComponentEndOverlap(GameObject* collider, GameObject* other)
 
 }
 
-void CActor::AddComponent(CComponent* _Component)
+void CActor::AddComponent(shared_ptr<CComponent> _Component)
 {
 	if (_Component == nullptr)
 		return;
@@ -62,11 +62,13 @@ void CActor::AddComponent(CComponent* _Component)
 	m_Components.push_back(_Component);
 }
 
-void CActor::RemoveComponent(CComponent* _Component)
+void CActor::RemoveComponent(CComponent* target)
 {
-	auto find_iter = find(m_Components.begin(), m_Components.end(), _Component);
-	if (find_iter == m_Components.end())
-		return;
-
-	m_Components.erase(find_iter);
+	auto it = find_if(m_Components.begin(), m_Components.end(),
+		[target](const std::shared_ptr<CComponent>& sp) {
+			return sp.get() == target;
+		});
+	if (it != m_Components.end())
+		m_Components.erase(it);
 }
+

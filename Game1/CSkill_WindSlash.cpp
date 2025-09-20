@@ -73,7 +73,7 @@ void CSkill_WindSlash::Activate(CActor* _Owner)
 	CCharacter* character = dynamic_cast<CCharacter*>(_Owner);
 	if (!character) return;
 
-	auto* state = CHelper::GetComponent<CStateComponent>(character);
+	auto state = CHelper::GetComponent<CStateComponent>(character);
 	if (!state) return;
 
 	Vec2 dir = CHelper::DirToVec(state->Get_Dir());

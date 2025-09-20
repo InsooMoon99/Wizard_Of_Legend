@@ -74,11 +74,11 @@ void CUIComponent::SetPlayerStatus()
 		m_HUD.push_back(m_PlayerHUD);
 
 
-		auto* status = CHelper::GetComponent<CStatusComponent>(GetOwner());
+		auto status = CHelper::GetComponent<CStatusComponent>(GetOwner());
 		if (status == nullptr)
 			return;
 
-		m_PlayerHUD->Get_Status()->SetStatus(status);
+		m_PlayerHUD->Get_Status()->SetStatus(status.get());
 	}
 }
 
@@ -89,10 +89,10 @@ void CUIComponent::SetBossStatus()
 		m_BossHUD = make_shared<CUI_BossHUD>();
 		m_HUD.push_back(m_BossHUD);
 
-		auto* status = CHelper::GetComponent<CStatusComponent>(GetOwner());
+		auto status = CHelper::GetComponent<CStatusComponent>(GetOwner());
 		if (status == nullptr)
 			return;
 
-		m_BossHUD->Get_Status()->SetStatus(status);
+		m_BossHUD->Get_Status()->SetStatus(status.get());
 	}
 }

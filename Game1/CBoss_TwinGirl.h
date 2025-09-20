@@ -1,15 +1,18 @@
 #pragma once
 
-#include "CCharacter.h"
+#include "CBossPawn.h"
 
 class CWeaponComponent;
 class CUIComponent;
+class CBoss_Controller;
 
-class CBoss_Light : public CCharacter
+class CBoss_TwinGirl : public CBossPawn
 {
+	using Super = CBossPawn;
+
 public:
-	CBoss_Light();
-	virtual ~CBoss_Light();
+	CBoss_TwinGirl(CBoss_Controller* _Controller);
+	virtual ~CBoss_TwinGirl();
 
 public:
 	void BeginPlay() override;
@@ -25,8 +28,7 @@ public:
 
 private:
 	// Components
-	CWeaponComponent* m_Weapon;
-	CUIComponent* m_UI;
+	shared_ptr<CWeaponComponent> m_Weapon;
 
 public:
 	void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
@@ -37,9 +39,6 @@ public:
 	void State_Walk();
 	void State_Attack();
 
-	void Set_ManPos(Vec2 _pos) { m_Twin_ManPos; }
-	void Set_GirlPos(Vec2 _pos) { m_Twin_GirlPos; }
-
 protected:
 	void SetSprite(ECharacterState _State, EPlayerDir _Dir) override;
 	void Play_Sprite(ECharacterState _State) override;
@@ -47,11 +46,6 @@ protected:
 	void Resource_Settings() override;
 
 private:
-	shared_ptr<GameObject> m_GirCollision;
-
-	Vec2 m_Twin_ManPos;
-	Vec2 m_Twin_GirlPos;
-
 
 };
 

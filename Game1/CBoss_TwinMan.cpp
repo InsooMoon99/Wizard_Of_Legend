@@ -1,45 +1,36 @@
 #include "stdafx.h"
-#include "CBoss_Light.h"
+#include "CBoss_TwinMan.h"
 
 #include "CStateComponent.h"
 #include "CWeaponComponent.h"
 #include "CStatusComponent.h"
 #include "CUIComponent.h"
 
-CBoss_Light::CBoss_Light()
+CBoss_TwinMan::CBoss_TwinMan(CBoss_Controller* _Controller)
+	: CBossPawn(_Controller)
 {
-	m_Weapon = CHelper::CreateComponent<CWeaponComponent>(this);
-	m_UI = CHelper::CreateComponent<CUIComponent>(this);
-
-	m_Status->SetMaxHp(1000.f);
-	m_Status->SetHp(1000.f);
-
-	m_Status->SetSpeed(300.f);
+	m_Weapon = CHelper::CreateSharedComponent<CWeaponComponent>(this);
 
 	m_State->Change_State(ECharacterState::Boss_Start);
 
 	Resource_Settings();
 }
 
-CBoss_Light::~CBoss_Light()
+CBoss_TwinMan::~CBoss_TwinMan()
 {
 	Release();
 }
 
-void CBoss_Light::BeginPlay()
+void CBoss_TwinMan::BeginPlay()
 {
-	CCharacter::BeginPlay();
-
-	if (m_UI)
-		m_UI->SetBossStatus();
-
+	Super::BeginPlay();
 
 
 }
 
-void CBoss_Light::Tick()
+void CBoss_TwinMan::Tick()
 {
-	CCharacter::Tick();
+	Super::Tick();
 
 	if (m_Collision)
 		m_Pos = m_Collision->GetWorldPos();
@@ -47,7 +38,6 @@ void CBoss_Light::Tick()
 	m_prevState = m_State->Get_State();
 	m_prevDir = m_State->Get_Dir();
 
-	
 
 	switch (m_State->Get_State())
 	{
@@ -83,30 +73,15 @@ void CBoss_Light::Tick()
 		component->TickComponent();
 }
 
-void CBoss_Light::LateUpdate()
+void CBoss_TwinMan::LateUpdate()
 {
-	CCharacter::LateUpdate();
+	Super::LateUpdate();
 
 }
 
-void CBoss_Light::Render()
+void CBoss_TwinMan::Render()
 {
-	CCharacter::Render();
-
-#ifdef _DEBUG
-	if (ImGui::Begin("Debug"))
-	{
-		ImGui::NewLine();
-
-		float hp = m_Status->GetHp();
-
-		ImGui::InputFloat("Boss Hp", &hp);
-		m_Status->SetHp(hp);
-	}
-
-	ImGui::End();
-
-#endif
+	Super::Render();
 
 	for (auto& col : m_vecCol)
 		col->Render();
@@ -119,9 +94,9 @@ void CBoss_Light::Render()
 	//	component->Render();
 }
 
-void CBoss_Light::Release()
+void CBoss_TwinMan::Release()
 {
-	CCharacter::Release();
+	Super::Release();
 
 	m_Sprites.clear();
 
@@ -134,9 +109,9 @@ void CBoss_Light::Release()
 		SafeDelete(col);
 }
 
-void CBoss_Light::Update_Hit()
+void CBoss_TwinMan::Update_Hit()
 {
-	CCharacter::Update_Hit();
+	Super::Update_Hit();
 
 	if (m_HitTimer > 0.f)
 	{
@@ -149,52 +124,52 @@ void CBoss_Light::Update_Hit()
 	}
 }
 
-void CBoss_Light::Hit_Color()
+void CBoss_TwinMan::Hit_Color()
 {
-	CCharacter::Hit_Color();
+	Super::Hit_Color();
 
 	CHelper::HitColor(Get_CurImage().get());
 	m_HitTimer = 0.15f;
 }
 
-void CBoss_Light::Hit_Effect()
+void CBoss_TwinMan::Hit_Effect()
 {
-	CCharacter::Hit_Effect();
+	Super::Hit_Effect();
 
 }
 
-void CBoss_Light::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
+void CBoss_TwinMan::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 {
-	CCharacter::OnComponentBeginOverlap(collider, other);
+	Super::OnComponentBeginOverlap(collider, other);
 
 	// Boss Hit
-	cout << "Boss Hit" << endl;
+	cout << "Twin Man Hit" << endl;
 }
 
-void CBoss_Light::OnComponentEndOverlap(GameObject* collider, GameObject* other)
+void CBoss_TwinMan::OnComponentEndOverlap(GameObject* collider, GameObject* other)
 {
-	CCharacter::OnComponentEndOverlap(collider, other);
+	Super::OnComponentEndOverlap(collider, other);
 
 }
 
-void CBoss_Light::State_Idle()
+void CBoss_TwinMan::State_Idle()
 {
 	// TODO : 공격 대기 시간
 }
 
-void CBoss_Light::State_Walk()
+void CBoss_TwinMan::State_Walk()
 {
 	// TODO : 플레이어 추격
 }
 
-void CBoss_Light::State_Attack()
+void CBoss_TwinMan::State_Attack()
 {
 	// TODO : 플레이어 공격
 }
 
-void CBoss_Light::SetSprite(ECharacterState _State, EPlayerDir _Dir)
+void CBoss_TwinMan::SetSprite(ECharacterState _State, EPlayerDir _Dir)
 {
-	CCharacter::SetSprite(_State, _Dir);
+	Super::SetSprite(_State, _Dir);
 
 	if (m_CurImg)
 		m_CurImg->visible = false;
@@ -211,9 +186,9 @@ void CBoss_Light::SetSprite(ECharacterState _State, EPlayerDir _Dir)
 	}
 }
 
-void CBoss_Light::Play_Sprite(ECharacterState _State)
+void CBoss_TwinMan::Play_Sprite(ECharacterState _State)
 {
-	CCharacter::Play_Sprite(_State);
+	Super::Play_Sprite(_State);
 
 	switch (_State)
 	{
@@ -238,13 +213,12 @@ void CBoss_Light::Play_Sprite(ECharacterState _State)
 	}
 }
 
-void CBoss_Light::Resource_Settings()
+void CBoss_TwinMan::Resource_Settings()
 {
-	CCharacter::Resource_Settings();
+	Super::Resource_Settings();
 
 	// 보스 충돌체
 	{
-		// Man
 		m_Collision = make_shared<ObRect>();
 		m_Collision->scale = Vec2(80.f, 80.f);
 		m_Collision->visible = true;
@@ -256,24 +230,8 @@ void CBoss_Light::Resource_Settings()
 		COLLISION->AddCollider(m_Collision.get());
 
 		m_vecCol.push_back(m_Collision.get());
-
-
-		// Girl
-		m_GirCollision = make_shared<ObRect>();
-		m_GirCollision->scale = Vec2(80.f, 80.f);
-		m_GirCollision->visible = true;
-		m_GirCollision->isFilled = false;
-		m_GirCollision->pivot = OFFSET_N;
-		m_GirCollision->collider = COLLIDER::RECT;
-		m_GirCollision->Set_Owner(this);
-		m_GirCollision->SetWorldPos(Vec2(-1650.f, -590.f));
-
-		COLLISION->AddCollider(m_GirCollision.get());
-
-		m_vecCol.push_back(m_GirCollision.get());
 	}
 	
-
 	// Start Setting
 	{
 		Vec2 start_Size = Vec2(225.f / 9.f, 45.f) * 4.f;

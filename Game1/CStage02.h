@@ -4,7 +4,9 @@
 
 class CPlayer;
 class CActor;
-class CBoss_Light;
+class CBoss_TwinMan;
+class CBoss_TwinGirl;
+class CBoss_Controller;
 class CUIComponent;
 
 
@@ -31,10 +33,12 @@ private:
 	Vec2 m_PlayerPos;
 	Vec2 m_MapSize;
 
-	CActor* m_Boss;
+	CBoss_Controller* m_BossController;
+	CBoss_TwinMan*  m_Boss_Man;
+	CBoss_TwinGirl* m_Boss_Girl;
 
-	CUIComponent* m_BossUI;
-	CUIComponent* m_PlayerUI;
+	shared_ptr<CUIComponent> m_PlayerUI;
+	shared_ptr<CUIComponent> m_BossUI;
 
 };
 

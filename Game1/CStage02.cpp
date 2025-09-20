@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "CStage02.h"
 #include "CActor.h"
-#include "CBoss_Light.h"
+#include "CBoss_Controller.h"
+#include "CBoss_TwinGirl.h"
+#include "CBoss_TwinMan.h"
 #include "CPlayer.h"
 #include "CResourceManager.h"
 #include "CUIComponent.h"
@@ -11,10 +13,6 @@ CStage02::CStage02()
 	m_Player = new CPlayer();
 	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player);
 
-	m_Boss = new CBoss_Light();
-	m_BossUI = CHelper::GetComponent<CUIComponent>(m_Boss);
-
-	m_Actors.push_back(m_Boss);
 	m_Actors.push_back(m_Player);
 
 	m_MapSize = Vec2(1568.f, 576.f) * 4.f;
@@ -25,31 +23,32 @@ CStage02::CStage02()
 
 CStage02::~CStage02()
 {
+
 }
 
 void CStage02::Init()
 {
 	CScene::Init();
 
-	for (auto& actor : m_Actors)
-		actor->BeginPlay();
+	m_BossController = new CBoss_Controller();
+	m_BossUI = CHelper::GetComponent<CUIComponent>(m_BossController);
+
+	m_Actors.push_back(m_BossController);
+
+	m_Boss_Man  = new CBoss_TwinMan(m_BossController);
+	m_Boss_Girl = new CBoss_TwinGirl(m_BossController);
+
+	m_Actors.push_back(m_Boss_Man);
+	m_Actors.push_back(m_Boss_Girl);
 
 	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
 	player->Get_Collision()->SetWorldPos(m_PlayerPos);
 
-	CBoss_Light* boss = dynamic_cast<CBoss_Light*>(m_Boss);
-
-	Vec2 manBossPos = m_PlayerPos + Vec2(100.f, 200.f);
-	Vec2 girlBossPos = manBossPos + Vec2(150.f, 0.f);
-
-	// 각 보스의 위치를 CBoss_Light에 설정
-	boss->Set_ManPos(manBossPos);
-	boss->Set_GirlPos(girlBossPos);
+	m_Boss_Man->Get_Collision()->SetWorldPos(Vec2(m_PlayerPos.x - 100.f, m_PlayerPos.y + 150.f));
+	m_Boss_Girl->Get_Collision()->SetWorldPos(Vec2(m_PlayerPos.x + 100.f, m_PlayerPos.y + 150.f));
 
 	for (auto& actor : m_Actors)
 		actor->BeginPlay();
-	
-
 }
 
 void CStage02::Update()
@@ -97,9 +96,6 @@ void CStage02::Render()
 
 	for (auto& object : m_Objects)
 		object->Render();
-
-	//for (auto& actor : m_Actors)
-	//	actor->Render();
 
 	RENDER->Render();
 }

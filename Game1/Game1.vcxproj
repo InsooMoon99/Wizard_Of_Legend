@@ -20,13 +20,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CActor.h" />
-    <ClInclude Include="CBoss_Light.h" />
+    <ClInclude Include="CBossPawn.h" />
+    <ClInclude Include="CBoss_Controller.h" />
+    <ClInclude Include="CBoss_TwinGirl.h" />
+    <ClInclude Include="CBoss_TwinMan.h" />
     <ClInclude Include="CCollisionManager.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CDefine.h" />
     <ClInclude Include="CDummy.h" />
     <ClInclude Include="CEarth_Shield.h" />
     <ClInclude Include="CGameObject.h" />
+    <ClInclude Include="CItem_Factory.h" />
     <ClInclude Include="CRenderManager.h" />
     <ClInclude Include="CSkill_Factory.h" />
     <ClInclude Include="CSkill_Earth_Shield.h" />
@@ -67,17 +71,22 @@
     <ClInclude Include="IColorChanger.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="CUI_PlayerHUD.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CActor.cpp" />
-    <ClCompile Include="CBoss_Light.cpp" />
+    <ClCompile Include="CBossPawn.cpp" />
+    <ClCompile Include="CBoss_Controller.cpp" />
+    <ClCompile Include="CBoss_TwinGirl.cpp" />
+    <ClCompile Include="CBoss_TwinMan.cpp" />
     <ClCompile Include="CCollisionManager.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="CDummy.cpp" />
     <ClCompile Include="CEarth_Shield.cpp" />
     <ClCompile Include="CGameObject.cpp" />
+    <ClCompile Include="CItem_Factory.cpp" />
     <ClCompile Include="CRenderManager.cpp" />
     <ClCompile Include="CSkill_Factory.cpp" />
     <ClCompile Include="CSkill_Earth_Shield.cpp" />
@@ -117,6 +126,9 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game1.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

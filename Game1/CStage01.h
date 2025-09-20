@@ -31,10 +31,8 @@ private:
 	Vec2 m_MapSize;
 
 	CActor* m_TestDummy;
-	CActor* m_Boss;
 
-	CUIComponent* m_BossUI;
-	CUIComponent* m_PlayerUI;
+	shared_ptr<CUIComponent> m_PlayerUI;
 
 };
 

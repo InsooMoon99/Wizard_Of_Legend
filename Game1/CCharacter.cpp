@@ -5,8 +5,8 @@
 
 CCharacter::CCharacter()
 {
-	m_Status = CHelper::CreateComponent<CStatusComponent>(this);
-	m_State  = CHelper::CreateComponent<CStateComponent>(this);
+	m_Status = CHelper::CreateSharedComponent<CStatusComponent>(this);
+	m_State  = CHelper::CreateSharedComponent<CStateComponent>(this);
 
 	m_prevState = ECharacterState::Idle;
 	m_prevDir = EPlayerDir::Front;

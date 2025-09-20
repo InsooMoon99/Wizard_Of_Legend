@@ -12,9 +12,9 @@
 
 CPlayer::CPlayer()
 {
-	m_Weapon	= CHelper::CreateComponent<CWeaponComponent>(this);
-	m_UI		= CHelper::CreateComponent<CUIComponent>(this);
-	m_Inventory = CHelper::CreateComponent<CInventoryComponent>(this);
+	m_Weapon	= CHelper::CreateSharedComponent<CWeaponComponent>(this);
+	m_UI		= CHelper::CreateSharedComponent<CUIComponent>(this);
+	m_Inventory = CHelper::CreateSharedComponent<CInventoryComponent>(this);
 
 	m_Status->SetMaxHp(100.f);
 	m_Status->SetMaxMp(100.f);

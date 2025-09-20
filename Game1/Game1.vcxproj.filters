@@ -46,9 +46,6 @@
     <ClInclude Include="CCharacter.h">
       <Filter>03. Actors</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayer.h">
-      <Filter>03. Actors</Filter>
-    </ClInclude>
     <ClInclude Include="CInventoryComponent.h">
       <Filter>04. Components</Filter>
     </ClInclude>
@@ -64,19 +61,10 @@
     <ClInclude Include="CStatusComponent.h">
       <Filter>04. Components</Filter>
     </ClInclude>
-    <ClInclude Include="CDummy.h">
-      <Filter>03. Actors</Filter>
-    </ClInclude>
     <ClInclude Include="CObject.h">
       <Filter>05. Objects</Filter>
     </ClInclude>
     <ClInclude Include="CUI.h">
-      <Filter>98.UI</Filter>
-    </ClInclude>
-    <ClInclude Include="CUI_PlayerStatus.h">
-      <Filter>98.UI</Filter>
-    </ClInclude>
-    <ClInclude Include="CUI_PlayerHUD.h">
       <Filter>98.UI</Filter>
     </ClInclude>
     <ClInclude Include="CItem.h">
@@ -87,15 +75,6 @@
     </ClInclude>
     <ClInclude Include="CStage_Edit.h">
       <Filter>02. Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="CSkill.h">
-      <Filter>06. Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="CUI_Skill_Pannel.h">
-      <Filter>98.UI</Filter>
-    </ClInclude>
-    <ClInclude Include="CSkill_FireBall.h">
-      <Filter>06. Skill</Filter>
     </ClInclude>
     <ClInclude Include="CCollisionManager.h">
       <Filter>01. Manager</Filter>
@@ -109,17 +88,14 @@
     <ClInclude Include="CTileManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CSkill_WindSlash.h">
-      <Filter>06. Skill</Filter>
-    </ClInclude>
     <ClInclude Include="CFireBall.h">
-      <Filter>06. Skill\Actor</Filter>
+      <Filter>06. Skill\01. Skill_Actor</Filter>
     </ClInclude>
     <ClInclude Include="CSkill_Actor.h">
-      <Filter>06. Skill\Actor</Filter>
+      <Filter>06. Skill\01. Skill_Actor</Filter>
     </ClInclude>
     <ClInclude Include="CWindSlash.h">
-      <Filter>06. Skill\Actor</Filter>
+      <Filter>06. Skill\01. Skill_Actor</Filter>
     </ClInclude>
     <ClInclude Include="CSkill_Factory.h">
       <Filter>97. Design</Filter>
@@ -128,25 +104,62 @@
       <Filter>08. Tile</Filter>
     </ClInclude>
     <ClInclude Include="CEarth_Shield.h">
-      <Filter>06. Skill\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="CSkill_Earth_Shield.h">
-      <Filter>06. Skill</Filter>
+      <Filter>06. Skill\01. Skill_Actor</Filter>
     </ClInclude>
     <ClInclude Include="CRenderManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CUI_BossHUD.h">
-      <Filter>98.UI</Filter>
-    </ClInclude>
-    <ClInclude Include="CUI_BossStatus.h">
-      <Filter>98.UI</Filter>
-    </ClInclude>
-    <ClInclude Include="CBoss_Light.h">
-      <Filter>03. Actors</Filter>
-    </ClInclude>
     <ClInclude Include="CGameObject.h">
       <Filter>00. MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoss_Controller.h">
+      <Filter>03. Actors\01. Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoss_TwinGirl.h">
+      <Filter>03. Actors\01. Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoss_TwinMan.h">
+      <Filter>03. Actors\01. Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossPawn.h">
+      <Filter>03. Actors\01. Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="CDummy.h">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CItem_Factory.h">
+      <Filter>97. Design</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill.h">
+      <Filter>06. Skill\00. Skill_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_Earth_Shield.h">
+      <Filter>06. Skill\00. Skill_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_FireBall.h">
+      <Filter>06. Skill\00. Skill_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_WindSlash.h">
+      <Filter>06. Skill\00. Skill_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_PlayerHUD.h">
+      <Filter>98.UI\00. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_PlayerStatus.h">
+      <Filter>98.UI\00. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_Skill_Pannel.h">
+      <Filter>98.UI\00. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_BossHUD.h">
+      <Filter>98.UI\01. Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_BossStatus.h">
+      <Filter>98.UI\01. Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>03. Actors\00. Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -183,11 +196,29 @@
     <Filter Include="08. Tile">
       <UniqueIdentifier>{31d31c9a-ed8d-418e-a36a-8e88e325666f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06. Skill\Actor">
-      <UniqueIdentifier>{92107b01-bb86-4170-81c9-27645edd90ee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97. Design">
       <UniqueIdentifier>{a337d175-f853-41b1-ad20-4a89aee752ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.UI\00. Player">
+      <UniqueIdentifier>{2f7e7af5-f3ab-44d5-8157-bab02f1ed06d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\01. Skill_Actor">
+      <UniqueIdentifier>{92107b01-bb86-4170-81c9-27645edd90ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\00. Skill_Object">
+      <UniqueIdentifier>{eddfa42a-c408-4851-b2af-de3988f9f92c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.UI\01. Boss">
+      <UniqueIdentifier>{c2978660-777d-4735-9ecc-cda80d9cc81c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Actors\00. Player">
+      <UniqueIdentifier>{2288b816-ca28-4721-b5db-b4d4f2d33a67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Actors\02. Monster">
+      <UniqueIdentifier>{dc017a9c-e8ae-44fa-b8ca-1d4eeeba2ce7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Actors\01. Boss">
+      <UniqueIdentifier>{55d5010b-3935-445c-940f-6c078f1323dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -227,20 +258,8 @@
     <ClCompile Include="CUIComponent.cpp">
       <Filter>04. Components</Filter>
     </ClCompile>
-    <ClCompile Include="CStatusComponent.cpp">
-      <Filter>04. Components</Filter>
-    </ClCompile>
-    <ClCompile Include="CDummy.cpp">
-      <Filter>03. Actors</Filter>
-    </ClCompile>
     <ClCompile Include="CObject.cpp">
       <Filter>05. Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="CUI_PlayerStatus.cpp">
-      <Filter>98.UI</Filter>
-    </ClCompile>
-    <ClCompile Include="CUI_PlayerHUD.cpp">
-      <Filter>98.UI</Filter>
     </ClCompile>
     <ClCompile Include="CItem.cpp">
       <Filter>05. Objects</Filter>
@@ -254,20 +273,8 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>99. Headers</Filter>
     </ClCompile>
-    <ClCompile Include="CSkill.cpp">
-      <Filter>06. Skill</Filter>
-    </ClCompile>
-    <ClCompile Include="CUI_Skill_Pannel.cpp">
-      <Filter>98.UI</Filter>
-    </ClCompile>
-    <ClCompile Include="CSkill_FireBall.cpp">
-      <Filter>06. Skill</Filter>
-    </ClCompile>
     <ClCompile Include="CCollisionManager.cpp">
       <Filter>01. Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="CPlayer.cpp">
-      <Filter>03. Actors</Filter>
     </ClCompile>
     <ClCompile Include="CSceneManager.cpp">
       <Filter>01. Manager</Filter>
@@ -284,17 +291,14 @@
     <ClCompile Include="Main.cpp">
       <Filter>00. MainGame</Filter>
     </ClCompile>
-    <ClCompile Include="CSkill_WindSlash.cpp">
-      <Filter>06. Skill</Filter>
-    </ClCompile>
     <ClCompile Include="CFireBall.cpp">
-      <Filter>06. Skill\Actor</Filter>
+      <Filter>06. Skill\01. Skill_Actor</Filter>
     </ClCompile>
     <ClCompile Include="CSkill_Actor.cpp">
-      <Filter>06. Skill\Actor</Filter>
+      <Filter>06. Skill\01. Skill_Actor</Filter>
     </ClCompile>
     <ClCompile Include="CWindSlash.cpp">
-      <Filter>06. Skill\Actor</Filter>
+      <Filter>06. Skill\01. Skill_Actor</Filter>
     </ClCompile>
     <ClCompile Include="CSkill_Factory.cpp">
       <Filter>97. Design</Filter>
@@ -303,28 +307,70 @@
       <Filter>08. Tile</Filter>
     </ClCompile>
     <ClCompile Include="CEarth_Shield.cpp">
-      <Filter>06. Skill\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="CSkill_Earth_Shield.cpp">
-      <Filter>06. Skill</Filter>
+      <Filter>06. Skill\01. Skill_Actor</Filter>
     </ClCompile>
     <ClCompile Include="CRenderManager.cpp">
       <Filter>01. Manager</Filter>
     </ClCompile>
-    <ClCompile Include="CUI_BossHUD.cpp">
-      <Filter>98.UI</Filter>
-    </ClCompile>
-    <ClCompile Include="CUI_BossStatus.cpp">
-      <Filter>98.UI</Filter>
-    </ClCompile>
-    <ClCompile Include="CBoss_Light.cpp">
-      <Filter>03. Actors</Filter>
-    </ClCompile>
-    <ClCompile Include="CUI.cpp">
-      <Filter>00. MainGame</Filter>
-    </ClCompile>
     <ClCompile Include="CGameObject.cpp">
       <Filter>00. MainGame</Filter>
     </ClCompile>
+    <ClCompile Include="CBoss_Controller.cpp">
+      <Filter>03. Actors\01. Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoss_TwinGirl.cpp">
+      <Filter>03. Actors\01. Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoss_TwinMan.cpp">
+      <Filter>03. Actors\01. Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossPawn.cpp">
+      <Filter>03. Actors\01. Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CDummy.cpp">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CItem_Factory.cpp">
+      <Filter>97. Design</Filter>
+    </ClCompile>
+    <ClCompile Include="CStatusComponent.cpp">
+      <Filter>04. Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill.cpp">
+      <Filter>06. Skill\00. Skill_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_Earth_Shield.cpp">
+      <Filter>06. Skill\00. Skill_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_FireBall.cpp">
+      <Filter>06. Skill\00. Skill_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_WindSlash.cpp">
+      <Filter>06. Skill\00. Skill_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI.cpp">
+      <Filter>98.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_PlayerHUD.cpp">
+      <Filter>98.UI\00. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_PlayerStatus.cpp">
+      <Filter>98.UI\00. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_Skill_Pannel.cpp">
+      <Filter>98.UI\00. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_BossHUD.cpp">
+      <Filter>98.UI\01. Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_BossStatus.cpp">
+      <Filter>98.UI\01. Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>03. Actors\00. Player</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game1.rc" />
   </ItemGroup>
 </Project>
