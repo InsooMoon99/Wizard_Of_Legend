@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CFireBall.h"
+#include "CFire_Ball.h"
 #include "CObject.h"
 #include "CStruct.h"
 
@@ -28,11 +28,17 @@ public:
 	float	Get_CoolDown() { return m_CoolDown; }
 	void	Set_CoolDown(float _CoolDown) { m_CoolDown = _CoolDown; }
 
+	bool GetFiring() { return bFiring; }
+	void SetFiring(bool _Fire) { bFiring = _Fire; }
+
 protected:
 	SkillInfo m_Skill_Info;
+	bool bFiring = false;
 
 private:
 	float m_CoolDown = 0.f;
+
+	
 
 
 };

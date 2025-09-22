@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CFireBall.h"
+#include "CFire_Ball.h"
 #include "CSkill.h"
 
 class CActor;
@@ -23,7 +23,7 @@ public:
 	void Activate(CActor* _Owner) override;
 
 private:
-	vector<shared_ptr<CFireBall>> m_FireBall;
+	vector<shared_ptr<CFire_Ball>> m_FireBall;
 
 };
 

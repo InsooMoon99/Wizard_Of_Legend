@@ -13,10 +13,8 @@ CStage02::CStage02()
 	m_Player = new CPlayer();
 	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player);
 
-	m_Actors.push_back(m_Player);
-
-	m_MapSize = Vec2(1568.f, 576.f) * 4.f;
-	m_PlayerPos = Vec2(-1790.f, -790.f);
+	m_MapSize = Vec2(1280.f, 1280.f) * 3.f;
+	m_PlayerPos = Vec2(-1780.f, 000.f);
 
 	Resource_Setting();
 }
@@ -40,12 +38,14 @@ void CStage02::Init()
 
 	m_Actors.push_back(m_Boss_Man);
 	m_Actors.push_back(m_Boss_Girl);
+	m_Actors.push_back(m_Player);
 
 	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
 	player->Get_Collision()->SetWorldPos(m_PlayerPos);
 
-	m_Boss_Man->Get_Collision()->SetWorldPos(Vec2(m_PlayerPos.x - 100.f, m_PlayerPos.y + 150.f));
-	m_Boss_Girl->Get_Collision()->SetWorldPos(Vec2(m_PlayerPos.x + 100.f, m_PlayerPos.y + 150.f));
+	Vec2 m_BossPos = Vec2(-1850.f, 200.f);
+	m_Boss_Man->Get_Collision()->SetWorldPos(m_BossPos);
+	m_Boss_Girl->Get_Collision()->SetWorldPos(Vec2(m_BossPos.x + 150, m_BossPos.y));
 
 	for (auto& actor : m_Actors)
 		actor->BeginPlay();
@@ -113,14 +113,14 @@ void CStage02::Resource_Setting()
 	shared_ptr<ObImage> mapShadow = RESOURCE->CreateImage(L"Edit\\SHADOW.bmp", m_MapSize * 5.f, true);
 	mapShadow->SetWorldPos(Vec2(0, 0));
 	mapShadow->color = Color(0.0f, 0.0f, 0.0f, 1.0f);
-	m_Map.insert({ ESceneType::Shadow, mapShadow });
+	//m_Map.insert({ ESceneType::Shadow, mapShadow });
 
-	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\TutorialCourse.png", m_MapSize, true);
-	map->SetWorldPos(Vec2(0, 0));
-	map->SetLocalPos(Vec2(0, 30));
+	Vec2 mapPos = Vec2(-1780.f + 225.f, -800.f);
+	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\BossMap_Remove.png", m_MapSize, true);
+	map->SetWorldPos(mapPos);
 	m_Map.insert({ ESceneType::Stage02, map });
 
 	shared_ptr<ObImage> teleport = RESOURCE->CreateImage(L"Object\\TELEPORT.png", Vec2(311.f, 298.f), true);
 	teleport->SetWorldPos(m_PlayerPos);
-	m_Objects.push_back(teleport);
+	//m_Objects.push_back(teleport);
 }

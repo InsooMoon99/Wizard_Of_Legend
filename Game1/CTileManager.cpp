@@ -163,7 +163,6 @@ void CTileManager::Picking(Vec2 _Pos, int _DrawID, int _Option)
 	int x = (int)floorf(worldPos.x / TILECX);
 	int y = (int)floorf(worldPos.y / TILECY);
 
-
 	CTile* foundTile = nullptr;
 	for (auto& pActor : m_vecTile)
 	{
@@ -293,11 +292,9 @@ void CTileManager::Erase_Tile()
 {
 	Vec2 mousePos = INPUT->GetMouseWorldPos();
 
-	// 클릭된 위치에 해당하는 그리드 좌표를 계산합니다.
 	int x = (int)floorf(mousePos.x / TILECX);
 	int y = (int)floorf(mousePos.y / TILECY);
 
-	// 삭제할 타일의 이터레이터를 찾습니다.
 	auto it = m_vecTile.begin();
 	for (; it != m_vecTile.end(); ++it)
 	{
@@ -306,19 +303,14 @@ void CTileManager::Erase_Tile()
 			Vec2 tilePos = tile->Get_WorldPos();
 			if (floorf(tilePos.x / TILECX) == x && floorf(tilePos.y / TILECY) == y)
 			{
-				// 타일을 찾았으므로 루프를 종료합니다.
 				break;
 			}
 		}
 	}
 
-	// 이터레이터가 유효하다면(타일을 찾았다면) 타일을 삭제합니다.
 	if (it != m_vecTile.end())
 	{
-		// 메모리 해제
 		delete (*it);
-
-		// 벡터에서 제거
 		m_vecTile.erase(it);
 	}
 }

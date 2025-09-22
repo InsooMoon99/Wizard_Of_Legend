@@ -23,14 +23,15 @@ public:
 
 public:
 	ECharacterState Get_State()		{ return m_PlayerState; }
-
 	EPlayerDir	 Get_Dir()			{ return m_PlayerDir; }
+
 
 private:
 	ECharacterState m_PlayerState;
 	ECharacterState m_LastAttackType;
 
 	EPlayerDir	 m_PlayerDir;
+
 
 };
 

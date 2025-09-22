@@ -119,7 +119,7 @@ void CBoss_TwinMan::Update_Hit()
 
 		if (m_HitTimer <= 0.f)
 		{
-			CHelper::OrignColor(Get_CurImage().get());
+			CHelper::OrignColor(m_CurImg.get());
 		}
 	}
 }
@@ -128,7 +128,7 @@ void CBoss_TwinMan::Hit_Color()
 {
 	Super::Hit_Color();
 
-	CHelper::HitColor(Get_CurImage().get());
+	CHelper::HitColor(m_CurImg.get());
 	m_HitTimer = 0.15f;
 }
 
@@ -234,7 +234,7 @@ void CBoss_TwinMan::Resource_Settings()
 	
 	// Start Setting
 	{
-		Vec2 start_Size = Vec2(225.f / 9.f, 45.f) * 4.f;
+		Vec2 start_Size = Vec2(225.f / 9.f, 45.f) * 3.5f;
 		shared_ptr<ObImage> start = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_ManStart.png", start_Size, Int2(9, 1), true);
 		start->SetParentRT(*m_Collision);
 

@@ -36,7 +36,7 @@ private:
 
 public:
 	void Resource_Settings();
-	shared_ptr<ObImage> Spawn_Particle(const wstring& _Key, const Vec2& _Pos);
+	shared_ptr<ObImage> Spawn_Particle(const wstring& _Key, const Vec2& _Pos, float _Multiple = -1);
 
 private:
 	unordered_map<wstring, shared_ptr<ObImage>> m_Particles;

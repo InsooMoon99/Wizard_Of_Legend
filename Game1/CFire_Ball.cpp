@@ -1,12 +1,12 @@
 ﻿#include "stdafx.h"
-#include "CFireBall.h"
+#include "CFire_Ball.h"
 #include "CResourceManager.h"
 #include "CCharacter.h"
 #include "CSkill.h"
 #include "CStatusComponent.h"
 #include "CTile.h"
 
-CFireBall::CFireBall(SkillInfo& _Info) : CSkill_Actor(_Info)
+CFire_Ball::CFire_Ball(SkillInfo& _Info) : CSkill_Actor(_Info)
 {
 	m_Pos = _Info.SpawnPos;
 	m_StartPos = m_Pos;
@@ -33,15 +33,14 @@ CFireBall::CFireBall(SkillInfo& _Info) : CSkill_Actor(_Info)
 
 	m_FireBall_Particle.resize(4);
 
-
 }
 
-CFireBall::~CFireBall()
+CFire_Ball::~CFire_Ball()
 {
 	Release();
 }
 
-void CFireBall::BeginPlay()
+void CFire_Ball::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -66,10 +65,10 @@ void CFireBall::BeginPlay()
 
 		switch (i)
 		{
-		case 0: key = L"Fire4";  break;
-		case 1: key = L"Fire1"; break;
+		case 0: key = L"Fire1";  break;
+		case 1: key = L"Fire2"; break;
 		case 2: key = L"Fire3"; break;
-		case 3: key = L"Fire2"; break;
+		case 3: key = L"Fire4"; break;
 		}
 
 		Vec2 worldPos = ToWorld(offset[i]);
@@ -85,7 +84,7 @@ void CFireBall::BeginPlay()
 
 }
 
-void CFireBall::Tick()
+void CFire_Ball::Tick()
 {
 	Super::Tick();
 
@@ -117,14 +116,14 @@ void CFireBall::Tick()
 
 }
 
-void CFireBall::LateUpdate()
+void CFire_Ball::LateUpdate()
 {
 	Super::LateUpdate();
 
 	
 }
 
-void CFireBall::Render()
+void CFire_Ball::Render()
 {
 	Super::Render();
 
@@ -133,10 +132,9 @@ void CFireBall::Render()
 	m_Collision->Render();
 	m_FireBall->Render();
 
-
 }
 
-void CFireBall::Release()
+void CFire_Ball::Release()
 {
 	Super::Release();
 
@@ -149,50 +147,20 @@ void CFireBall::Release()
 	m_FireBall.reset();
 }
 
-bool CFireBall::CheckHitWall()
+bool CFire_Ball::CheckHitWall()
 {
-	if (!m_Collision) return false;
-
-	const Vec2 fireball_Col = m_Collision->GetWorldPos();
-	const float radius = m_Collision->scale.x * 0.5f;
-	
-	const Vec2 min = fireball_Col - Vec2(radius, radius);
-	const Vec2 max = fireball_Col + Vec2(radius, radius);
-
-	vector<CTile*> canDir;
-	TILE->QueryTilesAABB(min, max, canDir);
-
-	for (CTile* tile : canDir)
-	{
-		if (tile->Get_DrawID() != (int)ETileType::WALL)
-			continue;
-
-		auto tileCol = tile->Get_Collision().get();
-		tileCol->SetWorldPos(tile->Get_WorldPos());
-
-		if (m_Collision->Intersect(tileCol))
-		{
-			Vec2 pos;
-			pos.x = (tile->Get_WorldPos().x + m_Collision->GetWorldPos().x) / 2.f;
-			//pos.y = (tile->Get_WorldPos().y + m_Collision->GetWorldPos().y) / 2.f;
-			pos.y = m_Collision->GetWorldPos().y;
-
-			OnHitWall(pos);
-			return true;
-		}
-	}
-	return false;
+	return Super::CheckHitWall();
 }
 
-void CFireBall::OnHitWall(const Vec2& hitPos)
+void CFire_Ball::OnHitWall(const Vec2& hitPos)
 {
 	PARTICLE->Spawn_Particle(L"HitSpark", hitPos);
-	PARTICLE->Spawn_Particle(L"Fire_HitEffect", hitPos);
+	PARTICLE->Spawn_Particle(L"Fire_HitEffect2", hitPos);
 
 	m_PendingKill = true;
 }
 
-void CFireBall::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
+void CFire_Ball::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 {
 	Super::OnComponentBeginOverlap(collider, other);
 
@@ -220,12 +188,12 @@ void CFireBall::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 	Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
 	Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
 	PARTICLE->Spawn_Particle(L"HitSpark", particlePos + randomVec);
-	PARTICLE->Spawn_Particle(L"Fire_HitEffect", collider->GetWorldPos());
+	PARTICLE->Spawn_Particle(L"Fire_HitEffect2", particlePos + randomVec);
 
 	m_PendingKill = true;
 }
 
-void CFireBall::OnComponentEndOverlap(GameObject* collider, GameObject* other)
+void CFire_Ball::OnComponentEndOverlap(GameObject* collider, GameObject* other)
 {
 	Super::OnComponentEndOverlap(collider, other);
 

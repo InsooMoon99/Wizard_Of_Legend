@@ -20,9 +20,10 @@ public:
 	void Equip_Skill(ESkillType _SkillType);
 	void Activate_Skill(ESkillType _SkillType);
 
-private:
-	shared_ptr<CSkill> testFireBall;
+	bool IsFiringSkill();
 
+private:
 	unordered_map<ESkillType, shared_ptr<CSkill>> m_Skills;
+
 };
 

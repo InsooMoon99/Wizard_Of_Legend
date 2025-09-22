@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CSkill_FireBall.h"
-#include "CFireBall.h"
+#include "CFire_Ball.h"
 #include "CCharacter.h"
 #include "CStateComponent.h"
 
@@ -84,6 +84,8 @@ void CSkill_FireBall::Activate(CActor* _Owner)
 	auto state = CHelper::GetComponent<CStateComponent>(character);
 	if (!state) return;
 
+	state->Change_State(state->Set_AttackType());
+
 	Vec2 dir = CHelper::DirToVec(state->Get_Dir());
 	float radian = Utility::DirToRadian(dir);
 
@@ -94,7 +96,7 @@ void CSkill_FireBall::Activate(CActor* _Owner)
 	m_Skill_Info.Damage = 10.f;
 	m_Skill_Info.Amount = 1000.f;
 
-	auto fireBall = make_shared<CFireBall>(m_Skill_Info);
+	auto fireBall = make_shared<CFire_Ball>(m_Skill_Info);
 	fireBall->BeginPlay();
 
 	m_FireBall.push_back(fireBall);

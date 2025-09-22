@@ -85,7 +85,7 @@ void CEarth_Shield::Tick()
 
 	m_SpawnTime -= DELTA;
 
-	if (m_SpawnTime > 1.1f)
+	if (m_SpawnTime > 0.6f)
 	{
 		for (int i = 0; i < EARTH_SHIELD; ++i)
 		{
@@ -97,7 +97,7 @@ void CEarth_Shield::Tick()
 		}
 	}
 
-	else if (m_SpawnTime < 1.1f && m_SpawnTime > 0.f)
+	else if (m_SpawnTime < 0.6f && m_SpawnTime > 0.f)
 	{
 		for (auto& img : m_Armor_Img)
 			img->ChangeAnim(ANIMSTATE::STOP, 0.f);
@@ -108,6 +108,11 @@ void CEarth_Shield::Tick()
 
 	else if (m_SpawnTime <= 0.f)
 	{
+		for (auto& armor : m_Armor)
+		{
+			PARTICLE->Spawn_Particle(L"Stone3", armor->GetWorldPos());
+		}
+
 		m_PendingKill = true;
 
 		return;

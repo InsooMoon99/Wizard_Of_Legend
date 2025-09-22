@@ -88,13 +88,7 @@
     <ClInclude Include="CTileManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CFireBall.h">
-      <Filter>06. Skill\01. Skill_Actor</Filter>
-    </ClInclude>
     <ClInclude Include="CSkill_Actor.h">
-      <Filter>06. Skill\01. Skill_Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="CWindSlash.h">
       <Filter>06. Skill\01. Skill_Actor</Filter>
     </ClInclude>
     <ClInclude Include="CSkill_Factory.h">
@@ -102,9 +96,6 @@
     </ClInclude>
     <ClInclude Include="CTile.h">
       <Filter>08. Tile</Filter>
-    </ClInclude>
-    <ClInclude Include="CEarth_Shield.h">
-      <Filter>06. Skill\01. Skill_Actor</Filter>
     </ClInclude>
     <ClInclude Include="CRenderManager.h">
       <Filter>01. Manager</Filter>
@@ -124,7 +115,6 @@
     <ClInclude Include="CBossPawn.h">
       <Filter>03. Actors\01. Boss</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="CDummy.h">
       <Filter>03. Actors\02. Monster</Filter>
     </ClInclude>
@@ -132,15 +122,6 @@
       <Filter>97. Design</Filter>
     </ClInclude>
     <ClInclude Include="CSkill.h">
-      <Filter>06. Skill\00. Skill_Object</Filter>
-    </ClInclude>
-    <ClInclude Include="CSkill_Earth_Shield.h">
-      <Filter>06. Skill\00. Skill_Object</Filter>
-    </ClInclude>
-    <ClInclude Include="CSkill_FireBall.h">
-      <Filter>06. Skill\00. Skill_Object</Filter>
-    </ClInclude>
-    <ClInclude Include="CSkill_WindSlash.h">
       <Filter>06. Skill\00. Skill_Object</Filter>
     </ClInclude>
     <ClInclude Include="CUI_PlayerHUD.h">
@@ -160,6 +141,33 @@
     </ClInclude>
     <ClInclude Include="CPlayer.h">
       <Filter>03. Actors\00. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_Earth_Shield.h">
+      <Filter>06. Skill\00. Skill_Object\02. Earth</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_FireBall.h">
+      <Filter>06. Skill\00. Skill_Object\00. Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_FireDragon.h">
+      <Filter>06. Skill\00. Skill_Object\00. Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_WindSlash.h">
+      <Filter>06. Skill\00. Skill_Object\01. Wind</Filter>
+    </ClInclude>
+    <ClInclude Include="CEarth_Shield.h">
+      <Filter>06. Skill\01. Skill_Actor\02. Earth</Filter>
+    </ClInclude>
+    <ClInclude Include="CFire_Ball.h">
+      <Filter>06. Skill\01. Skill_Actor\00. Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="CFire_Dragon.h">
+      <Filter>06. Skill\01. Skill_Actor\00. Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="CWindSlash.h">
+      <Filter>06. Skill\01. Skill_Actor\01. Wind</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +227,24 @@
     </Filter>
     <Filter Include="03. Actors\01. Boss">
       <UniqueIdentifier>{55d5010b-3935-445c-940f-6c078f1323dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\00. Skill_Object\00. Fire">
+      <UniqueIdentifier>{0eae1d16-4903-46ed-be40-51862961152f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\00. Skill_Object\02. Earth">
+      <UniqueIdentifier>{a70ae381-584c-4335-9b6e-7206e2fcd35c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\00. Skill_Object\01. Wind">
+      <UniqueIdentifier>{0810d1c8-e717-412e-a72a-d37732eacdae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\01. Skill_Actor\00. Fire">
+      <UniqueIdentifier>{d0afd3fc-b0b2-46bf-a922-de2404922339}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\01. Skill_Actor\01. Wind">
+      <UniqueIdentifier>{6c983280-bf8f-4a39-ba4a-f367a3ca7e9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\01. Skill_Actor\02. Earth">
+      <UniqueIdentifier>{f686a60e-f434-4084-95fa-0c34d2d59828}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -291,13 +317,7 @@
     <ClCompile Include="Main.cpp">
       <Filter>00. MainGame</Filter>
     </ClCompile>
-    <ClCompile Include="CFireBall.cpp">
-      <Filter>06. Skill\01. Skill_Actor</Filter>
-    </ClCompile>
     <ClCompile Include="CSkill_Actor.cpp">
-      <Filter>06. Skill\01. Skill_Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="CWindSlash.cpp">
       <Filter>06. Skill\01. Skill_Actor</Filter>
     </ClCompile>
     <ClCompile Include="CSkill_Factory.cpp">
@@ -305,9 +325,6 @@
     </ClCompile>
     <ClCompile Include="CTile.cpp">
       <Filter>08. Tile</Filter>
-    </ClCompile>
-    <ClCompile Include="CEarth_Shield.cpp">
-      <Filter>06. Skill\01. Skill_Actor</Filter>
     </ClCompile>
     <ClCompile Include="CRenderManager.cpp">
       <Filter>01. Manager</Filter>
@@ -339,15 +356,6 @@
     <ClCompile Include="CSkill.cpp">
       <Filter>06. Skill\00. Skill_Object</Filter>
     </ClCompile>
-    <ClCompile Include="CSkill_Earth_Shield.cpp">
-      <Filter>06. Skill\00. Skill_Object</Filter>
-    </ClCompile>
-    <ClCompile Include="CSkill_FireBall.cpp">
-      <Filter>06. Skill\00. Skill_Object</Filter>
-    </ClCompile>
-    <ClCompile Include="CSkill_WindSlash.cpp">
-      <Filter>06. Skill\00. Skill_Object</Filter>
-    </ClCompile>
     <ClCompile Include="CUI.cpp">
       <Filter>98.UI</Filter>
     </ClCompile>
@@ -369,8 +377,34 @@
     <ClCompile Include="CPlayer.cpp">
       <Filter>03. Actors\00. Player</Filter>
     </ClCompile>
+    <ClCompile Include="CSkill_Earth_Shield.cpp">
+      <Filter>06. Skill\00. Skill_Object\02. Earth</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_FireDragon.cpp">
+      <Filter>06. Skill\00. Skill_Object\00. Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_FireBall.cpp">
+      <Filter>06. Skill\00. Skill_Object\00. Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_WindSlash.cpp">
+      <Filter>06. Skill\00. Skill_Object\01. Wind</Filter>
+    </ClCompile>
+    <ClCompile Include="CEarth_Shield.cpp">
+      <Filter>06. Skill\01. Skill_Actor\02. Earth</Filter>
+    </ClCompile>
+    <ClCompile Include="CFire_Ball.cpp">
+      <Filter>06. Skill\01. Skill_Actor\00. Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="CFire_Dragon.cpp">
+      <Filter>06. Skill\01. Skill_Actor\00. Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="CWindSlash.cpp">
+      <Filter>06. Skill\01. Skill_Actor\01. Wind</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Game1.rc" />
+    <ResourceCompile Include="Game1.rc">
+      <Filter>99. Headers</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

@@ -28,6 +28,7 @@ enum class ECharacterState
 	Dash,
 	Attack1,
 	Attack2,
+	Attack_FireDragon,
 
 	Boss_Start,
 
@@ -60,9 +61,12 @@ enum class ETileType
 
 enum class ESkillType
 {
-	Wind_Slash,
 	Fire_Ball,
-	Gaia_Armor,
+	Fire_Dragon,
+
+	Wind_Slash,
+
+	Earth_Shield,
 
 
 	SKILL_END

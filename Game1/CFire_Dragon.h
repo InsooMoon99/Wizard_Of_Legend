@@ -2,13 +2,13 @@
 
 #include "CSkill_Actor.h"
 
-class CFireBall : public CSkill_Actor
+class CFire_Dragon : public CSkill_Actor
 {
 	using Super = CSkill_Actor;
 
 public:
-	CFireBall(SkillInfo& _Info);
-	virtual ~CFireBall() override;
+	CFire_Dragon(SkillInfo& _Info);
+	virtual ~CFire_Dragon();
 
 public:
 	void BeginPlay() override;
@@ -18,17 +18,17 @@ public:
 	void Release() override;
 
 public:
-	bool CheckHitWall();
-	void OnHitWall(const Vec2& hitPos);
+	bool CheckHitWall() override;
+	void OnHitWall(const Vec2& hitPos) override;
 
 public:
 	virtual void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
 	virtual void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 
 public:
-	shared_ptr<ObImage> m_FireBall;
+	shared_ptr<ObImage> m_FireDragon;
+	vector<shared_ptr<ObImage>> m_FireDragon_Particle;
 
 	vector<shared_ptr<ObImage>> m_FireBall_Particle;
 
 };
-

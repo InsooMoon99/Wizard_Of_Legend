@@ -118,7 +118,7 @@ void CBoss_TwinGirl::Update_Hit()
 
 		if (m_HitTimer <= 0.f)
 		{
-			CHelper::OrignColor(Get_CurImage().get());
+			CHelper::OrignColor(m_CurImg.get());
 		}
 	}
 }
@@ -127,7 +127,7 @@ void CBoss_TwinGirl::Hit_Color()
 {
 	Super::Hit_Color();
 
-	CHelper::HitColor(Get_CurImage().get());
+	CHelper::HitColor(m_CurImg.get());
 	m_HitTimer = 0.15f;
 }
 

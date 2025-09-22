@@ -94,7 +94,7 @@ void CDummy::Update_Hit()
 
 		if (m_HitTimer <= 0.f)
 		{
-			CHelper::OrignColor(Get_CurImage().get());
+			CHelper::OrignColor(m_CurImg.get());
 		}
 	}
 }
@@ -103,7 +103,7 @@ void CDummy::Hit_Color()
 {
 	IColorChanger::Hit_Color();
 
-	CHelper::HitColor(Get_CurImage().get());
+	CHelper::HitColor(m_CurImg.get());
 	m_HitTimer = 0.15f;
 }
 

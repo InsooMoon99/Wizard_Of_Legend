@@ -53,24 +53,28 @@ void CParticleManager::Resource_Settings()
 	shared_ptr<ObImage> fire_hitEffect = RESOURCE->CreateSprite(L"Particle\\Fire_HitEffect.png", Vec2(910.f / 7.f, 110.f) * 1.5f, Int2(7, 1), true);
 	fire_hitEffect->ChangeAnim(ANIMSTATE::ONCE, 0.07f);
 
+	shared_ptr<ObImage> fire_hitEffect2 = RESOURCE->CreateSprite(L"Particle\\Fire_HiitEffect2.bmp", Vec2(670.f / 5.f, 175.f) * 0.8f, Int2(5, 1), true);
+	fire_hitEffect2->ChangeAnim(ANIMSTATE::ONCE, 0.07f);
+
 	shared_ptr<ObImage> wind_Slash = RESOURCE->CreateSprite(L"Skill\\WinSlash_Large_Alt.png", Vec2(300.f / 5.f, 60.f) * 3.f, Int2(5, 1), true);
 	wind_Slash->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
 
 	// Fire Particle
 	{
-		shared_ptr<ObImage> fire1 = RESOURCE->CreateSprite(L"Particle\\FIRE_PARTICLE.bmp", Vec2(175.f / 5.f, 140.f / 4.f), Int2(5, 4), true);
+		Vec2 fireSize = Vec2(768.f / 6.f, 512.f / 4.f) / 2.5f;
+		shared_ptr<ObImage> fire1 = RESOURCE->CreateSprite(L"Particle\\Fire_Particle_6.bmp", fireSize, Int2(6, 4), true);
 		fire1->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
 		fire1->frame.y = 0;
 
-		shared_ptr<ObImage> fire2 = RESOURCE->CreateSprite(L"Particle\\FIRE_PARTICLE.bmp", Vec2(175.f / 5.f, 140.f / 4.f), Int2(5, 4), true);
+		shared_ptr<ObImage> fire2 = RESOURCE->CreateSprite(L"Particle\\Fire_Particle_6.bmp", fireSize, Int2(6, 4), true);
 		fire2->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
 		fire2->frame.y = 1;
 
-		shared_ptr<ObImage> fire3 = RESOURCE->CreateSprite(L"Particle\\FIRE_PARTICLE.bmp", Vec2(175.f / 5.f, 140.f / 4.f), Int2(5, 4), true);
+		shared_ptr<ObImage> fire3 = RESOURCE->CreateSprite(L"Particle\\Fire_Particle_6.bmp", fireSize, Int2(6, 4), true);
 		fire3->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
 		fire3->frame.y = 2;
 
-		shared_ptr<ObImage> fire4 = RESOURCE->CreateSprite(L"Particle\\FIRE_PARTICLE.bmp", Vec2(175.f / 5.f, 140.f / 4.f), Int2(5, 4), true);
+		shared_ptr<ObImage> fire4 = RESOURCE->CreateSprite(L"Particle\\Fire_Particle_6.bmp", fireSize, Int2(6, 4), true);
 		fire4->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
 		fire4->frame.y = 3;
 
@@ -80,27 +84,56 @@ void CParticleManager::Resource_Settings()
 		m_Particles.insert({ L"Fire4", fire4 });
 	}
 
+	// StoneEffect
+	{
+		Vec2 stoneSize = Vec2(128.f / 4.f, 128.f / 4.f);
+		shared_ptr<ObImage> stone1 = RESOURCE->CreateSprite(L"Particle\\stoneEffect_4x4.bmp", stoneSize, Int2(4, 4), true);
+		stone1->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+		stone1->frame.y = 0;
+
+		shared_ptr<ObImage> stone2 = RESOURCE->CreateSprite(L"Particle\\stoneEffect_4x4.bmp", stoneSize, Int2(4, 4), true);
+		stone2->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+		stone2->frame.y = 1;
+
+		shared_ptr<ObImage> stone3 = RESOURCE->CreateSprite(L"Particle\\stoneEffect_4x4.bmp", stoneSize, Int2(4, 4), true);
+		stone3->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+		stone3->frame.y = 2;
+
+		shared_ptr<ObImage> stone4 = RESOURCE->CreateSprite(L"Particle\\stoneEffect_4x4.bmp", stoneSize, Int2(4, 4), true);
+		stone4->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+		stone4->frame.y = 3;
+
+		m_Particles.insert({ L"Stone1", stone1 });
+		m_Particles.insert({ L"Stone2", stone2 });
+		m_Particles.insert({ L"Stone3", stone3 });
+		m_Particles.insert({ L"Stone4", stone4 });
+	}
+
 	// Effect
 	m_Particles.insert({ L"HitEffect", hit_Effect });
 	m_Particles.insert({ L"HitSpark", hit_Spark });
 	m_Particles.insert({ L"Fire_HitEffect", fire_hitEffect });
+	m_Particles.insert({ L"Fire_HitEffect2", fire_hitEffect2 });
 
 	// Player
 	m_Particles.insert({ L"Wind_Slash", wind_Slash });
 }
 
-shared_ptr<ObImage> CParticleManager::Spawn_Particle(const wstring& _Key, const Vec2& _Pos)
+shared_ptr<ObImage> CParticleManager::Spawn_Particle(const wstring& _Key, const Vec2& _Pos, float _Multiple)
 {
 	auto find_iter = m_Particles.find(_Key);
 	if (find_iter == m_Particles.end()) return nullptr;
-	
+
 	auto particle = find_iter->second;
 	auto newParticle = make_shared<ObImage>(*particle); // 복사 생성자
-	
+
 	newParticle->SetWorldPos(_Pos);
-	
+
+	if (_Multiple != -1)
+		newParticle->scale = find_iter->second->scale * _Multiple;
+
 	m_ActiveParticles.push_back(newParticle);
-	
+
 	return newParticle;
 }
 

@@ -68,4 +68,3 @@ ECharacterState CStateComponent::Set_AttackType()
 
 	return next;
 }
-

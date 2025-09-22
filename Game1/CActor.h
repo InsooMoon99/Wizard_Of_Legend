@@ -31,18 +31,18 @@ public:
 	const vector<shared_ptr<CComponent>>& GetAllComponents() const { return m_Components; }
 
 	virtual shared_ptr<GameObject>  Get_Collision() { return m_Collision; }
-	virtual shared_ptr<ObImage>		Get_CurImage() { return m_CurImg; }
-
+	virtual shared_ptr<ObImage>		Get_CurImg() { return m_CurImg; }
 
 protected:
+	vector<shared_ptr<CComponent>>		m_Components;
 	// Collision
 	vector<GameObject*>		m_vecCol;
-
 	shared_ptr<GameObject>	m_Collision = nullptr;
-	shared_ptr<ObImage>		m_CurImg = nullptr;
+	shared_ptr<ObImage>		m_CurImg;
 
-	vector<shared_ptr<CComponent>>		m_Components;
 	Vector2					m_Pos = { 0,0 };
+
+
 
 };
 

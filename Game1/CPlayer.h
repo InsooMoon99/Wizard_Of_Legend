@@ -33,7 +33,7 @@ public:
 private:
 	// Components
 	shared_ptr<CWeaponComponent>		m_Weapon;
-	shared_ptr<CInventoryComponent>	m_Inventory;
+	shared_ptr<CInventoryComponent>		m_Inventory;
 	shared_ptr<CUIComponent>			m_UI;
 
 public:
@@ -46,6 +46,7 @@ public:
 
 	virtual void SetSprite(ECharacterState _State, EPlayerDir _Dir) override;
 	virtual void Play_Sprite(ECharacterState _State);
+
 
 public:
 	void Attack_Sprite();

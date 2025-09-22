@@ -76,6 +76,8 @@ void CSkill_WindSlash::Activate(CActor* _Owner)
 	auto state = CHelper::GetComponent<CStateComponent>(character);
 	if (!state) return;
 
+	state->Change_State(state->Set_AttackType());
+
 	Vec2 dir = CHelper::DirToVec(state->Get_Dir());
 	float radian = Utility::DirToRadian(dir);
 

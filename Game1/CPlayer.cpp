@@ -1,4 +1,4 @@
-#include "stdafx.h"
+Ôªø#include "stdafx.h"
 #include "CPlayer.h"
 #include "CCharacter.h"
 #include "CResourceManager.h"
@@ -12,8 +12,8 @@
 
 CPlayer::CPlayer()
 {
-	m_Weapon	= CHelper::CreateSharedComponent<CWeaponComponent>(this);
-	m_UI		= CHelper::CreateSharedComponent<CUIComponent>(this);
+	m_Weapon = CHelper::CreateSharedComponent<CWeaponComponent>(this);
+	m_UI = CHelper::CreateSharedComponent<CUIComponent>(this);
 	m_Inventory = CHelper::CreateSharedComponent<CInventoryComponent>(this);
 
 	m_Status->SetMaxHp(100.f);
@@ -25,7 +25,7 @@ CPlayer::CPlayer()
 
 	m_Status->SetGold(100);
 
-	// ƒƒ∆˜≥Õ∆Æ ºº∆√«œ∞Ì »£√‚«ÿæﬂ«‘
+	// Ïª¥Ìè¨ÎÑåÌä∏ ÏÑ∏ÌåÖÌïòÍ≥† Ìò∏Ï∂úÌï¥ÏïºÌï®
 	Resource_Settings();
 }
 
@@ -43,9 +43,15 @@ void CPlayer::BeginPlay()
 
 	if (m_Weapon)
 	{
+		// Fire
 		m_Weapon->Equip_Skill(ESkillType::Fire_Ball);
+		m_Weapon->Equip_Skill(ESkillType::Fire_Dragon);
+
+		// Wind
 		m_Weapon->Equip_Skill(ESkillType::Wind_Slash);
-		m_Weapon->Equip_Skill(ESkillType::Gaia_Armor);
+
+		// Earth
+		m_Weapon->Equip_Skill(ESkillType::Earth_Shield);
 	}
 }
 
@@ -102,40 +108,27 @@ void CPlayer::Tick()
 		break;
 	}
 
+	// (Í∏∞Ï°¥) ÏÉÅÌÉú/Î∞©Ìñ• Î≥ÄÍ≤Ω Ïãú Ïä§ÌîÑÎùºÏù¥Ìä∏ Í∞±Ïã†
 	if (m_prevState != m_State->Get_State() || m_prevDir != m_State->Get_Dir())
-	{
 		SetSprite(m_State->Get_State(), m_State->Get_Dir());
-	}
 
-	// ∏∂øÏΩ∫∑Œ πÊ«‚ ¡∂¿˝
-	{
-		//m_AttackDir = INPUT->GetMouseWorldPos() - m_PlayerCol->GetWorldPos();
-		//m_AttackDir.Normalize();
-		//
-		//float angle = atan2(m_AttackDir.y, m_AttackDir.x);
-		//m_Player_Marker->rotation = angle - (PI / 2.0f);
-	}
-
-	// Update
-	for (auto& col : m_vecCol)
-		col->Update();
-
-	for (auto& shadow : m_Shadow)
-		shadow.second->Update();
-
+	// ----- Update -----
+	for (auto& col : m_vecCol)     col->Update();
+	for (auto& shadow : m_Shadow)  shadow.second->Update();
 	m_Player_Marker->Update();
+	if (m_CurImg)                  m_CurImg->Update();
+	for (auto& dash : m_Dash)      dash.second->Update();
 
-	if (m_CurImg)
-		m_CurImg->Update();
-
-	for (auto& dash : m_Dash)
-		dash.second->Update();
-
+	// Ïª¥Ìè¨ÎÑåÌä∏(Î¨¥Í∏∞/Ïä§ÌÇ¨ Îì±) Tick ‚Äî Ïù¥ ÏïàÏóêÏÑú FireDragonÏù¥ Attack Ï†ÑÏù¥ÏãúÌÇ¥
 	for (auto& component : m_Components)
 		component->TickComponent();
 
-	
+	// ‚òÖ Ï§ëÏöî(Ï∂îÍ∞Ä): Ïª¥Ìè¨ÎÑåÌä∏ Tick Ïù¥ÌõÑÏóê ‚ÄúÎã§Ïãú Ìïú Î≤à‚Äù ÏÉÅÌÉú/Î∞©Ìñ• Î≥ÄÍ≤Ω Í∞êÏßÄ ‚Üí Ï¶âÏãú SetSprite
+	// Ïù¥Î†áÍ≤å Ìï¥Ïïº ‚ÄúÍ∞ôÏùÄ ÌîÑÎ†àÏûÑÏóê Ïö∞ÌÅ¥Î¶≠ 1Ìöå Ìö®Í≥º‚ÄùÏ≤òÎüº Ïï†ÎãàÎ©îÏù¥ÏÖòÏù¥ Ïû¨ÏãúÏûëÎê®
+	if (m_prevState != m_State->Get_State() || m_prevDir != m_State->Get_Dir())
+		SetSprite(m_State->Get_State(), m_State->Get_Dir());
 }
+
 
 void CPlayer::LateUpdate()
 {
@@ -210,9 +203,9 @@ void CPlayer::Key_Input()
 	EPlayerDir		curtDir = m_State->Get_Dir();
 	ECharacterState	curState = m_State->Get_State();
 
-	// TODO : ∞¯∞› ¡ﬂ¿œ ∂ß ∏¯øÚ¡˜¿Ã¥¬∞‘ æ∆¥œ∂Û, µ˚∑Œ ¡∂±›æø øÚ¡˜¿œºˆ ¿÷µµ∑œ √≥∏Æ«ÿ¡÷±‚ ? 
-	bool bCheck =	m_State->Get_State() != ECharacterState::Attack1 && 
-					m_State->Get_State() != ECharacterState::Attack2;
+	// TODO : Í≥µÍ≤© Ï§ëÏùº Îïå Î™ªÏõÄÏßÅÏù¥ÎäîÍ≤å ÏïÑÎãàÎùº, Îî∞Î°ú Ï°∞Í∏àÏî© ÏõÄÏßÅÏùºÏàò ÏûàÎèÑÎ°ù Ï≤òÎ¶¨Ìï¥Ï£ºÍ∏∞ ? 
+	bool bCheck = m_State->Get_State() != ECharacterState::Attack1 &&
+		m_State->Get_State() != ECharacterState::Attack2;
 
 	if (bCheck)
 	{
@@ -222,9 +215,10 @@ void CPlayer::Key_Input()
 		if (INPUT->KeyPress('D')) { m_MoveDir.x = +1.f; }
 	}
 
+
+
 	if (INPUT->KeyDown('Q'))
 	{
-		m_State->Change_State(m_State->Set_AttackType());
 		m_Weapon->Activate_Skill(ESkillType::Fire_Ball);
 
 		return;
@@ -232,7 +226,6 @@ void CPlayer::Key_Input()
 
 	if (INPUT->KeyDown(VK_LBUTTON))
 	{
-		m_State->Change_State(m_State->Set_AttackType());
 		m_Weapon->Activate_Skill(ESkillType::Wind_Slash);
 
 		return;
@@ -240,25 +233,32 @@ void CPlayer::Key_Input()
 
 	if (INPUT->KeyDown('E'))
 	{
-		m_State->Change_State(m_State->Set_AttackType());
-		m_Weapon->Activate_Skill(ESkillType::Gaia_Armor);
+		m_Weapon->Activate_Skill(ESkillType::Earth_Shield);
 
 		return;
 	}
 
-	// ¥Î∞¢º± πÊ«‚ øÏº± √≥∏Æ
+	if (INPUT->KeyDown(VK_RBUTTON))
+	{
+		m_Weapon->Activate_Skill(ESkillType::Fire_Dragon);
+
+		return;
+	}
+
+
+	// ÎåÄÍ∞ÅÏÑ† Î∞©Ìñ• Ïö∞ÏÑ† Ï≤òÎ¶¨
 	if ((m_MoveDir.x != 0) && (m_MoveDir.y != 0))
 	{
 		if (m_MoveDir.x > 0 && m_MoveDir.y > 0)
 		{
 			curtDir = EPlayerDir::Back_Right;
-			m_Player_Marker->rotation = - (PI / 4.f);
-			
+			m_Player_Marker->rotation = -(PI / 4.f);
+
 		}
 		else if (m_MoveDir.x < 0 && m_MoveDir.y > 0)
 		{
 			curtDir = EPlayerDir::Back_Left;
-			m_Player_Marker->rotation = + (PI / 4.f);
+			m_Player_Marker->rotation = +(PI / 4.f);
 		}
 		else if (m_MoveDir.x < 0 && m_MoveDir.y < 0)
 		{
@@ -271,7 +271,7 @@ void CPlayer::Key_Input()
 			m_Player_Marker->rotation = -PI + (PI / 4.f);
 		}
 	}
-	// ¥Î∞¢º±¿Ã æ∆¥œ∏È ªÛ«œ¡¬øÏ
+	// ÎåÄÍ∞ÅÏÑ†Ïù¥ ÏïÑÎãàÎ©¥ ÏÉÅÌïòÏ¢åÏö∞
 	else
 	{
 		if (m_MoveDir.y > 0)
@@ -302,13 +302,13 @@ void CPlayer::Key_Input()
 
 void CPlayer::State_Idle()
 {
-	// TODO : Idle ªÛ≈¬∏¶ µ˚∑Œ √≥∏Æ«ÿæﬂ«œ¥¬∞°?
+	// TODO : Idle ÏÉÅÌÉúÎ•º Îî∞Î°ú Ï≤òÎ¶¨Ìï¥ÏïºÌïòÎäîÍ∞Ä?
 	//m_PlayerCol->MoveWorldPos(m_MoveDir * m_Speed * DELTA);
 }
 
 void CPlayer::State_Walk()
 {
-	// πÊ«‚¿Ã ¿÷¿∏∏È §°§°
+	// Î∞©Ìñ•Ïù¥ ÏûàÏúºÎ©¥ „Ñ±„Ñ±
 	if (m_MoveDir.Length() > 0.f)
 	{
 		MoveTile(m_MoveDir, m_Status->GetSpeed());
@@ -324,7 +324,7 @@ void CPlayer::State_Dash()
 	{
 		MoveTile(m_LastDir, m_DashDistance);
 
-		// ±◊∏≤¿⁄ ≈©±‚ ¡∂¿˝
+		// Í∑∏Î¶ºÏûê ÌÅ¨Í∏∞ Ï°∞Ï†à
 		{
 			if (m_CurImg->frame.x < 5)
 			{
@@ -343,15 +343,31 @@ void CPlayer::State_Dash()
 
 void CPlayer::State_Attack()
 {
+	// ÌòÑÏû¨ ÏÉÅÌÉú(Attack1/2)ÏôÄ Î∞©Ìñ•Ïóê ÎßûÎäî Ïù¥ÎØ∏ÏßÄÍ∞Ä ÏÑ∏ÌåÖÎêòÏñ¥ ÏûàÎäîÏßÄ Í∞ÄÎìú
 	auto& map = m_Sprites[m_State->Get_State()];
 	auto it = map.find(m_State->Get_Dir());
-
 	if (it != map.end() && m_CurImg != it->second)
 		return;
 
 	if (m_CurImg && m_CurImg->frame.x >= m_CurImg->maxFrame.x - 1)
+	{
+		// ‚òÖ Ï∂îÍ∞Ä: Ïó∞ÏÜç Î∞úÏÇ¨ Ïä§ÌÇ¨Ïù¥ ÏßÑÌñâ Ï§ëÏù¥Î©¥ IdleÎ°ú Í∞ÄÏßÄ ÏïäÍ≥†
+		//         Îã§Ïùå Í≥µÍ≤© Ïï†ÎãàÎ©îÏù¥ÏÖòÏùÑ "Î∞îÎ°ú" Ïû¨ÏãúÏûë
+		if (m_Weapon && m_Weapon->IsFiringSkill())
+		{
+			// Attack1 <-> Attack2 ÌÜ†Í∏Ä (Set_AttackType ÎÇ¥Î∂Ä Íµ¨ÌòÑ Í∞ÄÏ†ï)
+			m_State->Change_State(m_State->Set_AttackType());
+
+			// Í∞ôÏùÄ ÌîÑÎ†àÏûÑÏóê Ï¶âÏãú Î¶¨ÏÖãÎêòÎèÑÎ°ù Î≥¥Ïû• (ÌîÑÎ†àÏûÑ 0Î∂ÄÌÑ∞ Îã§Ïãú)
+			SetSprite(m_State->Get_State(), m_State->Get_Dir());
+			return;
+		}
+
+		// Ïó∞ÏÜç Î∞úÏÇ¨Í∞Ä ÎÅùÎÇ¨Îã§Î©¥ Idle Î≥µÍ∑Ä
 		m_State->Change_State(ECharacterState::Idle);
+	}
 }
+
 
 void CPlayer::SetSprite(ECharacterState _State, EPlayerDir _Dir)
 {
@@ -401,15 +417,41 @@ void CPlayer::Play_Sprite(ECharacterState _State)
 		break;
 
 	case ECharacterState::Attack1:
-		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.06f);
-		m_CurImg->frame = Int2(0, 0);
+		if (m_Weapon->IsFiringSkill())
+		{
+			m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.01f);
+			m_CurImg->frame = Int2(0, 0);
+		}
+
+		else
+		{
+			m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.06f);
+			m_CurImg->frame = Int2(0, 0);
+		}
+
 		break;
 
 	case ECharacterState::Attack2:
-		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.06f);
-		m_CurImg->frame = Int2(0, 0);
+
+		if (m_Weapon->IsFiringSkill())
+		{
+			m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.01f);
+			m_CurImg->frame = Int2(0, 0);
+		}
+
+		else
+		{
+			m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.06f);
+			m_CurImg->frame = Int2(0, 0);
+		}
+
 		break;
 	}
+}
+
+void CPlayer::Attack_Sprite()
+{
+
 }
 
 void CPlayer::Shadow_Size()
@@ -429,7 +471,7 @@ void CPlayer::Shadow_Size()
 
 void CPlayer::Dash_Sprite()
 {
-	// ¥ÎΩ¨ ¿Ã∆Â∆Æ
+	// ÎåÄÏâ¨ Ïù¥ÌéôÌä∏
 	auto iter = m_Dash.find(m_State->Get_Dir());
 	if (iter != m_Dash.end())
 	{
@@ -473,58 +515,58 @@ void CPlayer::Resource_Settings()
 	// State_Idle
 	{
 		Vec2 idle_Size = Vec2(90.f, 93.f) * 1.6f;
-		shared_ptr<ObImage> front_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),true);
+		shared_ptr<ObImage> front_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png", idle_Size, Int2(4, 1), true);
 		front_Idle->SetParentRT(*m_Collision);
 		front_Idle->SetLocalPos(Vec2(-7.f, 10.f));
 
-		shared_ptr<ObImage> front_Left_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),true);
+		shared_ptr<ObImage> front_Left_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png", idle_Size, Int2(4, 1), true);
 		front_Left_Idle->SetParentRT(*m_Collision);
 		front_Left_Idle->SetLocalPos(Vec2(-10.f, 10.f));
 
-		shared_ptr<ObImage> front_Right_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),true);
+		shared_ptr<ObImage> front_Right_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png", idle_Size, Int2(4, 1), true);
 		front_Right_Idle->SetParentRT(*m_Collision);
 		front_Right_Idle->SetLocalPos(Vec2(-10.f, 10.f));
 
-		shared_ptr<ObImage> back_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),false);
+		shared_ptr<ObImage> back_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png", idle_Size, Int2(4, 1), false);
 		back_Idle->SetParentRT(*m_Collision);
 		back_Idle->SetLocalPos(Vec2(5.f, 10.f));
 		back_Idle->frame = Int2(1, 1);
 
-		shared_ptr<ObImage> back_Left_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),false);
+		shared_ptr<ObImage> back_Left_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png", idle_Size, Int2(4, 1), false);
 		back_Left_Idle->SetParentRT(*m_Collision);
 		back_Left_Idle->SetLocalPos(Vec2(1.5f, 10.f));
 		back_Left_Idle->frame = Int2(1, 1);
 
-		shared_ptr<ObImage> back_Right_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),false);
+		shared_ptr<ObImage> back_Right_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png", idle_Size, Int2(4, 1), false);
 		back_Right_Idle->SetParentRT(*m_Collision);
 		back_Right_Idle->SetLocalPos(Vec2(1.5f, 10.f));
 		back_Right_Idle->frame = Int2(1, 1);
 
-		shared_ptr<ObImage> left_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),false);
+		shared_ptr<ObImage> left_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png", idle_Size, Int2(4, 1), false);
 		left_Idle->SetParentRT(*m_Collision);
 		left_Idle->SetLocalPos(Vec2(-15.f, 10.f));
 		left_Idle->frame = Int2(2, 1);
 
-		shared_ptr<ObImage> right_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png",idle_Size,Int2(4, 1),false);
+		shared_ptr<ObImage> right_Idle = RESOURCE->CreateSprite(L"Player\\Idle\\Idle.png", idle_Size, Int2(4, 1), false);
 		right_Idle->SetParentRT(*m_Collision);
 		right_Idle->SetLocalPos(Vec2(-21.f, 10.f));
 		right_Idle->frame = Int2(3, 1);
 
-		m_Sprites[ECharacterState::Idle][EPlayerDir::Front]		= front_Idle;
-		m_Sprites[ECharacterState::Idle][EPlayerDir::Front_Left]	= front_Left_Idle;
-		m_Sprites[ECharacterState::Idle][EPlayerDir::Front_Right]	= front_Right_Idle;
-		m_Sprites[ECharacterState::Idle][EPlayerDir::Back]			= back_Idle;
-		m_Sprites[ECharacterState::Idle][EPlayerDir::Back_Left]	= back_Left_Idle;
-		m_Sprites[ECharacterState::Idle][EPlayerDir::Back_Right]	= back_Right_Idle;
-		m_Sprites[ECharacterState::Idle][EPlayerDir::Left]			= left_Idle;
-		m_Sprites[ECharacterState::Idle][EPlayerDir::Right]		= right_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Front] = front_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Front_Left] = front_Left_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Front_Right] = front_Right_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Back] = back_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Back_Left] = back_Left_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Back_Right] = back_Right_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Left] = left_Idle;
+		m_Sprites[ECharacterState::Idle][EPlayerDir::Right] = right_Idle;
 	}
 
 	// State_Walk
 	{
 		Vec2 walkSize = Vec2(900.f / 10.f, 93.f) * 1.4f;
 
-		shared_ptr<ObImage> front_Walk = RESOURCE->CreateSprite(L"Player\\Front\\Front_Walk.png", walkSize,Int2(10, 1), false);
+		shared_ptr<ObImage> front_Walk = RESOURCE->CreateSprite(L"Player\\Front\\Front_Walk.png", walkSize, Int2(10, 1), false);
 		front_Walk->SetParentRT(*m_Collision);
 		front_Walk->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 
@@ -532,7 +574,7 @@ void CPlayer::Resource_Settings()
 		m_Sprites[ECharacterState::Walk][EPlayerDir::Front_Left] = front_Walk;
 		m_Sprites[ECharacterState::Walk][EPlayerDir::Front_Right] = front_Walk;
 
-		shared_ptr<ObImage> back_Walk = RESOURCE->CreateSprite(L"Player\\Back\\Back_Walk.png", walkSize,Int2(10, 1), false);
+		shared_ptr<ObImage> back_Walk = RESOURCE->CreateSprite(L"Player\\Back\\Back_Walk.png", walkSize, Int2(10, 1), false);
 		back_Walk->SetParentRT(*m_Collision);
 		back_Walk->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 
@@ -540,12 +582,12 @@ void CPlayer::Resource_Settings()
 		m_Sprites[ECharacterState::Walk][EPlayerDir::Back_Left] = back_Walk;
 		m_Sprites[ECharacterState::Walk][EPlayerDir::Back_Right] = back_Walk;
 
-		shared_ptr<ObImage> left_Walk = RESOURCE->CreateSprite(L"Player\\Left\\Left_Walk.png", walkSize,Int2(10, 1), false);
+		shared_ptr<ObImage> left_Walk = RESOURCE->CreateSprite(L"Player\\Left\\Left_Walk.png", walkSize, Int2(10, 1), false);
 		left_Walk->SetParentRT(*m_Collision);
 		left_Walk->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 		m_Sprites[ECharacterState::Walk][EPlayerDir::Left] = left_Walk;
 
-		shared_ptr<ObImage> right_Walk = RESOURCE->CreateSprite(L"Player\\Right\\Right_Walk.png", walkSize,Int2(10, 1), false);
+		shared_ptr<ObImage> right_Walk = RESOURCE->CreateSprite(L"Player\\Right\\Right_Walk.png", walkSize, Int2(10, 1), false);
 		right_Walk->SetParentRT(*m_Collision);
 		right_Walk->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 		m_Sprites[ECharacterState::Walk][EPlayerDir::Right] = right_Walk;
@@ -589,28 +631,28 @@ void CPlayer::Resource_Settings()
 	{
 		Vec2 dash_Size = Vec2(1100.f / 11, 104.f) * 1.5f;
 
-		shared_ptr<ObImage> front_Dash = RESOURCE->CreateSprite(L"Player\\front\\Front_Dash_long.png",dash_Size,Int2(11, 1), false);
+		shared_ptr<ObImage> front_Dash = RESOURCE->CreateSprite(L"Player\\front\\Front_Dash_long.png", dash_Size, Int2(11, 1), false);
 		front_Dash->SetParentRT(*m_Collision);
 
-		shared_ptr<ObImage> front_Left_Dash = RESOURCE->CreateSprite(L"Player\\front\\Front_Dash_long.png",dash_Size,Int2(11, 1), false);
+		shared_ptr<ObImage> front_Left_Dash = RESOURCE->CreateSprite(L"Player\\front\\Front_Dash_long.png", dash_Size, Int2(11, 1), false);
 		front_Left_Dash->SetParentRT(*m_Collision);
 
-		shared_ptr<ObImage> front_Right_Dash = RESOURCE->CreateSprite(L"Player\\front\\Front_Dash_long.png",dash_Size,Int2(11, 1), false);
+		shared_ptr<ObImage> front_Right_Dash = RESOURCE->CreateSprite(L"Player\\front\\Front_Dash_long.png", dash_Size, Int2(11, 1), false);
 		front_Right_Dash->SetParentRT(*m_Collision);
 
-		shared_ptr<ObImage> back_Dash = RESOURCE->CreateSprite(L"Player\\Back\\Back_Dash_long.png",dash_Size,Int2(11, 1), false);
+		shared_ptr<ObImage> back_Dash = RESOURCE->CreateSprite(L"Player\\Back\\Back_Dash_long.png", dash_Size, Int2(11, 1), false);
 		back_Dash->SetParentRT(*m_Collision);
 
-		shared_ptr<ObImage> back_Left_Dash = RESOURCE->CreateSprite(L"Player\\Back\\Back_Dash_long.png",dash_Size,Int2(11, 1), false);
+		shared_ptr<ObImage> back_Left_Dash = RESOURCE->CreateSprite(L"Player\\Back\\Back_Dash_long.png", dash_Size, Int2(11, 1), false);
 		back_Left_Dash->SetParentRT(*m_Collision);
 
-		shared_ptr<ObImage> back_Right_Dash = RESOURCE->CreateSprite(L"Player\\Back\\Back_Dash_long.png",dash_Size,Int2(11, 1), false);
+		shared_ptr<ObImage> back_Right_Dash = RESOURCE->CreateSprite(L"Player\\Back\\Back_Dash_long.png", dash_Size, Int2(11, 1), false);
 		back_Right_Dash->SetParentRT(*m_Collision);
 
-		shared_ptr<ObImage> left_Dash = RESOURCE->CreateSprite(L"Player\\Left\\Left_Dash_long.png",dash_Size,Int2(11, 1), false);
+		shared_ptr<ObImage> left_Dash = RESOURCE->CreateSprite(L"Player\\Left\\Left_Dash_long.png", dash_Size, Int2(11, 1), false);
 		left_Dash->SetParentRT(*m_Collision);
 
-		shared_ptr<ObImage> right_Dash = RESOURCE->CreateSprite(L"Player\\Right\\Right_Dash_long.png",dash_Size,Int2(11, 1), false);
+		shared_ptr<ObImage> right_Dash = RESOURCE->CreateSprite(L"Player\\Right\\Right_Dash_long.png", dash_Size, Int2(11, 1), false);
 		right_Dash->SetParentRT(*m_Collision);
 		right_Dash->SetLocalPosX(-10.f);
 
@@ -632,45 +674,45 @@ void CPlayer::Resource_Settings()
 		Vec2 dash_Effect_Size = Vec2(220.f / 11.f, 60.f) * 3.5f;
 		float dash_Alpha = 0.3f;
 
-		shared_ptr<ObImage> dash_Front_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png",dash_Effect_Size,Int2(11, 1), false);
+		shared_ptr<ObImage> dash_Front_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png", dash_Effect_Size, Int2(11, 1), false);
 		dash_Front_Effect->rotation = -(PI / 2.f);
 		dash_Front_Effect->color.A(dash_Alpha);
 		m_Dash.insert({ EPlayerDir::Front, dash_Front_Effect });
 
-		// ¡¬«œ¥‹
-		shared_ptr<ObImage> dash_Front_Left_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png",dash_Effect_Size,Int2(11, 1), false);
+		// Ï¢åÌïòÎã®
+		shared_ptr<ObImage> dash_Front_Left_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png", dash_Effect_Size, Int2(11, 1), false);
 		dash_Front_Left_Effect->rotation = -3.f * PI / 4.f;
 		dash_Front_Left_Effect->color.A(dash_Alpha);
 		m_Dash.insert({ EPlayerDir::Front_Left, dash_Front_Left_Effect });
 
-		// øÏ«œ¥‹
-		shared_ptr<ObImage> dash_Front_Right_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png",dash_Effect_Size,Int2(11, 1), false);
+		// Ïö∞ÌïòÎã®
+		shared_ptr<ObImage> dash_Front_Right_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png", dash_Effect_Size, Int2(11, 1), false);
 		dash_Front_Right_Effect->rotation = -(PI / 4.f);
 		dash_Front_Right_Effect->color.A(dash_Alpha);
 		m_Dash.insert({ EPlayerDir::Front_Right, dash_Front_Right_Effect });
 
-		shared_ptr<ObImage> dash_Back_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png", dash_Effect_Size,Int2(11, 1), false);
+		shared_ptr<ObImage> dash_Back_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png", dash_Effect_Size, Int2(11, 1), false);
 		dash_Back_Effect->rotation = PI / 2.f;
 		dash_Back_Effect->color.A(dash_Alpha);
 		m_Dash.insert({ EPlayerDir::Back, dash_Back_Effect });
 
-		// ¡¬ªÛ¥‹
-		shared_ptr<ObImage> dash_Back_Left_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png",dash_Effect_Size,Int2(11, 1), false);
+		// Ï¢åÏÉÅÎã®
+		shared_ptr<ObImage> dash_Back_Left_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png", dash_Effect_Size, Int2(11, 1), false);
 		dash_Back_Left_Effect->rotation = 3.f * PI / 4.f;
 		dash_Back_Left_Effect->color.A(dash_Alpha);
 		m_Dash.insert({ EPlayerDir::Back_Left, dash_Back_Left_Effect });
 
-		// øÏªÛ¥‹
-		shared_ptr<ObImage> dash_Back_Right_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png",dash_Effect_Size,Int2(11, 1), false);
+		// Ïö∞ÏÉÅÎã®
+		shared_ptr<ObImage> dash_Back_Right_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png", dash_Effect_Size, Int2(11, 1), false);
 		dash_Back_Right_Effect->rotation = PI / 4.f;
 		dash_Back_Right_Effect->color.A(dash_Alpha);
 		m_Dash.insert({ EPlayerDir::Back_Right, dash_Back_Right_Effect });
 
-		shared_ptr<ObImage> dash_Right_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png", Vec2(220.f / 11.f, 60.f) * 3.5f,Int2(11, 1), false);
+		shared_ptr<ObImage> dash_Right_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png", Vec2(220.f / 11.f, 60.f) * 3.5f, Int2(11, 1), false);
 		dash_Right_Effect->color.A(dash_Alpha);
 		m_Dash.insert({ EPlayerDir::Right, dash_Right_Effect });
 
-		shared_ptr<ObImage> dash_Left_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png",Vec2(220.f / 11.f, 60.f) * 3.5f,Int2(11, 1), false);
+		shared_ptr<ObImage> dash_Left_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_Effect.png", Vec2(220.f / 11.f, 60.f) * 3.5f, Int2(11, 1), false);
 		dash_Left_Effect->color.A(dash_Alpha);
 		m_Dash.insert({ EPlayerDir::Left, dash_Left_Effect });
 	}
@@ -685,7 +727,6 @@ void CPlayer::Resource_Settings()
 		m_Sprites[ECharacterState::Attack1][EPlayerDir::Front] = attack_Front1;
 		m_Sprites[ECharacterState::Attack1][EPlayerDir::Front_Left] = attack_Front1;
 		m_Sprites[ECharacterState::Attack1][EPlayerDir::Front_Right] = attack_Front1;
-
 
 		shared_ptr<ObImage> attack_Front2 = RESOURCE->CreateSprite(L"Player\\Front\\Front_Left_Attack2.png", attack_Size, Int2(8, 1), false);
 		attack_Front2->SetParentRT(*m_Collision);
@@ -727,11 +768,22 @@ void CPlayer::Resource_Settings()
 		m_Sprites[ECharacterState::Attack2][EPlayerDir::Right] = attack_Right2;
 		m_Sprites[ECharacterState::Attack2][EPlayerDir::Back_Right] = attack_Right2;
 
+		// Right
+		auto attack_fireRight1 = RESOURCE->CreateSprite(L"Player\\Right\\Right_Attack1.png", attack_Size, Int2(8, 1), false);
+		attack_fireRight1->SetParentRT(*m_Collision);
+		m_Sprites[ECharacterState::Attack_FireDragon][EPlayerDir::Right] = attack_fireRight1;
+		m_Sprites[ECharacterState::Attack_FireDragon][EPlayerDir::Back_Right] = attack_fireRight1;
+
+		auto attack_fireRight2 = RESOURCE->CreateSprite(L"Player\\Right\\Right_Attack2.png", attack_Size, Int2(8, 1), false);
+		attack_fireRight2->SetParentRT(*m_Collision);
+		m_Sprites[ECharacterState::Attack_FireDragon][EPlayerDir::Right] = attack_fireRight2;
+		m_Sprites[ECharacterState::Attack_FireDragon][EPlayerDir::Back_Right] = attack_fireRight2;
+
 	}
 
 	// Direction Overlay
 	{
-		// TODO : Glory µµ √ﬂ∞°«œ±‚?
+		// TODO : Glory ÎèÑ Ï∂îÍ∞ÄÌïòÍ∏∞?
 		m_Player_Marker = RESOURCE->CreateImage(L"UI\\Player_Marker.png", Vec2(32.f, 33.f) * 3.f);
 		m_Player_Marker->SetParentRT(*m_Collision);
 		m_Player_Marker->SetLocalPos(Vec2(-2.f, -35.f));
@@ -761,25 +813,26 @@ void CPlayer::Print_ImGui()
 		ImGui::InputFloat("Mp", &mp);
 		m_Status->SetMp(mp);
 
-		ImGui::InputFloat("Speed", &speed);
-		m_Status->SetSpeed(speed);
-
-		ImGui::InputInt("Gold", &gold);
-		m_Status->SetGold(gold);
+		//ImGui::InputFloat("Speed", &speed);
+		//m_Status->SetSpeed(speed);
+		//
+		//ImGui::InputInt("Gold", &gold);
+		//m_Status->SetGold(gold);
 
 		ImGui::Text("State : %s", CHelper::ToString_PlayerState(m_State->Get_State()));
 		ImGui::Text("Dir   : %s", CHelper::ToString_PlayerDir(m_State->Get_Dir()));
 		ImGui::Text("LastDir.x : %f", m_LastDir.x);
 		ImGui::Text("LastDir.y : %f", m_LastDir.y);
 
-		if (m_CurImg)
-		{
-			Vec2 localPos = m_CurImg->GetLocalPos();
-			ImGui::InputFloat2("Sprite Pos", &localPos.x);
-			m_CurImg->SetLocalPos(localPos);
-		}
+		// Ïä§ÌîÑÎùºÏù¥Ìä∏ ÏÑ∏ÌåÖ
+		//if (m_CurImg)
+		//{
+		//	Vec2 localPos = m_CurImg->GetLocalPos();
+		//	ImGui::InputFloat2("Sprite Pos", &localPos.x);
+		//	m_CurImg->SetLocalPos(localPos);
+		//}
 
-		// ¿ßƒ° ºº∆√
+		// ÏúÑÏπò ÏÑ∏ÌåÖ
 		Vec2 worldPos = m_Collision->GetWorldPos();
 		if (ImGui::InputFloat2("Player Pos", &worldPos.x))
 		{
@@ -797,47 +850,47 @@ void CPlayer::MoveTile(const Vec2& dir, float speed)
 	if (!m_Collision) return;
 
 	ECharacterState playerState = m_State->Get_State();
-	
+
 	GameObject* col = m_Collision.get();
-	
+
 	Vec2 nDir = dir;
-	if (nDir.LengthSquared() > 0.f) 
+	if (nDir.LengthSquared() > 0.f)
 		nDir.Normalize();
 
 	const Vec2 nextMove = nDir * speed * DELTA;
-	
+
 	Vec2 half = col->scale * 0.5f;
-	
+
 	if (nextMove.x != 0.f)
 	{
 		Vec2 pos = col->GetWorldPos();
 		Vec2 dirX = Vec2(nextMove.x, 0.f);
 		Vec2 next = pos + dirX;
-	
+
 		Vec2 minW = next - half;
 		Vec2 maxW = next + half;
-	
+
 		if (!TILE->IsBlocked_ExceptFall(minW, maxW, playerState == ECharacterState::Dash))
 		{
 			col->MoveWorldPos(dirX);
 		}
-		// else : ∏∑»˜∏È X√‡ ¿Ãµø Ω∫≈µ
+		// else : ÎßâÌûàÎ©¥ XÏ∂ï Ïù¥Îèô Ïä§ÌÇµ
 	}
-	
+
 	if (nextMove.y != 0.f)
 	{
-		Vec2 pos = col->GetWorldPos(); 
+		Vec2 pos = col->GetWorldPos();
 		Vec2 dirY = Vec2(0.f, nextMove.y);
 		Vec2 next = pos + dirY;
-	
+
 		Vec2 minW = next - half;
 		Vec2 maxW = next + half;
-	
+
 		if (!TILE->IsBlocked_ExceptFall(minW, maxW, playerState == ECharacterState::Dash))
 		{
 			col->MoveWorldPos(dirY);
 		}
-		// else : ∏∑»˜∏È Y√‡ ¿Ãµø Ω∫≈µ
+		// else : ÎßâÌûàÎ©¥ YÏ∂ï Ïù¥Îèô Ïä§ÌÇµ
 	}
 
 	//Vec2 currentPos = col->GetWorldPos();
@@ -853,7 +906,7 @@ void CPlayer::MoveTile(const Vec2& dir, float speed)
 	//	{
 	//		if (playerState == EPlayerState::Idle || playerState == EPlayerState::Walk)
 	//		{
-	//			// TODO: «√∑π¿ÃæÓ ≥´«œ ∑Œ¡˜ ±∏«ˆ
+	//			// TODO: ÌîåÎ†àÏù¥Ïñ¥ ÎÇôÌïò Î°úÏßÅ Íµ¨ÌòÑ
 	//			m_Collision->SetWorldPos(Vec2(0.f, 0.f));
 	//		}
 	//	}

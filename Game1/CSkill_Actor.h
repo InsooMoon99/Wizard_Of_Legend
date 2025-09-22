@@ -20,6 +20,10 @@ public:
 	void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 
 public:
+	virtual bool CheckHitWall();
+	virtual void OnHitWall(const Vec2& hitPos);
+
+public:
 	bool IsDestroy() const { return m_PendingKill; }
 
 protected:
