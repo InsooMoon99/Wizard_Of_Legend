@@ -59,7 +59,7 @@ void CSkill_Earth_Shield::Release()
 	CSkill::Release();
 }
 
-bool CSkill_Earth_Shield::CanActivate(const SkillInfo& _Info)
+bool CSkill_Earth_Shield::CanActivate(const FSkillInfo& _Info)
 {
 	if (!CSkill::CanActivate(_Info))
 

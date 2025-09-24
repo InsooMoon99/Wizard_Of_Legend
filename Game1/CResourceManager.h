@@ -7,7 +7,7 @@ private:
 	~CResourceManager() = default;
 
 public:
-
+	void Init();
 
 public:
 	shared_ptr<ObImage> CreateImage(
@@ -31,6 +31,8 @@ public:
 
 	void     AddImage(ECharacterState _state, EPlayerDir _dir, ObImage* _img);
 	ObImage* GetImage(ECharacterState _state, EPlayerDir _dir);
+
+	void SoundSettings();
 
 public:
 	static CResourceManager* Get_Instance()

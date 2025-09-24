@@ -1,0 +1,69 @@
+#include "stdafx.h"
+#include "CSkillManager.h"
+
+#include "CBat_Dash_Shock.h"
+#include "CSkill_Actor.h"
+
+CSkillManager* CSkillManager::Instance = nullptr;
+
+void CSkillManager::Init()
+{
+	SkillSettings();
+}
+
+void CSkillManager::Update()
+{
+    for (auto it = m_ActiveSkills.begin(); it != m_ActiveSkills.end();)
+    {
+        auto skill = *it;
+        skill->Tick();
+
+        if (skill->IsDestroy())
+        {
+            it = m_ActiveSkills.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+}
+
+void CSkillManager::Render()
+{
+    for (auto& skill : m_ActiveSkills)
+    {
+        skill->Render();
+    }
+}
+
+void CSkillManager::Release()
+{
+    m_ActiveSkills.clear();
+}
+
+void CSkillManager::SkillSettings()
+{
+    // 필요한가?
+    //shared_ptr<CSkill_Actor> shock = make_shared<CBat_Dash_Shock>();
+}
+
+void CSkillManager::Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info)
+{
+    shared_ptr<CSkill_Actor> newSkill = nullptr;
+
+    switch (_Skill)
+    {
+    case ESkillActor::Dash_Shock:
+        newSkill = make_shared<CBat_Dash_Shock>(_Info);
+        break;
+
+  
+    }
+
+    if (newSkill)
+    {
+        newSkill->BeginPlay();
+        m_ActiveSkills.push_back(newSkill);
+    }
+}

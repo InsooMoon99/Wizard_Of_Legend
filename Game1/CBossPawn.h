@@ -27,13 +27,25 @@ public:
 	void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 
 public:
+	CBoss_Controller* GetController() const { return m_Controller; }
 	void SetController(CBoss_Controller* _Controller) { m_Controller = _Controller; }
-	shared_ptr<CStatusComponent> GetStatus();
+
+	shared_ptr<CStatusComponent> GetControlStatus();
+	shared_ptr<CStateComponent> GetControlState();
+
+	virtual void OnStateChange(ECharacterState _State, EPlayerDir _Dir) {};
+
+	void SetPlayer(CActor* _Player) { m_Player = _Player; }
+	CActor* GetPlayer() { return m_Player; }
 
 protected:
 	void ReportHit(float _Damage);
 
-private:
+protected:
 	CBoss_Controller* m_Controller = nullptr;
+
+	shared_ptr<ObImage> m_BossTaunt;
+
+	CActor* m_Player;
 };
 

@@ -27,17 +27,20 @@ CStage_Start::CStage_Start()
 	m_Images.push_back(m_Test_Start);
 	m_Images.push_back(m_Test_Edit);
 	m_Images.push_back(m_Test_Exit);
+
 }
 
 CStage_Start::~CStage_Start()
 {
-
+	Release();
 }
 
 void CStage_Start::Init()
 {
 	CScene::Init();
 
+	SOUND->Play("Title");
+	SOUND->SetVolume("Title", 0.1f);
 
 }
 
@@ -114,4 +117,6 @@ void CStage_Start::Release()
 	CScene::Release();
 
 	m_Images.clear();
+
+	SOUND->DeleteSound("Title");
 }

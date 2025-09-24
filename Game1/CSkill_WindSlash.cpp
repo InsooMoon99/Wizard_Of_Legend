@@ -56,7 +56,7 @@ void CSkill_WindSlash::Release()
 	CSkill::Release();
 }
 
-bool CSkill_WindSlash::CanActivate(const SkillInfo& _Info)
+bool CSkill_WindSlash::CanActivate(const FSkillInfo& _Info)
 {
 	if (!CSkill::CanActivate(_Info))
 

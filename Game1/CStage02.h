@@ -9,7 +9,6 @@ class CBoss_TwinGirl;
 class CBoss_Controller;
 class CUIComponent;
 
-
 class CStage02 : public CScene
 {
 public:
@@ -28,7 +27,7 @@ public:
 
 private:
 	vector<CActor*> m_Actors;
-	vector<shared_ptr<ObImage>> m_Objects;
+	vector<shared_ptr<GameObject>> m_Objects;
 
 	Vec2 m_PlayerPos;
 	Vec2 m_MapSize;

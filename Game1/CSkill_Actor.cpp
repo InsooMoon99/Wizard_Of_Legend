@@ -3,7 +3,7 @@
 
 #include "CTile.h"
 
-CSkill_Actor::CSkill_Actor(SkillInfo& _Info)
+CSkill_Actor::CSkill_Actor(FSkillInfo& _Info)
 	: m_Skill_Info(_Info)
 {
 

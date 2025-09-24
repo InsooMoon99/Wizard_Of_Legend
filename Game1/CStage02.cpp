@@ -28,6 +28,9 @@ void CStage02::Init()
 {
 	CScene::Init();
 
+	SOUND->Play("BossMap");
+	SOUND->SetVolume("BossMap", 0.1f);
+
 	m_BossController = new CBoss_Controller();
 	m_BossUI = CHelper::GetComponent<CUIComponent>(m_BossController);
 
@@ -35,6 +38,9 @@ void CStage02::Init()
 
 	m_Boss_Man  = new CBoss_TwinMan(m_BossController);
 	m_Boss_Girl = new CBoss_TwinGirl(m_BossController);
+	// 플레이어 세팅
+	m_Boss_Man->SetPlayer(m_Player);
+	m_Boss_Girl->SetPlayer(m_Player);
 
 	m_Actors.push_back(m_Boss_Man);
 	m_Actors.push_back(m_Boss_Girl);
@@ -43,9 +49,12 @@ void CStage02::Init()
 	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
 	player->Get_Collision()->SetWorldPos(m_PlayerPos);
 
-	Vec2 m_BossPos = Vec2(-1850.f, 200.f);
+	Vec2 m_BossPos = Vec2(-1815.f, 200.f);
 	m_Boss_Man->Get_Collision()->SetWorldPos(m_BossPos);
-	m_Boss_Girl->Get_Collision()->SetWorldPos(Vec2(m_BossPos.x + 150, m_BossPos.y));
+	m_Boss_Girl->Get_Collision()->SetWorldPos(Vec2(m_BossPos.x + 50, m_BossPos.y));
+
+	m_Boss_Man->Set_WorldPos(m_BossPos);
+	m_Boss_Girl->Set_WorldPos(Vec2(m_BossPos.x + 50, m_BossPos.y));
 
 	for (auto& actor : m_Actors)
 		actor->BeginPlay();
@@ -98,6 +107,7 @@ void CStage02::Render()
 		object->Render();
 
 	RENDER->Render();
+	PARTICLE->Render();
 }
 
 void CStage02::Release()
@@ -110,10 +120,9 @@ void CStage02::Release()
 void CStage02::Resource_Setting()
 {
 	// Map
-	shared_ptr<ObImage> mapShadow = RESOURCE->CreateImage(L"Edit\\SHADOW.bmp", m_MapSize * 5.f, true);
+	shared_ptr<ObImage> mapShadow = RESOURCE->CreateImage(L"Edit\\stage1_skyMove.bmp", m_MapSize * 5.f, true);
 	mapShadow->SetWorldPos(Vec2(0, 0));
-	mapShadow->color = Color(0.0f, 0.0f, 0.0f, 1.0f);
-	//m_Map.insert({ ESceneType::Shadow, mapShadow });
+	m_Map.insert({ ESceneType::Shadow, mapShadow });
 
 	Vec2 mapPos = Vec2(-1780.f + 225.f, -800.f);
 	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\BossMap_Remove.png", m_MapSize, true);

@@ -23,6 +23,13 @@ public:
 	void Hit_Color()  override abstract {};
 	void Hit_Effect() override abstract {};
 
+	bool IsKnockback() { return m_bKnockback; }
+
+	void SetTeamID(int _ID) { m_TeamID = _ID; }
+	int  GetTeamID() { return m_TeamID; }
+
+	virtual void TakeDamage(FHitDamage _Hit);
+
 protected:
 	shared_ptr<CStatusComponent> m_Status;
 	shared_ptr<CStateComponent> m_State;
@@ -42,5 +49,7 @@ protected:
 	EPlayerDir   m_prevDir;
 
 	float m_HitTimer = 0.f;
+	bool  m_bKnockback = true;
+	int	  m_TeamID = 1;
 };
 

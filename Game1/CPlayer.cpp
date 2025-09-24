@@ -25,6 +25,8 @@ CPlayer::CPlayer()
 
 	m_Status->SetGold(100);
 
+	m_TeamID = 0;
+
 	// 컴포넌트 세팅하고 호출해야함
 	Resource_Settings();
 }
@@ -106,27 +108,37 @@ void CPlayer::Tick()
 	case ECharacterState::Attack2:
 		State_Attack();
 		break;
+
+	case ECharacterState::Hit:
+		State_Hit();
+		break;
 	}
 
-	// (기존) 상태/방향 변경 시 스프라이트 갱신
+
+	if (INPUT->KeyDown('K'))
+	{
+		m_State->Change_State(ECharacterState::Hit);
+	}
+
+
 	if (m_prevState != m_State->Get_State() || m_prevDir != m_State->Get_Dir())
 		SetSprite(m_State->Get_State(), m_State->Get_Dir());
+	
+	for (auto& col : m_vecCol)     
+		col->Update();
 
-	// ----- Update -----
-	for (auto& col : m_vecCol)     col->Update();
-	for (auto& shadow : m_Shadow)  shadow.second->Update();
+	for (auto& shadow : m_Shadow) 
+		shadow.second->Update();
+
 	m_Player_Marker->Update();
-	if (m_CurImg)                  m_CurImg->Update();
-	for (auto& dash : m_Dash)      dash.second->Update();
+	if (m_CurImg)
+		m_CurImg->Update();
 
-	// 컴포넌트(무기/스킬 등) Tick — 이 안에서 FireDragon이 Attack 전이시킴
+	for (auto& dash : m_Dash)
+		dash.second->Update();
+
 	for (auto& component : m_Components)
 		component->TickComponent();
-
-	// ★ 중요(추가): 컴포넌트 Tick 이후에 “다시 한 번” 상태/방향 변경 감지 → 즉시 SetSprite
-	// 이렇게 해야 “같은 프레임에 우클릭 1회 효과”처럼 애니메이션이 재시작됨
-	if (m_prevState != m_State->Get_State() || m_prevDir != m_State->Get_Dir())
-		SetSprite(m_State->Get_State(), m_State->Get_Dir());
 }
 
 
@@ -134,6 +146,7 @@ void CPlayer::LateUpdate()
 {
 	CActor::LateUpdate();
 
+	
 }
 
 void CPlayer::Render()
@@ -174,6 +187,8 @@ void CPlayer::Release()
 
 	for (auto col : m_vecCol)
 		SafeDelete(col);
+
+	SOUND->DeleteSound("PlayerStep");
 }
 
 void CPlayer::Update_Hit()
@@ -196,8 +211,11 @@ void CPlayer::Hit_Effect()
 
 void CPlayer::Key_Input()
 {
-	if (m_State->Get_State() == ECharacterState::Dash)
+	if (m_State->Get_State() == ECharacterState::Dash ||
+		m_State->Get_State() == ECharacterState::Hit)
+	{
 		return;
+	}
 
 	m_MoveDir = Vec2(0.f, 0.f);
 	EPlayerDir		curtDir = m_State->Get_Dir();
@@ -209,13 +227,11 @@ void CPlayer::Key_Input()
 
 	if (bCheck)
 	{
-		if (INPUT->KeyPress('W')) { m_MoveDir.y = +1.f; }
-		if (INPUT->KeyPress('S')) { m_MoveDir.y = -1.f; }
-		if (INPUT->KeyPress('A')) { m_MoveDir.x = -1.f; }
-		if (INPUT->KeyPress('D')) { m_MoveDir.x = +1.f; }
+		if (INPUT->KeyPress('W')) { m_MoveDir.y = +1.f; SOUND->Play("PlayerStep"); SOUND->SetVolume("PlayerStep", 0.2f);}
+		if (INPUT->KeyPress('S')) { m_MoveDir.y = -1.f; SOUND->Play("PlayerStep"); SOUND->SetVolume("PlayerStep", 0.2f);}
+		if (INPUT->KeyPress('A')) { m_MoveDir.x = -1.f; SOUND->Play("PlayerStep"); SOUND->SetVolume("PlayerStep", 0.2f);}
+		if (INPUT->KeyPress('D')) { m_MoveDir.x = +1.f; SOUND->Play("PlayerStep"); SOUND->SetVolume("PlayerStep", 0.2f);}
 	}
-
-
 
 	if (INPUT->KeyDown('Q'))
 	{
@@ -368,6 +384,17 @@ void CPlayer::State_Attack()
 	}
 }
 
+void CPlayer::State_Hit()
+{
+	if (m_CurImg)
+	{
+		if (CHelper::IsLastFrame(m_CurImg))
+		{
+			m_State->Change_State(ECharacterState::Idle);
+		}
+	}
+}
+
 
 void CPlayer::SetSprite(ECharacterState _State, EPlayerDir _Dir)
 {
@@ -405,10 +432,21 @@ void CPlayer::Play_Sprite(ECharacterState _State)
 		break;
 
 	case ECharacterState::Walk:
-		m_CurImg->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
+		m_CurImg->ChangeAnim(ANIMSTATE::LOOP, 0.08f);
+		break;
+
+	case ECharacterState::Hit:
+		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+		m_CurImg->frame = Int2(0, 0);
 		break;
 
 	case ECharacterState::Dash:
+		SOUND->Stop("PlayerStep");
+		 
+		SOUND->Stop("Dash");
+		SOUND->Play("Dash");
+		SOUND->SetVolume("Dash", 0.1f);
+
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.03f);
 		m_CurImg->frame = Int2(0, 0);
 		m_DashEndFrame = m_CurImg->maxFrame.x - 1;
@@ -419,7 +457,7 @@ void CPlayer::Play_Sprite(ECharacterState _State)
 	case ECharacterState::Attack1:
 		if (m_Weapon->IsFiringSkill())
 		{
-			m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.01f);
+			m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.048f);
 			m_CurImg->frame = Int2(0, 0);
 		}
 
@@ -447,6 +485,19 @@ void CPlayer::Play_Sprite(ECharacterState _State)
 
 		break;
 	}
+}
+
+void CPlayer::TakeDamage(FHitDamage _Hit)
+{
+	CCharacter::TakeDamage(_Hit);
+
+	SetSprite(ECharacterState::Hit, m_State->Get_Dir());
+
+	// Particle 
+	Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
+	Vec2 particlePos = (_Hit.colldier->GetWorldPos() + _Hit.other->GetWorldPos()) / 2.0f;
+	PARTICLE->Spawn_Particle(L"HitSpark_Red", particlePos + randomVec);
+	
 }
 
 void CPlayer::Attack_Sprite()
@@ -481,19 +532,6 @@ void CPlayer::Dash_Sprite()
 		dashEffect->ChangeAnim(ANIMSTATE::ONCE, 0.03f);
 		dashEffect->frame = Int2(0, 0);
 	}
-
-}
-
-void CPlayer::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
-{
-	CCharacter::OnComponentBeginOverlap(collider, other);
-
-	// TODO : Player Hit
-}
-
-void CPlayer::OnComponentEndOverlap(GameObject* collider, GameObject* other)
-{
-	CCharacter::OnComponentEndOverlap(collider, other);
 
 }
 
@@ -608,6 +646,8 @@ void CPlayer::Resource_Settings()
 		shadow_Attack->color = Color(0.0f, 0.0f, 0.0f, 0.15f);
 		m_Shadow.insert({ ECharacterState::Attack1, shadow_Attack });
 		m_Shadow.insert({ ECharacterState::Attack2, shadow_Attack });
+
+		m_Shadow.insert({ ECharacterState::Hit, shadow_Idle });
 
 		shared_ptr<ObImage> shadow_Walk = RESOURCE->CreateImage(L"Shadow\\MIDDLE_SHADOW.bmp", Vec2(60.f, 60.f) * 1.2f);
 		shadow_Walk->SetParentRT(*m_Collision);
@@ -751,7 +791,6 @@ void CPlayer::Resource_Settings()
 		m_Sprites[ECharacterState::Attack1][EPlayerDir::Left] = attack_Left1;
 		m_Sprites[ECharacterState::Attack1][EPlayerDir::Back_Left] = attack_Left1;
 
-
 		shared_ptr<ObImage> attack_Left2 = RESOURCE->CreateSprite(L"Player\\Left\\Left_Attack2.png", attack_Size, Int2(8, 1), false);
 		attack_Left2->SetParentRT(*m_Collision);
 		m_Sprites[ECharacterState::Attack2][EPlayerDir::Left] = attack_Left2;
@@ -768,16 +807,6 @@ void CPlayer::Resource_Settings()
 		m_Sprites[ECharacterState::Attack2][EPlayerDir::Right] = attack_Right2;
 		m_Sprites[ECharacterState::Attack2][EPlayerDir::Back_Right] = attack_Right2;
 
-		// Right
-		auto attack_fireRight1 = RESOURCE->CreateSprite(L"Player\\Right\\Right_Attack1.png", attack_Size, Int2(8, 1), false);
-		attack_fireRight1->SetParentRT(*m_Collision);
-		m_Sprites[ECharacterState::Attack_FireDragon][EPlayerDir::Right] = attack_fireRight1;
-		m_Sprites[ECharacterState::Attack_FireDragon][EPlayerDir::Back_Right] = attack_fireRight1;
-
-		auto attack_fireRight2 = RESOURCE->CreateSprite(L"Player\\Right\\Right_Attack2.png", attack_Size, Int2(8, 1), false);
-		attack_fireRight2->SetParentRT(*m_Collision);
-		m_Sprites[ECharacterState::Attack_FireDragon][EPlayerDir::Right] = attack_fireRight2;
-		m_Sprites[ECharacterState::Attack_FireDragon][EPlayerDir::Back_Right] = attack_fireRight2;
 
 	}
 
@@ -790,6 +819,30 @@ void CPlayer::Resource_Settings()
 		m_Player_Marker->rotation = -PI;
 		m_Player_Marker->color.A(0.15f);
 		m_Player_Marker->visible = true;
+	}
+
+	// Hit
+	{
+		Vec2 hitSize = Vec2(200.f / 2.f, 100.f) * 1.4f;
+		auto front_Hit = RESOURCE->CreateSprite(L"Player\\Front\\Front_Hit.png", hitSize, Int2(2, 1), false);
+		front_Hit->SetParentRT(*m_Collision);
+		m_Sprites[ECharacterState::Hit][EPlayerDir::Front] = front_Hit;
+
+		auto back_Hit = RESOURCE->CreateSprite(L"Player\\Back\\Back_Hit.png", hitSize, Int2(2, 1), false);
+		back_Hit->SetParentRT(*m_Collision);
+		m_Sprites[ECharacterState::Hit][EPlayerDir::Back] = back_Hit;
+
+		auto left_Hit = RESOURCE->CreateSprite(L"Player\\Left\\Left_Hit.png", hitSize, Int2(2, 1), false);
+		left_Hit->SetParentRT(*m_Collision);
+		m_Sprites[ECharacterState::Hit][EPlayerDir::Left] = left_Hit;
+		m_Sprites[ECharacterState::Hit][EPlayerDir::Front_Left] = left_Hit;
+		m_Sprites[ECharacterState::Hit][EPlayerDir::Back_Left] = left_Hit;
+
+		auto right_Hit = RESOURCE->CreateSprite(L"Player\\Right\\Right_Hit.png", hitSize, Int2(2, 1), false);
+		right_Hit->SetParentRT(*m_Collision);
+		m_Sprites[ECharacterState::Hit][EPlayerDir::Right] = right_Hit;
+		m_Sprites[ECharacterState::Hit][EPlayerDir::Front_Right] = right_Hit;
+		m_Sprites[ECharacterState::Hit][EPlayerDir::Back_Right] = right_Hit;
 	}
 
 	// Start Image Setting

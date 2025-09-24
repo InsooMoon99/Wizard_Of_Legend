@@ -81,7 +81,7 @@ void ObImage::PlayAnim()
                 if (animState == ANIMSTATE::LOOP)
                 {
                     frame.x++;
-                    if (frame.x == maxFrame.x)
+                    if (frame.x >= maxFrame.x)
                     {
                         frame.x = 0;
                     }
@@ -89,7 +89,7 @@ void ObImage::PlayAnim()
                 else if (animState == ANIMSTATE::ONCE)
                 {
                     frame.x++;
-                    if (frame.x == maxFrame.x)
+                    if (frame.x >= maxFrame.x)
                     {
                         frame.x = maxFrame.x - 1;
                         animState = ANIMSTATE::STOP;

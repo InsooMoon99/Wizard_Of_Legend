@@ -29,5 +29,7 @@ public:
     void SetVolume(string Key, float scale);
     void SetMasterVolume();
     void Update();
+
+    void StopPlay(string Key, float scale);
 };
 

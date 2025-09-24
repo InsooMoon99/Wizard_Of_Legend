@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "CWindSlash.h"
+
+#include "CBossPawn.h"
 #include "CStatusComponent.h"
 
-CWindSlash::CWindSlash(SkillInfo& _Info)
+CWindSlash::CWindSlash(FSkillInfo& _Info)
 	: CSkill_Actor(_Info)
 {
 	m_Pos = _Info.SpawnPos;
@@ -27,6 +29,7 @@ CWindSlash::CWindSlash(SkillInfo& _Info)
 
 	shared_ptr<ObImage> wind = PARTICLE->Spawn_Particle(L"Wind_Slash", pos);
 	wind->rotation = m_Collision->rotation;
+
 }
 
 CWindSlash::~CWindSlash()
@@ -38,6 +41,9 @@ void CWindSlash::BeginPlay()
 {
 	CSkill_Actor::BeginPlay();
 
+	SOUND->Stop("WindSlash");
+	SOUND->Play("WindSlash");
+	SOUND->SetVolume("WindSlash", 0.1f);
 
 }
 
@@ -91,9 +97,13 @@ void CWindSlash::OnComponentBeginOverlap(GameObject* collider, GameObject* other
 	if (hit == m_Skill_Info.Instigator) return;
 	//if (IsSameTeam(hit, m_Collision->Get_Instigator())) return;
 
-	Vec2 dir = hit->Get_WorldPos() - m_StartPos;
-	dir.Normalize();
-	hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
+	if (hit->IsKnockback())
+	{
+		Vec2 dir = hit->Get_WorldPos() - m_StartPos;
+		dir.Normalize();
+		hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
+	}
+	
 
 	IColorChanger* colorChanger = hit;
 	if (colorChanger)
@@ -106,6 +116,10 @@ void CWindSlash::OnComponentBeginOverlap(GameObject* collider, GameObject* other
 	Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
 	Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
 	PARTICLE->Spawn_Particle(L"HitSpark", Vec2(particlePos) + randomVec);
+
+	SOUND->Stop("ImpactAir");
+	SOUND->Play("ImpactAir");
+	SOUND->SetVolume("ImpactAir", 0.1f);
 
 	m_PendingKill = true;
 }

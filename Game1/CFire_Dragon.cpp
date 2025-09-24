@@ -1,12 +1,14 @@
 #include "stdafx.h"
 #include "CFire_Dragon.h"
+
+#include "CBossPawn.h"
 #include "CResourceManager.h"
 #include "CCharacter.h"
 #include "CSkill.h"
 #include "CStatusComponent.h"
 #include "CTile.h"
 
-CFire_Dragon::CFire_Dragon(SkillInfo& _Info) : CSkill_Actor(_Info)
+CFire_Dragon::CFire_Dragon(FSkillInfo& _Info) : CSkill_Actor(_Info)
 {
 	m_Pos = _Info.SpawnPos;
 	m_StartPos = m_Pos;
@@ -31,8 +33,14 @@ CFire_Dragon::CFire_Dragon(SkillInfo& _Info) : CSkill_Actor(_Info)
 	m_FireDragon = RESOURCE->CreateSprite(L"Skill\\DragonArcRight.png", Vec2(37.f, 25.f) * 2.5f, Int2(1, 1), true);
 	m_FireDragon->SetParentRT(*m_Collision);
 
-	m_FireBall_Particle.resize(4);
+	Vec2 fireSize = Vec2(768.f / 6.f, 512.f / 4.f) / 2.5f;
+	m_FireDragon_Tail = RESOURCE->CreateSprite(L"Particle\\Fire_Particle_6.bmp", fireSize, Int2(6, 4), true);
+	m_FireDragon_Tail->SetParentRT(*m_Collision);
+	m_FireDragon_Tail->SetLocalPosX(-55.f);
+	m_FireDragon_Tail->ChangeAnim(ANIMSTATE::LOOP, 0.15f);
+	m_FireDragon_Tail->frame.y = 0;
 
+	m_FireBall_Particle.resize(4);
 }
 
 CFire_Dragon::~CFire_Dragon()
@@ -43,6 +51,10 @@ CFire_Dragon::~CFire_Dragon()
 void CFire_Dragon::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SOUND->Stop("FireArc");
+	SOUND->Play("FireArc");
+	SOUND->SetVolume("FireArc", 0.1f);
 
 	const Vec2 offset[4] =
 	{
@@ -80,8 +92,10 @@ void CFire_Dragon::BeginPlay()
 		particle->visible = true;
 
 		m_FireBall_Particle[i] = particle;
+
 	}
 
+	
 }
 
 void CFire_Dragon::Tick()
@@ -103,6 +117,7 @@ void CFire_Dragon::Tick()
 
 	m_Collision->Update();
 	m_FireDragon->Update();
+	m_FireDragon_Tail->Update();
 }
 
 void CFire_Dragon::LateUpdate()
@@ -116,6 +131,7 @@ void CFire_Dragon::Render()
 	Super::Render();
 
 	m_Collision->Render();
+	m_FireDragon_Tail->Render();
 	m_FireDragon->Render();
 
 }
@@ -144,6 +160,10 @@ void CFire_Dragon::OnHitWall(const Vec2& hitPos)
 	PARTICLE->Spawn_Particle(L"HitSpark", hitPos);
 	PARTICLE->Spawn_Particle(L"Fire_HitEffect2", hitPos);
 
+	SOUND->Stop("FireArc_End");
+	SOUND->Play("FireArc_End");
+	SOUND->SetVolume("FireArc_End", 0.2f);
+
 	m_PendingKill = true;
 }
 
@@ -158,9 +178,12 @@ void CFire_Dragon::OnComponentBeginOverlap(GameObject* collider, GameObject* oth
 	if (hit == m_Skill_Info.Instigator) return;
 	//if (IsSameTeam(hit, m_Collision->Get_Instigator())) return;
 
-	Vec2 dir = hit->Get_WorldPos() - m_StartPos;
-	dir.Normalize();
-	hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
+	if (hit->IsKnockback())
+	{
+		Vec2 dir = hit->Get_WorldPos() - m_StartPos;
+		dir.Normalize();
+		hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
+	}
 
 	// 색 변경 : Hit Monster에서 인터페이스 상속받아야함
 	IColorChanger* colorChanger = hit;
@@ -175,7 +198,11 @@ void CFire_Dragon::OnComponentBeginOverlap(GameObject* collider, GameObject* oth
 	Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
 	Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
 	PARTICLE->Spawn_Particle(L"HitSpark", particlePos + randomVec);
-	PARTICLE->Spawn_Particle(L"Fire_HitEffect2", particlePos + randomVec, 0.7f);
+	PARTICLE->Spawn_Particle(L"Fire_HitEffect2", particlePos + randomVec, Vec2(0.7f));
+
+	SOUND->Stop("FireArc_End");
+	SOUND->Play("FireArc_End");
+	SOUND->SetVolume("FireArc_End", 0.2f);
 
 	m_PendingKill = true;
 }

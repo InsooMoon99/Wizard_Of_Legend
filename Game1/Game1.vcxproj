@@ -20,6 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CActor.h" />
+    <ClInclude Include="CBat_Ball.h" />
+    <ClInclude Include="CBat_Dash.h" />
+    <ClInclude Include="CBat_Dash_Shock.h" />
     <ClInclude Include="CBossPawn.h" />
     <ClInclude Include="CBoss_Controller.h" />
     <ClInclude Include="CBoss_TwinGirl.h" />
@@ -27,16 +30,26 @@
     <ClInclude Include="CCollisionManager.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CDefine.h" />
+    <ClInclude Include="CDelegate.h" />
     <ClInclude Include="CDummy.h" />
     <ClInclude Include="CEarth_Shield.h" />
     <ClInclude Include="CFire_Dragon.h" />
     <ClInclude Include="CGameObject.h" />
     <ClInclude Include="CItem_Factory.h" />
+    <ClInclude Include="CJavelin_Spear.h" />
     <ClInclude Include="CRenderManager.h" />
+    <ClInclude Include="CSkillManager.h" />
+    <ClInclude Include="CSkill_Girl_Dash.h" />
+    <ClInclude Include="CSkill_Girl_Javelin.h" />
+    <ClInclude Include="CSkill_Girl_Star.h" />
+    <ClInclude Include="CSkill_Man_Bat.h" />
     <ClInclude Include="CSkill_Factory.h" />
     <ClInclude Include="CSkill_Earth_Shield.h" />
     <ClInclude Include="CSkill_FireDragon.h" />
+    <ClInclude Include="CSkill_Man_Target.h" />
+    <ClInclude Include="CSkill_Girl_SpawnRect.h" />
     <ClInclude Include="CSkill_WindSlash.h" />
+    <ClInclude Include="CSpawn_Rect.h" />
     <ClInclude Include="CStage_Edit.h" />
     <ClInclude Include="CEnums.h" />
     <ClInclude Include="CFire_Ball.h" />
@@ -55,10 +68,13 @@
     <ClInclude Include="CSkill_FireBall.h" />
     <ClInclude Include="CStage01.h" />
     <ClInclude Include="CStage02.h" />
+    <ClInclude Include="CStage_Loading.h" />
     <ClInclude Include="CStage_Start.h" />
+    <ClInclude Include="CStar.h" />
     <ClInclude Include="CStateComponent.h" />
     <ClInclude Include="CStatusComponent.h" />
     <ClInclude Include="CStruct.h" />
+    <ClInclude Include="CTarget_Orb.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="CTileManager.h" />
     <ClInclude Include="CUI.h" />
@@ -78,6 +94,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CActor.cpp" />
+    <ClCompile Include="CBat_Ball.cpp" />
+    <ClCompile Include="CBat_Dash.cpp" />
+    <ClCompile Include="CBat_Dash_Shock.cpp" />
     <ClCompile Include="CBossPawn.cpp" />
     <ClCompile Include="CBoss_Controller.cpp" />
     <ClCompile Include="CBoss_TwinGirl.cpp" />
@@ -85,16 +104,26 @@
     <ClCompile Include="CCollisionManager.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CCharacter.cpp" />
+    <ClCompile Include="CDelegate.cpp" />
     <ClCompile Include="CDummy.cpp" />
     <ClCompile Include="CEarth_Shield.cpp" />
     <ClCompile Include="CFire_Dragon.cpp" />
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CItem_Factory.cpp" />
+    <ClCompile Include="CJavelin_Spear.cpp" />
     <ClCompile Include="CRenderManager.cpp" />
+    <ClCompile Include="CSkillManager.cpp" />
+    <ClCompile Include="CSkill_Girl_Dash.cpp" />
+    <ClCompile Include="CSkill_Girl_Javelin.cpp" />
+    <ClCompile Include="CSkill_Girl_Star.cpp" />
+    <ClCompile Include="CSkill_Man_Bat.cpp" />
     <ClCompile Include="CSkill_Factory.cpp" />
     <ClCompile Include="CSkill_Earth_Shield.cpp" />
     <ClCompile Include="CSkill_FireDragon.cpp" />
+    <ClCompile Include="CSkill_Man_Target.cpp" />
+    <ClCompile Include="CSkill_Girl_SpawnRect.cpp" />
     <ClCompile Include="CSkill_WindSlash.cpp" />
+    <ClCompile Include="CSpawn_Rect.cpp" />
     <ClCompile Include="CStage_Edit.cpp" />
     <ClCompile Include="CFire_Ball.cpp" />
     <ClCompile Include="CInventoryComponent.cpp" />
@@ -110,9 +139,12 @@
     <ClCompile Include="CSkill_FireBall.cpp" />
     <ClCompile Include="CStage01.cpp" />
     <ClCompile Include="CStage02.cpp" />
+    <ClCompile Include="CStage_Loading.cpp" />
     <ClCompile Include="CStage_Start.cpp" />
+    <ClCompile Include="CStar.cpp" />
     <ClCompile Include="CStateComponent.cpp" />
     <ClCompile Include="CStatusComponent.cpp" />
+    <ClCompile Include="CTarget_Orb.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTileManager.cpp" />
     <ClCompile Include="CUI.cpp" />

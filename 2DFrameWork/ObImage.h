@@ -52,6 +52,8 @@ public:
 
     ~ObImage();
 
+    bool IsMaxframe() { return animState == ANIMSTATE::STOP; }
+
     void Update() override;
     void Render() override;
     void ChangeAnim(ANIMSTATE anim, float interval, bool xAxis = true);

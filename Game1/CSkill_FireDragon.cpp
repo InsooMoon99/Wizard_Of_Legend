@@ -74,7 +74,7 @@ void CSkill_FireDragon::Release()
     CSkill::Release();
 }
 
-bool CSkill_FireDragon::CanActivate(const SkillInfo& _Info)
+bool CSkill_FireDragon::CanActivate(const FSkillInfo& _Info)
 {
     if (!CSkill::CanActivate(_Info))
         return false;

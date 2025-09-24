@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "CBoss_Controller.h"
+
+#include "CBossPawn.h"
 #include "CStatusComponent.h"
 #include "CStateComponent.h"
 #include "CUIComponent.h"
@@ -9,6 +11,8 @@ CBoss_Controller::CBoss_Controller()
 	m_Status = CHelper::CreateSharedComponent<CStatusComponent>(this);
 	m_State = CHelper::CreateSharedComponent<CStateComponent>(this);
 	m_UI = CHelper::CreateSharedComponent<CUIComponent>(this);
+
+	m_State->Change_State(ECharacterState::Boss_Start);
 }
 
 CBoss_Controller::~CBoss_Controller()
@@ -24,18 +28,51 @@ void CBoss_Controller::BeginPlay()
 	if (m_Status)
 	{
 		m_Status->SetMaxHp(1000.f); 
-		m_Status->SetHp(800.f); 
+		m_Status->SetHp(800.f);
 	}
 
 	if (m_UI)
-	{
 		m_UI->SetBossStatus();
-	}
+
+	OnBossStateChanged.Add([this](ECharacterState state)
+		{
+			m_State->Change_State(state);
+		});
+
+	OnBossStart.Add([this]()
+		{
+			m_ReadyCount++;
+			if (m_ReadyCount >= 2)
+			{
+				ChangeState(ECharacterState::Boss_Start2); 
+				m_ReadyCount = 0;
+			}
+		});
+
+	OnBossStateChanged.Broadcast(m_State->Get_State());
 }
 
 void CBoss_Controller::Tick()
 {
 	CActor::Tick();
+
+	if (m_State->Get_State() == ECharacterState::Idle)
+	{
+		m_AttackTimer -= DELTA;
+
+		if (m_AttackTimer <= 0.f)
+		{
+			m_State->Change_State(ECharacterState::Boss_Ready);
+
+			m_AttackTimer = 0.5f;
+		}
+	}
+
+	m_ManPos = m_Pawns[(int)EBossType::Twin_Man]->Get_WorldPos();
+	m_GirPos = m_Pawns[(int)EBossType::Twin_Girl]->Get_WorldPos();
+
+	Vec2 centerPos = (m_ManPos + m_GirPos) / 2.0f;
+	m_OffsetPos = (m_GirPos - m_ManPos) / 2.0f;
 }
 
 void CBoss_Controller::LateUpdate()
@@ -47,7 +84,6 @@ void CBoss_Controller::Render()
 {
 	CActor::Render();
 
-
 #ifdef _DEBUG
 	if (ImGui::Begin("Debug"))
 	{
@@ -57,6 +93,8 @@ void CBoss_Controller::Render()
 
 		ImGui::InputFloat("Boss Hp", &hp);
 		m_Status->SetHp(hp);
+
+		ImGui::Text("Constroller : %s", CHelper::ToString_PlayerState(m_State->Get_State()));
 	}
 
 	ImGui::End();
@@ -100,4 +138,14 @@ void CBoss_Controller::TakeDamage(float _Damage)
 		return;
 
 	m_Status->SetHp(m_Status->GetHp() - _Damage);
+}
+
+void CBoss_Controller::ChangeState(ECharacterState _State)
+{
+	if (!m_State)
+		return;
+
+	m_State->Change_State(_State);
+
+	OnBossStateChanged.Broadcast(_State);
 }

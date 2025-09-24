@@ -19,7 +19,7 @@ public:
 	void Release() override;
 
 public:
-	bool CanActivate(const SkillInfo& _Info) override;
+	bool CanActivate(const FSkillInfo& _Info) override;
 	void Activate(CActor* _Owner) override;
 
 private:

@@ -42,7 +42,5 @@ protected:
 
 	Vector2					m_Pos = { 0,0 };
 
-
-
 };
 

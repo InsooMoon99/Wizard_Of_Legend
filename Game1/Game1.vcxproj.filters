@@ -89,7 +89,7 @@
       <Filter>01. Manager</Filter>
     </ClInclude>
     <ClInclude Include="CSkill_Actor.h">
-      <Filter>06. Skill\01. Skill_Actor</Filter>
+      <Filter>06. Skill\00. Player\01. Skill_Actor</Filter>
     </ClInclude>
     <ClInclude Include="CSkill_Factory.h">
       <Filter>97. Design</Filter>
@@ -122,7 +122,7 @@
       <Filter>97. Design</Filter>
     </ClInclude>
     <ClInclude Include="CSkill.h">
-      <Filter>06. Skill\00. Skill_Object</Filter>
+      <Filter>06. Skill\00. Player\00. Skill_Object</Filter>
     </ClInclude>
     <ClInclude Include="CUI_PlayerHUD.h">
       <Filter>98.UI\00. Player</Filter>
@@ -146,28 +146,74 @@
       <Filter>99. Headers</Filter>
     </ClInclude>
     <ClInclude Include="CSkill_Earth_Shield.h">
-      <Filter>06. Skill\00. Skill_Object\02. Earth</Filter>
+      <Filter>06. Skill\00. Player\00. Skill_Object\02. Earth</Filter>
     </ClInclude>
     <ClInclude Include="CSkill_FireBall.h">
-      <Filter>06. Skill\00. Skill_Object\00. Fire</Filter>
+      <Filter>06. Skill\00. Player\00. Skill_Object\00. Fire</Filter>
     </ClInclude>
     <ClInclude Include="CSkill_FireDragon.h">
-      <Filter>06. Skill\00. Skill_Object\00. Fire</Filter>
+      <Filter>06. Skill\00. Player\00. Skill_Object\00. Fire</Filter>
     </ClInclude>
     <ClInclude Include="CSkill_WindSlash.h">
-      <Filter>06. Skill\00. Skill_Object\01. Wind</Filter>
+      <Filter>06. Skill\00. Player\00. Skill_Object\01. Wind</Filter>
     </ClInclude>
     <ClInclude Include="CEarth_Shield.h">
-      <Filter>06. Skill\01. Skill_Actor\02. Earth</Filter>
+      <Filter>06. Skill\00. Player\01. Skill_Actor\02. Earth</Filter>
     </ClInclude>
     <ClInclude Include="CFire_Ball.h">
-      <Filter>06. Skill\01. Skill_Actor\00. Fire</Filter>
+      <Filter>06. Skill\00. Player\01. Skill_Actor\00. Fire</Filter>
     </ClInclude>
     <ClInclude Include="CFire_Dragon.h">
-      <Filter>06. Skill\01. Skill_Actor\00. Fire</Filter>
+      <Filter>06. Skill\00. Player\01. Skill_Actor\00. Fire</Filter>
     </ClInclude>
     <ClInclude Include="CWindSlash.h">
-      <Filter>06. Skill\01. Skill_Actor\01. Wind</Filter>
+      <Filter>06. Skill\00. Player\01. Skill_Actor\01. Wind</Filter>
+    </ClInclude>
+    <ClInclude Include="CDelegate.h">
+      <Filter>97. Design</Filter>
+    </ClInclude>
+    <ClInclude Include="CStage_Loading.h">
+      <Filter>02. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkillManager.h">
+      <Filter>01. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_Girl_Star.h" />
+    <ClInclude Include="CSkill_Girl_Dash.h">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\01. Girl</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_Girl_Javelin.h">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\01. Girl</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_Man_Target.h">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\00. Man</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_Girl_SpawnRect.h">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\01. Girl</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_Man_Bat.h">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\00. Man</Filter>
+    </ClInclude>
+    <ClInclude Include="CBat_Ball.h">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\00. Man</Filter>
+    </ClInclude>
+    <ClInclude Include="CBat_Dash.h">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
+    </ClInclude>
+    <ClInclude Include="CBat_Dash_Shock.h">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
+    </ClInclude>
+    <ClInclude Include="CJavelin_Spear.h">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpawn_Rect.h">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
+    </ClInclude>
+    <ClInclude Include="CStar.h">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
+    </ClInclude>
+    <ClInclude Include="CTarget_Orb.h">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\00. Man</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -210,12 +256,6 @@
     <Filter Include="98.UI\00. Player">
       <UniqueIdentifier>{2f7e7af5-f3ab-44d5-8157-bab02f1ed06d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06. Skill\01. Skill_Actor">
-      <UniqueIdentifier>{92107b01-bb86-4170-81c9-27645edd90ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06. Skill\00. Skill_Object">
-      <UniqueIdentifier>{eddfa42a-c408-4851-b2af-de3988f9f92c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="98.UI\01. Boss">
       <UniqueIdentifier>{c2978660-777d-4735-9ecc-cda80d9cc81c}</UniqueIdentifier>
     </Filter>
@@ -228,23 +268,53 @@
     <Filter Include="03. Actors\01. Boss">
       <UniqueIdentifier>{55d5010b-3935-445c-940f-6c078f1323dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06. Skill\00. Skill_Object\00. Fire">
+    <Filter Include="06. Skill\00. Player">
+      <UniqueIdentifier>{4a68abd1-1dfe-4f01-9d6b-effe1e51b327}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\00. Player\00. Skill_Object">
+      <UniqueIdentifier>{eddfa42a-c408-4851-b2af-de3988f9f92c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\00. Player\00. Skill_Object\00. Fire">
       <UniqueIdentifier>{0eae1d16-4903-46ed-be40-51862961152f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06. Skill\00. Skill_Object\02. Earth">
+    <Filter Include="06. Skill\00. Player\00. Skill_Object\02. Earth">
       <UniqueIdentifier>{a70ae381-584c-4335-9b6e-7206e2fcd35c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06. Skill\00. Skill_Object\01. Wind">
+    <Filter Include="06. Skill\00. Player\00. Skill_Object\01. Wind">
       <UniqueIdentifier>{0810d1c8-e717-412e-a72a-d37732eacdae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06. Skill\01. Skill_Actor\00. Fire">
+    <Filter Include="06. Skill\00. Player\01. Skill_Actor">
+      <UniqueIdentifier>{92107b01-bb86-4170-81c9-27645edd90ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\00. Player\01. Skill_Actor\00. Fire">
       <UniqueIdentifier>{d0afd3fc-b0b2-46bf-a922-de2404922339}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06. Skill\01. Skill_Actor\01. Wind">
+    <Filter Include="06. Skill\00. Player\01. Skill_Actor\01. Wind">
       <UniqueIdentifier>{6c983280-bf8f-4a39-ba4a-f367a3ca7e9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06. Skill\01. Skill_Actor\02. Earth">
+    <Filter Include="06. Skill\00. Player\01. Skill_Actor\02. Earth">
       <UniqueIdentifier>{f686a60e-f434-4084-95fa-0c34d2d59828}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\01. Boss">
+      <UniqueIdentifier>{10aa3174-8640-4672-ab4e-f4d6003bda6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\01. Boss\00. Skill_Object">
+      <UniqueIdentifier>{87fa8255-7ff5-40e2-8c4c-a07c36a49c39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\01. Boss\01. Skill_Actor">
+      <UniqueIdentifier>{6a6e7bbd-38ae-47fa-9cfa-834506c12a46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\01. Boss\00. Skill_Object\00. Man">
+      <UniqueIdentifier>{3c0ff1cd-953e-47da-8b37-4d5136868524}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\01. Boss\00. Skill_Object\01. Girl">
+      <UniqueIdentifier>{b3626ae6-ec8d-4a0f-b767-c6739288071e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\01. Boss\01. Skill_Actor\00. Man">
+      <UniqueIdentifier>{04f567cc-164b-421e-9532-3f676107120c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\01. Boss\01. Skill_Actor\01. Girl">
+      <UniqueIdentifier>{d9b01346-374a-42cb-bc1d-1f3b4ffcf294}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -318,7 +388,7 @@
       <Filter>00. MainGame</Filter>
     </ClCompile>
     <ClCompile Include="CSkill_Actor.cpp">
-      <Filter>06. Skill\01. Skill_Actor</Filter>
+      <Filter>06. Skill\00. Player\01. Skill_Actor</Filter>
     </ClCompile>
     <ClCompile Include="CSkill_Factory.cpp">
       <Filter>97. Design</Filter>
@@ -354,7 +424,7 @@
       <Filter>04. Components</Filter>
     </ClCompile>
     <ClCompile Include="CSkill.cpp">
-      <Filter>06. Skill\00. Skill_Object</Filter>
+      <Filter>06. Skill\00. Player\00. Skill_Object</Filter>
     </ClCompile>
     <ClCompile Include="CUI.cpp">
       <Filter>98.UI</Filter>
@@ -378,28 +448,76 @@
       <Filter>03. Actors\00. Player</Filter>
     </ClCompile>
     <ClCompile Include="CSkill_Earth_Shield.cpp">
-      <Filter>06. Skill\00. Skill_Object\02. Earth</Filter>
+      <Filter>06. Skill\00. Player\00. Skill_Object\02. Earth</Filter>
     </ClCompile>
     <ClCompile Include="CSkill_FireDragon.cpp">
-      <Filter>06. Skill\00. Skill_Object\00. Fire</Filter>
+      <Filter>06. Skill\00. Player\00. Skill_Object\00. Fire</Filter>
     </ClCompile>
     <ClCompile Include="CSkill_FireBall.cpp">
-      <Filter>06. Skill\00. Skill_Object\00. Fire</Filter>
+      <Filter>06. Skill\00. Player\00. Skill_Object\00. Fire</Filter>
     </ClCompile>
     <ClCompile Include="CSkill_WindSlash.cpp">
-      <Filter>06. Skill\00. Skill_Object\01. Wind</Filter>
+      <Filter>06. Skill\00. Player\00. Skill_Object\01. Wind</Filter>
     </ClCompile>
     <ClCompile Include="CEarth_Shield.cpp">
-      <Filter>06. Skill\01. Skill_Actor\02. Earth</Filter>
+      <Filter>06. Skill\00. Player\01. Skill_Actor\02. Earth</Filter>
     </ClCompile>
     <ClCompile Include="CFire_Ball.cpp">
-      <Filter>06. Skill\01. Skill_Actor\00. Fire</Filter>
+      <Filter>06. Skill\00. Player\01. Skill_Actor\00. Fire</Filter>
     </ClCompile>
     <ClCompile Include="CFire_Dragon.cpp">
-      <Filter>06. Skill\01. Skill_Actor\00. Fire</Filter>
+      <Filter>06. Skill\00. Player\01. Skill_Actor\00. Fire</Filter>
     </ClCompile>
     <ClCompile Include="CWindSlash.cpp">
-      <Filter>06. Skill\01. Skill_Actor\01. Wind</Filter>
+      <Filter>06. Skill\00. Player\01. Skill_Actor\01. Wind</Filter>
+    </ClCompile>
+    <ClCompile Include="CDelegate.cpp">
+      <Filter>97. Design</Filter>
+    </ClCompile>
+    <ClCompile Include="CStage_Loading.cpp">
+      <Filter>02. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkillManager.cpp">
+      <Filter>01. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_Girl_Dash.cpp">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\01. Girl</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_Girl_Javelin.cpp">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\01. Girl</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_Girl_Star.cpp">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\01. Girl</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_Girl_SpawnRect.cpp">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\01. Girl</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_Man_Bat.cpp">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\00. Man</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_Man_Target.cpp">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\00. Man</Filter>
+    </ClCompile>
+    <ClCompile Include="CBat_Ball.cpp">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\00. Man</Filter>
+    </ClCompile>
+    <ClCompile Include="CBat_Dash.cpp">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
+    </ClCompile>
+    <ClCompile Include="CBat_Dash_Shock.cpp">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
+    </ClCompile>
+    <ClCompile Include="CJavelin_Spear.cpp">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpawn_Rect.cpp">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
+    </ClCompile>
+    <ClCompile Include="CStar.cpp">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
+    </ClCompile>
+    <ClCompile Include="CTarget_Orb.cpp">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\00. Man</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

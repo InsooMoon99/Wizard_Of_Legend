@@ -5,7 +5,7 @@
 class CWindSlash : public CSkill_Actor
 {
 public:
-	CWindSlash(SkillInfo& _Info);
+	CWindSlash(FSkillInfo& _Info);
 	virtual ~CWindSlash();
 
 public:

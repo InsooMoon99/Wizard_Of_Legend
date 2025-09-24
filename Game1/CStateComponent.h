@@ -1,9 +1,12 @@
 #pragma once
 
 #include "CComponent.h"
+#include "CDelegate.h"
 
 class CStateComponent : public CComponent
 {
+	using Super = CComponent;
+
 public:
 	CStateComponent();
 	~CStateComponent() override;
@@ -25,12 +28,15 @@ public:
 	ECharacterState Get_State()		{ return m_PlayerState; }
 	EPlayerDir	 Get_Dir()			{ return m_PlayerDir; }
 
+	CDelegate<ECharacterState, EPlayerDir> OnBossStateChanged;
 
 private:
 	ECharacterState m_PlayerState;
 	ECharacterState m_LastAttackType;
 
-	EPlayerDir	 m_PlayerDir;
+	EBossState		m_BossState;
+
+	EPlayerDir		m_PlayerDir;
 
 
 };

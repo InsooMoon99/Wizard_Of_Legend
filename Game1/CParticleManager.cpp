@@ -7,6 +7,7 @@ CParticleManager* CParticleManager::Instance = nullptr;
 void CParticleManager::Init()
 {
 	Resource_Settings();
+	Boss_Resource_Settings();
 }
 
 void CParticleManager::Update()
@@ -27,7 +28,6 @@ void CParticleManager::Update()
 		}
 	}
 }
-
 
 void CParticleManager::Render()
 {
@@ -50,6 +50,10 @@ void CParticleManager::Resource_Settings()
 	shared_ptr<ObImage> hit_Spark = RESOURCE->CreateSprite(L"Particle\\HitSpark.png", Vec2(400.f / 8.f, 50.f) * 3.0f, Int2(8, 1), true);
 	hit_Spark->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
 
+	shared_ptr<ObImage> hit_Spark_Red = RESOURCE->CreateSprite(L"Particle\\HitSpark.png", Vec2(400.f / 8.f, 50.f) * 3.0f, Int2(8, 1), true);
+	hit_Spark_Red->color = Color(1.0f, 0.f, 0.f, 0.5f);
+	hit_Spark_Red->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+
 	shared_ptr<ObImage> fire_hitEffect = RESOURCE->CreateSprite(L"Particle\\Fire_HitEffect.png", Vec2(910.f / 7.f, 110.f) * 1.5f, Int2(7, 1), true);
 	fire_hitEffect->ChangeAnim(ANIMSTATE::ONCE, 0.07f);
 
@@ -57,7 +61,9 @@ void CParticleManager::Resource_Settings()
 	fire_hitEffect2->ChangeAnim(ANIMSTATE::ONCE, 0.07f);
 
 	shared_ptr<ObImage> wind_Slash = RESOURCE->CreateSprite(L"Skill\\WinSlash_Large_Alt.png", Vec2(300.f / 5.f, 60.f) * 3.f, Int2(5, 1), true);
+	wind_Slash->color.A(0.3f);
 	wind_Slash->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+
 
 	// Fire Particle
 	{
@@ -112,6 +118,7 @@ void CParticleManager::Resource_Settings()
 	// Effect
 	m_Particles.insert({ L"HitEffect", hit_Effect });
 	m_Particles.insert({ L"HitSpark", hit_Spark });
+	m_Particles.insert({ L"HitSpark_Red", hit_Spark_Red });
 	m_Particles.insert({ L"Fire_HitEffect", fire_hitEffect });
 	m_Particles.insert({ L"Fire_HitEffect2", fire_hitEffect2 });
 
@@ -119,7 +126,92 @@ void CParticleManager::Resource_Settings()
 	m_Particles.insert({ L"Wind_Slash", wind_Slash });
 }
 
-shared_ptr<ObImage> CParticleManager::Spawn_Particle(const wstring& _Key, const Vec2& _Pos, float _Multiple)
+void CParticleManager::Boss_Resource_Settings()
+{
+	{
+		Vec2 start_Lightning_Size = Vec2(350.f / 7.f, 100.f) * 2.f;
+		shared_ptr<ObImage> start_Lightning = RESOURCE->CreateSprite(L"Monster\\Lightning\\Lightning_GirLand.png", start_Lightning_Size, Int2(7, 1), true);
+		start_Lightning->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"Start_Lightning", start_Lightning });
+	}
+
+	{
+		Vec2 size = Vec2(700.f / 7.f, 100.f) * 2.f;
+		shared_ptr<ObImage> fist_Lightning = RESOURCE->CreateSprite(L"Monster\\Lightning\\Fist_All_F.png", size, Int2(7, 1), true);
+		fist_Lightning->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+
+		m_Particles.insert({ L"Fist_All", fist_Lightning });
+	}
+
+	{
+		Vec2 size = Vec2(588.f / 6.f, 98.f) * 2.f;
+		shared_ptr<ObImage> fist_Lightning_Y = RESOURCE->CreateSprite(L"Monster\\Lightning\\FistBasic_yellow.png", size, Int2(6, 1), true);
+		fist_Lightning_Y->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"Fist_Lightning_Y", fist_Lightning_Y });
+	}
+
+	{
+		Vec2 size = Vec2(210.f / 6.f, 55.f) * 3.f;
+		shared_ptr<ObImage> teleport_Floor = RESOURCE->CreateSprite(L"Monster\\Lightning\\Lightning_TeleportFloor.png", size, Int2(6, 1));
+		teleport_Floor->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"Teleport_Floor", teleport_Floor });
+	}
+
+	{
+		Vec2 size = Vec2(150.f / 3.f, 50.f) * 3.f;
+		shared_ptr<ObImage> shock_Spark = RESOURCE->CreateSprite(L"Monster\\Lightning\\ShockSpark.png", size, Int2(3, 1), true);
+		shock_Spark->color = Color(0.5f, 0.7f, 0.3f, 0.5f);
+		shock_Spark->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"ShockSpark", shock_Spark });
+	}
+
+	{
+		Vec2 size = Vec2(179.f / 3.f, 53.f) * 3.f;
+		shared_ptr<ObImage> shock_Spark = RESOURCE->CreateSprite(L"Monster\\Lightning\\Shock_Spark_Y.png", size, Int2(3, 1), true);
+		shock_Spark->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"ShockSpark_Y", shock_Spark });
+	}
+
+	{
+		Vec2 size = Vec2(141.f / 3.f, 33.f) * 3.f;
+		shared_ptr<ObImage> shock_Spark = RESOURCE->CreateSprite(L"Monster\\Lightning\\Shock_AS.png", size, Int2(3, 1), true);
+		shock_Spark->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"ShockSpark_AS", shock_Spark });
+	}
+
+	{
+		Vec2 size = Vec2(299.f / 5.f, 132.f) * 2.f;
+		shared_ptr<ObImage> img = RESOURCE->CreateSprite(L"Monster\\Lightning\\Lightning_Dash_Y.png", size, Int2(5, 1), true);
+		img->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"Light_Dash_Y", img });
+	}
+
+	{
+		Vec2 size = Vec2(270.f / 6.f, 356.f) * 2.f;
+		shared_ptr<ObImage> img = RESOURCE->CreateSprite(L"Monster\\Lightning\\Lightning_Long.png", size, Int2(6, 1), true);
+		img->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"Light_Long", img });
+	}
+
+	{
+		Vec2 size = Vec2(280.f / 7.f, 88.f) * 2.f;
+		shared_ptr<ObImage> img = RESOURCE->CreateSprite(L"Monster\\Lightning\\Lightning_Land.png", size, Int2(7, 1), true);
+		img->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"Light_Land", img });
+	}
+
+}
+
+shared_ptr<ObImage> CParticleManager::Spawn_Particle(const wstring& _Key, const Vec2& _Pos, Vec2 _Multiple)
 {
 	auto find_iter = m_Particles.find(_Key);
 	if (find_iter == m_Particles.end()) return nullptr;
@@ -129,8 +221,11 @@ shared_ptr<ObImage> CParticleManager::Spawn_Particle(const wstring& _Key, const 
 
 	newParticle->SetWorldPos(_Pos);
 
-	if (_Multiple != -1)
-		newParticle->scale = find_iter->second->scale * _Multiple;
+	if (_Multiple.x != -1)
+		newParticle->scale.x = find_iter->second->scale.x * _Multiple.x;
+
+	if (_Multiple.y != -1)
+		newParticle->scale.y = find_iter->second->scale.y * _Multiple.y;
 
 	m_ActiveParticles.push_back(newParticle);
 

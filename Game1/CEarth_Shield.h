@@ -5,7 +5,7 @@
 class CEarth_Shield : public CSkill_Actor
 {
 public:
-	CEarth_Shield(SkillInfo& _Info);
+	CEarth_Shield(FSkillInfo& _Info);
 	virtual ~CEarth_Shield();
 
 public:
@@ -18,6 +18,7 @@ public:
 public:
 	void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
 	void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
+
 
 private:
 	vector<shared_ptr<ObCircle>> m_Armor;

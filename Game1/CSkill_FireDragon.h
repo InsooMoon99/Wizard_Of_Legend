@@ -18,7 +18,7 @@ public:
 	void Render() override;
 	void Release() override;
 
-	bool CanActivate(const SkillInfo& _Info) override;
+	bool CanActivate(const FSkillInfo& _Info) override;
 	void Activate(CActor* _Owner) override;
 
 	void Fire();

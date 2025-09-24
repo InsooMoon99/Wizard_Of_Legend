@@ -6,6 +6,7 @@
 #include "CParticleManager.h"
 #include "CTileManager.h"
 #include "CRenderManager.h"
+#include "CSkillManager.h"
 
 #define WINCX 1280
 #define WINCY 720
@@ -17,6 +18,7 @@
 #define TILEY 20
 
 #define EARTH_SHIELD 8
+#define TARGET_ORB 5
 
 #define SCENE		CSceneManager::Get_Instance()
 #define RESOURCE	CResourceManager::Get_Instance()
@@ -24,3 +26,4 @@
 #define PARTICLE	CParticleManager::Get_Instance()
 #define TILE		CTileManager::Get_Instance()
 #define RENDER		CRenderManager::Get_Instance()
+#define SKILL		CSkillManager::Get_Instance()

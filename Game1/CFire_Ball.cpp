@@ -1,12 +1,14 @@
 ﻿#include "stdafx.h"
 #include "CFire_Ball.h"
+
+#include "CBossPawn.h"
 #include "CResourceManager.h"
 #include "CCharacter.h"
 #include "CSkill.h"
 #include "CStatusComponent.h"
 #include "CTile.h"
 
-CFire_Ball::CFire_Ball(SkillInfo& _Info) : CSkill_Actor(_Info)
+CFire_Ball::CFire_Ball(FSkillInfo& _Info) : CSkill_Actor(_Info)
 {
 	m_Pos = _Info.SpawnPos;
 	m_StartPos = m_Pos;
@@ -32,7 +34,6 @@ CFire_Ball::CFire_Ball(SkillInfo& _Info) : CSkill_Actor(_Info)
 	m_FireBall->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
 
 	m_FireBall_Particle.resize(4);
-
 }
 
 CFire_Ball::~CFire_Ball()
@@ -43,6 +44,10 @@ CFire_Ball::~CFire_Ball()
 void CFire_Ball::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SOUND->Stop("FireBall");
+	SOUND->Play("FireBall");
+	SOUND->SetVolume("FireBall", 0.1f);
 
 	const Vec2 offset[4] =
 	{
@@ -145,6 +150,7 @@ void CFire_Ball::Release()
 		m_Collision.reset();
 	}
 	m_FireBall.reset();
+
 }
 
 bool CFire_Ball::CheckHitWall()
@@ -157,6 +163,10 @@ void CFire_Ball::OnHitWall(const Vec2& hitPos)
 	PARTICLE->Spawn_Particle(L"HitSpark", hitPos);
 	PARTICLE->Spawn_Particle(L"Fire_HitEffect2", hitPos);
 
+	SOUND->Stop("FireBall_End");
+	SOUND->Play("FireBall_End");
+	SOUND->SetVolume("FireBall_End", 0.15f);
+
 	m_PendingKill = true;
 }
 
@@ -167,13 +177,16 @@ void CFire_Ball::OnComponentBeginOverlap(GameObject* collider, GameObject* other
 	CCharacter* hit = dynamic_cast<CCharacter*>(other->Get_Owner());
 	if (!hit)return;
 
-	// TODO : 팀킬/자기 무시
+	// 팀킬/자기 무시
 	if (hit == m_Skill_Info.Instigator) return;
 	//if (IsSameTeam(hit, m_Collision->Get_Instigator())) return;
 
-	Vec2 dir = hit->Get_WorldPos() - m_StartPos;
-	dir.Normalize();
-	hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
+	if (hit->IsKnockback())
+	{
+		Vec2 dir = hit->Get_WorldPos() - m_StartPos;
+		dir.Normalize();
+		hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
+	}
 
 	// 색 변경 : Hit Monster에서 인터페이스 상속받아야함
 	IColorChanger* colorChanger = hit;
@@ -189,6 +202,10 @@ void CFire_Ball::OnComponentBeginOverlap(GameObject* collider, GameObject* other
 	Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
 	PARTICLE->Spawn_Particle(L"HitSpark", particlePos + randomVec);
 	PARTICLE->Spawn_Particle(L"Fire_HitEffect2", particlePos + randomVec);
+
+	SOUND->Stop("FireBall_End");
+	SOUND->Play("FireBall_End");
+	SOUND->SetVolume("FireBall_End", 0.15f);
 
 	m_PendingKill = true;
 }

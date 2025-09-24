@@ -5,7 +5,7 @@
 class CSkill_Actor : public CActor
 {
 public:
-	CSkill_Actor(SkillInfo& _Info);
+	CSkill_Actor(FSkillInfo& _Info);
 	virtual ~CSkill_Actor();
 
 public:
@@ -23,11 +23,14 @@ public:
 	virtual bool CheckHitWall();
 	virtual void OnHitWall(const Vec2& hitPos);
 
+	void SetPendingKill(bool _Pending) { m_PendingKill = _Pending; }
+	bool GetPendingKill() { return m_PendingKill; }
+
 public:
 	bool IsDestroy() const { return m_PendingKill; }
 
 protected:
-	SkillInfo m_Skill_Info;
+	FSkillInfo m_Skill_Info;
 	Vec2	m_StartPos;
 
 	float   m_SpawnLife = 0.f;

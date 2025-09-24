@@ -155,3 +155,10 @@ void Sound::Update()
 {
     system->update();
 }
+
+void Sound::StopPlay(string Key, float scale)
+{
+    Stop(Key);
+    Play(Key);
+    SetVolume(Key, scale);
+}

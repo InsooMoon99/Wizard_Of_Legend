@@ -28,9 +28,18 @@ enum class ECharacterState
 	Dash,
 	Attack1,
 	Attack2,
-	Attack_FireDragon,
+	Hit,
 
+	Air,
 	Boss_Start,
+	Boss_Start2,
+	Boss_Ready,
+	Boss_Attack1,
+	Boss_Attack1_Ready,
+	Boss_Attack2,
+	Boss_Attack3,
+
+	Boss_Teleport,
 
 	PS_END
 };
@@ -68,6 +77,42 @@ enum class ESkillType
 
 	Earth_Shield,
 
+	Boss_Man_Bat,
+	Boss_Girl_Dash,
+
+	Boss_Man_Target,
+	Boss_Girl_Javelin,
+
+	Boss_Man_Star,
+	Boss_Girl_Star,
 
 	SKILL_END
+};
+
+enum class ESkillActor
+{
+	Dash_Shock,
+
+
+	SKILL_END
+};
+
+enum class EBossType
+{
+	Twin_Man,
+	Twin_Girl,
+
+	BT_END
+};
+
+enum class EBossState
+{
+	Idle,
+
+	Boss_Start,
+	Boss_Start2,
+	Boss_Attack1,
+	Boss_Attack2,
+
+	BS,END
 };

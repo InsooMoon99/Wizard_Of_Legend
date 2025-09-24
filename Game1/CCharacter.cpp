@@ -48,3 +48,9 @@ void CCharacter::Release()
 
 }
 
+void CCharacter::TakeDamage(FHitDamage _Hit)
+{
+	m_Status->SetHp(m_Status->GetHp() - _Hit.Damage);
+	m_State->Change_State(ECharacterState::Hit);
+}
+

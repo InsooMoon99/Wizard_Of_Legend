@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "CEarth_Shield.h"
 
+#include "CBossPawn.h"
 #include "CStatusComponent.h"
 
-CEarth_Shield::CEarth_Shield(SkillInfo& _Info)
+CEarth_Shield::CEarth_Shield(FSkillInfo& _Info)
 	: CSkill_Actor(_Info)
 {
 	m_Pos = _Info.SpawnPos;
@@ -16,6 +17,7 @@ CEarth_Shield::CEarth_Shield(SkillInfo& _Info)
 	{
 		m_Angle[i] = i * (PI / 4) - (PI / 2);
 	}
+
 }
 
 CEarth_Shield::~CEarth_Shield()
@@ -27,6 +29,9 @@ void CEarth_Shield::BeginPlay()
 {
 	CSkill_Actor::BeginPlay();
 
+	SOUND->Play("Earth_Shield");
+	SOUND->SetVolume("Earth_Shield", 0.85f);
+
 	for (int i = 0; i < EARTH_SHIELD; ++i)
 	{
 		m_Armor[i] = make_shared<ObCircle>();
@@ -36,7 +41,6 @@ void CEarth_Shield::BeginPlay()
 		m_Armor[i]->visible = false;
 		m_Armor[i]->collider = COLLIDER::CIRCLE;
 		m_Armor[i]->Set_Owner(this);
-
 		m_Armor[i]->SetLocalPos(Vec2(cosf(m_Angle[i]) * m_Radius, sinf(m_Angle[i]) * m_Radius));
 
 		m_Armor_Img[i] = RESOURCE->CreateSprite(L"Skill\\GAIA_ARMOR.bmp", Vec2(600.f / 12.f) * 1.6f, Int2(12, 1), true);
@@ -168,9 +172,12 @@ void CEarth_Shield::OnComponentBeginOverlap(GameObject* collider, GameObject* ot
 	if (hit == m_Skill_Info.Instigator) return;
 	//if (IsSameTeam(hit, m_Collision->Get_Instigator())) return;
 
-	Vec2 dir = hit->Get_WorldPos() - m_StartPos;
-	dir.Normalize();
-	hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
+	if (hit->IsKnockback())
+	{
+		Vec2 dir = hit->Get_WorldPos() - m_StartPos;
+		dir.Normalize();
+		hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
+	}
 
 	IColorChanger* colorChanger = hit;
 	if (colorChanger)

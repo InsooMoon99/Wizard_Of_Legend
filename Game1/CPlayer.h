@@ -30,6 +30,8 @@ public:
 	void Hit_Color() override;
 	void Hit_Effect() override;
 
+	void TakeDamage(FHitDamage _Hit) override;
+
 private:
 	// Components
 	shared_ptr<CWeaponComponent>		m_Weapon;
@@ -43,6 +45,7 @@ public:
 	void State_Walk();
 	void State_Dash();
 	void State_Attack();
+	void State_Hit();
 
 	virtual void SetSprite(ECharacterState _State, EPlayerDir _Dir) override;
 	virtual void Play_Sprite(ECharacterState _State);
@@ -52,10 +55,6 @@ public:
 	void Attack_Sprite();
 	void Shadow_Size();
 	void Dash_Sprite();
-
-	//ObRect* Get_PlayerCollision() { return m_PlayerCol.get(); }
-	void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
-	void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 
 protected:
 	// Player 한테 리소스 세팅을 할지?

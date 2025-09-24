@@ -15,25 +15,25 @@ CStateComponent::~CStateComponent()
 
 void CStateComponent::BeginPlay()
 {
-	CComponent::BeginPlay();
+	Super::BeginPlay();
 
 }
 
 void CStateComponent::TickComponent()
 {
-	CComponent::TickComponent();
+	Super::TickComponent();
 
 }
 
 void CStateComponent::Render()
 {
-	CComponent::Render();
+	Super::Render();
 
 }
 
 void CStateComponent::Release()
 {
-	CComponent::Release();
+	Super::Release();
 
 }
 
@@ -51,6 +51,8 @@ void CStateComponent::Change_State(ECharacterState _State)
 	}
 
 	m_PlayerState = _State;
+
+	OnBossStateChanged.Broadcast(m_PlayerState, m_PlayerDir);
 }
 
 void CStateComponent::Change_Dir(EPlayerDir _Dir)

@@ -5,6 +5,7 @@
 #include "CDummy.h"
 #include "CPlayer.h"
 #include "CResourceManager.h"
+#include "CStateComponent.h"
 #include "CUIComponent.h"
 
 CStage01::CStage01()
@@ -20,6 +21,7 @@ CStage01::CStage01()
 	m_PlayerPos = Vec2(-1790.f, -790.f);
 
 	Resource_Setting();
+
 }
 
 CStage01::~CStage01()
@@ -30,6 +32,9 @@ CStage01::~CStage01()
 void CStage01::Init()
 {
 	CScene::Init();
+
+	SOUND->Play("Tutorial");
+	SOUND->SetVolume("Tutorial", 0.05f);
 
 	for (auto& actor : m_Actors)
 		actor->BeginPlay();
@@ -63,7 +68,9 @@ void CStage01::Update()
 		RENDER->AddRenderObject(hud.get());
 
 	for (auto& map : m_Map)
+	{
 		map.second->Update();
+	}
 	
 	for (auto& object : m_Objects)
 		object->Update();
@@ -84,6 +91,22 @@ void CStage01::LateUpdate()
 
 	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
 	CAM->position = player->Get_Collision()->GetWorldPos();
+
+	if (player->Get_Collision()->Intersect(m_TestDummy->Get_Collision().get()))
+	{
+		cout << "Ãæµ¹¶ì";
+
+		auto state = CHelper::GetComponent<CStateComponent>(player);
+		if (state->Get_State() != ECharacterState::Hit)
+		{
+			state->Change_State(ECharacterState::Hit);
+		}
+	}
+
+	if (m_Objects[1]->Intersect(m_Player->Get_Collision().get()))
+	{
+		SCENE->Change_Scene(ESceneType::Stage02);
+	}
 }
 
 void CStage01::Render()
@@ -95,11 +118,14 @@ void CStage01::Render()
 	
 	TILE->Render();
 
+	PARTICLE->Render();
+
 	for (auto& object : m_Objects)
 		object->Render();
 
 	//for (auto& actor : m_Actors)
 	//	actor->Render();
+
 	RENDER->Render();
 }
 
@@ -111,6 +137,8 @@ void CStage01::Release()
 	//	SafeDelete(actor);
 
 	m_Map.clear();
+
+	SOUND->DeleteSound("Tutorial");
 }
 
 void CStage01::Resource_Setting()
@@ -130,6 +158,11 @@ void CStage01::Resource_Setting()
 	teleport->SetWorldPos(m_PlayerPos);
 	m_Objects.push_back(teleport);
 
-	
+	Vec2 vortexSize = Vec2(280.f / 7.f * 5.f, 40.f * 6.f);
+	shared_ptr<ObImage> vortex = RESOURCE->CreateSprite(L"Object\\Gravity_vortex_Loop.png", vortexSize, Int2(7,1), true);
+	vortex->SetWorldPos(Vec2(-130.f, 0.f));
+	vortex->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
+	vortex->collider = COLLIDER::CIRCLE;
+	m_Objects.push_back(vortex);
 
 }

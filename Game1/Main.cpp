@@ -7,7 +7,10 @@
 
 void Main::Init()
 {
+	RESOURCE->Init();
+
 	SCENE->Change_Scene(ESceneType::Stage02);
+	SKILL->Init();
 	PARTICLE->Init();
 	TILE->Init();
 
@@ -17,6 +20,7 @@ void Main::Update()
 {
 	SCENE->Update();
 	COLLISION->Update();
+	SKILL->Update();
 	PARTICLE->Update();
 	TILE->Update();
 
@@ -40,8 +44,9 @@ void Main::LateUpdate()
 void Main::Render()
 {
 	SCENE->Render();
+	SKILL->Render();
 
-	PARTICLE->Render();
+	//PARTICLE->Render();
 
 	if (ImGui::Begin("Debug"))
 	{
@@ -65,6 +70,7 @@ void Main::Release()
 	COLLISION->Destroy_Instance();
 	PARTICLE->Destroy_Instance();
 	RENDER->Destroy_Instance();
+	SKILL->Destroy_Instance();
 
 }
 

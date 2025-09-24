@@ -64,7 +64,7 @@ void CSkill_FireBall::Render()
 	}
 }
 
-bool CSkill_FireBall::CanActivate(const SkillInfo& _Info)
+bool CSkill_FireBall::CanActivate(const FSkillInfo& _Info)
 {
 	if (!CSkill::CanActivate(_Info))
 		return false;

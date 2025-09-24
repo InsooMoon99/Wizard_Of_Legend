@@ -7,7 +7,7 @@ class CFire_Ball : public CSkill_Actor
 	using Super = CSkill_Actor;
 
 public:
-	CFire_Ball(SkillInfo& _Info);
+	CFire_Ball(FSkillInfo& _Info);
 	virtual ~CFire_Ball();
 
 public:
@@ -25,7 +25,7 @@ public:
 	virtual void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
 	virtual void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 
-public:
+private:
 	shared_ptr<ObImage> m_FireBall;
 	vector<shared_ptr<ObImage>> m_FireBall_Particle;
 

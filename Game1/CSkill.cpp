@@ -35,7 +35,7 @@ void CSkill::Render()
 
 }
 
-bool CSkill::CanActivate(const SkillInfo& _Info)
+bool CSkill::CanActivate(const FSkillInfo& _Info)
 {
 	// TODO : 쿨타임만 구현하면 될거같다.
 
