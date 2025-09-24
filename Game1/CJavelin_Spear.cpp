@@ -16,7 +16,7 @@ CJavelin_Spear::CJavelin_Spear(FSkillInfo& _Info) : CSkill_Actor(_Info)
 		m_Collision = make_shared<ObCircle>();
 		m_Collision->scale = Vec2(100.f, 60.f);
 		m_Collision->SetWorldPos(Vec2(m_Pos.x, m_Pos.y));
-		m_Collision->visible = false;
+		m_Collision->visible = true;
 		m_Collision->collider = COLLIDER::CIRCLE;
 		m_Collision->isFilled = false;
 		m_Collision->rotation = -m_Skill_Info.Angle;
@@ -29,12 +29,11 @@ CJavelin_Spear::CJavelin_Spear(FSkillInfo& _Info) : CSkill_Actor(_Info)
 		//m_Collision->rotation += PI / 2;
 	}
 
-	Vec2 spearSize = Vec2(144.f / 3.f, 39.f) * 2.6f;
+	Vec2 spearSize = Vec2(144.f / 3.f, 39.f) * 3.5f;
 	m_Spear = RESOURCE->CreateSprite(L"Monster\\Lightning\\JavelinSpear.png", spearSize, Int2(3, 1), true);
 	m_Spear->SetParentRT(*m_Collision);
 	m_Spear->SetLocalPos(Vec2(26.f, 12.f));
 	m_Spear->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
-
 }
 
 CJavelin_Spear::~CJavelin_Spear()
@@ -61,7 +60,7 @@ void CJavelin_Spear::Tick()
 
 	Vec2 toTarget = targetCenterPos - m_Collision->GetWorldPos();
 	float dist = toTarget.Length();
-	float speed = 1400.f;
+	float speed = 1600.f;
 	float step = speed * DELTA;
 
 	float moveDistance = min(dist, step);
@@ -125,9 +124,9 @@ void CJavelin_Spear::OnComponentBeginOverlap(GameObject* collider, GameObject* o
 
 	if (targetOrb)
 	{
-		targetOrb->OnHitBySpear(other);
+		targetOrb->OnHitSpear();
 		//m_PendingKill = true;
-		COLLISION->RemoveCollider(m_Collision.get());
+		//COLLISION->RemoveCollider(m_Collision.get());
 		bReleaseCheck = true;
 		m_ReleaseTime = 0.3f;
 

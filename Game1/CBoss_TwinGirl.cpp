@@ -347,7 +347,7 @@ void CBoss_TwinGirl::State_Attack2()
 		if (m_CurImg->IsMaxframe())
 		{
 			m_CurImg = m_JavelinThrow;
-			m_JavelinThrow->ChangeAnim(ANIMSTATE::LOOP, 0.12f);
+			m_JavelinThrow->ChangeAnim(ANIMSTATE::LOOP, 0.115f);
 			m_JavelinThrow->frame = Int2(0, 0);
 		}
 	}

@@ -2,74 +2,60 @@
 
 #include "CSkill_Actor.h"
 
-struct FOrbState
-{
-	bool isThrow = false;
-	bool isArrived = false;
-	bool isHit = false;
-
-	Vec2 direction = Vec2(0, 0); 
-	Vec2 targetPos;
-
-	bool  exploded = false; 
-	bool  dead = false;
-
-	float speed = 0.f;
-	float boomTimer = 0.f;
-};
-
-enum class EShadowType
-{
-	Small,
-	Big,
-
-	END
-};
+class CBoss_Controller;
 
 class CTarget_Orb : public CSkill_Actor
 {
 public:
-	CTarget_Orb(FSkillInfo& _Info);
-	virtual ~CTarget_Orb();
+    explicit CTarget_Orb(FSkillInfo& _Info);
+    virtual ~CTarget_Orb();
 
 public:
-	void BeginPlay() override;
-	void Tick() override;
-	void LateUpdate() override;
-	void Render() override;
-	void Release() override;
+    void BeginPlay() override;
+    void Tick() override;
+    void LateUpdate() override;
+    void Render() override;
+    void Release() override;
 
 public:
-	bool CheckHitWall();
-	void OnHitWall(const Vec2& hitPos);
+    bool CheckHitWall() override;
+    void OnHitWall(const Vec2& hitPos) override;
 
-	void OnThrowOrb(int value);
+    void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
+    void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 
-	void DestroyOrb(int idx);
 
 public:
-	virtual void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
-	virtual void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
+    void ThrowTowards(const Vec2& worldTarget);
+    void OnHitSpear();
 
-	void OnHitBySpear(GameObject* collider);
-	void RecreateOrb(int i);
+    bool IsDestroy() const { return m_Destroy; }
 
 private:
-	class CBoss_Controller* m_BossController;
+    CBoss_Controller* m_Controller;
 
-	vector<shared_ptr<ObCircle>>	m_Target_Orb;
-	vector<shared_ptr<ObImage>>		m_Target_Img;
-	vector<shared_ptr<ObImage>>		m_OrbShadows;
+    shared_ptr<ObImage>  m_OrbImage_Small;
+    shared_ptr<ObImage>  m_OrbImage_Big;
+    shared_ptr<ObImage>  m_OrbImage_Hit;
 
-	vector<FOrbState> m_OrbStates;
+    shared_ptr<ObImage>  m_OrbShadow;
 
-	float m_Angle[TARGET_ORB] = { 0.f };
-	float m_Radius = 100.f;
+    Vec2  m_Direction = Vec2(1.f, 0.f);
+    float m_Speed = 1500.f;
+    bool  m_IsThrow = false;
+    bool  m_Destroy = false;
 
-	Vec2 m_OrbSize = Vec2(20.f, 11.f) * 2.8f;
+    bool  m_prevDestroy = false;
+    bool  m_CanHit = false;
 
-	set<GameObject*> m_HitObjects;
+    float m_boomTimer = 0.3f;
 
-	float m_boomTimer = 0.3f;
+    // 수명 관리
+    float m_Life = 5.0f;
+
+    float m_StopRadius = 40.f;   
+    float m_SlowRadius = 200.f; 
+    float m_MinSpeed = 200.f;
+
+    Vec2  m_Dest = Vec2(0.f, 0.f);
 };
-

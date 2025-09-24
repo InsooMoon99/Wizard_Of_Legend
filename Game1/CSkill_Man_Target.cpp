@@ -1,97 +1,130 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CSkill_Man_Target.h"
 
-#include "CBossPawn.h"
-#include "CStateComponent.h"
 #include "CTarget_Orb.h"
+#include "CBossPawn.h"
+#include "CBoss_Controller.h"
+#include "CStateComponent.h"
+#include "CActor.h"
 
-CSkill_Man_Target::CSkill_Man_Target()
-{
-
-}
-
-CSkill_Man_Target::~CSkill_Man_Target()
-{
-
-}
+CSkill_Man_Target::CSkill_Man_Target() {}
+CSkill_Man_Target::~CSkill_Man_Target() { Release(); }
 
 void CSkill_Man_Target::BeginPlay()
 {
-	CSkill::BeginPlay();
-
+    CSkill::BeginPlay();
 }
 
 void CSkill_Man_Target::Tick()
 {
-	CSkill::Tick();
+    CSkill::Tick();
 
-	for (auto iter = m_Orb.begin(); iter != m_Orb.end(); )
-	{
-		auto orb = *iter;
+    for (auto& orb : m_Orbs)
+        if (orb) 
+            orb->Tick();
 
-		orb->Tick();
-
-		if (orb->IsDestroy())
-			iter = m_Orb.erase(iter);
-
-		else
-			++iter;
-	}
+    CleanupDeadOrbs();
 }
 
 void CSkill_Man_Target::LateUpdate()
 {
-	CSkill::LateUpdate();
+    CSkill::LateUpdate();
 }
 
 void CSkill_Man_Target::Render()
 {
-	CSkill::Render();
+    CSkill::Render();
 
-	for (auto& orb : m_Orb)
-	{
-		if (!orb->IsDestroy())
-			orb->Render();
-	}
+    for (auto& orb : m_Orbs)
+        if (orb) 
+            orb->Render();
 }
 
 void CSkill_Man_Target::Release()
 {
-	CSkill::Release();
+    m_DelegateBound = false;
+    m_TargetCached = nullptr;
+
+    m_Orbs.clear();
+
+    CSkill::Release();
 }
 
 bool CSkill_Man_Target::CanActivate(const FSkillInfo& _Info)
 {
-	if (!CSkill::CanActivate(_Info))
-		return false;
+    if (_Info.Target == nullptr)
+        return false;
 
-	// TODO : º¸½º´Â ±»ÀÌ ÀÌ°Å ÆÇ´ÜÇØ¾ß ÇÏ³ª?
-
-	return true;
+    return CSkill::CanActivate(_Info);
 }
 
 void CSkill_Man_Target::Activate(CActor* _Owner)
 {
-	CSkill::Activate(_Owner);
+    CSkill::Activate(_Owner);
+    if (_Owner == nullptr)
+        return;
 
-	CBossPawn* boss = dynamic_cast<CBossPawn*>(_Owner);
+    CBossPawn* boss = dynamic_cast<CBossPawn*>(_Owner);
+    if (!boss) return;
 
-	auto state = boss->GetControlState();
-	if (!state) return;
+    auto state = boss->GetControlState();
+    if (!state) return;
 
-	Vec2 dir = CHelper::DirToVec(state->Get_Dir());
-	float radian = Utility::DirToRadian(dir);
+    m_TargetCached = boss->GetPlayer();
+    if (!m_TargetCached) return;
 
-	m_Skill_Info.Instigator = _Owner;
-	m_Skill_Info.SpawnPos = _Owner->Get_WorldPos();
-	m_Skill_Info.Target = boss->GetPlayer();
-	m_Skill_Info.Aim_Dir = dir;
-	m_Skill_Info.Angle = radian;
-	m_Skill_Info.Damage = 10.f;
-	m_Skill_Info.Amount = 1000.f;
+    Vec2 dir = CHelper::DirToVec(state->Get_Dir());
+    if (dir.LengthSquared() < 1e-6f)
+        dir = Vec2(1.f, 0.f);
 
-	auto orb = make_shared<CTarget_Orb>(m_Skill_Info);
-	orb->BeginPlay();
+    m_Orbs.clear();
+    m_Orbs.reserve(kNumOrbs);
 
-	m_Orb.push_back(orb);
+    const float angleStep = (2.0f * PI) / static_cast<float>(kNumOrbs);
+
+    for (int i = 0; i < kNumOrbs; ++i)
+    {
+        m_Skill_Info.Instigator = _Owner;
+        m_Skill_Info.SpawnPos = _Owner->Get_WorldPos();
+        m_Skill_Info.Target = m_TargetCached;      
+        m_Skill_Info.Aim_Dir = dir;
+        m_Skill_Info.Angle = i * angleStep;      
+        m_Skill_Info.Damage = kBaseDmg;
+        m_Skill_Info.Amount = kKnockAmt;
+
+        auto orb = std::make_shared<CTarget_Orb>(m_Skill_Info);
+        orb->BeginPlay();                             
+        m_Orbs.push_back(orb);
+    }
+
+    BindDelegateOnce(boss->GetController());
+}
+
+void CSkill_Man_Target::BindDelegateOnce(CBoss_Controller* ctrl)
+{
+    if (!ctrl) return;
+    if (m_DelegateBound) return;
+
+    ctrl->OnThrowTargetOrb.Add([this](int idx)
+        {
+            if (idx < 0 || idx >= static_cast<int>(m_Orbs.size()))
+                return;
+
+            auto& orb = m_Orbs[idx];
+            if (!orb) return; 
+
+            if (m_TargetCached)
+                orb->ThrowTowards(m_TargetCached->Get_WorldPos());
+        });
+
+    m_DelegateBound = true;
+}
+
+void CSkill_Man_Target::CleanupDeadOrbs()
+{
+    for (auto& o : m_Orbs)
+    {
+        if (o && o->IsDestroy())
+            o.reset(); // nullptr
+    }
 }

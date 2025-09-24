@@ -7,8 +7,8 @@
 template<typename... Args>
 class CDelegate {
 public:
-    using FuncType = std::function<void(Args...)>;
-    using Token = std::size_t;
+    using FuncType = function<void(Args...)>;
+    using Token = size_t;
 
     Token Add(const FuncType& f)
 	{
@@ -45,8 +45,9 @@ public:
 	{
         m_IsBroadcasting = true;
 
-        const std::size_t sz = m_Functions.size();
-        for (std::size_t i = 0; i < sz; ++i) {
+        const size_t sz = m_Functions.size();
+        for (size_t i = 0; i < sz; ++i) 
+        {
             const auto& e = m_Functions[i];
             if (e.func) e.func(args...);
         }
@@ -57,7 +58,7 @@ public:
         {
             for (Token id : m_PendingRemovals) 
             {
-                auto it = std::find_if(m_Functions.begin(), m_Functions.end(),
+                auto it = find_if(m_Functions.begin(), m_Functions.end(),
                     [id](const Entry& e) { return e.id == id; });
                 if (it != m_Functions.end()) m_Functions.erase(it);
             }
@@ -66,7 +67,8 @@ public:
     }
 
 private:
-    struct Entry {
+    struct Entry
+	{
         Token    id;
         FuncType func;
     };

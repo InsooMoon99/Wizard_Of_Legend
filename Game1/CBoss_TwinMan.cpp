@@ -386,7 +386,7 @@ void CBoss_TwinMan::State_Attack2()
 			SOUND->StopPlay("MetalClang", 0.2f);
 
 			m_Attack2Count++;
-			//m_Controller->OnThrowTargetOrb.Broadcast(m_Attack2Count - 1);
+			m_Controller->OnThrowTargetOrb.Broadcast(m_Attack2Count - 1);
 			bAttack2 = false;
 		}
 
