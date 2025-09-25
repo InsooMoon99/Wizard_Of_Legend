@@ -21,15 +21,19 @@ public:
 	virtual bool CanActivate(const FSkillInfo& _Info) abstract;
 	virtual void Activate(CActor* _Owner) abstract;
 
+	void SetIcon(const wstring& path, const Vec2& size);
+
 protected:
 	FSkillInfo& Get_Skill_Info() { return m_Skill_Info; }
 
-public:
-	float	Get_CoolDown() { return m_CoolDown; }
-	void	Set_CoolDown(float _CoolDown) { m_CoolDown = _CoolDown; }
+	shared_ptr<ObImage> m_Icon;
 
-	bool GetFiring() { return bFiring; }
-	void SetFiring(bool _Fire) { bFiring = _Fire; }
+public:
+	void	Set_CoolDown(float _CoolDown) { m_CoolDown = _CoolDown; }
+	void	SetFiring(bool _Fire)		  { bFiring = _Fire; }
+
+	float	Get_CoolDown()		  { return m_CoolDown; }
+	bool	GetFiring()			  { return bFiring; }
 
 protected:
 	FSkillInfo m_Skill_Info;

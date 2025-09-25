@@ -46,5 +46,11 @@ void CSkill::Activate(CActor* _Owner)
 {
 	
 
+}
+
+void CSkill::SetIcon(const wstring& path, const Vec2& size)
+{
+	if (m_Icon == nullptr) 
+		m_Icon = RESOURCE->CreateUI(path, size, true);
 
 }

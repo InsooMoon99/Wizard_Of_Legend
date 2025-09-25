@@ -223,9 +223,19 @@
     <ClInclude Include="CBat_Dash_Shock.h">
       <Filter>06. Skill\01. Boss\01. Skill_Actor\02. SpawnActor</Filter>
     </ClInclude>
-    <ClInclude Include="CUI_Inventory.h">
+    <ClInclude Include="CUI_InventoryHUD.h">
       <Filter>98.UI\00. Player</Filter>
     </ClInclude>
+    <ClInclude Include="CUI_InvenDesc.h">
+      <Filter>98.UI\00. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_InvenItem.h">
+      <Filter>98.UI\00. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_InvenSkill.h">
+      <Filter>98.UI\00. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_InvenCloth.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -539,9 +549,19 @@
     <ClCompile Include="CBat_Dash_Shock.cpp">
       <Filter>06. Skill\01. Boss\01. Skill_Actor\02. SpawnActor</Filter>
     </ClCompile>
-    <ClCompile Include="CUI_Inventory.cpp">
+    <ClCompile Include="CUI_InventoryHUD.cpp">
       <Filter>98.UI\00. Player</Filter>
     </ClCompile>
+    <ClCompile Include="CUI_InvenDesc.cpp">
+      <Filter>98.UI\00. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_InvenItem.cpp">
+      <Filter>98.UI\00. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_InvenSkill.cpp">
+      <Filter>98.UI\00. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_InvenCloth.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game1.rc">

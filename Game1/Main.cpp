@@ -14,10 +14,17 @@ void Main::Init()
 	PARTICLE->Init();
 	TILE->Init();
 
+	m_Cursor = RESOURCE->CreateImage(L"UI\\MouseCursor0.png", Vec2(32.f, 32.f) * 3.f, true);
+	//m_Cursor->space = SPACE::SCREEN;
 }
 
 void Main::Update()
 {
+	//ShowCursor(false);
+	//
+	//m_Cursor->SetWorldPos(INPUT->GetMouseWorldPos());
+	//m_Cursor->Update();
+
 	SCENE->Update();
 	COLLISION->Update();
 	SKILL->Update();
@@ -46,6 +53,8 @@ void Main::Render()
 	SCENE->Render();
 	SKILL->Render();
 
+	//m_Cursor->Render();
+
 	//PARTICLE->Render();
 
 	if (ImGui::Begin("Debug"))
@@ -61,6 +70,7 @@ void Main::Render()
 	}
 
 	ImGui::End();
+
 }
 
 void Main::Release()

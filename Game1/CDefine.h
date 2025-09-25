@@ -20,6 +20,7 @@
 #define EARTH_SHIELD 8
 #define TARGET_ORB   5
 #define STAR_CIRCLE  5
+#define SKILL_PANEL  6
 
 #define SCENE		CSceneManager::Get_Instance()
 #define RESOURCE	CResourceManager::Get_Instance()

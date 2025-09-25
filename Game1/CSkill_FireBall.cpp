@@ -19,7 +19,7 @@ void CSkill_FireBall::BeginPlay()
 {
 	CSkill::BeginPlay();
 
-
+	//SetIcon(L"")
 }
 
 void CSkill_FireBall::Tick()

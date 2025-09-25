@@ -84,7 +84,11 @@
     <ClInclude Include="CUI_BossHUD.h" />
     <ClInclude Include="CUI_BossStatus.h" />
     <ClInclude Include="CUI_HUD.h" />
-    <ClInclude Include="CUI_Inventory.h" />
+    <ClInclude Include="CUI_InvenDesc.h" />
+    <ClInclude Include="CUI_InvenItem.h" />
+    <ClInclude Include="CUI_InvenCloth.h" />
+    <ClInclude Include="CUI_InvenSkill.h" />
+    <ClInclude Include="CUI_InventoryHUD.h" />
     <ClInclude Include="CUI_PlayerStatus.h" />
     <ClInclude Include="CUI_Skill_Pannel.h" />
     <ClInclude Include="CWeaponComponent.h" />
@@ -157,7 +161,11 @@
     <ClCompile Include="CUI_BossHUD.cpp" />
     <ClCompile Include="CUI_BossStatus.cpp" />
     <ClCompile Include="CUI_HUD.cpp" />
-    <ClCompile Include="CUI_Inventory.cpp" />
+    <ClCompile Include="CUI_InvenDesc.cpp" />
+    <ClCompile Include="CUI_InvenItem.cpp" />
+    <ClCompile Include="CUI_InvenCloth.cpp" />
+    <ClCompile Include="CUI_InvenSkill.cpp" />
+    <ClCompile Include="CUI_InventoryHUD.cpp" />
     <ClCompile Include="CUI_PlayerStatus.cpp" />
     <ClCompile Include="CUI_Skill_Pannel.cpp" />
     <ClCompile Include="CWeaponComponent.cpp" />

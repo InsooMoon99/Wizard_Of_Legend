@@ -5,7 +5,7 @@
 class CStatusComponent;
 class CUI_PlayerStatus;
 class CUI_Skill_Pannel;
-class CUI_Inventory;
+class CUI_InventoryHUD;
 
 class CUI_PlayerHUD : public CUI_HUD
 {
@@ -28,7 +28,7 @@ private:
 	shared_ptr<CUI_PlayerStatus> m_PlayerStatus;
 	shared_ptr<CUI_Skill_Pannel> m_Skill_Pannel;
 
-	shared_ptr<CUI_Inventory>	 m_Inventory;
+	shared_ptr<CUI_InventoryHUD>	 m_Inventory;
 
 };
 

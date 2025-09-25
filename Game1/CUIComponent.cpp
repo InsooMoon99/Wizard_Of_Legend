@@ -7,6 +7,7 @@
 #include "CStatusComponent.h"
 #include "CUI_BossHUD.h"
 #include "CUI_BossStatus.h"
+#include "CUI_InventoryHUD.h"
 #include "CUI_PlayerHUD.h"
 
 CUIComponent::CUIComponent()
@@ -96,13 +97,22 @@ void CUIComponent::SetBossHUD()
 	}
 }
 
+void CUIComponent::SetInventoryHUD()
+{
+	if (GetOwner())
+	{
+		m_InventoryHUD = make_shared<CUI_InventoryHUD>();
+		m_HUD.push_back(m_InventoryHUD);
+	}
+}
+
 void CUIComponent::ToggleInventory()
 {
 	bToggle = !bToggle;
 
 	// 인벤토리  UI
-	if (bToggle == true)
+	if (m_InventoryHUD) 
 	{
-
+		m_InventoryHUD->SetRender(bToggle);
 	}
 }

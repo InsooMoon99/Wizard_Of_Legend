@@ -4,6 +4,7 @@
 CUI::CUI() : CGameObject(ERenderLayer::Render_UI)
 {
 
+	bRender = true;
 }
 
 CUI::~CUI()
@@ -23,7 +24,8 @@ void CUI::Tick()
 
 void CUI::Render()
 {
-
+	if (bRender == false)
+		return;
 }
 
 void CUI::Release()

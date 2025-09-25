@@ -2,11 +2,11 @@
 
 #include "CUI.h"
 
-class CUI_Inventory : public CUI
+class CUI_InvenItem : public CUI
 {
 public:
-	CUI_Inventory();
-	virtual ~CUI_Inventory();
+	CUI_InvenItem();
+	virtual ~CUI_InvenItem();
 
 public:
 	void BeginPlay() override;
@@ -15,13 +15,10 @@ public:
 	void Render() override;
 	void Release() override;
 
-public:
-
-
 private:
-	vector<shared_ptr<ObImage>> m_Inventory;
+	shared_ptr<ObImage> m_OutRect;
+	shared_ptr<ObImage> m_InRect;
 
-	//shared_ptr<ObImage> m_Inventory;
-
+	wstring m_Item_Panel;
 };
 

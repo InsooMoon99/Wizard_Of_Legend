@@ -36,7 +36,8 @@ void CUI_HUD::Render()
 
 	for (auto& hud : m_Children)
 	{
-		hud->Render();
+		//if (hud->GetRender())
+			hud->Render();
 	}
 }
 

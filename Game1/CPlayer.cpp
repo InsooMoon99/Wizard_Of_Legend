@@ -41,7 +41,10 @@ void CPlayer::BeginPlay()
 	CActor::BeginPlay();
 
 	if (m_UI)
+	{
 		m_UI->SetPlayerHUD();
+		m_UI->SetInventoryHUD();
+	}
 
 	if (m_Weapon)
 	{
@@ -264,6 +267,7 @@ void CPlayer::Key_Input()
 			return;
 		}
 
+		// 인벤토리
 		if (INPUT->KeyDown(VK_TAB))
 		{
 			m_UI->ToggleInventory();
