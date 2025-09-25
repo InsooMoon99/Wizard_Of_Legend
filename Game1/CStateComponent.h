@@ -24,6 +24,9 @@ public:
 	ECharacterState Set_AttackType();
 	void Set_AttackType(ECharacterState _State) { m_LastAttackType = _State; }
 
+	bool GetCanAttack() { return m_CanAttack; }
+	void SetCanAttack(bool bFlag) { m_CanAttack = bFlag; }
+
 public:
 	ECharacterState Get_State()		{ return m_PlayerState; }
 	EPlayerDir	 Get_Dir()			{ return m_PlayerDir; }
@@ -38,6 +41,7 @@ private:
 
 	EPlayerDir		m_PlayerDir;
 
+	bool m_CanAttack = true;
 
 };
 

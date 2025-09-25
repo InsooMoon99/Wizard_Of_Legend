@@ -92,6 +92,7 @@ enum class ESkillType
 enum class ESkillActor
 {
 	Dash_Shock,
+	Star_Collision,
 
 
 	SKILL_END
@@ -115,4 +116,13 @@ enum class EBossState
 	Boss_Attack2,
 
 	BS,END
+};
+
+enum class EStarType
+{
+	First,
+	Second,
+	Third,
+
+	END
 };

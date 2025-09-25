@@ -27,8 +27,6 @@ void CSkill_Girl_Javelin::Tick()
 {
 	CSkill::Tick();
 
-
-
 	for (auto iter = m_Spear.begin(); iter != m_Spear.end(); )
 	{
 		auto spear = *iter;
@@ -69,7 +67,6 @@ bool CSkill_Girl_Javelin::CanActivate(const FSkillInfo& _Info)
 	if (!CSkill::CanActivate(_Info))
 		return false;
 
-	// TODO : 보스는 굳이 이거 판단해야 하나?
 
 	return true;
 

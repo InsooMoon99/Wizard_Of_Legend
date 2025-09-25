@@ -35,7 +35,7 @@ public:
 private:
 	// Components
 	shared_ptr<CWeaponComponent>		m_Weapon;
-	shared_ptr<CInventoryComponent>		m_Inventory;
+	shared_ptr<CInventoryComponent>		m_Inven;
 	shared_ptr<CUIComponent>			m_UI;
 
 public:
@@ -50,15 +50,12 @@ public:
 	virtual void SetSprite(ECharacterState _State, EPlayerDir _Dir) override;
 	virtual void Play_Sprite(ECharacterState _State);
 
-
 public:
 	void Attack_Sprite();
 	void Shadow_Size();
 	void Dash_Sprite();
 
 protected:
-	// Player 한테 리소스 세팅을 할지?
-	// ResourceManager로 옮길지 고민을 좀 해보기
 	void Resource_Settings() override;
 
 private:

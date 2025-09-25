@@ -14,7 +14,7 @@ CPlayer::CPlayer()
 {
 	m_Weapon = CHelper::CreateSharedComponent<CWeaponComponent>(this);
 	m_UI = CHelper::CreateSharedComponent<CUIComponent>(this);
-	m_Inventory = CHelper::CreateSharedComponent<CInventoryComponent>(this);
+	m_Inven = CHelper::CreateSharedComponent<CInventoryComponent>(this);
 
 	m_Status->SetMaxHp(100.f);
 	m_Status->SetMaxMp(100.f);
@@ -41,7 +41,7 @@ void CPlayer::BeginPlay()
 	CActor::BeginPlay();
 
 	if (m_UI)
-		m_UI->SetPlayerStatus();
+		m_UI->SetPlayerHUD();
 
 	if (m_Weapon)
 	{
@@ -231,36 +231,46 @@ void CPlayer::Key_Input()
 		if (INPUT->KeyPress('S')) { m_MoveDir.y = -1.f; SOUND->Play("PlayerStep"); SOUND->SetVolume("PlayerStep", 0.2f);}
 		if (INPUT->KeyPress('A')) { m_MoveDir.x = -1.f; SOUND->Play("PlayerStep"); SOUND->SetVolume("PlayerStep", 0.2f);}
 		if (INPUT->KeyPress('D')) { m_MoveDir.x = +1.f; SOUND->Play("PlayerStep"); SOUND->SetVolume("PlayerStep", 0.2f);}
+
 	}
 
-	if (INPUT->KeyDown('Q'))
+	if (m_State->GetCanAttack())
 	{
-		m_Weapon->Activate_Skill(ESkillType::Fire_Ball);
+		if (INPUT->KeyDown('Q'))
+		{
+			m_Weapon->Activate_Skill(ESkillType::Fire_Ball);
 
-		return;
+			return;
+		}
+
+		if (INPUT->KeyDown(VK_LBUTTON))
+		{
+			m_Weapon->Activate_Skill(ESkillType::Wind_Slash);
+
+			return;
+		}
+
+		if (INPUT->KeyDown('E'))
+		{
+			m_Weapon->Activate_Skill(ESkillType::Earth_Shield);
+
+			return;
+		}
+
+		if (INPUT->KeyDown(VK_RBUTTON))
+		{
+			m_Weapon->Activate_Skill(ESkillType::Fire_Dragon);
+
+			return;
+		}
+
+		if (INPUT->KeyDown(VK_TAB))
+		{
+			m_UI->ToggleInventory();
+		}
 	}
 
-	if (INPUT->KeyDown(VK_LBUTTON))
-	{
-		m_Weapon->Activate_Skill(ESkillType::Wind_Slash);
-
-		return;
-	}
-
-	if (INPUT->KeyDown('E'))
-	{
-		m_Weapon->Activate_Skill(ESkillType::Earth_Shield);
-
-		return;
-	}
-
-	if (INPUT->KeyDown(VK_RBUTTON))
-	{
-		m_Weapon->Activate_Skill(ESkillType::Fire_Dragon);
-
-		return;
-	}
-
+	
 
 	// 대각선 방향 우선 처리
 	if ((m_MoveDir.x != 0) && (m_MoveDir.y != 0))
@@ -359,22 +369,20 @@ void CPlayer::State_Dash()
 
 void CPlayer::State_Attack()
 {
-	// 현재 상태(Attack1/2)와 방향에 맞는 이미지가 세팅되어 있는지 가드
 	auto& map = m_Sprites[m_State->Get_State()];
 	auto it = map.find(m_State->Get_Dir());
 	if (it != map.end() && m_CurImg != it->second)
 		return;
 
+	if (m_CurImg->frame.x >= m_CurImg->maxFrame.x - 6)
+		m_State->SetCanAttack(true);
+
 	if (m_CurImg && m_CurImg->frame.x >= m_CurImg->maxFrame.x - 1)
 	{
-		// ★ 추가: 연속 발사 스킬이 진행 중이면 Idle로 가지 않고
-		//         다음 공격 애니메이션을 "바로" 재시작
 		if (m_Weapon && m_Weapon->IsFiringSkill())
 		{
-			// Attack1 <-> Attack2 토글 (Set_AttackType 내부 구현 가정)
 			m_State->Change_State(m_State->Set_AttackType());
 
-			// 같은 프레임에 즉시 리셋되도록 보장 (프레임 0부터 다시)
 			SetSprite(m_State->Get_State(), m_State->Get_Dir());
 			return;
 		}
@@ -455,6 +463,7 @@ void CPlayer::Play_Sprite(ECharacterState _State)
 		break;
 
 	case ECharacterState::Attack1:
+		m_State->SetCanAttack(false);
 		if (m_Weapon->IsFiringSkill())
 		{
 			m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.048f);
@@ -470,10 +479,10 @@ void CPlayer::Play_Sprite(ECharacterState _State)
 		break;
 
 	case ECharacterState::Attack2:
-
+		m_State->SetCanAttack(false);
 		if (m_Weapon->IsFiringSkill())
 		{
-			m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.01f);
+			m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.048f);
 			m_CurImg->frame = Int2(0, 0);
 		}
 
@@ -490,6 +499,9 @@ void CPlayer::Play_Sprite(ECharacterState _State)
 void CPlayer::TakeDamage(FHitDamage _Hit)
 {
 	CCharacter::TakeDamage(_Hit);
+
+	if (m_State->Get_State() != ECharacterState::Hit)
+		return;
 
 	SetSprite(ECharacterState::Hit, m_State->Get_Dir());
 

@@ -10,22 +10,23 @@ public:
 	{
 		switch (_State)
 		{
-		case ECharacterState::Idle:			return "State_Idle";
-		case ECharacterState::Walk:			return "State_Walk";
-		case ECharacterState::Dash:			return "State_Dash";
-		case ECharacterState::Attack1:		return "State_Attack1";
-		case ECharacterState::Attack2:		return "State_Attack2";
-		case ECharacterState::Hit:			return "Hit";
+		case ECharacterState::Idle:					return "State_Idle";
+		case ECharacterState::Walk:					return "State_Walk";
+		case ECharacterState::Dash:					return "State_Dash";
+		case ECharacterState::Attack1:				return "State_Attack1";
+		case ECharacterState::Attack2:				return "State_Attack2";
+		case ECharacterState::Hit:					return "Hit";
 
-		case ECharacterState::Boss_Start:	return "Boss_Start";
-		case ECharacterState::Boss_Start2:	return "Boss_Start2";
-		case ECharacterState::Boss_Ready:	return "Boss_Ready";
+		case ECharacterState::Boss_Start:			return "Boss_Start";
+		case ECharacterState::Boss_Start2:			return "Boss_Start2";
+		case ECharacterState::Boss_Ready:			return "Boss_Ready";
 		case ECharacterState::Boss_Attack1_Ready:	return "Boss_Attack1_Ready";
-		case ECharacterState::Boss_Attack1:	return "Boss_Attack1";
-		case ECharacterState::Boss_Attack2:	return "Boss_Attack2";
-		case ECharacterState::Air:	return "Air";
+		case ECharacterState::Boss_Attack1:			return "Boss_Attack1";
+		case ECharacterState::Boss_Attack2:			return "Boss_Attack2";
+		case ECharacterState::Boss_Attack3:			return "Boss_Attack3";
+		case ECharacterState::Air:					return "Air";
 
-		default:							return "None";
+		default:									return "None";
 		}
 	}
 

@@ -96,7 +96,7 @@ void CSkill_Girl_Dash::Activate(CActor* _Owner)
 	m_Skill_Info.Damage = 10.f;
 	m_Skill_Info.Amount = 1000.f;
 
-	auto dash = make_shared<CBat_Dash>(m_Skill_Info);
+ 	auto dash = make_shared<CBat_Dash>(m_Skill_Info);
 	dash->BeginPlay();
 
 	m_Dash.push_back(dash);

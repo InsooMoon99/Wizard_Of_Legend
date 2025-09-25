@@ -9,7 +9,7 @@ void Main::Init()
 {
 	RESOURCE->Init();
 
-	SCENE->Change_Scene(ESceneType::Stage02);
+	SCENE->Change_Scene(ESceneType::Stage01);
 	SKILL->Init();
 	PARTICLE->Init();
 	TILE->Init();

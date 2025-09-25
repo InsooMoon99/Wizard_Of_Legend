@@ -14,7 +14,7 @@ CStage02::CStage02()
 	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player);
 
 	m_MapSize = Vec2(1280.f, 1280.f) * 3.f;
-	m_PlayerPos = Vec2(-1780.f, 000.f);
+	m_PlayerPos = Vec2(-1780.f, 0.f);
 
 	Resource_Setting();
 }
@@ -106,8 +106,8 @@ void CStage02::Render()
 	for (auto& object : m_Objects)
 		object->Render();
 
-	RENDER->Render();
 	PARTICLE->Render();
+	RENDER->Render();
 }
 
 void CStage02::Release()

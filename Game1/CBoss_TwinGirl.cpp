@@ -70,6 +70,11 @@ void CBoss_TwinGirl::BeginPlay()
 			{
 				this->OnJavelin(_Pos);
 			});
+
+		m_Controller->OnStarStart.Add([this](const Vec2& _Pos)
+			{
+				this->OnStarPos(_Pos);
+			});
 	}
 	
 	SetSprite(m_State->Get_State(), m_State->Get_Dir());
@@ -77,6 +82,7 @@ void CBoss_TwinGirl::BeginPlay()
 	// Skill
 	m_Weapon->Equip_Skill(ESkillType::Boss_Girl_Dash);
 	m_Weapon->Equip_Skill(ESkillType::Boss_Girl_Javelin);
+	m_Weapon->Equip_Skill(ESkillType::Boss_Girl_Star);
 }
 
 void CBoss_TwinGirl::Tick()
@@ -399,10 +405,21 @@ void CBoss_TwinGirl::State_Attack3()
 	{
 		if (m_CurImg->IsMaxframe())
 		{
-			// 언제까지 올라갈지 조건을 주긴 해야함
-			m_Collision->MoveWorldPos(UP * 1250.f * DELTA);
+			if (m_UpTimer > 0.f)
+			{
+				m_UpTimer -= DELTA;
+
+				m_Collision->MoveWorldPos(UP * 1250.f * DELTA);
+			}
+
 		}
 	}
+
+	else if (m_CurImg == m_StarStart)
+	{
+		//cout << "GOGO" << endl;
+	}
+
 }
 
 void CBoss_TwinGirl::OnBossStart()
@@ -457,6 +474,20 @@ void CBoss_TwinGirl::OnJavelin(const Vec2& _Pos)
 {
 	m_JavelinPos = _Pos;
 
+}
+
+void CBoss_TwinGirl::OnStarPos(const Vec2& _Pos)
+{
+	// 도착 위치 설정
+	m_StarPos = _Pos;
+	m_Collision->SetWorldPos(m_StarPos);
+
+	m_StarStart->visible = true;
+	m_StarStart->ChangeAnim(ANIMSTATE::ONCE, 0.15f);
+	m_CurImg = m_StarStart;
+
+	SOUND->StopPlay("ImpactLightning2", 0.15f);
+	PARTICLE->Spawn_Particle(L"Particle_Land", Vec2(_Pos.x, _Pos.y + 90.f), Vec2(1.5f));
 }
 
 void CBoss_TwinGirl::SetSprite(ECharacterState _State, EPlayerDir _Dir)
@@ -540,7 +571,12 @@ void CBoss_TwinGirl::Play_Sprite(ECharacterState _State)
 		break;
 
 	case ECharacterState::Boss_Attack3:
+		m_UpTimer = 0.3f;
+		m_StarPos = Vec2(0.f); // 스킬 시작 전 초기화
+
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.2f);
+		m_Weapon->Activate_Skill(ESkillType::Boss_Girl_Star);
+
 		break;
 
 	}
@@ -652,6 +688,12 @@ void CBoss_TwinGirl::Resource_Settings()
 	// Star
 	{
 		m_Sprites[ECharacterState::Boss_Attack3][EPlayerDir::Front] = m_Jump;
+
+		Vec2 startSize = Vec2(736.f / 23.f, 48.f) * 3.f;
+		m_StarStart = RESOURCE->CreateSprite(L"Monster\\Lightning\\LightningGirlPBAoE_LOOP_premultiplied.png", startSize, Int2(23,1), true);
+		m_StarStart->SetParentRT(*m_Collision);
+		m_StarStart->SetLocalPosY(20.f);
+		//m_StarStart->color = Color(0.5f, 0.5f, 0.5f, 0.5f);
 	}
 
 	m_Pos = m_Collision->GetWorldPos();

@@ -41,7 +41,8 @@ private:
 public:
 	void SkillSettings();
 
-	void Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info);
+	shared_ptr<CSkill_Actor> Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info);
+	shared_ptr<CSkill_Actor> Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info, EStarType _Star);
 
 private:
 	unordered_map<wstring, shared_ptr<CSkill_Actor>> m_Skills;

@@ -66,13 +66,12 @@ void CUIComponent::Release()
 	m_HUD.clear();
 }
 
-void CUIComponent::SetPlayerStatus()
+void CUIComponent::SetPlayerHUD()
 {
 	if (GetOwner())
 	{
 		m_PlayerHUD = make_shared<CUI_PlayerHUD>();
 		m_HUD.push_back(m_PlayerHUD);
-
 
 		auto status = CHelper::GetComponent<CStatusComponent>(GetOwner());
 		if (status == nullptr)
@@ -82,7 +81,7 @@ void CUIComponent::SetPlayerStatus()
 	}
 }
 
-void CUIComponent::SetBossStatus()
+void CUIComponent::SetBossHUD()
 {
 	if (GetOwner())
 	{
@@ -94,5 +93,16 @@ void CUIComponent::SetBossStatus()
 			return;
 
 		m_BossHUD->Get_Status()->SetStatus(status.get());
+	}
+}
+
+void CUIComponent::ToggleInventory()
+{
+	bToggle = !bToggle;
+
+	// 인벤토리  UI
+	if (bToggle == true)
+	{
+
 	}
 }

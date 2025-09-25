@@ -22,6 +22,9 @@ public:
 	void Activate(CActor* _Owner) override;
 
 private:
-	vector<shared_ptr<CStar>> m_Spear {};
+	float m_AttackTimer = 0.f;
+
+	vector<shared_ptr<CStar>> m_Stars;
+
 };
 

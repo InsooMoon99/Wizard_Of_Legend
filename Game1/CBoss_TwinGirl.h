@@ -54,6 +54,7 @@ public:
 	void OnDashStart(const Vec2& _TargetPos);
 
 	void OnJavelin(const Vec2& _Pos);
+	void OnStarPos(const Vec2& _Pos);
 
 	Vec2 GetJavelinPos() { return m_JavelinPos; }
 
@@ -69,6 +70,7 @@ private:
 	bool bFirst = false;
 
 	float m_waitTime = 1.f;
+	float m_UpTimer = 0.3f;
 
 	shared_ptr<ObImage> m_Teleport;
 	shared_ptr<ObImage> m_Teleport_Floor;
@@ -79,6 +81,8 @@ private:
 	shared_ptr<ObImage> m_JavelinSpawn;
 	shared_ptr<ObImage> m_JavelinThrow;
 
+	shared_ptr<ObImage> m_StarStart;
+
 	Vec2 m_DashDir;
 
 	float m_ShakeTimer = 0.f; 
@@ -87,5 +91,7 @@ private:
 	Vec2 m_JavelinPos{};
 	bool bJavelinCheck = false;
 	int  m_JavelinCount = 0;
+
+	Vec2 m_StarPos {};
 };
 

@@ -178,7 +178,6 @@
     <ClInclude Include="CSkillManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CSkill_Girl_Star.h" />
     <ClInclude Include="CSkill_Girl_Dash.h">
       <Filter>06. Skill\01. Boss\00. Skill_Object\01. Girl</Filter>
     </ClInclude>
@@ -200,9 +199,6 @@
     <ClInclude Include="CBat_Dash.h">
       <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
     </ClInclude>
-    <ClInclude Include="CBat_Dash_Shock.h">
-      <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
-    </ClInclude>
     <ClInclude Include="CJavelin_Spear.h">
       <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
     </ClInclude>
@@ -214,6 +210,21 @@
     </ClInclude>
     <ClInclude Include="CTarget_Orb.h">
       <Filter>06. Skill\01. Boss\01. Skill_Actor\00. Man</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_Girl_Star.h">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\01. Girl</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_Man_Star.h">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\00. Man</Filter>
+    </ClInclude>
+    <ClInclude Include="CStar_Collision.h">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\02. SpawnActor</Filter>
+    </ClInclude>
+    <ClInclude Include="CBat_Dash_Shock.h">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\02. SpawnActor</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_Inventory.h">
+      <Filter>98.UI\00. Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -315,6 +326,9 @@
     </Filter>
     <Filter Include="06. Skill\01. Boss\01. Skill_Actor\01. Girl">
       <UniqueIdentifier>{d9b01346-374a-42cb-bc1d-1f3b4ffcf294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Skill\01. Boss\01. Skill_Actor\02. SpawnActor">
+      <UniqueIdentifier>{c703ca7f-bff4-4f2c-9c81-2e844ee4a3b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -504,9 +518,6 @@
     <ClCompile Include="CBat_Dash.cpp">
       <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
     </ClCompile>
-    <ClCompile Include="CBat_Dash_Shock.cpp">
-      <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
-    </ClCompile>
     <ClCompile Include="CJavelin_Spear.cpp">
       <Filter>06. Skill\01. Boss\01. Skill_Actor\01. Girl</Filter>
     </ClCompile>
@@ -518,6 +529,18 @@
     </ClCompile>
     <ClCompile Include="CTarget_Orb.cpp">
       <Filter>06. Skill\01. Boss\01. Skill_Actor\00. Man</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_Man_Star.cpp">
+      <Filter>06. Skill\01. Boss\00. Skill_Object\00. Man</Filter>
+    </ClCompile>
+    <ClCompile Include="CStar_Collision.cpp">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\02. SpawnActor</Filter>
+    </ClCompile>
+    <ClCompile Include="CBat_Dash_Shock.cpp">
+      <Filter>06. Skill\01. Boss\01. Skill_Actor\02. SpawnActor</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_Inventory.cpp">
+      <Filter>98.UI\00. Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -18,7 +18,8 @@
 #define TILEY 20
 
 #define EARTH_SHIELD 8
-#define TARGET_ORB 5
+#define TARGET_ORB   5
+#define STAR_CIRCLE  5
 
 #define SCENE		CSceneManager::Get_Instance()
 #define RESOURCE	CResourceManager::Get_Instance()

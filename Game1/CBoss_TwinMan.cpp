@@ -415,6 +415,7 @@ void CBoss_TwinMan::State_Attack3()
 		{
 			m_FloorCrater->visible = true;
 		}
+
 	}
 
 }

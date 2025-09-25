@@ -137,6 +137,14 @@ void CParticleManager::Boss_Resource_Settings()
 	}
 
 	{
+		Vec2 start_Lightning_Size = Vec2(280.f / 7.f, 88.f) * 2.f;
+		shared_ptr<ObImage> start_Lightning = RESOURCE->CreateSprite(L"Monster\\Lightning\\Lightning_Land.png", start_Lightning_Size, Int2(7, 1), true);
+		start_Lightning->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"Particle_Land", start_Lightning });
+	}
+
+	{
 		Vec2 size = Vec2(700.f / 7.f, 100.f) * 2.f;
 		shared_ptr<ObImage> fist_Lightning = RESOURCE->CreateSprite(L"Monster\\Lightning\\Fist_All_F.png", size, Int2(7, 1), true);
 		fist_Lightning->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
@@ -207,6 +215,14 @@ void CParticleManager::Boss_Resource_Settings()
 		img->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
 
 		m_Particles.insert({ L"Light_Land", img });
+	}
+
+	{   
+		Vec2 size = Vec2(112.f / 7.f, 64.f) * 2.f;
+		shared_ptr<ObImage> img = RESOURCE->CreateSprite(L"Monster\\Lightning\\Lightning_Neddle_Loop.png", size, Int2(7, 1), true);
+		img->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"Light_Neddle", img });
 	}
 
 }

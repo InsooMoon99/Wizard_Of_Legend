@@ -56,7 +56,9 @@ public:
 	CDelegate<int> OnThrowTargetOrb;
 	CDelegate<const Vec2&> OnJavelinStart;
 
-	CDelegate<> OnJavelinErase;
+	CDelegate<const Vec2&> OnStarStart;
+
+	CDelegate<bool> OnPendingKill;
 
 private:
 	vector<CBossPawn*> m_Pawns;

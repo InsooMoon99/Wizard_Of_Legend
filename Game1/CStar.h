@@ -26,8 +26,20 @@ private:
 	CBoss_Controller* m_BossController;
 	CBoss_TwinGirl* m_Boss;
 
-	shared_ptr<ObImage> m_Star;
-	Vec2 m_AttackPos{ };
+	vector<shared_ptr<ObCircle>> m_Circles;
+	vector<shared_ptr<ObImage>>	 m_CircleImg;
+	vector<shared_ptr<ObImage>>  m_OrbShadow;
 
+	vector<weak_ptr<CSkill_Actor>> m_Spawned;
+
+	vector<FSkillInfo> m_StartInfo;
+	vector<FSkillInfo> m_SecondInfo;
+	vector<FSkillInfo> m_ThirdInfo;
+
+	bool bFirst = true;
+	bool bSecond = true;
+	bool bThird = true;
+
+	float m_Attack_Timer = 0.f;
 };
 

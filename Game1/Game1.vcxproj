@@ -46,6 +46,7 @@
     <ClInclude Include="CSkill_Factory.h" />
     <ClInclude Include="CSkill_Earth_Shield.h" />
     <ClInclude Include="CSkill_FireDragon.h" />
+    <ClInclude Include="CSkill_Man_Star.h" />
     <ClInclude Include="CSkill_Man_Target.h" />
     <ClInclude Include="CSkill_Girl_SpawnRect.h" />
     <ClInclude Include="CSkill_WindSlash.h" />
@@ -71,6 +72,7 @@
     <ClInclude Include="CStage_Loading.h" />
     <ClInclude Include="CStage_Start.h" />
     <ClInclude Include="CStar.h" />
+    <ClInclude Include="CStar_Collision.h" />
     <ClInclude Include="CStateComponent.h" />
     <ClInclude Include="CStatusComponent.h" />
     <ClInclude Include="CStruct.h" />
@@ -82,6 +84,7 @@
     <ClInclude Include="CUI_BossHUD.h" />
     <ClInclude Include="CUI_BossStatus.h" />
     <ClInclude Include="CUI_HUD.h" />
+    <ClInclude Include="CUI_Inventory.h" />
     <ClInclude Include="CUI_PlayerStatus.h" />
     <ClInclude Include="CUI_Skill_Pannel.h" />
     <ClInclude Include="CWeaponComponent.h" />
@@ -120,6 +123,7 @@
     <ClCompile Include="CSkill_Factory.cpp" />
     <ClCompile Include="CSkill_Earth_Shield.cpp" />
     <ClCompile Include="CSkill_FireDragon.cpp" />
+    <ClCompile Include="CSkill_Man_Star.cpp" />
     <ClCompile Include="CSkill_Man_Target.cpp" />
     <ClCompile Include="CSkill_Girl_SpawnRect.cpp" />
     <ClCompile Include="CSkill_WindSlash.cpp" />
@@ -142,6 +146,7 @@
     <ClCompile Include="CStage_Loading.cpp" />
     <ClCompile Include="CStage_Start.cpp" />
     <ClCompile Include="CStar.cpp" />
+    <ClCompile Include="CStar_Collision.cpp" />
     <ClCompile Include="CStateComponent.cpp" />
     <ClCompile Include="CStatusComponent.cpp" />
     <ClCompile Include="CTarget_Orb.cpp" />
@@ -152,6 +157,7 @@
     <ClCompile Include="CUI_BossHUD.cpp" />
     <ClCompile Include="CUI_BossStatus.cpp" />
     <ClCompile Include="CUI_HUD.cpp" />
+    <ClCompile Include="CUI_Inventory.cpp" />
     <ClCompile Include="CUI_PlayerStatus.cpp" />
     <ClCompile Include="CUI_Skill_Pannel.cpp" />
     <ClCompile Include="CWeaponComponent.cpp" />

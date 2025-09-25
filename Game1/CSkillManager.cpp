@@ -3,6 +3,7 @@
 
 #include "CBat_Dash_Shock.h"
 #include "CSkill_Actor.h"
+#include "CStar_Collision.h"
 
 CSkillManager* CSkillManager::Instance = nullptr;
 
@@ -48,7 +49,7 @@ void CSkillManager::SkillSettings()
     //shared_ptr<CSkill_Actor> shock = make_shared<CBat_Dash_Shock>();
 }
 
-void CSkillManager::Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info)
+shared_ptr<CSkill_Actor> CSkillManager::Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info)
 {
     shared_ptr<CSkill_Actor> newSkill = nullptr;
 
@@ -58,7 +59,6 @@ void CSkillManager::Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info)
         newSkill = make_shared<CBat_Dash_Shock>(_Info);
         break;
 
-  
     }
 
     if (newSkill)
@@ -66,4 +66,27 @@ void CSkillManager::Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info)
         newSkill->BeginPlay();
         m_ActiveSkills.push_back(newSkill);
     }
+
+    return newSkill;
+}
+
+shared_ptr<CSkill_Actor> CSkillManager::Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info, EStarType _Star)
+{
+    shared_ptr<CSkill_Actor> newSkill = nullptr;
+
+    switch (_Skill)
+    {
+    case ESkillActor::Star_Collision:
+        newSkill = make_shared<CStar_Collision>(_Info, _Star);
+        break;
+
+    }
+
+    if (newSkill)
+    {
+        newSkill->BeginPlay();
+        m_ActiveSkills.push_back(newSkill);
+    }
+
+    return newSkill;
 }

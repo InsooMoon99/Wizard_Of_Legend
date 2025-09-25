@@ -94,13 +94,11 @@ void CStage01::LateUpdate()
 
 	if (player->Get_Collision()->Intersect(m_TestDummy->Get_Collision().get()))
 	{
-		cout << "Ãæµ¹¶ì";
-
-		auto state = CHelper::GetComponent<CStateComponent>(player);
-		if (state->Get_State() != ECharacterState::Hit)
-		{
-			state->Change_State(ECharacterState::Hit);
-		}
+		//auto state = CHelper::GetComponent<CStateComponent>(player);
+		//if (state->Get_State() != ECharacterState::Hit)
+		//{
+		//	//state->Change_State(ECharacterState::Hit);
+		//}
 	}
 
 	if (m_Objects[1]->Intersect(m_Player->Get_Collision().get()))

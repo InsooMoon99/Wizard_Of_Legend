@@ -32,7 +32,7 @@ void CBoss_Controller::BeginPlay()
 	}
 
 	if (m_UI)
-		m_UI->SetBossStatus();
+		m_UI->SetBossHUD();
 
 	OnBossStateChanged.Add([this](ECharacterState state)
 		{

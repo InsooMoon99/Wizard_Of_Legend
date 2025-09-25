@@ -19,18 +19,22 @@ public:
 	void Release() override;
 
 public:
-	void SetPlayerStatus();
-	void SetBossStatus();
+	void SetPlayerHUD();
+	void SetBossHUD();
 
 	const vector<shared_ptr<CGameObject>>& GetHUD() { return m_HUD; }
 	const shared_ptr<CUI_PlayerHUD> GetPlayerHUD() { return m_PlayerHUD; }
 	const shared_ptr<CUI_BossHUD> GetBossHUD() { return m_BossHUD; }
+
+	void ToggleInventory();
 
 private:
 	vector<shared_ptr<CGameObject>> m_HUD;
 
 	shared_ptr<CUI_PlayerHUD>	m_PlayerHUD;
 	shared_ptr<CUI_BossHUD>		m_BossHUD;
+
+	bool bToggle = false;
 
 };
 

@@ -78,8 +78,8 @@ void CUI_PlayerStatus::Render()
 
 	wstring gold = to_wstring(m_Status->GetGold());
 	
-	DWRITE->RenderText(gold, RECT{150, 96,230,150},
-			30.0f, L"¸¼Àº °íµñ", Color(1, 1, 1, 1), DWRITE_FONT_WEIGHT_BOLD);
+	//DWRITE->RenderText(gold, RECT{150, 96,230,150},
+	//		30.0f, L"¸¼Àº °íµñ", Color(1, 1, 1, 1), DWRITE_FONT_WEIGHT_BOLD);
 
 	for (auto& status : m_PlayerStatus)
 	{

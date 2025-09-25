@@ -11,6 +11,7 @@
 #include "CSkill_Girl_Javelin.h"
 #include "CSkill_Girl_Star.h"
 #include "CSkill_Man_Bat.h"
+#include "CSkill_Man_Star.h"
 #include "CSkill_Man_Target.h"
 
 shared_ptr<CSkill> CSkill_Factory::CreateSkill(ESkillType _SkillType)
@@ -42,6 +43,9 @@ shared_ptr<CSkill> CSkill_Factory::CreateSkill(ESkillType _SkillType)
 
 	case ESkillType::Boss_Girl_Javelin:
 		return make_shared<CSkill_Girl_Javelin>();
+
+	case ESkillType::Boss_Man_Star:
+		return make_shared<CSkill_Man_Star>();
 
 	case ESkillType::Boss_Girl_Star:
 		return make_shared<CSkill_Girl_Star>();
