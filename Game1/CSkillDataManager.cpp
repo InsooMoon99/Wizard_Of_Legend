@@ -9,6 +9,7 @@ void CSkillDataManager::Init()
     if (LoadData(L"Skill_Data.json"))
     {
         cout << "Skill Load Success" << endl;
+        cout << "Sry";
     }
     else
     {
