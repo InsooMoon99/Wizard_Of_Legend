@@ -4,11 +4,16 @@
 #include "CCollisionManager.h"
 #include "CParticleManager.h"
 #include "CRenderManager.h"
+#include "CSkillDataManager.h"
 
 void Main::Init()
 {
+	// cmd에서 UTF-8 출력
+	SetConsoleOutputCP(CP_UTF8);
+
 	RESOURCE->Init();
 
+	DATA->Init();
 	SCENE->Change_Scene(ESceneType::Stage01);
 	SKILL->Init();
 	PARTICLE->Init();

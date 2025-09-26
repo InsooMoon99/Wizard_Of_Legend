@@ -5,6 +5,11 @@
 extern int loadingCount;
 extern mutex m;
 
+// Json
+#include "json.hpp"
+#include <fstream>
+using json = nlohmann::json;
+
 using Vec2 = Vector2;
 
 #include <map>
@@ -17,3 +22,4 @@ using Vec2 = Vector2;
 #include "CDefine.h"
 #include "CHelper.h"
 #include "CStruct.h"
+

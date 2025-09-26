@@ -38,6 +38,7 @@
     <ClInclude Include="CItem_Factory.h" />
     <ClInclude Include="CJavelin_Spear.h" />
     <ClInclude Include="CRenderManager.h" />
+    <ClInclude Include="CSkillDataManager.h" />
     <ClInclude Include="CSkillManager.h" />
     <ClInclude Include="CSkill_Girl_Dash.h" />
     <ClInclude Include="CSkill_Girl_Javelin.h" />
@@ -94,6 +95,7 @@
     <ClInclude Include="CWeaponComponent.h" />
     <ClInclude Include="CWindSlash.h" />
     <ClInclude Include="IColorChanger.h" />
+    <ClInclude Include="JsonTable.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="CUI_PlayerHUD.h" />
     <ClInclude Include="resource.h" />
@@ -119,6 +121,7 @@
     <ClCompile Include="CItem_Factory.cpp" />
     <ClCompile Include="CJavelin_Spear.cpp" />
     <ClCompile Include="CRenderManager.cpp" />
+    <ClCompile Include="CSkillDataManager.cpp" />
     <ClCompile Include="CSkillManager.cpp" />
     <ClCompile Include="CSkill_Girl_Dash.cpp" />
     <ClCompile Include="CSkill_Girl_Javelin.cpp" />
@@ -179,6 +182,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game1.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Skill_Data.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -309,4 +315,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties Skill_3Data_1json__JsonSchema="https://alec016.github.io/Custom-Machinery/Json%20Schema/src/main/resources/schemas/custom_machinery_machine.json" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

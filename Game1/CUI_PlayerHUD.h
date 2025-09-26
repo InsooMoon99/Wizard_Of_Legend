@@ -23,12 +23,13 @@ public:
 
 public:
 	shared_ptr<CUI_PlayerStatus> Get_Status() { return m_PlayerStatus; }
+	shared_ptr<CUI_Skill_Pannel> Get_Panel() { return m_Skill_Panel; }
 
 private:
-	shared_ptr<CUI_PlayerStatus> m_PlayerStatus;
-	shared_ptr<CUI_Skill_Pannel> m_Skill_Pannel;
+	shared_ptr<CUI_PlayerStatus>	m_PlayerStatus;
+	shared_ptr<CUI_Skill_Pannel>	m_Skill_Panel;
 
-	shared_ptr<CUI_InventoryHUD>	 m_Inventory;
+	shared_ptr<CUI_InventoryHUD>	m_Inventory;
 
 };
 

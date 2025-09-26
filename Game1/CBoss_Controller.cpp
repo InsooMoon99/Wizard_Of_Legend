@@ -78,6 +78,7 @@ void CBoss_Controller::Tick()
 void CBoss_Controller::LateUpdate()
 {
 	CActor::LateUpdate();
+
 }
 
 void CBoss_Controller::Render()

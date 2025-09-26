@@ -8,10 +8,10 @@
 CUI_PlayerHUD::CUI_PlayerHUD()
 {
 	m_PlayerStatus = make_shared<CUI_PlayerStatus>();
-	m_Skill_Pannel = make_shared<CUI_Skill_Pannel>();
+	m_Skill_Panel = make_shared<CUI_Skill_Pannel>();
 
 	AddChild(m_PlayerStatus);
-	AddChild(m_Skill_Pannel);
+	AddChild(m_Skill_Panel);
 
 }
 

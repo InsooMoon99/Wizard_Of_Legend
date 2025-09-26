@@ -7,6 +7,7 @@
 #include "CTileManager.h"
 #include "CRenderManager.h"
 #include "CSkillManager.h"
+#include "CSkillDataManager.h"
 
 #define WINCX 1280
 #define WINCY 720
@@ -29,3 +30,4 @@
 #define TILE		CTileManager::Get_Instance()
 #define RENDER		CRenderManager::Get_Instance()
 #define SKILL		CSkillManager::Get_Instance()
+#define DATA		CSkillDataManager::Get_Instance()

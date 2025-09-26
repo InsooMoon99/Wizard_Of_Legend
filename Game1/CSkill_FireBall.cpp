@@ -19,7 +19,10 @@ void CSkill_FireBall::BeginPlay()
 {
 	CSkill::BeginPlay();
 
-	//SetIcon(L"")
+	SetIcon(L"UI\\ShootFireball.png", Vec2(16.f, 16.f) * 2.5f);
+
+
+
 }
 
 void CSkill_FireBall::Tick()

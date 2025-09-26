@@ -20,8 +20,10 @@ public:
 	void Render() override;
 	void Release() override;
 
-public:
+	virtual void SetRender(bool _Render) override;
 
+public:
+	shared_ptr<CUI_InvenSkill> GetInvenSkill() { return m_Skill; }
 
 private:
 	shared_ptr<ObImage> m_Background;

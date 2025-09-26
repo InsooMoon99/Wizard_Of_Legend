@@ -17,7 +17,7 @@ void CUI_HUD::BeginPlay()
 	for (auto& hud : m_Children)
 	{
 		hud->BeginPlay();
-	}
+ 	}
 }
 
 void CUI_HUD::Tick()
@@ -52,6 +52,18 @@ void CUI_HUD::AddChild(shared_ptr<CUI> _Ui)
 {
 	if (_Ui == nullptr)
 		return;
+
+	//FOnRendering.Add([weak = weak_ptr<CUI>(_Ui)](bool bCheck)
+	//	{
+	//		auto ui = weak.lock();
+	//		if (ui)
+	//		{
+	//			ui->SetRender(bCheck);
+	//
+	//			ui->FOnRendering.Broadcast(bCheck);
+	//		}
+	//	});
+
 
 	m_Children.push_back(_Ui);
 }

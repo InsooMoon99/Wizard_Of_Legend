@@ -4,9 +4,9 @@
 CUI_InvenItem::CUI_InvenItem()
 {
 	Vec2 outRectSize = Vec2(128.f * 1.1f, 56.f) * 3.f;
-	m_OutRect = RESOURCE->CreateUI(L"UI\\Inventory_InRect.png", outRectSize, true);
+	m_OutRect = RESOURCE->CreateUI(L"UI\\Inventory_OutRect.png", outRectSize, true);
 	m_OutRect->SetWorldPos(Vec2(-400.f, 10.f));
-	m_OutRect->color = Color(0.48f, 0.48f, 0.48f, 0.45f);
+	m_OutRect->color = Color(0.5f, 0.5f, 0.5f, 0.45f);
 
 	Vec2 inRectSize = Vec2(131.f, 22.f) * 3.f;
 	m_InRect = RESOURCE->CreateUI(L"UI\\Inventory_InRect.png", inRectSize, true);

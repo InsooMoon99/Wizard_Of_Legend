@@ -15,6 +15,8 @@ CSkill_Earth_Shield::~CSkill_Earth_Shield()
 void CSkill_Earth_Shield::BeginPlay()
 {
 	CSkill::BeginPlay();
+
+	SetIcon(L"UI\\SummonBoulderShield.png", Vec2(16.f) * 2.5f);
 }
 
 void CSkill_Earth_Shield::Tick()

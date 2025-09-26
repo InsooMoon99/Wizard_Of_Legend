@@ -1,6 +1,10 @@
 #pragma once
 
+#include <array>
+
 #include "CUI.h"
+
+class CWeaponComponent;
 
 class CUI_Skill_Pannel : public CUI
 {
@@ -14,10 +18,17 @@ public:
 	void Render() override;
 	void Release() override;
 
+public:
+	void SetWeapon(shared_ptr<CWeaponComponent> weapon) { m_Weapon = weapon; }
+
 private:
-	vector<shared_ptr<ObImage>> m_Skill_UI;
+	shared_ptr<ObRect> m_Panel;
+	vector<shared_ptr<ObImage>> m_Skill_Panel;
+	vector<shared_ptr<ObImage>> m_Skill_Key;
 
-	shared_ptr<ObImage> m_Pannel;
+	weak_ptr<CWeaponComponent> m_Weapon;
+	vector<FSkill_UiInfo> m_Skill_Infos;
 
+	array<shared_ptr<ObImage>, SKILL_PANEL> m_IconClones;
 };
 

@@ -17,13 +17,16 @@ public:
 	void Release() override;
 
 public:
-	void Equip_Skill(ESkillType _SkillType);
+	void Equip_Skill(ESkillType _SkillType, ESkillSlot _Slot = ESkillSlot::END);
 	void Activate_Skill(ESkillType _SkillType);
 
 	bool IsFiringSkill();
 
+	vector<FSkill_UiInfo> GetSkill_UiInfo();
+
 private:
 	unordered_map<ESkillType, shared_ptr<CSkill>> m_Skills;
 
+	uint32_t m_SkillVersion = 0;
 };
 

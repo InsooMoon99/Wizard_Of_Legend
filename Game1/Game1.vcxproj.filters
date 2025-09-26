@@ -223,19 +223,27 @@
     <ClInclude Include="CBat_Dash_Shock.h">
       <Filter>06. Skill\01. Boss\01. Skill_Actor\02. SpawnActor</Filter>
     </ClInclude>
-    <ClInclude Include="CUI_InventoryHUD.h">
-      <Filter>98.UI\00. Player</Filter>
-    </ClInclude>
     <ClInclude Include="CUI_InvenDesc.h">
-      <Filter>98.UI\00. Player</Filter>
+      <Filter>98.UI\02. Inventory</Filter>
     </ClInclude>
     <ClInclude Include="CUI_InvenItem.h">
-      <Filter>98.UI\00. Player</Filter>
+      <Filter>98.UI\02. Inventory</Filter>
     </ClInclude>
     <ClInclude Include="CUI_InvenSkill.h">
-      <Filter>98.UI\00. Player</Filter>
+      <Filter>98.UI\02. Inventory</Filter>
     </ClInclude>
-    <ClInclude Include="CUI_InvenCloth.h" />
+    <ClInclude Include="CUI_InventoryHUD.h">
+      <Filter>98.UI\02. Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_InvenCloth.h">
+      <Filter>98.UI\02. Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonTable.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkillDataManager.h">
+      <Filter>01. Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -339,6 +347,12 @@
     </Filter>
     <Filter Include="06. Skill\01. Boss\01. Skill_Actor\02. SpawnActor">
       <UniqueIdentifier>{c703ca7f-bff4-4f2c-9c81-2e844ee4a3b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.UI\02. Inventory">
+      <UniqueIdentifier>{9a45beb8-19d9-4926-a579-133c8bad9686}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.UI\03. Shop">
+      <UniqueIdentifier>{5613f531-6f57-41f0-a69b-a48c7bc3bb24}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -549,23 +563,31 @@
     <ClCompile Include="CBat_Dash_Shock.cpp">
       <Filter>06. Skill\01. Boss\01. Skill_Actor\02. SpawnActor</Filter>
     </ClCompile>
-    <ClCompile Include="CUI_InventoryHUD.cpp">
-      <Filter>98.UI\00. Player</Filter>
-    </ClCompile>
     <ClCompile Include="CUI_InvenDesc.cpp">
-      <Filter>98.UI\00. Player</Filter>
+      <Filter>98.UI\02. Inventory</Filter>
     </ClCompile>
     <ClCompile Include="CUI_InvenItem.cpp">
-      <Filter>98.UI\00. Player</Filter>
+      <Filter>98.UI\02. Inventory</Filter>
     </ClCompile>
     <ClCompile Include="CUI_InvenSkill.cpp">
-      <Filter>98.UI\00. Player</Filter>
+      <Filter>98.UI\02. Inventory</Filter>
     </ClCompile>
-    <ClCompile Include="CUI_InvenCloth.cpp" />
+    <ClCompile Include="CUI_InventoryHUD.cpp">
+      <Filter>98.UI\02. Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_InvenCloth.cpp">
+      <Filter>98.UI\02. Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkillDataManager.cpp">
+      <Filter>01. Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game1.rc">
       <Filter>99. Headers</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Skill_Data.json" />
   </ItemGroup>
 </Project>

@@ -126,3 +126,15 @@ enum class EStarType
 
 	END
 };
+
+enum ESkillSlot
+{
+	LButton,
+	Space,
+	RButton,
+	Q,
+	E,
+	R,
+
+	END
+};

@@ -16,6 +16,8 @@ CSkill_FireDragon::~CSkill_FireDragon()
 void CSkill_FireDragon::BeginPlay()
 {
     CSkill::BeginPlay();
+
+    SetIcon(L"UI\\ShootFireArc.png", Vec2(16.f, 16.f) * 2.5f);
 }
 
 void CSkill_FireDragon::Tick()
@@ -56,6 +58,7 @@ void CSkill_FireDragon::Tick()
 void CSkill_FireDragon::LateUpdate()
 {
     CSkill::LateUpdate();
+
 }
 
 void CSkill_FireDragon::Render()

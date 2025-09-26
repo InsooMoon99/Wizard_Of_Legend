@@ -1,0 +1,14 @@
+﻿{
+  "Skill_Data": [
+    {
+      "Name": "파이어볼",
+      "Desc": "파이어볼 ㄱㄱ",
+      "Damage": 10
+    },
+    {
+      "Name": "FireArc",
+      "Desc": "Arc ㄱㄱ",
+      "Damage": 15
+    }
+  ]
+}

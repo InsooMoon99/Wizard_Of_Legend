@@ -19,7 +19,8 @@ void CSkill::BeginPlay()
 
 void CSkill::Tick()
 {
-
+	if (m_Icon)
+		m_Icon->Update();
 }
 
 void CSkill::LateUpdate()
@@ -32,7 +33,8 @@ void CSkill::Release()
 
 void CSkill::Render()
 {
-
+	if (m_Icon)
+		m_Icon->Render();
 }
 
 bool CSkill::CanActivate(const FSkillInfo& _Info)
@@ -50,7 +52,11 @@ void CSkill::Activate(CActor* _Owner)
 
 void CSkill::SetIcon(const wstring& path, const Vec2& size)
 {
-	if (m_Icon == nullptr) 
-		m_Icon = RESOURCE->CreateUI(path, size, true);
+	if (m_Icon == nullptr)
+	{
+		m_Icon = RESOURCE->CreateUI(path, size, false);
+		m_Icon->pivot = OFFSET_LT;
+	}
+
 
 }

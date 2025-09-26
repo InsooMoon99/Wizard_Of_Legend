@@ -15,6 +15,8 @@ CSkill_WindSlash::~CSkill_WindSlash()
 void CSkill_WindSlash::BeginPlay()
 {
 	CSkill::BeginPlay();
+
+	SetIcon(L"UI\\WindSlashBasic.png", Vec2(16.f) * 2.5f);
 }
 
 void CSkill_WindSlash::Tick()

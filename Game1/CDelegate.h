@@ -5,7 +5,8 @@
 #include <algorithm>
 
 template<typename... Args>
-class CDelegate {
+class CDelegate
+{
 public:
     using FuncType = function<void(Args...)>;
     using Token = size_t;

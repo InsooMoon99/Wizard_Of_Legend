@@ -15,25 +15,31 @@ CUI_InventoryHUD::CUI_InventoryHUD()
 
 	m_Cloth = make_shared<CUI_InvenCloth>();
 	m_Skill = make_shared<CUI_InvenSkill>();
-	m_Item = make_shared<CUI_InvenItem>();
-	m_Desc = make_shared<CUI_InvenDesc>();
+	m_Item  = make_shared<CUI_InvenItem>();
+	m_Desc  = make_shared<CUI_InvenDesc>();
 
 	AddChild(m_Cloth);
 	AddChild(m_Skill);
 	AddChild(m_Item);
 	AddChild(m_Desc);
 
-	//bRender = false;
+	bRender = false;
 }
 
 CUI_InventoryHUD::~CUI_InventoryHUD()
 {
 	Release();
-}
+}	
 
 void CUI_InventoryHUD::BeginPlay()
 {
 	CUI_HUD::BeginPlay();
+
+	FOnRendering.Add([this](bool bCheck)
+		{
+			SetRender(bCheck);
+		});
+
 }
 
 void CUI_InventoryHUD::Tick()
@@ -54,8 +60,6 @@ void CUI_InventoryHUD::Tick()
 //#endif
 
 	m_Background->Update();
-
-	cout << "Trace Render : " << GetRender() << endl;
 }
 
 void CUI_InventoryHUD::LateUpdate()
@@ -65,11 +69,11 @@ void CUI_InventoryHUD::LateUpdate()
 
 void CUI_InventoryHUD::Render()
 {
-	if (GetRender())
-	{
-		m_Background->Render();
-		CUI_HUD::Render();
-	}
+	if (!GetRender()) return;
+
+	m_Background->Render();
+	CUI_HUD::Render();
+
 	
 }
 
@@ -79,4 +83,14 @@ void CUI_InventoryHUD::Release()
 
 
 
+}
+
+void CUI_InventoryHUD::SetRender(bool _Render)
+{
+	CUI_HUD::SetRender(_Render);
+
+	m_Skill->FOnRendering.Broadcast(_Render);
+	m_Item->FOnRendering.Broadcast(_Render);
+	m_Desc->FOnRendering.Broadcast(_Render);
+	m_Cloth->FOnRendering.Broadcast(_Render);
 }

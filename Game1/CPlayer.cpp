@@ -29,6 +29,12 @@ CPlayer::CPlayer()
 
 	// 컴포넌트 세팅하고 호출해야함
 	Resource_Settings();
+
+	if (m_UI)
+	{
+		m_UI->SetPlayerHUD();
+		m_UI->SetInventoryHUD();
+	}
 }
 
 CPlayer::~CPlayer()
@@ -40,24 +46,19 @@ void CPlayer::BeginPlay()
 {
 	CActor::BeginPlay();
 
-	if (m_UI)
-	{
-		m_UI->SetPlayerHUD();
-		m_UI->SetInventoryHUD();
-	}
-
 	if (m_Weapon)
 	{
 		// Fire
-		m_Weapon->Equip_Skill(ESkillType::Fire_Ball);
-		m_Weapon->Equip_Skill(ESkillType::Fire_Dragon);
+		m_Weapon->Equip_Skill(ESkillType::Fire_Ball, ESkillSlot::Q);
+		m_Weapon->Equip_Skill(ESkillType::Fire_Dragon, ESkillSlot::RButton);
 
 		// Wind
-		m_Weapon->Equip_Skill(ESkillType::Wind_Slash);
+		m_Weapon->Equip_Skill(ESkillType::Wind_Slash, ESkillSlot::LButton);
 
 		// Earth
-		m_Weapon->Equip_Skill(ESkillType::Earth_Shield);
+		m_Weapon->Equip_Skill(ESkillType::Earth_Shield, ESkillSlot::E);
 	}
+
 }
 
 void CPlayer::Tick()

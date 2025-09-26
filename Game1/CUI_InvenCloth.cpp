@@ -4,14 +4,14 @@
 CUI_InvenCloth::CUI_InvenCloth() : m_Cloth_Panel(L"Èñ¸Á")
 {
 	Vec2 outRectSize = Vec2(128.f * 1.1f, 26.f) * 3.f;
-	m_OutRect = RESOURCE->CreateUI(L"UI\\Inventory_InRect.png", outRectSize, true);
+	m_OutRect = RESOURCE->CreateUI(L"UI\\Inventory_OutRect.png", outRectSize, true);
 	m_OutRect->SetWorldPos(Vec2(-400.f, 305.f));
-	m_OutRect->color = Color(0.48f, 0.48f, 0.48f, 0.45f);
+	m_OutRect->color = Color(0.5f, 0.5f, 0.5f, 0.45f);
 
-	Vec2 inRectSize = Vec2(131.f, 22.f) * 3.f;
+	Vec2 inRectSize = Vec2(131.f, 18.f) * 3.f;
 	m_InRect = RESOURCE->CreateUI(L"UI\\Inventory_InRect.png", inRectSize, true);
 	m_InRect->pivot = OFFSET_LT;
-	m_InRect->SetWorldPos(Vec2(-595.f, 340.f));
+	m_InRect->SetWorldPos(Vec2(-595.f, 330.f));
 	m_InRect->color = Color(0.5f, 0.5f, 0.5f, 0.45f);
 
 	m_ClothBack = RESOURCE->CreateUI(L"UI\\ClothBackGround.png", Vec2(44.f, 44.f) * 1.4f, true);
