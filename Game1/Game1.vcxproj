@@ -52,6 +52,7 @@
     <ClInclude Include="CSkill_Girl_SpawnRect.h" />
     <ClInclude Include="CSkill_WindSlash.h" />
     <ClInclude Include="CSpawn_Rect.h" />
+    <ClInclude Include="CStageFire.h" />
     <ClInclude Include="CStage_Edit.h" />
     <ClInclude Include="CEnums.h" />
     <ClInclude Include="CFire_Ball.h" />
@@ -69,7 +70,7 @@
     <ClInclude Include="CSkill_Actor.h" />
     <ClInclude Include="CSkill_FireBall.h" />
     <ClInclude Include="CStage01.h" />
-    <ClInclude Include="CStage02.h" />
+    <ClInclude Include="CStageBoss.h" />
     <ClInclude Include="CStage_Loading.h" />
     <ClInclude Include="CStage_Start.h" />
     <ClInclude Include="CStar.h" />
@@ -135,6 +136,7 @@
     <ClCompile Include="CSkill_Girl_SpawnRect.cpp" />
     <ClCompile Include="CSkill_WindSlash.cpp" />
     <ClCompile Include="CSpawn_Rect.cpp" />
+    <ClCompile Include="CStageFire.cpp" />
     <ClCompile Include="CStage_Edit.cpp" />
     <ClCompile Include="CFire_Ball.cpp" />
     <ClCompile Include="CInventoryComponent.cpp" />
@@ -149,7 +151,7 @@
     <ClCompile Include="CSkill_Actor.cpp" />
     <ClCompile Include="CSkill_FireBall.cpp" />
     <ClCompile Include="CStage01.cpp" />
-    <ClCompile Include="CStage02.cpp" />
+    <ClCompile Include="CStageBoss.cpp" />
     <ClCompile Include="CStage_Loading.cpp" />
     <ClCompile Include="CStage_Start.cpp" />
     <ClCompile Include="CStar.cpp" />

@@ -1,5 +1,15 @@
 #pragma once
 
+enum class EStartStageType
+{
+	Pressed,
+	GameStart,
+	Editor,
+	Exit,
+
+	END
+};
+
 enum class ERenderLayer
 {
 	Render_Background,
@@ -14,7 +24,8 @@ enum class ESceneType
 {
 	Start = 0,
 	Stage01,
-	Stage02,
+	StageFire,
+	StageBoss,
 
 	Edit,
 	Shadow,
@@ -129,12 +140,12 @@ enum class EStarType
 
 enum ESkillSlot
 {
-	LButton,
-	Space,
-	RButton,
-	Q,
-	E,
-	R,
+	LButton = 0,
+	Space	= 1,
+	RButton	= 2,
+	Q		= 3,
+	E		= 4,
+	R		= 5,
 
-	END
+	Slot_END
 };

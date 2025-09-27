@@ -7,6 +7,7 @@
 #include "CStatusComponent.h"
 #include "CUI_BossHUD.h"
 #include "CUI_BossStatus.h"
+#include "CUI_InvenDesc.h"
 #include "CUI_InvenSkill.h"
 #include "CUI_InventoryHUD.h"
 #include "CUI_PlayerHUD.h"
@@ -122,6 +123,7 @@ void CUIComponent::SetInventoryHUD()
 			return;
 
 		dynamic_pointer_cast<CUI_InventoryHUD>(m_InventoryHUD)->GetInvenSkill()->SetWeapon(weapon);
+		dynamic_pointer_cast<CUI_InventoryHUD>(m_InventoryHUD)->GetInvenDesc()->SetWeapon(weapon);
 	}
 }
 
@@ -129,7 +131,7 @@ void CUIComponent::ToggleInventory()
 {
 	bToggle = !bToggle;
 
-	// 인벤토리 UI
+	// 인벤토리 UI, 델리게이트로 변경
 	if (m_InventoryHUD) 
 	{
 		m_InventoryHUD->FOnRendering.Broadcast(bToggle);

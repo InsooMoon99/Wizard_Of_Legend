@@ -4,29 +4,44 @@
 CStage_Start::CStage_Start()
 {
 	m_Title_Image = RESOURCE->CreateImage(L"Title\\Background0.png", Vec2(1280.0f, 800.f), true);
+	m_Title_Shadow = RESOURCE->CreateImage(L"Back.bmp", Vec2(1920.f, 1440.f), false);
+	m_Title_Shadow->color = Color(0.5f, 0.5f, 0.5f, 0.25f);
+
+	shared_ptr<ObRect> rect1 = make_shared<ObRect>();
+	rect1->SetWorldPos(Vec2(16.f, -65.f));
+	rect1->scale = Vec2(200.f, 50.f);
+	rect1->isFilled = false;
+	rect1->visible = false;
+	rect1->collider = COLLIDER::RECT;
+
+	shared_ptr<ObRect> rect2 = make_shared<ObRect>();
+	rect2->SetWorldPos(Vec2(16.f, -135.f));
+	rect2->scale = Vec2(200.f, 50.f);
+	rect2->isFilled = false;
+	rect2->visible = false;
+	rect2->collider = COLLIDER::RECT;
+
+	shared_ptr<ObRect> rect3 = make_shared<ObRect>();
+	rect3->SetWorldPos(Vec2(16.f, -205.f));
+	rect3->scale = Vec2(200.f, 50.f);
+	rect3->isFilled = false;
+	rect3->visible = false;
+	rect3->collider = COLLIDER::RECT;
+
+	rect1->space = SPACE::SCREEN;
+	rect2->space = SPACE::SCREEN;
+	rect3->space = SPACE::SCREEN;
+
+	m_TextRect.push_back(rect1);
+	m_TextRect.push_back(rect2);
+	m_TextRect.push_back(rect3);
+
 	m_Title_Text  = RESOURCE->CreateImage(L"Title\\TitleLogo.png", Vec2(1280.f, 800.f), true);
-	m_Title_Text->SetLocalPos(Vec2(0.0f, 50.f));
-
-	m_Test_Start = RESOURCE->CreateSprite(L"Title\\Start.bmp", Vec2(300.f / 2.f, 150.f), Int2(2,1), true);
-	m_Test_Start->SetWorldPos(Vec2(-300.f, -250.f));
-	m_Test_Start->space = SPACE::SCREEN;
-	m_Test_Start->collider = COLLIDER::RECT;
-
-	m_Test_Edit  = RESOURCE->CreateSprite(L"Title\\Edit.bmp", Vec2(300.f / 2.f, 150.f), Int2(2, 1), true);
-	m_Test_Edit->SetWorldPos(Vec2(0.f, -250.f));
-	m_Test_Edit->space = SPACE::SCREEN;
-	m_Test_Edit->collider = COLLIDER::RECT;
-
-	m_Test_Exit  = RESOURCE->CreateSprite(L"Title\\Exit.bmp", Vec2(300.f / 2.f, 150.f), Int2(2, 1), true);
-	m_Test_Exit->SetWorldPos(Vec2(300.f, -250.f));
-	m_Test_Exit->space = SPACE::SCREEN;
-	m_Test_Exit->collider = COLLIDER::RECT;
+	m_Title_Text->SetLocalPos(Vec2(0.0f, -50.f));
 
 	m_Images.push_back(m_Title_Image);
+	m_Images.push_back(m_Title_Shadow);
 	m_Images.push_back(m_Title_Text);
-	m_Images.push_back(m_Test_Start);
-	m_Images.push_back(m_Test_Edit);
-	m_Images.push_back(m_Test_Exit);
 
 }
 
@@ -42,6 +57,19 @@ void CStage_Start::Init()
 	SOUND->Play("Title");
 	SOUND->SetVolume("Title", 0.1f);
 
+	m_Settings.push_back(EStartStageType::GameStart);
+	m_Settings.push_back(EStartStageType::Editor);
+	m_Settings.push_back(EStartStageType::Exit);
+
+	m_DrawRect[(int)EStartStageType::Pressed] = RECT(460.f, 550.f, WINCX, WINCY);
+	m_DrawRect[(int)EStartStageType::GameStart] = RECT(580.f, 400.f, WINCX, WINCY);
+	m_DrawRect[(int)EStartStageType::Editor] = RECT(580.f, 470.f, WINCX, WINCY);
+	m_DrawRect[(int)EStartStageType::Exit] = RECT(580.f, 540.f, WINCX, WINCY);
+
+	for (auto& color : m_ChangeColor)
+	{
+		color = Color(1, 1, 1, 1);
+	}
 }
 
 void CStage_Start::Update()
@@ -50,66 +78,96 @@ void CStage_Start::Update()
 
 	for (auto& title : m_Images)
 		title->Update();
+
+	for (auto& text : m_TextRect)
+		text->Update();
+
 }
 
 void CStage_Start::LateUpdate()
 {
 	CScene::LateUpdate();
 
-	if (!m_Test_Start && !m_Test_Edit && !m_Test_Exit) return;
-
-	if (m_Test_Start->IntersectScreenMouse(INPUT->GetMouseScreenPos()))
+	if (INPUT->KeyDown(VK_RETURN))
 	{
-		m_Test_Start->frame.x = 1;
+		SOUND->StopPlay("Select", 0.5f);
 
-		if (INPUT->KeyDown(VK_LBUTTON))
+		if (StartType == EStartStageType::Pressed)
 		{
-			SCENE->Change_Scene(ESceneType::Stage01);
-
-			return;
+			bStartCheck = true;
+			m_Title_Shadow->visible = true;
 		}
 	}
-
-	else
-		m_Test_Start->frame.x = 0;
-
-	if (m_Test_Edit->IntersectScreenMouse(INPUT->GetMouseScreenPos()))
+	if (bStartCheck == true)
 	{
-		m_Test_Edit->frame.x = 1;
+		m_UpTimer += DELTA;
 
-		if (INPUT->KeyDown(VK_LBUTTON))
+		if (m_UpTimer < 0.3f)
 		{
-			SCENE->Change_Scene(ESceneType::Edit);
-
-			return;
+			m_Title_Text->MoveWorldPos(UP * 500.f * DELTA);
 		}
+
+		if (m_UpTimer > 0.3f)
+		{
+			bVisible = true;
+		}
+
+		// 마우스 충돌
+		for (int i = 0; i < 3; i++)
+		{
+			if (m_TextRect[i]->IntersectScreenMouse(INPUT->GetMouseScreenPos()))
+			{
+				if (INPUT->KeyDown(VK_LBUTTON))
+				{
+					switch (i)
+					{
+					case 0:
+						SCENE->Change_Scene(ESceneType::StageFire);
+						return;
+
+					case 1:
+						SCENE->Change_Scene(ESceneType::Edit);
+						return;
+
+					case 2:
+						PostQuitMessage(0);
+						break;
+					}
+				}
+
+				m_ChangeColor[i] = Color(1, 1, 1, 1);
+			}
+
+			else
+			{
+				m_ChangeColor[i] = Color(0.3, 0.3, 0.3, 1);
+			}
+		}
+		
 	}
 
-	else
-		m_Test_Edit->frame.x = 0;
-
-	if (m_Test_Exit->IntersectScreenMouse(INPUT->GetMouseScreenPos()))
-	{
-		m_Test_Exit->frame.x = 1;
-
-		if (INPUT->KeyDown(VK_LBUTTON))
-		{
-			PostQuitMessage(0);
-		}
-	}
-
-	else
-		m_Test_Exit->frame.x = 0;
-
+	
 }
 
 void CStage_Start::Render()
 {
 	CScene::Render();
 
+	if (bStartCheck == false)
+		CHelper::OutlineText(L"아무 버튼이나 누르세요", m_DrawRect[(int)EStartStageType::Pressed], 35.f, m_Font, Color(1,1,1,1));
+
+	if (bStartCheck && bVisible)
+	{
+		CHelper::OutlineText(L"게임 시작", m_DrawRect[(int)EStartStageType::GameStart], 35.f, m_Font, m_ChangeColor[0]);
+		CHelper::OutlineText(L"맵 에디터", m_DrawRect[(int)EStartStageType::Editor], 35.f, m_Font, m_ChangeColor[1]);
+		CHelper::OutlineText(L"게임 종료", m_DrawRect[(int)EStartStageType::Exit], 35.f, m_Font, m_ChangeColor[2]);
+	}
+
 	for (auto& title : m_Images)
 		title->Render();
 
+	for (auto& text : m_TextRect)
+		text->Render();
 }
 
 void CStage_Start::Release()
@@ -117,6 +175,8 @@ void CStage_Start::Release()
 	CScene::Release();
 
 	m_Images.clear();
+	m_TextRect.clear();
+	m_Settings.clear();
 
 	SOUND->DeleteSound("Title");
 }

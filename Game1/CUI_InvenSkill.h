@@ -23,6 +23,9 @@ public:
 
 public:
 	void SetWeapon(shared_ptr<CWeaponComponent> weapon) { m_Weapon = weapon; }
+	void OnIntersectMouse();
+
+	CDelegate<ESkillSlot>  FOnIntersectMouse;
 
 private:
 	wstring m_Panel_Name;
@@ -31,11 +34,15 @@ private:
 	shared_ptr<ObImage> m_InRect;
 
 	vector<shared_ptr<ObImage>> m_Skill_Panel;
+	vector<shared_ptr<ObImage>> m_Skill_Panel_Gold;
 	vector<shared_ptr<ObImage>> m_Skill_Key;
 
 	weak_ptr<CWeaponComponent> m_Weapon;
 	vector<FSkill_UiInfo> m_Skill_Infos;
 
 	array<shared_ptr<ObImage>, SKILL_PANEL> m_IconClones;
-};
 
+	bool bFirst = true;
+	int	 m_LastHovered = -1;
+
+};

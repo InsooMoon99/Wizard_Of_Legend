@@ -9,12 +9,12 @@
 void Main::Init()
 {
 	// cmd에서 UTF-8 출력
-	SetConsoleOutputCP(CP_UTF8);
+	//SetConsoleOutputCP(CP_UTF8);
 
 	RESOURCE->Init();
 
-	DATA->Init();
-	SCENE->Change_Scene(ESceneType::Stage01);
+	SKILL_DATA->Init();
+	SCENE->Change_Scene(ESceneType::StageFire);
 	SKILL->Init();
 	PARTICLE->Init();
 	TILE->Init();

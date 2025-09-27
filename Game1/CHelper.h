@@ -49,6 +49,19 @@ public:
 		}
 	}
 
+	static const char* SkillIdFromType(ESkillType type)
+	{
+		switch (type)
+		{
+		case ESkillType::Fire_Ball:				return "FireBall";
+		case ESkillType::Fire_Dragon:			return "FireDragon";
+		case ESkillType::Wind_Slash:			return "WindSlash";
+		case ESkillType::Earth_Shield:          return "EarthShield";
+
+		default:                                return "None";
+		}
+	}
+
 	static Vec2 DirToVec(EPlayerDir _dir)
 	{
 		switch (_dir)
@@ -129,6 +142,41 @@ public:
 
 		return _Src->GetTeamID() == _Dst->GetTeamID();
 	}
+
+	static RECT DrawLTRect(const Vec2& leftTop, const Vec2& size)
+	{
+		return RECT{(LONG)leftTop.x,(LONG)leftTop.y,(LONG)(leftTop.x + size.x),(LONG)(leftTop.y + size.y)};
+	}
+
+	static RECT DrawCenterRect(const Vec2& center, const Vec2& size)
+	{
+		float halfW = size.x * 0.5f;
+		float halfH = size.y * 0.5f;
+
+		return RECT { (LONG)(center.x - halfW), (LONG)(center.y - halfH),(LONG)(center.x + halfW), (LONG)(center.y + halfH) };
+	}
+
+	static void OutlineText(const wstring& text, const RECT& rect, float fontSize, const wstring& fontName, const Color& textColor, const Color& outlineColor = Color(0, 0, 0, 1),int outlineThickness = 1)
+	{
+		for (int dx = -outlineThickness; dx <= outlineThickness; ++dx)
+		{
+			for (int dy = -outlineThickness; dy <= outlineThickness; ++dy)
+			{
+				if (dx == 0 && dy == 0) continue;
+
+				RECT offsetRect = rect;
+				offsetRect.left += dx;
+				offsetRect.right += dx;
+				offsetRect.top += dy;
+				offsetRect.bottom += dy;
+
+				DWRITE->RenderText(text, offsetRect, fontSize, fontName, outlineColor);
+			}
+		}
+
+		DWRITE->RenderText(text, rect, fontSize, fontName, textColor);
+	}
+
 
 	template<typename T>
 	static T* CreateComponent(CActor* _Owner)

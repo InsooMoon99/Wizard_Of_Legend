@@ -16,7 +16,14 @@ void CSkill_Earth_Shield::BeginPlay()
 {
 	CSkill::BeginPlay();
 
-	SetIcon(L"UI\\SummonBoulderShield.png", Vec2(16.f) * 2.5f);
+	m_Id = "EarthShield";
+
+	if (auto data = SKILL_DATA->GetById(m_Id))
+		m_DataDamage = data->Damage;
+	else
+		m_DataDamage = 10.f;
+
+	//SetIcon(L"UI\\SummonBoulderShield.png", Vec2(16.f) * 2.5f);
 }
 
 void CSkill_Earth_Shield::Tick()
@@ -90,7 +97,7 @@ void CSkill_Earth_Shield::Activate(CActor* _Owner)
 	m_Skill_Info.SpawnPos = _Owner->Get_WorldPos();
 	m_Skill_Info.Aim_Dir = dir;
 	m_Skill_Info.Angle = radian;
-	m_Skill_Info.Damage = 5.f;
+	m_Skill_Info.Damage = m_DataDamage;
 	m_Skill_Info.Amount = 200.f;
 
 	auto wind = make_shared<CEarth_Shield>(m_Skill_Info);

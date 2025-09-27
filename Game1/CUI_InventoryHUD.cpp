@@ -40,6 +40,10 @@ void CUI_InventoryHUD::BeginPlay()
 			SetRender(bCheck);
 		});
 
+	m_Skill->FOnIntersectMouse.Add([this](ESkillSlot index)
+		{
+			m_Desc->OnMouseIntersect(index);
+		});
 }
 
 void CUI_InventoryHUD::Tick()

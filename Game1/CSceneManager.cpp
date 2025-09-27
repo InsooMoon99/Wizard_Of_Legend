@@ -3,7 +3,8 @@
 
 #include "CStage_Edit.h"
 #include "CStage01.h"
-#include "CStage02.h"
+#include "CStageBoss.h"
+#include "CStageFire.h"
 #include "CStage_Start.h"
 #include "Main.h"
 
@@ -57,9 +58,14 @@ void CSceneManager::Change_Scene(ESceneType _SceneType)
 		m_SceneType = ESceneType::Stage01;
 		break;
 
-	case ESceneType::Stage02:
-		newScene = new CStage02();
-		m_SceneType = ESceneType::Stage02;
+	case ESceneType::StageFire:
+		newScene = new CStageFire();
+		m_SceneType = ESceneType::StageFire;
+		break;
+
+	case ESceneType::StageBoss:
+		newScene = new CStageBoss();
+		m_SceneType = ESceneType::StageBoss;
 		break;
 
 	case ESceneType::Edit:

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CStage02.h"
+#include "CStageBoss.h"
 #include "CActor.h"
 #include "CBoss_Controller.h"
 #include "CBoss_TwinGirl.h"
@@ -8,7 +8,7 @@
 #include "CResourceManager.h"
 #include "CUIComponent.h"
 
-CStage02::CStage02()
+CStageBoss::CStageBoss()
 {
 	m_Player = new CPlayer();
 	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player);
@@ -19,12 +19,12 @@ CStage02::CStage02()
 	Resource_Setting();
 }
 
-CStage02::~CStage02()
+CStageBoss::~CStageBoss()
 {
 
 }
 
-void CStage02::Init()
+void CStageBoss::Init()
 {
 	CScene::Init();
 
@@ -60,7 +60,7 @@ void CStage02::Init()
 		actor->BeginPlay();
 }
 
-void CStage02::Update()
+void CStageBoss::Update()
 {
 	CScene::Update();
 
@@ -86,7 +86,7 @@ void CStage02::Update()
 		object->Update();
 }
 
-void CStage02::LateUpdate()
+void CStageBoss::LateUpdate()
 {
 	CScene::LateUpdate();
 
@@ -94,7 +94,7 @@ void CStage02::LateUpdate()
 	CAM->position = player->Get_Collision()->GetWorldPos();
 }
 
-void CStage02::Render()
+void CStageBoss::Render()
 {
 	CScene::Render();
 
@@ -110,14 +110,14 @@ void CStage02::Render()
 	RENDER->Render();
 }
 
-void CStage02::Release()
+void CStageBoss::Release()
 {
 	CScene::Release();
 
 	m_Map.clear();
 }
 
-void CStage02::Resource_Setting()
+void CStageBoss::Resource_Setting()
 {
 	// Map
 	shared_ptr<ObImage> mapShadow = RESOURCE->CreateImage(L"Edit\\stage1_skyMove.bmp", m_MapSize * 5.f, true);
@@ -127,7 +127,7 @@ void CStage02::Resource_Setting()
 	Vec2 mapPos = Vec2(-1780.f + 225.f, -800.f);
 	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\BossMap_Remove.png", m_MapSize, true);
 	map->SetWorldPos(mapPos);
-	m_Map.insert({ ESceneType::Stage02, map });
+	m_Map.insert({ ESceneType::StageBoss, map });
 
 	shared_ptr<ObImage> teleport = RESOURCE->CreateImage(L"Object\\TELEPORT.png", Vec2(311.f, 298.f), true);
 	teleport->SetWorldPos(m_PlayerPos);

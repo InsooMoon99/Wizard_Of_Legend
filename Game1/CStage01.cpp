@@ -103,7 +103,7 @@ void CStage01::LateUpdate()
 
 	if (m_Objects[1]->Intersect(m_Player->Get_Collision().get()))
 	{
-		SCENE->Change_Scene(ESceneType::Stage02);
+		SCENE->Change_Scene(ESceneType::StageBoss);
 	}
 }
 

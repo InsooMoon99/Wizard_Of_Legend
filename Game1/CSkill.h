@@ -35,15 +35,20 @@ public:
 
 	void	SetIcon(const wstring& path, const Vec2& size);
 
+	const char* GetSkill_Id() { return m_Id; }
+
 protected:
-	FSkillInfo m_Skill_Info;
-	bool bFiring = false;
+	const char* m_Id = "";
+	float		m_DataDamage;
+	bool		bFiring = false;
+
+	FSkillInfo	m_Skill_Info;
 
 private:
 	float m_CoolDown = 0.f;
 
 	shared_ptr<ObImage> m_Icon;
-	ESkillSlot m_Slot = ESkillSlot::END;
+	ESkillSlot m_Slot = ESkillSlot::Slot_END;
 
 };
 

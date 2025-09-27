@@ -17,12 +17,23 @@ public:
 
 private:
 	vector<shared_ptr<ObImage>> m_Images;
+	vector<shared_ptr<ObRect>> m_TextRect;
 
 	shared_ptr<ObImage> m_Title_Image;
 	shared_ptr<ObImage> m_Title_Text;
+	shared_ptr<ObImage> m_Title_Shadow;
 
-	shared_ptr<ObImage> m_Test_Start;
-	shared_ptr<ObImage> m_Test_Edit;
-	shared_ptr<ObImage> m_Test_Exit;
+	vector<EStartStageType> m_Settings;
+
+	EStartStageType StartType = EStartStageType::Pressed;
+
+	RECT m_DrawRect[4];
+	Color m_ChangeColor[4];
+	wstring m_Font = L"Noto Sans";
+
+	bool bStartCheck = false;
+	bool bVisible = false;
+
+	float m_UpTimer = 0.f;
 };
 

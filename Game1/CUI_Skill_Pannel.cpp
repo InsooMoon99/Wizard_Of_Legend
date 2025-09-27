@@ -97,7 +97,8 @@ void CUI_Skill_Pannel::Tick()
 				auto clone = make_shared<ObImage>(*info.Icon);
 				clone->space = SPACE::SCREEN;
 				clone->SetParentRT(*m_Skill_Panel[idx]);
-				clone->SetLocalPos(Vec2(8.f, -6.f));
+				clone->pivot = OFFSET_LT;
+				clone->SetLocalPos(Vec2(6.f, -6.f));
 				clone->visible = true;
 
 				m_IconClones[idx] = std::move(clone);

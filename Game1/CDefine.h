@@ -23,6 +23,8 @@
 #define STAR_CIRCLE  5
 #define SKILL_PANEL  6
 
+#define DEBUGLINE cout << "\n1";
+
 #define SCENE		CSceneManager::Get_Instance()
 #define RESOURCE	CResourceManager::Get_Instance()
 #define COLLISION	CCollisionManager::Get_Instance()
@@ -30,4 +32,4 @@
 #define TILE		CTileManager::Get_Instance()
 #define RENDER		CRenderManager::Get_Instance()
 #define SKILL		CSkillManager::Get_Instance()
-#define DATA		CSkillDataManager::Get_Instance()
+#define SKILL_DATA		CSkillDataManager::Get_Instance()

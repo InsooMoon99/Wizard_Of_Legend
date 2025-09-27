@@ -19,10 +19,15 @@ struct FSkillInfo
 
 struct FSkillData
 {
+	string  Id;
 	wstring Name = L"";
 	wstring Desc = L"";
 
 	float	Damage = 0.f;
+
+	string  IconKey; // 이미지 말고, 경로만 들고있기
+	int     IconW = 0;
+	int     IconH = 0;
 };
 
 struct FSkill_UiInfo
@@ -34,6 +39,11 @@ struct FSkill_UiInfo
 
 	float Cooldown;
 	float CooldownRemain;
+
+	string Id;     
+	wstring Name;    
+	wstring Desc;
+	int     Level = 1;
 
 	bool operator==(const FSkill_UiInfo& o) const
 	{

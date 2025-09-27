@@ -87,27 +87,37 @@ bool CWeaponComponent::IsFiringSkill()
 
 vector<FSkill_UiInfo> CWeaponComponent::GetSkill_UiInfo()
 {
-    vector<FSkill_UiInfo> skill_Info;
+    vector<FSkill_UiInfo> out(SKILL_PANEL);
+    //out.reserve(SKILL_PANEL);
+
+    for (int i = 0; i < SKILL_PANEL; ++i)
+        out[i].Slot = (ESkillSlot)i;
 
     for (auto& [type, skill] : m_Skills)
     {
         if (!skill) continue;
+        int slot = (int)skill->GetSlot();
+        if (slot < 0 || slot >= (int)out.size()) 
+            continue;
 
-        FSkill_UiInfo   info;
+        FSkill_UiInfo   ui {};
 
-        info.Type       = type;
-        info.Slot       = skill->GetSlot();
-        info.Icon       = skill->GetIcon();
-        info.Cooldown   = skill->Get_CoolDown();
+        ui.Slot = skill->GetSlot();
+        ui.Type = type;
+        ui.Cooldown = skill->Get_CoolDown();
+        //ui.CooldownRemain = skill->GetCooldownRemain();
+        ui.Id = CHelper::SkillIdFromType(type);
 
-        skill_Info.push_back(info);
+        auto data = SKILL_DATA->GetById(ui.Id);
+        if (data)
+        {
+            ui.Name = data->Name;
+            ui.Desc = data->Desc;
+            ui.Icon = SKILL_DATA->GetIconById(ui.Id);
+        }
+
+        out[slot] = std::move(ui);
     }
 
-    sort(skill_Info.begin(), skill_Info.end(), [](FSkill_UiInfo src, FSkill_UiInfo& dst)
-        {
-            return (int)src.Slot < (int)dst.Slot;
-        });
-
-
-    return skill_Info;
+    return out;
 }

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CUI_InvenSkill.h"
-
 #include "CWeaponComponent.h"
+#include "CSkillDataManager.h"
 
 CUI_InvenSkill::CUI_InvenSkill()
 {
@@ -19,6 +19,7 @@ CUI_InvenSkill::CUI_InvenSkill()
 	m_InRect->color = Color(0.5f, 0.5f, 0.5f, 0.45f);
 
 	m_Skill_Panel.resize(SKILL_PANEL);
+	m_Skill_Panel_Gold.resize(SKILL_PANEL);
 	m_Skill_Key.resize(SKILL_PANEL);
 
 	Vec2 panelSize = Vec2(42.f, 40.f);
@@ -31,6 +32,15 @@ CUI_InvenSkill::CUI_InvenSkill()
 		m_Skill_Panel[i]->SetParentT(*m_InRect);
 		m_Skill_Panel[i]->pivot = OFFSET_LT;
 		m_Skill_Panel[i]->SetLocalPos(Vec2(startX + i * (panelSize.x + padding), -20.f));
+		m_Skill_Panel[i]->collider = COLLIDER::RECT;
+	}
+
+	for (int i = 0; i < SKILL_PANEL; i++)
+	{
+		m_Skill_Panel_Gold[i] = RESOURCE->CreateUI(L"UI\\GoldPanelUnfilled.png", panelSize * 1.2f, false);
+		m_Skill_Panel_Gold[i]->SetParentT(*m_InRect);
+		m_Skill_Panel_Gold[i]->pivot = OFFSET_LT;
+		m_Skill_Panel_Gold[i]->SetLocalPos(Vec2(startX + i * (panelSize.x + padding) - 2.f, -18.f));
 	}
 
 	Vec2 keySize = Vec2(16.f, 16.f) * 1.5f;
@@ -53,6 +63,8 @@ CUI_InvenSkill::CUI_InvenSkill()
 CUI_InvenSkill::~CUI_InvenSkill()
 {
 	Release();
+
+
 }
 
 void CUI_InvenSkill::BeginPlay()
@@ -63,6 +75,8 @@ void CUI_InvenSkill::BeginPlay()
 		{
 			this->SetRender(bCheck);
 		});
+
+	m_Skill_Panel_Gold[LButton]->visible = true;
 }
 
 void CUI_InvenSkill::Tick()
@@ -74,8 +88,6 @@ void CUI_InvenSkill::Tick()
 	if (weapon)
 	{
 		auto infos = weapon->GetSkill_UiInfo();
-		//m_Skill_Infos = weapon->GetSkill_UiInfo();
-		//m_Skill_Infos = std::move(infos);
 
 		if(infos != m_Skill_Infos)
 		{
@@ -95,6 +107,8 @@ void CUI_InvenSkill::Tick()
 				auto clone = make_shared<ObImage>(*info.Icon);
 				clone->space = SPACE::SCREEN;
 				clone->SetParentRT(*m_Skill_Panel[idx]);
+				clone->pivot = OFFSET_LT;
+				clone->SetLocalPos(Vec2(1.f, -1.f));
 				clone->visible = GetRender();
 
 				m_IconClones[idx] = std::move(clone);
@@ -103,18 +117,19 @@ void CUI_InvenSkill::Tick()
 		
 	}
 
+	OnIntersectMouse();
+
 	m_OutRect->Update();
 	m_InRect->Update();
 
 	for (auto& panel : m_Skill_Panel)
-	{
 		panel->Update();
-	}
+
+	for (auto& panel : m_Skill_Panel_Gold)
+		panel->Update();
 
 	for (auto& key : m_Skill_Key)
-	{
 		key->Update();
-	}
 
 	for (auto clone : m_IconClones)
 	{
@@ -127,7 +142,6 @@ void CUI_InvenSkill::LateUpdate()
 {
 	CUI::LateUpdate();
 
-	
 }
 
 void CUI_InvenSkill::Render()
@@ -143,6 +157,9 @@ void CUI_InvenSkill::Render()
 	m_InRect->Render();
 
 	for (auto& panel : m_Skill_Panel)
+		panel->Render();
+
+	for (auto& panel : m_Skill_Panel_Gold)
 		panel->Render();
 
 	for (auto& key : m_Skill_Key)
@@ -176,7 +193,47 @@ void CUI_InvenSkill::SetRender(bool _Render)
 		if (clone)
 			clone->visible = _Render;
 	}
-		
-
 }
+
+
+void CUI_InvenSkill::OnIntersectMouse()
+{
+	if (!GetRender()) return;
+	
+	int newHovered = -1;
+	Vec2 mouse = INPUT->GetMouseScreenPos();
+	
+    for (int i = 0; i < SKILL_PANEL; ++i)
+    {
+        auto panel = m_Skill_Panel[i];
+        auto gold_panel  = m_Skill_Panel_Gold[i];
+        if (!panel || !gold_panel) 
+			continue;
+
+        bool cood = panel->IntersectScreenMouse(mouse);
+
+        if (cood)
+		{
+			gold_panel->visible = true;
+            newHovered = i;
+            break; 
+        }
+
+        else
+        {
+			gold_panel->visible = false;
+        }
+    }
+	
+	if (newHovered != m_LastHovered)
+	{
+		if (newHovered != -1)
+		{
+			SOUND->StopPlay("Select", 0.5f);
+			FOnIntersectMouse.Broadcast(static_cast<ESkillSlot>(newHovered));
+		}
+		m_LastHovered = newHovered;
+	}
+}
+
 

@@ -17,7 +17,7 @@ public:
 	void Release() override;
 
 public:
-	void Equip_Skill(ESkillType _SkillType, ESkillSlot _Slot = ESkillSlot::END);
+	void Equip_Skill(ESkillType _SkillType, ESkillSlot _Slot = ESkillSlot::Slot_END);
 	void Activate_Skill(ESkillType _SkillType);
 
 	bool IsFiringSkill();

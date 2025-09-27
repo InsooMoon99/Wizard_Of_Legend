@@ -29,6 +29,7 @@ public:
 	const shared_ptr<CUI> GetBossHUD() { return m_BossHUD; }
 	const shared_ptr<CUI> GetInventoryHUD() { return m_InventoryHUD; }
 
+	bool GetToggle() { return bToggle; }
 	void ToggleInventory();
 
 private:

@@ -16,7 +16,14 @@ void CSkill_WindSlash::BeginPlay()
 {
 	CSkill::BeginPlay();
 
-	SetIcon(L"UI\\WindSlashBasic.png", Vec2(16.f) * 2.5f);
+	m_Id = "WindSlash";
+
+	if (auto data = SKILL_DATA->GetById(m_Id))
+		m_DataDamage = data->Damage;
+	else
+		m_DataDamage = 10.f;
+
+	//SetIcon(L"UI\\WindSlashBasic.png", Vec2(16.f) * 2.5f);
 }
 
 void CSkill_WindSlash::Tick()
@@ -87,7 +94,7 @@ void CSkill_WindSlash::Activate(CActor* _Owner)
 	m_Skill_Info.SpawnPos = _Owner->Get_WorldPos();
 	m_Skill_Info.Aim_Dir = dir;
 	m_Skill_Info.Angle = radian;
-	m_Skill_Info.Damage = 10.f;
+	m_Skill_Info.Damage = m_DataDamage;
 	m_Skill_Info.Amount = 1000.f;
 
 	auto wind = make_shared<CWindSlash>(m_Skill_Info);

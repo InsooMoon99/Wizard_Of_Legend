@@ -9,11 +9,11 @@ class CBoss_TwinGirl;
 class CBoss_Controller;
 class CUIComponent;
 
-class CStage02 : public CScene
+class CStageBoss : public CScene
 {
 public:
-	CStage02();
-	virtual ~CStage02() override;
+	CStageBoss();
+	virtual ~CStageBoss() override;
 
 public:
 	void Init() override;

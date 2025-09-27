@@ -23,7 +23,10 @@ public:
 	virtual void SetRender(bool _Render) override;
 
 public:
-	shared_ptr<CUI_InvenSkill> GetInvenSkill() { return m_Skill; }
+	shared_ptr<CUI_InvenSkill> GetInvenSkill()  { return m_Skill; }
+	shared_ptr<CUI_InvenItem>  GetInvenItem()   { return m_Item; }
+	shared_ptr<CUI_InvenDesc>  GetInvenDesc()   { return m_Desc; }
+	shared_ptr<CUI_InvenCloth>  GetInvenCloth() { return m_Cloth; }
 
 private:
 	shared_ptr<ObImage> m_Background;

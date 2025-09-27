@@ -1,49 +1,45 @@
 #pragma once
-
-#include "CSkill.h"
+#include <string>
+#include <unordered_map>
 #include <memory>
+#include "CStruct.h"
+
+class ObImage;
 
 class CSkillDataManager
 {
 private:
-	CSkillDataManager() = default;
+    CSkillDataManager() = default;
     ~CSkillDataManager() = default;
-
-	CSkillDataManager(const CSkillDataManager&) = delete;
-	CSkillDataManager& operator=(const CSkillDataManager&) = delete;
-
-public:
-	void Init();
-
-private:
-    wstring ConvertUtf8ToWString(const string& utf8_str);
+    CSkillDataManager(const CSkillDataManager&) = delete;
+    CSkillDataManager& operator=(const CSkillDataManager&) = delete;
 
 public:
-	static CSkillDataManager* Get_Instance()
-	{
-		if (Instance == nullptr)
-		{
-			Instance = new CSkillDataManager();
-		}
+    static CSkillDataManager* Get_Instance() {
+        if (!Instance) Instance = new CSkillDataManager();
+        return Instance;
+    }
+    static void Destroy_Instance() { delete Instance; Instance = nullptr; }
 
-		return Instance;
-	}
+public:
+    void Init();                                           // 시작 시 1회 호출
+    bool LoadData(const wstring& filename);           // JSON 로드(UTF-8)
+    void ClearCache();                                     // 아이콘 캐시 비우기(핫리로드 시)
 
-	static void Destroy_Instance()
-	{
-		if (Instance)
-		{
-			delete Instance;
-			Instance = nullptr;
-		}
-	}
-
-    bool LoadData(const wstring& filename);
-
-    // 데이터 접근 함수
-    const FSkillData* GetSkillData(const wstring& name) const;
+    // === Id 기반 조회 ===
+    const FSkillData* GetById(const string& id) const;
+    shared_ptr<ObImage> GetIconById(const string& id);
 
 private:
-	static CSkillDataManager* Instance;
-	map<wstring, FSkillData> m_SkillTable;
+    // UTF-8 → wstring
+    static wstring ConvertUtf8ToWString(const string& s);
+
+private:
+    static CSkillDataManager* Instance;
+
+    // Id → 데이터
+    unordered_map<string, FSkillData> m_ById;
+
+    // IconKey → 아이콘 핸들 캐시
+    unordered_map<string, shared_ptr<ObImage>> m_IconCache;
 };

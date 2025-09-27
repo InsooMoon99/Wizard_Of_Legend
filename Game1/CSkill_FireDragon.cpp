@@ -17,7 +17,14 @@ void CSkill_FireDragon::BeginPlay()
 {
     CSkill::BeginPlay();
 
-    SetIcon(L"UI\\ShootFireArc.png", Vec2(16.f, 16.f) * 2.5f);
+    m_Id = "FireDragon";
+
+    if (auto data = SKILL_DATA->GetById(m_Id))
+        m_DataDamage = data->Damage;
+    else
+        m_DataDamage = 10.f;
+
+    //SetIcon(L"UI\\ShootFireArc.png", Vec2(16.f, 16.f) * 2.5f);
 }
 
 void CSkill_FireDragon::Tick()
@@ -113,7 +120,7 @@ void CSkill_FireDragon::Fire()
     m_Skill_Info.SpawnPos = m_Character->Get_WorldPos();
     m_Skill_Info.Aim_Dir = m_Dir;
     m_Skill_Info.Angle = rad;
-    m_Skill_Info.Damage = 10.f;
+    m_Skill_Info.Damage = m_DataDamage;
     m_Skill_Info.Amount = 1000.f;
 
     auto fireDragon = std::make_shared<CFire_Dragon>(m_Skill_Info);

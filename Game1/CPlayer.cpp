@@ -118,13 +118,6 @@ void CPlayer::Tick()
 		break;
 	}
 
-
-	if (INPUT->KeyDown('K'))
-	{
-		m_State->Change_State(ECharacterState::Hit);
-	}
-
-
 	if (m_prevState != m_State->Get_State() || m_prevDir != m_State->Get_Dir())
 		SetSprite(m_State->Get_State(), m_State->Get_Dir());
 	
@@ -221,6 +214,18 @@ void CPlayer::Key_Input()
 		return;
 	}
 
+	// 인벤토리
+	if (INPUT->KeyDown(VK_TAB))
+	{
+		m_UI->ToggleInventory();
+	}
+
+	if (m_UI->GetToggle())
+	{
+		m_MoveDir = Vec2(0.f, 0.f);
+		return;
+	}
+
 	m_MoveDir = Vec2(0.f, 0.f);
 	EPlayerDir		curtDir = m_State->Get_Dir();
 	ECharacterState	curState = m_State->Get_State();
@@ -266,12 +271,6 @@ void CPlayer::Key_Input()
 			m_Weapon->Activate_Skill(ESkillType::Fire_Dragon);
 
 			return;
-		}
-
-		// 인벤토리
-		if (INPUT->KeyDown(VK_TAB))
-		{
-			m_UI->ToggleInventory();
 		}
 	}
 

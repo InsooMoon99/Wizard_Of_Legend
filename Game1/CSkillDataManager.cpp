@@ -1,107 +1,119 @@
 #include "stdafx.h"
 #include "CSkillDataManager.h"
+#include "CResourceManager.h"   
+#include <fstream>
+#include <iostream>
+#include "json.hpp"
+
+using nlohmann::json;
 
 CSkillDataManager* CSkillDataManager::Instance = nullptr;
 
 void CSkillDataManager::Init()
 {
-    // 데이터 세팅
     if (LoadData(L"Skill_Data.json"))
-    {
-        cout << "Skill Load Success" << endl;
-        cout << "Sry";
-    }
+        cout << "Skill Load Success\n";
     else
-    {
-        wcerr << L"치명적 오류: 스킬 데이터 로드 실패. 게임을 시작할 수 없습니다." << endl;
-    }
-
+        wcerr << L"Skill Data Load Fail.\n";
 }
 
-wstring CSkillDataManager::ConvertUtf8ToWString(const string& utf8_str)
+wstring CSkillDataManager::ConvertUtf8ToWString(const string& s)
 {
-    if (utf8_str.empty())
-        return std::wstring();
-
-    int required_size = MultiByteToWideChar(
-        CP_UTF8,        // 입력 문자열 인코딩: UTF-8
-        0,              // 플래그 (일반적으로 0)
-        utf8_str.c_str(), // 입력 문자열
-        (int)utf8_str.length(), // 입력 문자열 길이 (널 문자 제외)
-        nullptr,        // 출력 버퍼 (nullptr이면 크기만 계산)
-        0               // 출력 버퍼 크기 (0이면 크기만 계산)
-    );
-
-    if (required_size == 0)
-    {
-        std::cerr << "UTF-8 to wstring conversion error detected (MultiByteToWideChar failed to determine size)." << std::endl;
-        return L"";
-    }
-
-    std::vector<wchar_t> wide_buffer(required_size + 1);
-
-    int result = MultiByteToWideChar(
-        CP_UTF8,
-        0,
-        utf8_str.c_str(),
-        (int)utf8_str.length(),
-        wide_buffer.data(), // 버퍼 포인터
-        required_size       // 위에서 계산한 필요한 크기
-    );
-
-    if (result == 0)
-    {
-        std::cerr << "UTF-8 to wstring conversion error detected (MultiByteToWideChar failed to convert)." << std::endl;
-        return L"";
-    }
-
-    return std::wstring(wide_buffer.data(), required_size);
+    if (s.empty()) return L"";
+    int lenW = MultiByteToWideChar(CP_UTF8, 0, s.c_str(), (int)s.size(), nullptr, 0);
+    if (lenW <= 0) return L"";
+    wstring w(lenW, 0);
+    MultiByteToWideChar(CP_UTF8, 0, s.c_str(), (int)s.size(), w.data(), lenW);
+    return w;
 }
 
 bool CSkillDataManager::LoadData(const wstring& filename)
 {
-    ifstream file(filename);
-
-    if (!file.is_open())
-    {
-        wcerr << L"Error: Failed to open JSON file: " << filename << endl;
+    ifstream file(filename, ios::binary);
+    if (!file.is_open()) {
+        wcerr << L"Error: open fail: " << filename << L"\n";
         return false;
     }
 
     json j;
-    file >> j; 
-
-    if (j.contains("Skill_Data") && j["Skill_Data"].is_array())
-    {
-        for (const auto& skill_json : j["Skill_Data"])
-        {
-            FSkillData data;
-
-            string name_utf8 = skill_json["Name"].get<string>();
-            string desc_utf8 = skill_json["Desc"].get<string>();
-
-            data.Name = ConvertUtf8ToWString(name_utf8);
-            data.Desc = ConvertUtf8ToWString(desc_utf8);
-
-            data.Damage = skill_json["Damage"].get<int>();
-
-            m_SkillTable[data.Name] = data;
-        }
-        return true;
-    }
-    else
-    {
-        wcerr << L"Error: JSON file is missing the 'Skill_Data' array." << endl;
+    try { file >> j; }
+    catch (...) {
+        wcerr << L"Error: JSON parse fail (UTF-8로 저장 확인).\n";
         return false;
     }
+
+    if (!j.contains("Skill_Data") || !j["Skill_Data"].is_array()) {
+        wcerr << L"Error: 'Skill_Data' array missing.\n";
+        return false;
+    }
+
+    m_ById.clear();
+    m_IconCache.clear(); // 데이터 바뀌면 아이콘 다시 로드
+
+    for (auto& row : j["Skill_Data"])
+    {
+        FSkillData d{};
+
+        d.Id = row.value("Id", "");
+        d.Name = ConvertUtf8ToWString(row.value("Name", ""));
+        d.Desc = ConvertUtf8ToWString(row.value("Desc", ""));
+
+        if (row.contains("Damage")) 
+        {
+            if (row["Damage"].is_number())
+                d.Damage = (float)row["Damage"].get<double>();
+
+            else if (row["Damage"].is_string())
+            {
+                try
+                {
+	                d.Damage = (float)stod(row["Damage"].get<string>());
+                }
+
+                catch (...)
+                {
+	                d.Damage = 0.f;
+                }
+            }
+        }
+
+        d.IconKey = row.value("IconKey", "");
+        d.IconW = row.value("IconW", 0);
+        d.IconH = row.value("IconH", 0);
+
+        if (!d.Id.empty())
+            m_ById[d.Id] = move(d);
+    }
+
+    return true;
 }
 
-const FSkillData* CSkillDataManager::GetSkillData(const wstring& name) const
+void CSkillDataManager::ClearCache()
 {
-    auto it = m_SkillTable.find(name);
-    if (it != m_SkillTable.end())
-    {
-        return &it->second; 
-    }
-    return nullptr; 
+    m_IconCache.clear();
+}
+
+const FSkillData* CSkillDataManager::GetById(const string& id) const
+{
+    auto it = m_ById.find(id);
+    return (it == m_ById.end()) ? nullptr : &it->second;
+}
+
+shared_ptr<ObImage> CSkillDataManager::GetIconById(const string& id)
+{
+    const FSkillData* data = GetById(id);
+    if (!data || data->IconKey.empty()) return nullptr;
+
+    auto hit = m_IconCache.find(data->IconKey);
+    if (hit != m_IconCache.end()) return hit->second;
+
+    // 로드
+    wstring pathW = ConvertUtf8ToWString(data->IconKey);
+    Vec2 size = (data->IconW > 0 && data->IconH > 0) ? Vec2((float)data->IconW, (float)data->IconH)
+        : Vec2(40.f, 40.f);
+
+    auto icon = RESOURCE->CreateUI(pathW, size, true);
+    m_IconCache[data->IconKey] = icon;
+
+    return icon;
 }

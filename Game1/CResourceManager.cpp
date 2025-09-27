@@ -67,6 +67,8 @@ void CResourceManager::SoundSettings()
 		SOUND->AddSound("Title.wav", "Title", true);
 		SOUND->AddSound("Tutorial.wav", "Tutorial", true);
 		SOUND->AddSound("Boss2.wav", "BossMap", true);
+
+		SOUND->AddSound("SELECT_MENU.mp3", "Select", false);
 	}
 
 	// Player
