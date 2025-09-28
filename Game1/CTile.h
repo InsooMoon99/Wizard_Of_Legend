@@ -25,6 +25,10 @@ public:
 	Vec2 Get_Size()		{ return m_Size; }
 
 	ETileType GetTileType() { return m_TileType; }
+
+
+	void SetTileVisible(bool bCheck);
+
 public:
 
 private:
@@ -34,6 +38,8 @@ private:
 	Vec2	m_Size;
 	int     m_DrawID = 0;
 	int     m_Option = 0;
+
+
 
 
 };

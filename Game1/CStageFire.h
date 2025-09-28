@@ -21,6 +21,7 @@ public:
 	void Release() override;
 
 public:
+	void Key_Input();
 	void Resource_Setting();
 
 private:
@@ -31,8 +32,12 @@ private:
 	Vec2 m_MapSize;
 
 	CActor* m_TestDummy;
+	CActor* m_ShopNPC;
 
 	shared_ptr<CUIComponent> m_PlayerUI;
+	shared_ptr<ObRect> m_TileTrigger;
 
+	bool bStartTile = false;
+	bool bTrigger = false;
 };
 

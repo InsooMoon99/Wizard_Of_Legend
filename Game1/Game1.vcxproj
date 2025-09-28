@@ -38,6 +38,7 @@
     <ClInclude Include="CItem_Factory.h" />
     <ClInclude Include="CJavelin_Spear.h" />
     <ClInclude Include="CRenderManager.h" />
+    <ClInclude Include="CShopNPC.h" />
     <ClInclude Include="CSkillDataManager.h" />
     <ClInclude Include="CSkillManager.h" />
     <ClInclude Include="CSkill_Girl_Dash.h" />
@@ -122,6 +123,7 @@
     <ClCompile Include="CItem_Factory.cpp" />
     <ClCompile Include="CJavelin_Spear.cpp" />
     <ClCompile Include="CRenderManager.cpp" />
+    <ClCompile Include="CShopNPC.cpp" />
     <ClCompile Include="CSkillDataManager.cpp" />
     <ClCompile Include="CSkillManager.cpp" />
     <ClCompile Include="CSkill_Girl_Dash.cpp" />

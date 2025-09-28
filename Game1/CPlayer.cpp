@@ -268,9 +268,9 @@ void CPlayer::Key_Input()
 
 		if (INPUT->KeyDown(VK_RBUTTON))
 		{
-			m_Weapon->Activate_Skill(ESkillType::Fire_Dragon);
+			//m_Weapon->Activate_Skill(ESkillType::Fire_Dragon);
 
-			return;
+			//return;
 		}
 	}
 

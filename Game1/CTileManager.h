@@ -41,16 +41,21 @@ public:
 	bool	IsBlocked_ExceptFall(const Vec2& _Min, const Vec2& _Max, bool isDashing);
 
 	void	Picking(Vec2 _Pos, int _DrawID, int _Option);
+	void	Picking(Vec2 _Pos, int _DrawID, int _Option, bool forceSet);
+	void	Erase_Tile();
 
 	void	Save_Data();
-	void	Load_Data();
+	void	Load_Data(const wchar_t* _Path);
 
-	void	Erase_Tile();
+	// 이미지 렌더 처리
+	void	ToggleTileImagesVisible();
+	bool	IsTileImagesVisible() const { return m_ShowTileImages; }
 
 private:
 	static CTileManager*	Instance;
 
-private:
 	vector<CActor*>	m_vecTile;
+	bool m_ShowTileImages = true;
+
 };
 

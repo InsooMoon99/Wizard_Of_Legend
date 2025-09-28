@@ -247,6 +247,7 @@
     <ClInclude Include="CStageFire.h">
       <Filter>02. Scene</Filter>
     </ClInclude>
+    <ClInclude Include="CShopNPC.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -590,6 +591,7 @@
     <ClCompile Include="CStageFire.cpp">
       <Filter>02. Scene</Filter>
     </ClCompile>
+    <ClCompile Include="CShopNPC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game1.rc">

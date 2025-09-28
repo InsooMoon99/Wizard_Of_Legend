@@ -11,13 +11,13 @@ CTile::CTile()
 	m_Collision->collider = COLLIDER::RECT;
 	m_Collision->Set_Owner(this);
 
-	shared_ptr<ObImage> wall = RESOURCE->CreateImage(L"Edit\\WALL.bmp", Vec2(32.f, 32.f) * 2.f, true);
+	shared_ptr<ObImage> wall = RESOURCE->CreateImage(L"Edit\\WALL.bmp", Vec2(TILECX, TILECY), true);
 	wall->SetParentRT(*m_Collision);
 
-	shared_ptr<ObImage> tile2 = RESOURCE->CreateImage(L"Edit\\FLOOR.bmp", Vec2(32.f, 32.f) * 2.f, true);
+	shared_ptr<ObImage> tile2 = RESOURCE->CreateImage(L"Edit\\FLOOR.bmp", Vec2(TILECX, TILECY), true);
 	tile2->SetParentRT(*m_Collision);
 
-	shared_ptr<ObImage> fall = RESOURCE->CreateImage(L"Edit\\MONSTER.bmp", Vec2(32.f, 32.f) * 2.f, true);
+	shared_ptr<ObImage> fall = RESOURCE->CreateImage(L"Edit\\MONSTER.bmp", Vec2(TILECX, TILECY), true);
 	fall->SetParentRT(*m_Collision);
 
 	m_Tiles.insert({ ETileType::WALL, wall });
@@ -81,13 +81,15 @@ void CTile::Render()
 	m_Collision->Render();
 
 	m_TileType = (ETileType)m_DrawID;
-	
-	auto it = m_Tiles.find(static_cast<ETileType>(m_DrawID));
-	if (it != m_Tiles.end())
-	{
-		it->second->Render();
-	}
 
+	if (TILE->IsTileImagesVisible())
+	{
+		auto it = m_Tiles.find(static_cast<ETileType>(m_DrawID));
+		if (it != m_Tiles.end())
+		{
+			it->second->Render();
+		}
+	}
 }
 
 void CTile::Release()
@@ -95,4 +97,12 @@ void CTile::Release()
 	CActor::Release();
 
 	m_Tiles.clear();
+}
+
+void CTile::SetTileVisible(bool bCheck)
+{
+	for (auto& img : m_Tiles)
+	{
+		img.second->visible = bCheck;
+	}
 }

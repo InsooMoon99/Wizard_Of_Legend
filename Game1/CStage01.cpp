@@ -55,7 +55,7 @@ void CStage01::Update()
 
 	if (INPUT->KeyDown('L'))
 	{
-		TILE->Load_Data();
+		//TILE->Load_Data();
 	}
 
 	for (auto& actor : m_Actors)

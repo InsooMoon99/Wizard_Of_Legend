@@ -7,13 +7,13 @@
 CStage_Edit::CStage_Edit()
 {
 	m_Player = new CPlayer();
-	m_PlayerPos = Vec2(-1790.f, -790.f);
 	m_Actors.push_back(m_Player);
 
-	m_MapSize = Vec2(1184.f, 688.f) * 4.f;
+	m_MapSize = Vec2(2304.f, 2560.f) * 3.f;
+	m_PlayerPos = Vec2(516.f, -2593.f);
 
-	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\TutorialCourse.png", m_MapSize, true);
-	map->SetLocalPos(Vec2(0, 30));
+	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\Fire_End.png", m_MapSize, true);
+	map->SetLocalPos(Vec2(-185, 46));
 	m_Map.insert({ ESceneType::Edit, map });
 }
 
@@ -63,7 +63,7 @@ void CStage_Edit::Render()
 	Vec2 pos = m_Map[ESceneType::Edit]->GetWorldPos();
 	Vec2 size = m_MapSize;
 
-	if (ImGui::Begin("Stage"))
+	if (ImGui::Begin("Debug"))
 	{
 		Vec2 min_pos = -size * 0.5f;
 		Vec2 max_pos = size * 0.5f;
@@ -97,24 +97,31 @@ void CStage_Edit::Key_Input()
 	if (INPUT->KeyDown(VK_LBUTTON))
 	{
 		Vec2 mousePos = INPUT->GetMouseWorldPos();
-
-		TILE->Picking(mousePos, 0, 1);
+		TILE->Picking(mousePos, 1, 1, false);
 	}
 
-	if (INPUT->KeyDown(VK_RBUTTON))
+	if (INPUT->KeyPress(VK_LBUTTON))
 	{
 		Vec2 mousePos = INPUT->GetMouseWorldPos();
 
+		int cx = (int)floorf(mousePos.x / TILECX);
+		int cy = (int)floorf(mousePos.y / TILECY);
+
+		if (m_LastPaintCell.x != cx || m_LastPaintCell.y != cy) 
+		{
+			TILE->Picking(mousePos, 0, 1, true);
+			m_LastPaintCell = { cx, cy };
+		}
+	}
+
+	if (INPUT->KeyPress(VK_RBUTTON))
+	{
 		TILE->Erase_Tile();
 	}
 
 	if (INPUT->KeyDown('T'))
-	{
 		TILE->Save_Data();
-	}
-
 	if (INPUT->KeyDown('L'))
-	{
-		TILE->Load_Data();
-	}
+		TILE->Load_Data(L"../Data/FireTile_First.dat");
 }
+

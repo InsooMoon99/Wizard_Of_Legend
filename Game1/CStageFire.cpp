@@ -5,23 +5,19 @@
 #include "CDummy.h"
 #include "CPlayer.h"
 #include "CResourceManager.h"
+#include "CShopNPC.h"
 #include "CStateComponent.h"
 #include "CUIComponent.h"
 
 CStageFire::CStageFire()
 {
-	m_Player = new CPlayer();
-	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player);
-	m_TestDummy = new CDummy();
-
-	m_Actors.push_back(m_TestDummy);
-	m_Actors.push_back(m_Player);
-
-	m_MapSize = Vec2(1024.f, 1024.f);
-	m_PlayerPos = Vec2(-1790.f, -790.f);
+	// Vec2(2115.f, 2931.f)
+	m_MapSize = Vec2(2304.f, 2560.f) * 3.f;
+	m_PlayerPos = Vec2(516.f, -2593.f);
 
 	Resource_Setting();
 
+	bStartTile = false;
 }
 
 CStageFire::~CStageFire()
@@ -43,7 +39,16 @@ void CStageFire::Init()
 	player->Get_Collision()->SetWorldPos(m_PlayerPos);
 
 	CDummy* dummy = dynamic_cast<CDummy*>(m_TestDummy);
-	dummy->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(250.f, 150.f));
+	dummy->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(150.f, 50.f));
+
+	bStartTile = true;
+
+	if (bStartTile)
+	{
+		TILE->Load_Data(L"../Data/FireTile_First.dat");
+		bStartTile = false;
+	}
+
 
 }
 
@@ -53,10 +58,9 @@ void CStageFire::Update()
 
 	RENDER->Release();
 
-	if (INPUT->KeyDown('L'))
-	{
-		TILE->Load_Data();
-	}
+	Key_Input();
+
+	m_TileTrigger->Update();
 
 	for (auto& actor : m_Actors)
 	{
@@ -68,9 +72,7 @@ void CStageFire::Update()
 		RENDER->AddRenderObject(hud.get());
 
 	for (auto& map : m_Map)
-	{
 		map.second->Update();
-	}
 	
 	for (auto& object : m_Objects)
 		object->Update();
@@ -92,13 +94,11 @@ void CStageFire::LateUpdate()
 	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
 	CAM->position = player->Get_Collision()->GetWorldPos();
 
-	if (player->Get_Collision()->Intersect(m_TestDummy->Get_Collision().get()))
+	if(m_TileTrigger->Intersect(m_Player->Get_Collision().get()) && !bTrigger)
 	{
-		//auto state = CHelper::GetComponent<CStateComponent>(player);
-		//if (state->Get_State() != ECharacterState::Hit)
-		//{
-		//	//state->Change_State(ECharacterState::Hit);
-		//}
+		TILE->Load_Data(L"../Data/FireTile_Second.dat");
+
+		bTrigger = true;
 	}
 
 }
@@ -111,11 +111,13 @@ void CStageFire::Render()
 		map.second->Render();
 	
 	TILE->Render();
+	m_TileTrigger->Render();
 
-	PARTICLE->Render();
 
 	for (auto& object : m_Objects)
 		object->Render();
+
+	PARTICLE->Render();
 
 	//for (auto& actor : m_Actors)
 	//	actor->Render();
@@ -135,6 +137,14 @@ void CStageFire::Release()
 	SOUND->DeleteSound("Tutorial");
 }
 
+void CStageFire::Key_Input()
+{
+	if (INPUT->KeyDown(VK_F1))
+	{
+		TILE->ToggleTileImagesVisible();
+	}
+}
+
 void CStageFire::Resource_Setting()
 {
 	// Map
@@ -143,9 +153,9 @@ void CStageFire::Resource_Setting()
 	mapShadow->color = Color(0.0f, 0.0f, 0.0f, 1.0f);
 	m_Map.insert({ ESceneType::Shadow, mapShadow });
 
-	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\TestFire.png", m_MapSize, true);
+	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\Fire_End.png", m_MapSize, true);
 	map->SetWorldPos(Vec2(0, 0));
-	map->SetLocalPos(Vec2(0, 30));
+	map->SetLocalPos(Vec2(-185, 46));
 	m_Map.insert({ ESceneType::Stage01, map });
 
 	Vec2 vortexSize = Vec2(13.f, 36.f) * 3.f;
@@ -153,6 +163,24 @@ void CStageFire::Resource_Setting()
 	vortex->SetWorldPos(m_PlayerPos);
 	//vortex->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 	//vortex->collider = COLLIDER::CIRCLE;
-	m_Objects.push_back(vortex);
+	//m_Objects.push_back(vortex);
 
+	m_Player = new CPlayer();
+	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player);
+	m_TestDummy = new CDummy();
+
+	m_TileTrigger = make_shared<ObRect>();
+	m_TileTrigger->scale = Vec2(200.f, 200.f);
+	m_TileTrigger->SetWorldPos(Vec2(6.f, -1366.f));
+	m_TileTrigger->visible = false;
+	m_TileTrigger->isFilled = false;
+	m_TileTrigger->collider = COLLIDER::RECT;
+
+	m_ShopNPC = new CShopNPC();
+
+	m_Actors.push_back(m_ShopNPC);
+	m_Actors.push_back(m_TestDummy);
+	m_Actors.push_back(m_Player);
 }
+
+

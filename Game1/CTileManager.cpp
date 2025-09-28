@@ -212,9 +212,72 @@ void CTileManager::Picking(Vec2 _Pos, int _DrawID, int _Option)
 
 }
 
+void CTileManager::Picking(Vec2 _Pos, int _DrawID, int _Option, bool forceSet)
+{
+	CTile* foundTile = nullptr;
+
+	for (auto& pActor : m_vecTile)
+	{
+		if (auto* tile = dynamic_cast<CTile*>(pActor))
+		{
+			Vec2 tilePos = tile->Get_WorldPos();
+			Vec2 size = tile->Get_Size();
+
+			float left = tilePos.x - size.x * 0.5f;
+			float right = tilePos.x + size.x * 0.5f;
+			float top = tilePos.y - size.y * 0.5f;
+			float bottom = tilePos.y + size.y * 0.5f;
+
+			if (_Pos.x >= left && _Pos.x < right &&
+				_Pos.y >= top && _Pos.y < bottom)
+			{
+				foundTile = tile;
+				break;
+			}
+		}
+	}
+
+	if (foundTile)
+	{
+		if (forceSet)
+		{
+			if (foundTile->Get_DrawID() != _DrawID)
+				foundTile->Set_DrawID(_DrawID);
+
+			foundTile->Set_Option(_Option);
+			return;
+		}
+
+		int cur = foundTile->Get_DrawID();
+		if (cur == (int)ETileType::WALL)       cur = (int)ETileType::TILE2;
+		else if (cur == (int)ETileType::TILE2) cur = (int)ETileType::FALL;
+		else if (cur == (int)ETileType::FALL)  cur = (int)ETileType::WALL;
+
+		foundTile->Set_DrawID(cur);
+		foundTile->Set_Option(_Option);
+		return;
+	}
+
+	int cellX = (int)floorf(_Pos.x / TILECX);
+	int cellY = (int)floorf(_Pos.y / TILECY);
+
+	float fX = (float)(TILECX >> 1) + (TILECX * cellX);
+	float fY = (float)(TILECY >> 1) + (TILECY * cellY);
+
+	CTile* newTile = new CTile();
+	newTile->BeginPlay();
+	newTile->Get_Collision()->SetWorldPos(Vec2(fX, fY));
+	newTile->Set_WorldPos(Vec2(fX, fY));
+
+	newTile->Set_DrawID(_DrawID);
+	newTile->Set_Option(_Option);
+
+	m_vecTile.push_back(newTile);
+}
+
 void CTileManager::Save_Data()
 {
-	HANDLE	hFile = CreateFile(L"../Data/Tile.dat", // 파일 경로(이름까지 명시)
+	HANDLE	hFile = CreateFile(L"../Data/FireTile_First.dat", // 파일 경로(이름까지 명시)
 		GENERIC_WRITE,		// 파일 접근 모드(GENERIC_WRITE : 쓰기 전용, GENERIC_READ : 읽기 전용)
 		NULL,				// 공유 모드 설정 : 공유하지 않음
 		NULL,				// 보안 속성 설정 : 기본 값 설정
@@ -241,9 +304,15 @@ void CTileManager::Save_Data()
 	
 }
 
-void CTileManager::Load_Data()
+void CTileManager::Load_Data(const wchar_t* _Path)
 {
-	HANDLE	hFile = CreateFile(L"../Data/Tile.dat", // 파일 경로(이름까지 명시)
+	if (!_Path) return;
+
+	// 필요하면 기존 타일 비우기
+	for (auto& p : m_vecTile) SafeDelete(p);
+	m_vecTile.clear();
+
+	HANDLE	hFile = CreateFile(_Path, // 파일 경로(이름까지 명시)
 		GENERIC_READ,		// 파일 접근 모드(GENERIC_WRITE : 쓰기 전용, GENERIC_READ : 읽기 전용)
 		NULL,				// 공유 모드 설정 : 공유하지 않음
 		NULL,				// 보안 속성 설정 : 기본 값 설정
@@ -286,6 +355,19 @@ void CTileManager::Load_Data()
 
 	CloseHandle(hFile);
 
+}
+
+void CTileManager::ToggleTileImagesVisible()
+{
+	m_ShowTileImages = !m_ShowTileImages;
+
+	for (auto* actor : m_vecTile)
+	{
+		if (auto* tile = dynamic_cast<CTile*>(actor))
+		{
+			tile->SetTileVisible(m_ShowTileImages);
+		}
+	}
 }
 
 void CTileManager::Erase_Tile()

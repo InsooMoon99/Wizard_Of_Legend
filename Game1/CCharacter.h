@@ -36,8 +36,8 @@ protected:
 	
 protected:
 	virtual void Resource_Settings() abstract {};
-	virtual void SetSprite(ECharacterState _State, EPlayerDir _Dir) abstract {};
-	virtual void Play_Sprite(ECharacterState _State) abstract {}
+	virtual void SetSprite(ECharacterState _State, EPlayerDir _Dir) {};
+	virtual void Play_Sprite(ECharacterState _State) {}
 
 protected:
 	unordered_map<ECharacterState, unordered_map<EPlayerDir, shared_ptr<ObImage>>> m_Sprites;

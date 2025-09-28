@@ -23,5 +23,8 @@ private:
 
 	Vec2 m_PlayerPos;
 	Vec2 m_MapSize;
+
+	bool m_LBtnPainting = false;
+	Int2 m_LastPaintCell = { INT_MIN, INT_MIN };
 };
 
