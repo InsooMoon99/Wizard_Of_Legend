@@ -20,11 +20,16 @@ void CSkill_FireDragon::BeginPlay()
     m_Id = "FireDragon";
 
     if (auto data = SKILL_DATA->GetById(m_Id))
+    {
         m_DataDamage = data->Damage;
+        m_DataCoolDown = data->CoolDown - 0.1f;
+    }
     else
+    {
         m_DataDamage = 10.f;
+        m_DataCoolDown = 5.f - 0.1f;
+    }
 
-    //SetIcon(L"UI\\ShootFireArc.png", Vec2(16.f, 16.f) * 2.5f);
 }
 
 void CSkill_FireDragon::Tick()
@@ -127,4 +132,6 @@ void CSkill_FireDragon::Fire()
     fireDragon->BeginPlay();
 
     m_FireDragon.push_back(fireDragon);
+
+    StartCoolDown();
 }

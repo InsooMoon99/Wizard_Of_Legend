@@ -55,7 +55,7 @@ private:
 	static CTileManager*	Instance;
 
 	vector<CActor*>	m_vecTile;
-	bool m_ShowTileImages = true;
+	bool m_ShowTileImages = false;
 
 };
 

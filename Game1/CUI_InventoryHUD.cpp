@@ -37,7 +37,7 @@ void CUI_InventoryHUD::BeginPlay()
 
 	FOnRendering.Add([this](bool bCheck)
 		{
-			SetRender(bCheck);
+			SetRendering(bCheck);
 		});
 
 	m_Skill->FOnIntersectMouse.Add([this](ESkillSlot index)
@@ -89,9 +89,9 @@ void CUI_InventoryHUD::Release()
 
 }
 
-void CUI_InventoryHUD::SetRender(bool _Render)
+void CUI_InventoryHUD::SetRendering(bool _Render)
 {
-	CUI_HUD::SetRender(_Render);
+	CUI_HUD::SetRendering(_Render);
 
 	m_Skill->FOnRendering.Broadcast(_Render);
 	m_Item->FOnRendering.Broadcast(_Render);

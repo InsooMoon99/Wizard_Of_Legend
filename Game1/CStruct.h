@@ -24,6 +24,7 @@ struct FSkillData
 	wstring Desc = L"";
 
 	float	Damage = 0.f;
+	float	CoolDown = 0.f;
 
 	string  IconKey; // 이미지 말고, 경로만 들고있기
 	int     IconW = 0;
@@ -39,8 +40,9 @@ struct FSkill_UiInfo
 
 	float Cooldown;
 	float CooldownRemain;
+	bool  IsCoolTime = false;
 
-	string Id;     
+	string	Id;     
 	wstring Name;    
 	wstring Desc;
 	int     Level = 1;
@@ -64,5 +66,24 @@ struct FHitDamage
 
 	GameObject* colldier = nullptr;
 	GameObject* other = nullptr;
+};
+
+struct FItemData
+{
+	string		Id;
+	wstring		Name;
+	wstring		Desc;
+
+	int			Price = 0;
+	string		IconKey;
+	int			IconW = 0;
+	int			IconH = 0;
+
+	EItemType	ItemType;
+
+	int			HealAmount = 0;
+	int			Attack = 0;
+	int			Defense = 0;
+
 };
 

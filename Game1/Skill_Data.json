@@ -7,7 +7,8 @@
       "Damage": 10,
       "IconKey": "UI\\WindSlashBasic.png",
       "IconW": 40,
-      "IconH": 40
+      "IconH": 40,
+      "CoolDown": 0
     },
     {
       "Id": "FireDragon",
@@ -16,7 +17,8 @@
       "Damage": 15,
       "IconKey": "UI\\ShootFireArc.png",
       "IconW": 40,
-      "IconH": 40
+      "IconH": 40,
+      "CoolDown": 8
     },
     {
       "Id": "FireBall",
@@ -25,7 +27,8 @@
       "Damage": 20,
       "IconKey": "UI\\ShootFireball.png",
       "IconW": 40,
-      "IconH": 40
+      "IconH": 40,
+      "CoolDown": 5
     },
     {
       "Id": "EarthShield",
@@ -34,7 +37,8 @@
       "Damage": 20,
       "IconKey": "UI\\SummonBoulderShield.png",
       "IconW": 42,
-      "IconH": 40
+      "IconH": 40,
+      "CoolDown": 9
     },
     {
       "Id": " ",
@@ -43,7 +47,8 @@
       "Damage": 0,
       "IconKey": "",
       "IconW": 0,
-      "IconH": 0
+      "IconH": 0,
+      "CoolDown": 0
     }
 
   ]

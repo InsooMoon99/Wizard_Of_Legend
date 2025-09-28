@@ -19,11 +19,15 @@ void CSkill_WindSlash::BeginPlay()
 	m_Id = "WindSlash";
 
 	if (auto data = SKILL_DATA->GetById(m_Id))
+	{
 		m_DataDamage = data->Damage;
+		m_DataCoolDown = data->CoolDown;
+	}
 	else
+	{
 		m_DataDamage = 10.f;
-
-	//SetIcon(L"UI\\WindSlashBasic.png", Vec2(16.f) * 2.5f);
+		m_DataCoolDown = 5.f;
+	}
 }
 
 void CSkill_WindSlash::Tick()
@@ -101,4 +105,6 @@ void CSkill_WindSlash::Activate(CActor* _Owner)
 	wind->BeginPlay();
 
 	m_WindSlash.push_back(wind);
+
+	StartCoolDown();
 }

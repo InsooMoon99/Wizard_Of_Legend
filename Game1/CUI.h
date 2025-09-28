@@ -16,7 +16,7 @@ public:
 	virtual void Release() override;
 
 	void SetPos(Vec2 pos)		 { m_Pos = pos; }
-	virtual void SetRender(bool _Render) { bRender = _Render; }
+	virtual void SetRendering(bool _Render) { bRender = _Render; }
 
 	Vec2 GetPos()	 { return m_Pos; }
 	bool GetRender() { return bRender; }

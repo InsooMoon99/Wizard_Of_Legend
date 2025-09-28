@@ -21,7 +21,8 @@ public:
 	void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 
 protected:
-	// 그 전에 쿨타임 먼저 진행하기
+	// Json으로 데이터 가져와서 세팅해주기 <- 집가서 ㄱ
+	FItemData m_ItemData;
 
 };
 

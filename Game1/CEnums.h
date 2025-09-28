@@ -149,3 +149,12 @@ enum ESkillSlot
 
 	Slot_END
 };
+
+enum class EItemType
+{
+	Consumable,
+	Weapon,
+	Armor,
+
+	ItemType_END
+};

@@ -52,37 +52,56 @@ bool CSkillDataManager::LoadData(const wstring& filename)
 
     for (auto& row : j["Skill_Data"])
     {
-        FSkillData d{};
+        FSkillData data{};
 
-        d.Id = row.value("Id", "");
-        d.Name = ConvertUtf8ToWString(row.value("Name", ""));
-        d.Desc = ConvertUtf8ToWString(row.value("Desc", ""));
+        data.Id = row.value("Id", "");
+        data.Name = ConvertUtf8ToWString(row.value("Name", ""));
+        data.Desc = ConvertUtf8ToWString(row.value("Desc", ""));
 
+        // µ¥¹ÌÁö
         if (row.contains("Damage")) 
         {
             if (row["Damage"].is_number())
-                d.Damage = (float)row["Damage"].get<double>();
+                data.Damage = (float)row["Damage"].get<double>();
 
             else if (row["Damage"].is_string())
             {
                 try
                 {
-	                d.Damage = (float)stod(row["Damage"].get<string>());
+	                data.Damage = (float)stod(row["Damage"].get<string>());
                 }
 
                 catch (...)
                 {
-	                d.Damage = 0.f;
+	                data.Damage = 0.f;
                 }
             }
         }
 
-        d.IconKey = row.value("IconKey", "");
-        d.IconW = row.value("IconW", 0);
-        d.IconH = row.value("IconH", 0);
+        if (row.contains("CoolDown"))
+        {
+            if (row["CoolDown"].is_number())
+                data.CoolDown = (float)row["CoolDown"].get<double>();
 
-        if (!d.Id.empty())
-            m_ById[d.Id] = move(d);
+            else if (row["CoolDown"].is_string())
+            {
+                try
+                {
+                    data.CoolDown = (float)stod(row["CoolDown"].get<string>());
+                }
+                catch (...)
+                {
+                    data.CoolDown = 0.f;
+                }
+            }
+        }
+
+        data.IconKey = row.value("IconKey", "");
+        data.IconW = row.value("IconW", 0);
+        data.IconH = row.value("IconH", 0);
+
+        if (!data.Id.empty())
+            m_ById[data.Id] = move(data);
     }
 
     return true;

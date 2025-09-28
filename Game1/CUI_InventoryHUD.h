@@ -20,7 +20,7 @@ public:
 	void Render() override;
 	void Release() override;
 
-	virtual void SetRender(bool _Render) override;
+	virtual void SetRendering(bool _Render) override;
 
 public:
 	shared_ptr<CUI_InvenSkill> GetInvenSkill()  { return m_Skill; }

@@ -5,17 +5,18 @@
 
 CUI_Skill_Pannel::CUI_Skill_Pannel()
 {
-	m_Panel = make_shared<ObRect>();
-	m_Panel->scale = Vec2(500.f, 120.f);
-	m_Panel->pivot = OFFSET_LT;
-	m_Panel->visible = false;
-	m_Panel->isFilled = false;
-	m_Panel->space = SPACE::SCREEN;
-	m_Panel->collider = COLLIDER::NONE;
-	m_Panel->SetLocalPos(Vec2(-600.f, -230.f));
+	m_PanelRect = make_shared<ObRect>();
+	m_PanelRect->scale = Vec2(500.f, 120.f);
+	m_PanelRect->pivot = OFFSET_LT;
+	m_PanelRect->visible = false;
+	m_PanelRect->isFilled = false;
+	m_PanelRect->space = SPACE::SCREEN;
+	m_PanelRect->collider = COLLIDER::NONE;
+	m_PanelRect->SetLocalPos(Vec2(-600.f, -230.f));
 
 	m_Skill_Panel.resize(SKILL_PANEL);
 	m_Skill_Key.resize(SKILL_PANEL);
+	m_CoolTime_Rect.resize(SKILL_PANEL);
 
 	Vec2 panelSize = Vec2(42.f, 40.f) * 1.3f;
 	float padding = 10.f;
@@ -24,9 +25,22 @@ CUI_Skill_Pannel::CUI_Skill_Pannel()
 	for (int i = 0; i < SKILL_PANEL; i++)
 	{
 		m_Skill_Panel[i] = RESOURCE->CreateUI(L"UI\\Panel.png", panelSize, true);
-		m_Skill_Panel[i]->SetParentT(*m_Panel);
+		m_Skill_Panel[i]->SetParentT(*m_PanelRect);
 		m_Skill_Panel[i]->pivot = OFFSET_LT;
 		m_Skill_Panel[i]->SetLocalPos(Vec2(startX + i * (panelSize.x + padding), -48.f));
+	}
+	
+	for (int i = 0; i < SKILL_PANEL; i++)
+	{
+		m_CoolTime_Rect[i] = make_shared<ObRect>();
+		m_CoolTime_Rect[i]->scale = panelSize;
+		m_CoolTime_Rect[i]->visible = true;
+		m_CoolTime_Rect[i]->isFilled = true;
+		m_CoolTime_Rect[i]->color = Color(0, 0, 0, 0.2);
+		m_CoolTime_Rect[i]->SetParentT(*m_PanelRect);
+		m_CoolTime_Rect[i]->pivot = OFFSET_LB;
+		m_CoolTime_Rect[i]->space = SPACE::SCREEN;
+		m_CoolTime_Rect[i]->SetLocalPos(Vec2(startX + i * (panelSize.x + padding), -48.f - panelSize.y));
 	}
 
 	Vec2 keySize = Vec2(16.f, 16.f) * 2.f;
@@ -43,6 +57,17 @@ CUI_Skill_Pannel::CUI_Skill_Pannel()
 		m_Skill_Key[i]->SetLocalPos(Vec2(26.f, 15.f));
 	}
 
+	// RECT rect = { 66, 642, 126, 702 };
+	int addOffset = 65;
+	for (int i = 0; i < SKILL_PANEL; i++)
+	{
+		m_WritePos[i] = {
+			66 + (i * addOffset),
+			642,
+			126 + (i * addOffset),
+			702};
+	}
+
 	bRender = true;
 }
 
@@ -54,6 +79,7 @@ CUI_Skill_Pannel::~CUI_Skill_Pannel()
 void CUI_Skill_Pannel::BeginPlay()
 {
 	CUI::BeginPlay();
+
 
 }
 
@@ -74,7 +100,6 @@ void CUI_Skill_Pannel::Tick()
 	//	ImGui::End();
 	//#endif
 
-	// TODO : 슬롯의 스킬이 바꼈으면, UI 최신화 해줘야함
 	auto weapon = m_Weapon.lock();
 	if (weapon)
 	{
@@ -104,26 +129,47 @@ void CUI_Skill_Pannel::Tick()
 				m_IconClones[idx] = std::move(clone);
 			}
 		}
-
 	}
 
-	m_Panel->Update();
+	if (weapon)
+	{
+		auto infos = weapon->GetSkill_UiInfo();
+
+		for (int i = 0; i < SKILL_PANEL; i++)
+		{
+			auto& rect = m_CoolTime_Rect[i];
+			rect->visible = false;
+
+			if (i < (int)infos.size())
+			{
+				auto& info = infos[i];
+
+				if (info.IsCoolTime && info.Cooldown > 0.f)
+				{
+					float ratio = Utility::Saturate(info.CooldownRemain / info.Cooldown);
+
+					float height = (m_Skill_Panel[i]->scale.y) * ratio;
+
+					rect->scale.y = height;
+					rect->visible = (height > 0.0001f);
+				}
+			}
+		}
+	}
+
+	m_PanelRect->Update();
 
 	for (auto& panel : m_Skill_Panel)
-	{
 		panel->Update();
-	}
 
 	for (auto& key : m_Skill_Key)
-	{
 		key->Update();
-	}
+
+	for (auto& coolRect : m_CoolTime_Rect)
+		coolRect->Update();
 
 	for (auto clone : m_IconClones)
-	{
-		if (clone)
-			clone->Update();
-	}
+		if (clone) clone->Update();
 
 }
 
@@ -131,7 +177,20 @@ void CUI_Skill_Pannel::Render()
 {
 	CUI::Render();
 
-	m_Panel->Render();
+	m_PanelRect->Render();
+
+	for (int i = 0; i < SKILL_PANEL; i++)
+	{
+		auto& info = m_Skill_Infos[i];
+
+		if (info.IsCoolTime && info.CooldownRemain > 0.f)
+		{
+			wstring string = to_wstring((int)ceil(info.CooldownRemain));
+
+			DWRITE->RenderText(string, m_WritePos[i], 30.f, L"맑은 고딕", Color(1, 1, 1, 1), DWRITE_FONT_WEIGHT_BOLD);
+
+		}
+	}
 
 	for (auto& panel : m_Skill_Panel)
 		panel->Render();
@@ -140,10 +199,10 @@ void CUI_Skill_Pannel::Render()
 		key->Render();
 
 	for (auto& clone : m_IconClones)
-	{
-		if (clone)
-			clone->Render();
-	}
+		if (clone) clone->Render();
+
+	for (auto& coolRect : m_CoolTime_Rect)
+		coolRect->Render();
 		
 }
 

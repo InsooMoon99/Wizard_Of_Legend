@@ -19,11 +19,16 @@ void CSkill_Earth_Shield::BeginPlay()
 	m_Id = "EarthShield";
 
 	if (auto data = SKILL_DATA->GetById(m_Id))
+	{
 		m_DataDamage = data->Damage;
+		m_DataCoolDown = data->CoolDown - 0.1f;
+	}
 	else
+	{
 		m_DataDamage = 10.f;
+		m_DataCoolDown = 5.f - 0.1f;
+	}
 
-	//SetIcon(L"UI\\SummonBoulderShield.png", Vec2(16.f) * 2.5f);
 }
 
 void CSkill_Earth_Shield::Tick()
@@ -104,4 +109,6 @@ void CSkill_Earth_Shield::Activate(CActor* _Owner)
 	wind->BeginPlay();
 
 	m_Armor.push_back(wind);
+
+	StartCoolDown();
 }

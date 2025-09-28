@@ -22,31 +22,39 @@ public:
 	virtual void Activate(CActor* _Owner) abstract;
 
 public:
-	void	Set_CoolDown(float _CoolDown) { m_CoolDown = _CoolDown; }
-	void	SetFiring(bool _Fire)		  { bFiring = _Fire; }
-	void	SetSlot(ESkillSlot _Slot) { m_Slot = _Slot; }
+	void				SetFiring(bool _Fire)		  { bFiring = _Fire; }
+	bool				GetFiring()			  { return bFiring; }
 
-	float	Get_CoolDown()		  { return m_CoolDown; }
-	bool	GetFiring()			  { return bFiring; }
+	void				SetSlot(ESkillSlot _Slot) { m_Slot = _Slot; }
+	ESkillSlot			GetSlot()		  { return m_Slot; }
+
+	void				SetCoolDown(float _CoolDown) { m_DataCoolDown = _CoolDown; }
+	float				GetCoolDown() { return m_DataCoolDown; }
+
+	void				SetCoolRemain(float _CoolRemain) { m_CoolRemain = _CoolRemain; }
+	float				GetCoolRemain() { return m_CoolRemain; }
+
+	bool				IsCoolTime() const { return m_CoolRemain > 0.f; }
+
 	shared_ptr<ObImage> GetIcon() { return m_Icon; }
-	ESkillSlot GetSlot()		  { return m_Slot; }
+	void				SetIcon(const wstring& path, const Vec2& size);
 
-	FSkillInfo& Get_Skill_Info()  { return m_Skill_Info; }
+	FSkillInfo&			Get_Skill_Info()  { return m_Skill_Info; }
+	const char*			GetSkill_Id() { return m_Id; }
 
-	void	SetIcon(const wstring& path, const Vec2& size);
-
-	const char* GetSkill_Id() { return m_Id; }
+	void				StartCoolDown() {m_CoolRemain = m_DataCoolDown;}
 
 protected:
 	const char* m_Id = "";
-	float		m_DataDamage;
-	bool		bFiring = false;
-
 	FSkillInfo	m_Skill_Info;
 
-private:
-	float m_CoolDown = 0.f;
+	bool		bFiring = false;
 
+	float		m_DataDamage;
+	float		m_DataCoolDown = 0.f;
+	float		m_CoolRemain = 0.f;
+
+private:
 	shared_ptr<ObImage> m_Icon;
 	ESkillSlot m_Slot = ESkillSlot::Slot_END;
 

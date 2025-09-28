@@ -19,7 +19,7 @@ public:
 	void Render() override;
 	void Release() override;
 
-	virtual void SetRender(bool _Render) override;
+	virtual void SetRendering(bool _Render) override;
 
 public:
 	void SetWeapon(shared_ptr<CWeaponComponent> weapon) { m_Weapon = weapon; }

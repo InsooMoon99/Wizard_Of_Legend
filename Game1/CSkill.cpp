@@ -21,6 +21,14 @@ void CSkill::Tick()
 {
 	if (m_Icon)
 		m_Icon->Update();
+
+	if (m_CoolRemain > 0.f)
+	{
+		m_CoolRemain -= DELTA;
+
+		if (m_CoolRemain < 0.f)
+			m_CoolRemain = 0.f;
+	}
 }
 
 void CSkill::LateUpdate()
@@ -39,7 +47,8 @@ void CSkill::Render()
 
 bool CSkill::CanActivate(const FSkillInfo& _Info)
 {
-	// TODO : 쿨타임만 구현하면 될거같다.
+	if (m_CoolRemain > 0.f)
+		return false;
 
 	return true;
 }
@@ -57,6 +66,4 @@ void CSkill::SetIcon(const wstring& path, const Vec2& size)
 		m_Icon = RESOURCE->CreateUI(path, size, false);
 		m_Icon->pivot = OFFSET_LT;
 	}
-
-
 }

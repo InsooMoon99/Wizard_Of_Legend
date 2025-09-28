@@ -249,26 +249,26 @@ void CPlayer::Key_Input()
 		{
 			m_Weapon->Activate_Skill(ESkillType::Fire_Ball);
 
-			return;
+			//return;
 		}
 
 		if (INPUT->KeyDown(VK_LBUTTON))
 		{
 			m_Weapon->Activate_Skill(ESkillType::Wind_Slash);
 
-			return;
+			//return;
 		}
 
 		if (INPUT->KeyDown('E'))
 		{
 			m_Weapon->Activate_Skill(ESkillType::Earth_Shield);
 
-			return;
+			//return;
 		}
 
 		if (INPUT->KeyDown(VK_RBUTTON))
 		{
-			//m_Weapon->Activate_Skill(ESkillType::Fire_Dragon);
+			m_Weapon->Activate_Skill(ESkillType::Fire_Dragon);
 
 			//return;
 		}

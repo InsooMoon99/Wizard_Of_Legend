@@ -73,7 +73,7 @@ void CUI_InvenSkill::BeginPlay()
 
 	FOnRendering.Add([this](bool bCheck)
 		{
-			this->SetRender(bCheck);
+			this->SetRendering(bCheck);
 		});
 
 	m_Skill_Panel_Gold[LButton]->visible = true;
@@ -184,9 +184,9 @@ void CUI_InvenSkill::Release()
 	m_Weapon.reset();
 }
 
-void CUI_InvenSkill::SetRender(bool _Render)
+void CUI_InvenSkill::SetRendering(bool _Render)
 {
-	CUI::SetRender(_Render);
+	CUI::SetRendering(_Render);
 
 	for (auto& clone : m_IconClones)
 	{

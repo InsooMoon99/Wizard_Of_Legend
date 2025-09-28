@@ -104,8 +104,11 @@ vector<FSkill_UiInfo> CWeaponComponent::GetSkill_UiInfo()
 
         ui.Slot = skill->GetSlot();
         ui.Type = type;
-        ui.Cooldown = skill->Get_CoolDown();
-        //ui.CooldownRemain = skill->GetCooldownRemain();
+
+        ui.Cooldown = skill->GetCoolDown();
+        ui.CooldownRemain = skill->GetCoolRemain();
+        ui.IsCoolTime = skill->IsCoolTime();
+
         ui.Id = CHelper::SkillIdFromType(type);
 
         auto data = SKILL_DATA->GetById(ui.Id);

@@ -21,12 +21,16 @@ void CSkill_FireBall::BeginPlay()
 
 	m_Id = "FireBall";
 
-	//SetIcon(L"UI\\ShootFireball.png", Vec2(16.f, 16.f) * 2.5f);
-
 	if (auto data = SKILL_DATA->GetById(m_Id))
+	{
 		m_DataDamage = data->Damage;
-	else 
+		m_DataCoolDown = data->CoolDown - 0.1f;
+	}
+	else
+	{
 		m_DataDamage = 10.f;
+		m_DataCoolDown = 5.f - 0.1f;
+	}
 
 }
 
@@ -77,13 +81,15 @@ bool CSkill_FireBall::CanActivate(const FSkillInfo& _Info)
 	if (!CSkill::CanActivate(_Info))
 		return false;
 
-	// TODO : 나중에 스킬 쿨타임에 따라서 판단
+	// 부모쪽 CSkill에서 CoolRemain으로 처리
 
 	return true;
 }
 
 void CSkill_FireBall::Activate(CActor* _Owner)
 {
+	if (!CanActivate(m_Skill_Info)) return;
+
 	CSkill::Activate(_Owner);
 
 	CCharacter* character = dynamic_cast<CCharacter*>(_Owner);
@@ -108,4 +114,6 @@ void CSkill_FireBall::Activate(CActor* _Owner)
 	fireBall->BeginPlay();
 
 	m_FireBall.push_back(fireBall);
+
+	StartCoolDown();
 }
