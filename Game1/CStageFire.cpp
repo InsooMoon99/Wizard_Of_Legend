@@ -17,7 +17,7 @@ CStageFire::CStageFire()
 	m_Actors.push_back(m_TestDummy);
 	m_Actors.push_back(m_Player);
 
-	m_MapSize = Vec2(4228.f, 5860.f);
+	m_MapSize = Vec2(1024.f, 1024.f);
 	m_PlayerPos = Vec2(-1790.f, -790.f);
 
 	Resource_Setting();
@@ -143,7 +143,7 @@ void CStageFire::Resource_Setting()
 	mapShadow->color = Color(0.0f, 0.0f, 0.0f, 1.0f);
 	m_Map.insert({ ESceneType::Shadow, mapShadow });
 
-	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\FireMapx2.png", m_MapSize, true);
+	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\TestFire.png", m_MapSize, true);
 	map->SetWorldPos(Vec2(0, 0));
 	map->SetLocalPos(Vec2(0, 30));
 	m_Map.insert({ ESceneType::Stage01, map });
