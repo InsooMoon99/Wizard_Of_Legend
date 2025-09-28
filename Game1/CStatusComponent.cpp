@@ -8,6 +8,8 @@ CStatusComponent::CStatusComponent()
 
 	m_MaxMp = 100.f;
 	m_Mp = m_MaxMp;
+
+	m_Defense = 10.f;
 }
 
 CStatusComponent::~CStatusComponent()

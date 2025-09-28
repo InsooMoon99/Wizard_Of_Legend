@@ -28,8 +28,8 @@ public:
 	void SetCanAttack(bool bFlag) { m_CanAttack = bFlag; }
 
 public:
-	ECharacterState Get_State()		{ return m_PlayerState; }
-	EPlayerDir	 Get_Dir()			{ return m_PlayerDir; }
+	ECharacterState	 Get_State()		{ return m_PlayerState; }
+	EPlayerDir		 Get_Dir()		{ return m_PlayerDir; }
 
 	CDelegate<ECharacterState, EPlayerDir> OnBossStateChanged;
 

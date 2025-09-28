@@ -35,9 +35,12 @@
     <ClInclude Include="CEarth_Shield.h" />
     <ClInclude Include="CFire_Dragon.h" />
     <ClInclude Include="CGameObject.h" />
+    <ClInclude Include="CItemDataManager.h" />
     <ClInclude Include="CItem_Factory.h" />
+    <ClInclude Include="CItem_Potion.h" />
     <ClInclude Include="CJavelin_Spear.h" />
     <ClInclude Include="CRenderManager.h" />
+    <ClInclude Include="CShop.h" />
     <ClInclude Include="CShopNPC.h" />
     <ClInclude Include="CSkillDataManager.h" />
     <ClInclude Include="CSkillManager.h" />
@@ -120,9 +123,12 @@
     <ClCompile Include="CEarth_Shield.cpp" />
     <ClCompile Include="CFire_Dragon.cpp" />
     <ClCompile Include="CGameObject.cpp" />
+    <ClCompile Include="CItemDataManager.cpp" />
     <ClCompile Include="CItem_Factory.cpp" />
+    <ClCompile Include="CItem_Potion.cpp" />
     <ClCompile Include="CJavelin_Spear.cpp" />
     <ClCompile Include="CRenderManager.cpp" />
+    <ClCompile Include="CShop.cpp" />
     <ClCompile Include="CShopNPC.cpp" />
     <ClCompile Include="CSkillDataManager.cpp" />
     <ClCompile Include="CSkillManager.cpp" />
@@ -188,6 +194,7 @@
     <ResourceCompile Include="Game1.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Item_Data.json" />
     <None Include="Skill_Data.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

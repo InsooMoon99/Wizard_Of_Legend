@@ -1,0 +1,42 @@
+﻿{
+  "Item_Data": [
+    {
+      "Id": "Heal",
+      "Name": "체력 포션",
+      "Desc": "체력을 200만큼 회복합니다.",
+      "IconKey": "Shop\\POTION.png",
+      "IconW": 40,
+      "IconH": 40,
+      "Price": 100,
+      "ItemType": "Potion",
+      "StatType": "Hp",
+      "Option": "Add",
+      "Value": 200
+    },
+    {
+      "Id": "Weapon1",
+      "Name": "칼1",
+      "Desc": "공격 ㄱㄱ",
+      "IconKey": "Shop\\무기2.bmp",
+      "IconW": 40,
+      "IconH": 40,
+      "Price": 150,
+      "ItemType": "Weapon",
+      "StatType": "Attack",
+      "Option": "Multi",
+      "Value": 0.15
+    },
+    {
+      "Id": "Armor1",
+      "Name": "방어구1",
+      "Desc": "방어 ㄱㄱ",
+      "IconKey": "Shop\\방어구1.bmp",
+      "IconW": 40,
+      "IconH": 40,
+      "ItemType": "Armor",
+      "StatType": "Defense",
+      "Option": "Add",
+      "Value": 10
+    }
+  ]
+}

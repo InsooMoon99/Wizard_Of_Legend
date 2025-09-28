@@ -79,11 +79,11 @@ struct FItemData
 	int			IconW = 0;
 	int			IconH = 0;
 
-	EItemType	ItemType;
+	EItemType		ItemType = EItemType::Etc;
+	EItem_StatType	ItemStatType = EItem_StatType::END;
+	EModifyOption	Option = EModifyOption::END;
 
-	int			HealAmount = 0;
-	int			Attack = 0;
-	int			Defense = 0;
+	float Value;
 
 };
 
