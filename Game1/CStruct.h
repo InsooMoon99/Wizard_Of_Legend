@@ -75,6 +75,9 @@ struct FItemUIInfo
 struct FHitDamage
 {
 	float Damage = 0.f;
+	float Amount = 0.f;
+	float Duration = 0.f;
+	Vec2  Dir{};
 
 	GameObject* colldier = nullptr;
 	GameObject* other = nullptr;
@@ -98,4 +101,14 @@ struct FItemData
 	float Value;
 
 };
+
+struct FKnockbackState
+{
+	bool  active = false;
+	Vec2  dir = { 0,0 };
+	float t = 0.f;
+	float duration = 0.f;
+	float amount = 0.f; 
+};
+
 

@@ -172,7 +172,7 @@ void CEarth_Shield::OnComponentBeginOverlap(GameObject* collider, GameObject* ot
 	if (hit == m_Skill_Info.Instigator) return;
 	//if (IsSameTeam(hit, m_Collision->Get_Instigator())) return;
 
-	if (hit->IsKnockback())
+	if (hit->IsKnockbackPrev())
 	{
 		Vec2 dir = hit->Get_WorldPos() - m_StartPos;
 		dir.Normalize();

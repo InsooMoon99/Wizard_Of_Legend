@@ -50,7 +50,28 @@ void CCharacter::Release()
 
 void CCharacter::TakeDamage(FHitDamage _Hit)
 {
-	m_Status->SetHp(m_Status->GetHp() - _Hit.Damage);
-	m_State->Change_State(ECharacterState::Hit);
+	//m_Status->SetHp(m_Status->GetHp() - _Hit.Damage);
+	//m_State->Change_State(ECharacterState::Hit);
+}
+
+void CCharacter::UpdateKnockbackTimer()
+{
+	if (!m_Knock.active) return;
+
+	m_Knock.t += DELTA;
+
+	if (m_Knock.t >= m_Knock.duration)
+	{
+		m_Knock.active = false;
+	}
+}
+
+void CCharacter::SetDead()
+{
+	m_Status->SetHp(0.f);
+	m_State->Change_State(ECharacterState::Dead);
+
+	// 스프라이트 재생 끝으로 미루기
+	//m_PendingKill = true;
 }
 

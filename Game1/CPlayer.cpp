@@ -39,6 +39,8 @@ CPlayer::CPlayer()
 		m_UI->SetPlayerHUD();
 		m_UI->SetInventoryHUD();
 	}
+
+	
 }
 
 CPlayer::~CPlayer()
@@ -74,8 +76,8 @@ void CPlayer::Tick()
 	if (m_Collision)
 		m_Pos = m_Collision->GetWorldPos();
 
-	m_prevState = m_State->Get_State();
-	m_prevDir = m_State->Get_Dir();
+	ECharacterState prevState = m_prevState;
+	EPlayerDir      prevDir = m_prevDir;
 
 	Key_Input();
 
@@ -98,32 +100,24 @@ void CPlayer::Tick()
 		}
 	}
 
+
 	switch (m_State->Get_State())
 	{
-	case ECharacterState::Idle:
-		State_Idle();
-		break;
-
-	case ECharacterState::Walk:
-		State_Walk();
-		break;
-
-	case ECharacterState::Dash:
-		State_Dash();
-		break;
-
+	case ECharacterState::Idle: State_Idle(); break;
+	case ECharacterState::Walk: State_Walk(); break;
+	case ECharacterState::Dash: State_Dash(); break;
 	case ECharacterState::Attack1:
-	case ECharacterState::Attack2:
-		State_Attack();
-		break;
-
-	case ECharacterState::Hit:
-		State_Hit();
-		break;
+	case ECharacterState::Attack2: State_Attack(); break;
+	case ECharacterState::Hit: State_Hit(); break;
 	}
 
-	if (m_prevState != m_State->Get_State() || m_prevDir != m_State->Get_Dir())
+	UpdateKnockbackTimer();
+
+	if (prevState != m_State->Get_State() || prevDir != m_State->Get_Dir())
 		SetSprite(m_State->Get_State(), m_State->Get_Dir());
+
+	Update_Hit();
+
 	
 	for (auto& col : m_vecCol)     
 		col->Update();
@@ -132,6 +126,8 @@ void CPlayer::Tick()
 		shadow.second->Update();
 
 	m_Player_Marker->Update();
+	m_Player_HitBlur->Update();
+
 	if (m_CurImg)
 		m_CurImg->Update();
 
@@ -140,6 +136,10 @@ void CPlayer::Tick()
 
 	for (auto& component : m_Components)
 		component->TickComponent();
+
+	m_prevState = m_State->Get_State();
+	m_prevDir = m_State->Get_Dir();
+
 }
 
 
@@ -171,6 +171,7 @@ void CPlayer::Render()
 	for (auto& component : m_Components)
 		component->Render();
 
+	m_Player_HitBlur->Render();
 }
 
 void CPlayer::Release()
@@ -196,6 +197,21 @@ void CPlayer::Update_Hit()
 {
 	CCharacter::Update_Hit();
 
+	if (!m_Player_HitBlur) return;
+
+	// Hit 상태 의향이 있거나, 넉백 중이면 켠다
+	bool wantOn = m_HitBlurWantsOn || m_Knock.active;
+
+	if (wantOn)
+		m_HitBlurAlpha += (m_HitBlurFadeIn > 0.f ? DELTA / m_HitBlurFadeIn : 1.f);
+	else
+		m_HitBlurAlpha -= (m_HitBlurFadeOut > 0.f ? DELTA / m_HitBlurFadeOut : 1.f);
+
+	m_HitBlurAlpha = clamp(m_HitBlurAlpha, 0.f, 1.f);
+
+	float alpha = m_HitBlurMaxAlpha * m_HitBlurAlpha;
+	m_Player_HitBlur->color.A(alpha);
+	m_Player_HitBlur->visible = (alpha > 0.01f);
 }
 
 void CPlayer::Hit_Color()
@@ -424,7 +440,6 @@ void CPlayer::State_Attack()
 			return;
 		}
 
-		// 연속 발사가 끝났다면 Idle 복귀
 		m_State->Change_State(ECharacterState::Idle);
 	}
 }
@@ -433,10 +448,30 @@ void CPlayer::State_Hit()
 {
 	if (m_CurImg)
 	{
-		if (CHelper::IsLastFrame(m_CurImg))
+		if (!m_Knock.active && CHelper::IsLastFrame(m_CurImg))
 		{
 			m_State->Change_State(ECharacterState::Idle);
+			m_HitBlurWantsOn = false;
 		}
+
+		// 넉백
+		if (m_Knock.active)
+		{
+			float time = m_Knock.t / max(m_Knock.duration, 1e-4f);
+			time = clamp(time, 0.f, 1.f);
+
+			float kTime = 1.f - time;
+			float speed = m_Knock.amount * kTime;
+
+			MoveTile(m_Knock.dir, speed);
+
+			m_Knock.t += DELTA;
+			if (m_Knock.t >= m_Knock.duration)
+			{
+				m_Knock.active = false;
+			}
+		}
+
 	}
 }
 
@@ -470,6 +505,14 @@ void CPlayer::SetSprite(ECharacterState _State, EPlayerDir _Dir)
 
 void CPlayer::Play_Sprite(ECharacterState _State)
 {
+	bool bBlurCheck = _State == ECharacterState::Hit;
+	m_HitBlurWantsOn = bBlurCheck;
+
+	if (!bBlurCheck)
+	{
+		m_State->SetCanAttack(true);
+	}
+
 	switch (_State)
 	{
 	case ECharacterState::Idle:
@@ -537,10 +580,26 @@ void CPlayer::TakeDamage(FHitDamage _Hit)
 {
 	CCharacter::TakeDamage(_Hit);
 
-	if (m_State->Get_State() != ECharacterState::Hit)
-		return;
+	//if (m_State->Get_State() != ECharacterState::Hit)
+	//	return;
 
-	SetSprite(ECharacterState::Hit, m_State->Get_Dir());
+	cout << "Player Hit" << endl;
+
+	m_State->Change_State(ECharacterState::Hit);
+	m_HitBlurWantsOn = true;
+
+	m_Status->AddHp(-_Hit.Damage);
+
+	if (_Hit.Duration > 1e-4f && _Hit.Amount > 0.f)
+	{
+		m_Knock.active = true;
+		m_Knock.dir = _Hit.Dir;                 
+		m_Knock.t = 0.f;
+		m_Knock.duration = _Hit.Duration;            
+		m_Knock.amount = _Hit.Amount;              
+	}
+
+	//SetSprite(ECharacterState::Hit, m_State->Get_Dir());
 
 	// Particle 
 	Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
@@ -910,6 +969,12 @@ void CPlayer::Resource_Settings()
 		m_Sprites[ECharacterState::Hit][EPlayerDir::Back_Right] = right_Hit;
 	}
 
+	// Hit Blur
+	{
+		m_Player_HitBlur = RESOURCE->CreateUI(L"UI\\CameraHurtEffect.png", Vec2(WINCX, WINCY), false);
+		m_Player_HitBlur->color.A(0.f);
+	}
+
 	// Start Image Setting
 	m_CurImg = m_Sprites[ECharacterState::Idle][EPlayerDir::Front];
 	SetSprite(m_State->Get_State(), m_State->Get_Dir());
@@ -1031,4 +1096,3 @@ void CPlayer::MoveTile(const Vec2& dir, float speed)
 	//}
 
 }
-

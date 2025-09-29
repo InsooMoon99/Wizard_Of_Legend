@@ -23,6 +23,7 @@ public:
 public:
 	void Key_Input();
 	void Resource_Setting();
+	void RemoveDeadActors();
 
 private:
 	vector<shared_ptr<CActor>> m_Actors;

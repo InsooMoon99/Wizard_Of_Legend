@@ -205,7 +205,7 @@ void CTarget_Orb::OnComponentBeginOverlap(GameObject* collider, GameObject* othe
 
     if (hit == m_Skill_Info.Target)
     {
-        if (hit->IsKnockback())
+        if (hit->IsKnockbackPrev())
         {
             Vec2 dir = hit->Get_WorldPos() - m_StartPos;
             if (dir.LengthSquared() > 0.0001f) dir.Normalize();

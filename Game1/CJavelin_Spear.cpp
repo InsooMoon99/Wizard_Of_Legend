@@ -148,7 +148,7 @@ void CJavelin_Spear::OnComponentBeginOverlap(GameObject* collider, GameObject* o
 
 	if (hit == m_Skill_Info.Target)
 	{
-		if (hit->IsKnockback())
+		if (hit->IsKnockbackPrev())
 		{
 			Vec2 dir = hit->Get_WorldPos() - m_StartPos;
 			dir.Normalize();

@@ -58,6 +58,7 @@ public:
 	void AddInteract(shared_ptr<CItem> _InItem);
 	void RemoveInteract(CItem* _InItem);
 
+
 protected:
 	void Resource_Settings() override;
 
@@ -66,8 +67,8 @@ private:
 	void MoveTile(const Vec2& dir, float speed);
 
 private:
-	Vec2 m_MoveDir   =	{ 0, 0 };
-	Vec2 m_LastDir   =	{ 0, -1.f };
+	Vec2 m_MoveDir = { 0, 0 };
+	Vec2 m_LastDir = { 0, -1.f };
 
 	float m_DashDistance = 1200.f;
 
@@ -76,15 +77,23 @@ private:
 	unordered_map<EPlayerDir, shared_ptr<ObImage>>   m_Dash;
 
 	shared_ptr<ObImage> m_Player_Marker = nullptr;
+	shared_ptr<ObImage> m_Player_HitBlur = nullptr;
 
 private:
 	Vec2	m_StartShadowScale;
 	Vec2	m_EndShadowScale;
 
-	float	m_DashTimer    = 0.4f;
+	float	m_DashTimer = 0.4f;
 	int		m_DashEndFrame = 11;
 
 	vector<weak_ptr<CItem>> m_Interact;
 	weak_ptr<CItem> m_CurItem;
-};
 
+	float m_HitBlurAlpha = 0.f;
+	float m_HitBlurFadeIn = 0.06f;   
+	float m_HitBlurFadeOut = 0.10f;  
+	float m_HitBlurMaxAlpha = 0.35f; 
+	bool  m_HitBlurWantsOn = false;  
+
+
+};

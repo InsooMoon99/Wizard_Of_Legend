@@ -105,6 +105,14 @@ void CStageFire::LateUpdate()
 		bTrigger = true;
 	}
 
+	RemoveDeadActors();
+
+	for (auto& actor : m_Actors)
+	{
+		actor->LateUpdate();
+	}
+
+
 }
 
 void CStageFire::Render()
@@ -140,6 +148,16 @@ void CStageFire::Key_Input()
 	if (INPUT->KeyDown(VK_F1))
 	{
 		TILE->ToggleTileImagesVisible();
+	}
+
+	if (INPUT->KeyDown('1'))
+	{
+		for (auto& actor : m_Actors)
+		{
+			CMonsterBase* monster = dynamic_cast<CMonsterBase*>(actor.get());
+			if (monster)
+				monster->SetTarget(m_Player);
+		}
 	}
 }
 
@@ -179,11 +197,26 @@ void CStageFire::Resource_Setting()
 	m_ShopNPC	= make_shared<CShopNPC>();
 
 	blobRoller = make_shared<CBlobRoller>();
-	blobRoller->SetSpawnPos(m_Section1_Pos);
+	blobRoller->SetSpawnPos(Vec2(m_Section1_Pos.x + 100.f, m_Section1_Pos.y));
 
 	m_Actors.push_back(m_ShopNPC);
 	m_Actors.push_back(m_TestDummy);
 	m_Actors.push_back(blobRoller);
+}
+
+void CStageFire::RemoveDeadActors()
+{
+	m_Actors.erase(remove_if(m_Actors.begin(),m_Actors.end(),
+			[](const shared_ptr<CActor>& actor)
+			{
+				if (actor && actor->IsDestroy())
+				{
+					return true;
+				}
+
+				return false;
+			}), m_Actors.end()
+	);
 }
 
 

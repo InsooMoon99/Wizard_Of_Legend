@@ -49,9 +49,15 @@ public:
 	virtual shared_ptr<GameObject>  Get_Collision() { return m_Collision; }
 	virtual shared_ptr<ObImage>		Get_CurImg() { return m_CurImg; }
 
+	void SetPendingKill(bool _Pending) { m_PendingKill = _Pending; }
+	bool GetPendingKill() { return m_PendingKill; }
 
+public:
+	bool	IsDestroy() const { return m_PendingKill; }
 
 protected:
+	bool	m_PendingKill = false;
+
 	vector<shared_ptr<CComponent>>		m_Components;
 	// Collision
 	vector<GameObject*>		m_vecCol;

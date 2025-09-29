@@ -20,6 +20,6 @@ public:
 	void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 
 private:
-
+	float m_LifeTime = 0.f;
 
 };

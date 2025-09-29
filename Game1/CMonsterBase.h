@@ -26,6 +26,23 @@ protected:
 	void SetSprite(ECharacterState _State, EPlayerDir _Dir) override {};
 	void Play_Sprite(ECharacterState _State) override {};
 
+public:
+	shared_ptr<CActor> GetTarget() { return m_Target; }
+	void SetTarget(shared_ptr<CActor> actor) { m_Target = actor;  }
+
+	shared_ptr<GameObject> GetSight() { return m_SightRaidus; }
+	void SetSight(shared_ptr<GameObject> sight) { m_SightRaidus = sight; }
+
+	Vec2 GetTraceDir() { return m_TraceDir; }
+	void SetTraceDir(const Vec2& dir) { m_TraceDir = dir; }
+
+	virtual void TraceTarget() {};
+protected:
+	shared_ptr<CActor>		m_Target = nullptr;
+	shared_ptr<GameObject>	m_SightRaidus = nullptr;
+
+	Vec2 m_TraceDir;
+
 private:
 
 

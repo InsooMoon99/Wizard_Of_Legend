@@ -23,7 +23,7 @@ public:
 	void Hit_Color()  override abstract {};
 	void Hit_Effect() override abstract {};
 
-	bool IsKnockback() { return m_bKnockback; }
+	bool IsKnockbackPrev() { return m_bKnockback; }
 
 	void SetTeamID(int _ID) { m_TeamID = _ID; }
 	int  GetTeamID() { return m_TeamID; }
@@ -51,5 +51,14 @@ protected:
 	float m_HitTimer = 0.f;
 	bool  m_bKnockback = true;
 	int	  m_TeamID = 1;
+
+public:
+	bool IsKnockback() const { return m_Knock.active; }
+	void UpdateKnockbackTimer();
+
+	void SetDead();
+
+protected:
+	FKnockbackState m_Knock;
 };
 

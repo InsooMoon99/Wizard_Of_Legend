@@ -18,7 +18,7 @@ CWindSlash::CWindSlash(FSkillInfo& _Info)
 	m_Collision = make_shared<ObCircle>();
 	m_Collision->scale = Vec2(80.f, 80.f);
 	m_Collision->SetWorldPos(pos);
-	m_Collision->visible = false;
+	m_Collision->visible = true;
 	m_Collision->collider = COLLIDER::CIRCLE;
 	m_Collision->isFilled = false;
 	m_Collision->rotation = m_Skill_Info.Angle + rotation_Offset;
@@ -56,6 +56,12 @@ void CWindSlash::Tick()
 	if (m_Collision)
 		m_Pos = m_Collision->GetWorldPos();
 
+	m_LifeTime += DELTA;
+
+	if (m_LifeTime >= 0.1f)
+	{
+		m_PendingKill = true;
+	}
 
 	m_Collision->Update();
 }
@@ -96,29 +102,48 @@ void CWindSlash::OnComponentBeginOverlap(GameObject* collider, GameObject* other
 	if (hit == m_Skill_Info.Instigator) return;
 	//if (IsSameTeam(hit, m_Collision->Get_Instigator())) return;
 
-	if (hit->IsKnockback())
-	{
-		Vec2 dir = hit->Get_WorldPos() - m_StartPos;
-		dir.Normalize();
-		hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
-	}
-	
-
 	IColorChanger* colorChanger = hit;
 	if (colorChanger)
 		colorChanger->Hit_Color();
 
-	auto status = CHelper::GetComponent<CStatusComponent>(hit);
-	if (status)
-		status->SetHp(status->GetHp() - m_Skill_Info.Damage);
+	FHitDamage hitDamage;
+	{
+		Vec2 dir = hit->Get_WorldPos() - m_StartPos;
+		if (dir.LengthSquared() > 1e-8f) dir.Normalize();
 
-	Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
-	Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
-	PARTICLE->Spawn_Particle(L"HitSpark", Vec2(particlePos) + randomVec);
+		hitDamage.Dir = dir;
+		hitDamage.Damage = m_Skill_Info.Damage;
+		hitDamage.colldier = collider;
+		hitDamage.other = other;
 
-	SOUND->Stop("ImpactAir");
-	SOUND->Play("ImpactAir");
-	SOUND->SetVolume("ImpactAir", 0.1f);
+		if (hit->IsKnockbackPrev())
+		{
+			hitDamage.Amount = m_Skill_Info.Amount;   
+			hitDamage.Duration = 0.25f;               
+		}
+		else
+		{
+			hitDamage.Amount = 0.f;
+			hitDamage.Duration = 0.f;
+		}
+	}
+
+	hit->TakeDamage(hitDamage);
+
+	//auto status = CHelper::GetComponent<CStatusComponent>(hit);
+	//if (status)
+	//	status->SetHp(status->GetHp() - m_Skill_Info.Damage);
+
+	// 파티클, 사운드
+	{
+		Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
+		Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
+		PARTICLE->Spawn_Particle(L"HitSpark", Vec2(particlePos) + randomVec);
+
+		SOUND->Stop("ImpactAir");
+		SOUND->Play("ImpactAir");
+		SOUND->SetVolume("ImpactAir", 0.1f);
+	}
 
 	m_PendingKill = true;
 }

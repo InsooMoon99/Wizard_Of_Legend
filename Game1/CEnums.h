@@ -23,7 +23,7 @@ enum class ESceneType
 
 enum class ECharacterState
 {
-	Idle = 0, Walk, Dash, Attack1, Attack2, Hit,
+	Idle = 0, Walk, Dash, Attack1, Attack2, Hit, Dead,
 	Air, Boss_Start, Boss_Start2, Boss_Ready,
 	Boss_Attack1, Boss_Attack1_Ready,
 	Boss_Attack2,

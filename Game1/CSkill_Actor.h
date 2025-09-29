@@ -23,18 +23,11 @@ public:
 	virtual bool CheckHitWall();
 	virtual void OnHitWall(const Vec2& hitPos);
 
-	void SetPendingKill(bool _Pending) { m_PendingKill = _Pending; }
-	bool GetPendingKill() { return m_PendingKill; }
-
-public:
-	bool IsDestroy() const { return m_PendingKill; }
-
 protected:
 	FSkillInfo m_Skill_Info;
 	Vec2	m_StartPos;
 
 	float   m_SpawnLife = 0.f;
-	bool	m_PendingKill = false;
 
 };
 

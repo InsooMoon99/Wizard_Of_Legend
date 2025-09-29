@@ -24,6 +24,8 @@ public:
 	void	SetAttack(int _Attack) { m_Attack = _Attack; }
 	void	SetDef(int _Def) { m_Defense = _Def; }
 
+	void	AddHp(float hp) { m_Hp += hp; }
+
 public:
 	float	GetMaxHp() { return m_MaxHp; }
 	float	GetMaxMp() {return m_MaxMp;}
