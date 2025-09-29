@@ -19,6 +19,8 @@ void CActor::BeginPlay()
 	{
 		component->BeginPlay();
 	}
+
+	ApplyPendingSpawnPos();
 }
 
 void CActor::Tick()
@@ -51,6 +53,14 @@ void CActor::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 void CActor::OnComponentEndOverlap(GameObject* collider, GameObject* other)
 {
 
+}
+
+void CActor::ApplyPendingSpawnPos()
+{
+	if (!m_HasPendingSpawnPos) return;
+
+	Set_WorldPos(m_PendingSpawnPos);
+	m_HasPendingSpawnPos = false;
 }
 
 void CActor::AddComponent(shared_ptr<CComponent> _Component)

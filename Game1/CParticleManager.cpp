@@ -115,6 +115,15 @@ void CParticleManager::Resource_Settings()
 		m_Particles.insert({ L"Stone4", stone4 });
 	}
 
+	{
+
+		Vec2 telpoEffectSize = Vec2(766.f / 8.f, 512.f);
+		shared_ptr<ObImage> telpoEffect = RESOURCE->CreateSprite(L"Particle\\teleportEffect2.bmp", Vec2(telpoEffectSize), Int2(8, 1), true);
+		telpoEffect->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"StartEffect", telpoEffect });
+	}
+
 	// Effect
 	m_Particles.insert({ L"HitEffect", hit_Effect });
 	m_Particles.insert({ L"HitSpark", hit_Spark });

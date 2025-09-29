@@ -16,7 +16,7 @@ public:
 	virtual void Release()abstract     {}
 
 protected:
-	CActor* m_Player;
+	shared_ptr<CActor> m_Player;
 	unordered_map<ESceneType, shared_ptr<ObImage>> m_Map;
 };
 

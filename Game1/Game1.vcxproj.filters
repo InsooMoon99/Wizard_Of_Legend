@@ -247,16 +247,29 @@
     <ClInclude Include="CItemDataManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CShop.h">
-      <Filter>09. Shop</Filter>
-    </ClInclude>
     <ClInclude Include="CShopNPC.h">
       <Filter>09. Shop</Filter>
     </ClInclude>
     <ClInclude Include="CItem.h">
       <Filter>10. Item</Filter>
     </ClInclude>
-    <ClInclude Include="CItem_Potion.h" />
+    <ClInclude Include="CItem_Potion.h">
+      <Filter>10. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CShopComponent.h">
+      <Filter>09. Shop</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_InvenStatus.h">
+      <Filter>98.UI\02. Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="CItem_Weapon.h">
+      <Filter>10. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CItem_Armor.h">
+      <Filter>10. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlobRoller.h" />
+    <ClInclude Include="CMonsterBase.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -360,9 +373,6 @@
     </Filter>
     <Filter Include="98.UI\02. Inventory">
       <UniqueIdentifier>{9a45beb8-19d9-4926-a579-133c8bad9686}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="98.UI\03. Shop">
-      <UniqueIdentifier>{5613f531-6f57-41f0-a69b-a48c7bc3bb24}</UniqueIdentifier>
     </Filter>
     <Filter Include="99. Etc">
       <UniqueIdentifier>{8798797c-7351-43ae-8850-33e9dcada52c}</UniqueIdentifier>
@@ -606,7 +616,7 @@
     <ClCompile Include="CItemDataManager.cpp">
       <Filter>01. Manager</Filter>
     </ClCompile>
-    <ClCompile Include="CShop.cpp">
+    <ClCompile Include="CShopComponent.cpp">
       <Filter>09. Shop</Filter>
     </ClCompile>
     <ClCompile Include="CShopNPC.cpp">
@@ -615,7 +625,20 @@
     <ClCompile Include="CItem.cpp">
       <Filter>10. Item</Filter>
     </ClCompile>
-    <ClCompile Include="CItem_Potion.cpp" />
+    <ClCompile Include="CItem_Potion.cpp">
+      <Filter>10. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_InvenStatus.cpp">
+      <Filter>98.UI\02. Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="CItem_Weapon.cpp">
+      <Filter>10. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CItem_Armor.cpp">
+      <Filter>10. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlobRoller.cpp" />
+    <ClCompile Include="CMonsterBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game1.rc">

@@ -24,7 +24,7 @@
 #define STAR_CIRCLE  5
 #define SKILL_PANEL  6
 
-#define DEBUGLINE cout << "\n1";
+#define DEBUGLINE cout << "\nDebugLine!\n";
 
 #define SCENE		CSceneManager::Get_Instance()
 #define RESOURCE	CResourceManager::Get_Instance()

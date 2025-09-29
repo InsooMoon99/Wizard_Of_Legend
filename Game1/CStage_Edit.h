@@ -19,7 +19,7 @@ public:
 	void Key_Input();
 
 private:
-	vector<CActor*> m_Actors;
+	vector<shared_ptr<CActor>> m_Actors;
 
 	Vec2 m_PlayerPos;
 	Vec2 m_MapSize;

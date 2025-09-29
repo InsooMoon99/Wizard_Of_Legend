@@ -8,6 +8,7 @@
 #include "CUIComponent.h"
 #include "CStatusComponent.h"
 #include "CCollisionManager.h"
+#include "CItem.h"
 #include "CTile.h"
 
 CPlayer::CPlayer()
@@ -16,14 +17,17 @@ CPlayer::CPlayer()
 	m_UI = CHelper::CreateSharedComponent<CUIComponent>(this);
 	m_Inven = CHelper::CreateSharedComponent<CInventoryComponent>(this);
 
-	m_Status->SetMaxHp(100.f);
-	m_Status->SetMaxMp(100.f);
+	m_Status->SetMaxHp(500.f);
+	m_Status->SetMaxMp(500.f);
 
 	m_Status->SetHp(80.f);
 	m_Status->SetMp(60.f);
 	m_Status->SetSpeed(500.f);
 
 	m_Status->SetGold(100);
+
+	m_Status->SetAttack(100);
+	m_Status->SetDef(99);
 
 	m_TeamID = 0;
 
@@ -328,6 +332,35 @@ void CPlayer::Key_Input()
 	}
 
 	m_State->Change_Dir(curtDir);
+
+	float best = FLT_MAX;
+	shared_ptr<CItem> bestPtr;
+
+	for (auto it = m_Interact.begin(); it != m_Interact.end();) 
+	{
+		if (auto s = it->lock())
+		{
+			float d2 = (s->Get_WorldPos() - m_Collision->GetWorldPos()).LengthSquared();
+			if (d2 < best)
+			{
+				best = d2; bestPtr = s;
+			}
+			++it;
+		}
+		else
+		{
+			it = m_Interact.erase(it);
+		}
+	}
+	m_CurItem = bestPtr;
+
+	if (INPUT->KeyDown('F')) 
+	{
+		if (auto cur = m_CurItem.lock())
+		{
+			cur->ActivateItem(this);
+		}
+	}
 }
 
 void CPlayer::State_Idle()
@@ -549,6 +582,22 @@ void CPlayer::Dash_Sprite()
 		dashEffect->frame = Int2(0, 0);
 	}
 
+}
+
+void CPlayer::AddInteract(shared_ptr<CItem> _InItem)
+{
+	m_Interact.push_back(_InItem);
+}
+
+void CPlayer::RemoveInteract(CItem* _InItem)
+{
+	m_Interact.erase(remove_if(m_Interact.begin(), m_Interact.end(),
+		[_InItem](const weak_ptr<CItem>& weak)
+			{
+				auto ptr = weak.lock();
+				return !ptr || ptr.get() == _InItem;
+
+			}), m_Interact.end());
 }
 
 void CPlayer::Resource_Settings()

@@ -60,6 +60,18 @@ struct FSkill_UiInfo
 
 };
 
+struct FItemUIInfo
+{
+	string		 Id;          
+	wstring		 Name;       
+	wstring		 Desc;        
+	int          Value = 0;   
+	EItemType    Type = EItemType::Etc;
+	wstring		 IconPathW;   
+	bool         IsEmpty = true;
+
+};
+
 struct FHitDamage
 {
 	float Damage = 0.f;

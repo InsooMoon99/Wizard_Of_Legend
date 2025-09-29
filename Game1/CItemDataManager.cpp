@@ -38,7 +38,7 @@ shared_ptr<ObImage> CItemDataManager::GetIcon(const string& id)
     Vec2 size = Vec2((float)(data->IconW > 0 ? data->IconW : 40),
         (float)(data->IconH > 0 ? data->IconH : 40));
 
-    auto img = RESOURCE->CreateUI(keyW, size, true);
+    auto img = RESOURCE->CreateImage(keyW, size, true);
     m_IconCache[data->IconKey] = img;
     return img;
 }
@@ -140,6 +140,7 @@ wstring CItemDataManager::Utf8ToW(const string& s)
     MultiByteToWideChar(CP_UTF8, 0, s.c_str(), (int)s.size(), w.data(), n);
     return w;
 }
+
 int CItemDataManager::GetInt(const json& obj, const char* key, int def)
 {
     if (!obj.contains(key)) return def;
@@ -157,4 +158,13 @@ float CItemDataManager::GetFlt(const json& obj, const char* key, float def)
     if (v.is_number_integer()) return (float)v.get<int>();
     if (v.is_string()) { try { return stof(v.get<string>()); } catch (...) {} }
     return def;
+}
+
+wstring CItemDataManager::GetIconPathW(const string& id) const
+{
+    auto it = m_Table.find(id);
+    if (it == m_Table.end()) return L"";
+
+    const FItemData& data = it->second;
+    return Utf8ToW(data.IconKey);
 }

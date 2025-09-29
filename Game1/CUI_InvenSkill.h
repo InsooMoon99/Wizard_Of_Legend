@@ -25,7 +25,7 @@ public:
 	void SetWeapon(shared_ptr<CWeaponComponent> weapon) { m_Weapon = weapon; }
 	void OnIntersectMouse();
 
-	CDelegate<ESkillSlot>  FOnIntersectMouse;
+	CDelegate<ESkillSlot>  FOnSkillIntersectMouse;
 
 private:
 	wstring m_Panel_Name;

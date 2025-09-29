@@ -2,6 +2,9 @@
 
 #include "CCharacter.h"
 
+class CShopComponent;
+class CItem;
+
 class CShopNPC : public CCharacter
 {
 public:
@@ -33,5 +36,8 @@ private:
 private:
 	shared_ptr<ObImage> m_IdleImg;
 	shared_ptr<ObImage> m_Mat;
+
+	shared_ptr<CShopComponent>	m_Shop;
+
 };
 

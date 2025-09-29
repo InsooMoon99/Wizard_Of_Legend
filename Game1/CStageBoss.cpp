@@ -10,8 +10,8 @@
 
 CStageBoss::CStageBoss()
 {
-	m_Player = new CPlayer();
-	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player);
+	m_Player = shared_ptr<CPlayer>();
+	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player.get());
 
 	m_MapSize = Vec2(1280.f, 1280.f) * 3.f;
 	m_PlayerPos = Vec2(-1780.f, 0.f);
@@ -39,14 +39,14 @@ void CStageBoss::Init()
 	m_Boss_Man  = new CBoss_TwinMan(m_BossController);
 	m_Boss_Girl = new CBoss_TwinGirl(m_BossController);
 	// 플레이어 세팅
-	m_Boss_Man->SetPlayer(m_Player);
-	m_Boss_Girl->SetPlayer(m_Player);
+	m_Boss_Man->SetPlayer(m_Player.get());
+	m_Boss_Girl->SetPlayer(m_Player.get());
 
 	m_Actors.push_back(m_Boss_Man);
 	m_Actors.push_back(m_Boss_Girl);
-	m_Actors.push_back(m_Player);
+	m_Actors.push_back(m_Player.get());
 
-	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
+	auto player = dynamic_pointer_cast<CPlayer>(m_Player);
 	player->Get_Collision()->SetWorldPos(m_PlayerPos);
 
 	Vec2 m_BossPos = Vec2(-1815.f, 200.f);
@@ -90,7 +90,7 @@ void CStageBoss::LateUpdate()
 {
 	CScene::LateUpdate();
 
-	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
+	auto player = dynamic_pointer_cast<CPlayer>(m_Player);
 	CAM->position = player->Get_Collision()->GetWorldPos();
 }
 

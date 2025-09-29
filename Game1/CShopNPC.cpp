@@ -1,10 +1,14 @@
 #include "stdafx.h"
 #include "CShopNPC.h"
 
+#include "CItem.h"
+#include "CShopComponent.h"
 #include "CStateComponent.h"
 
 CShopNPC::CShopNPC()
 {
+	m_Shop = CHelper::CreateSharedComponent<CShopComponent>(this);
+
 
 	Resource_Settings();
 }
@@ -12,11 +16,16 @@ CShopNPC::CShopNPC()
 CShopNPC::~CShopNPC()
 {
 	Release();
+
 }
 
 void CShopNPC::BeginPlay()
 {
 	CCharacter::BeginPlay();
+
+	m_Shop->Equip_ItemById("Heal");
+	m_Shop->Equip_ItemById("Weapon1");
+	m_Shop->Equip_ItemById("Armor1");
 
 }
 
@@ -146,8 +155,7 @@ void CShopNPC::Resource_Settings()
 
 		m_vecCol.push_back(m_Mat.get());
 	}
-
-
+	
 	m_CurImg = m_Sprites[ECharacterState::Idle][EPlayerDir::Front];
 	SetSprite(m_State->Get_State(), m_State->Get_Dir());
 }

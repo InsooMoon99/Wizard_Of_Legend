@@ -29,6 +29,7 @@ public:
     shared_ptr<ObImage> GetIcon(const string& id);
 
     vector<const FItemData*> GetAll() const;
+    wstring GetIconPathW(const string& id) const;
 
 private:
     using json = nlohmann::json;
@@ -44,6 +45,7 @@ private:
     static wstring Utf8ToW(const string& s);
     static int   GetInt(const json& obj, const char* key, int def = 0);
     static float GetFlt(const json& obj, const char* key, float def = 0.f);
+
 
 private:
     // Id 조회해서 Data

@@ -22,16 +22,16 @@ void CWeaponComponent::TickComponent()
 {
     CComponent::TickComponent();
 
-    for (auto& kv : m_Skills)
-        kv.second->Tick();
+    for (auto& skill : m_Skills)
+        skill.second->Tick();
 }
 
 void CWeaponComponent::Render()
 {
     CComponent::Render();
 
-    for (auto& kv : m_Skills)
-        kv.second->Render();
+    for (auto& skill : m_Skills)
+        skill.second->Render();
 }
 
 void CWeaponComponent::Release()

@@ -27,6 +27,5 @@ public:
 private:
 	unordered_map<ESkillType, shared_ptr<CSkill>> m_Skills;
 
-	uint32_t m_SkillVersion = 0;
 };
 

@@ -2,13 +2,16 @@
 #include "CUIComponent.h"
 #include "CResourceManager.h"
 #include "CCharacter.h"
+#include "CInventoryComponent.h"
 #include "CUI.h"
 #include "CUI_PlayerStatus.h"
 #include "CStatusComponent.h"
 #include "CUI_BossHUD.h"
 #include "CUI_BossStatus.h"
 #include "CUI_InvenDesc.h"
+#include "CUI_InvenItem.h"
 #include "CUI_InvenSkill.h"
+#include "CUI_InvenStatus.h"
 #include "CUI_InventoryHUD.h"
 #include "CUI_PlayerHUD.h"
 #include "CUI_Skill_Pannel.h"
@@ -35,23 +38,6 @@ void CUIComponent::TickComponent()
 {
 	CComponent::TickComponent();
 
-#ifdef _DEBUG
-	//if (ImGui::Begin("UI"))
-	//{
-	//	Vec2 pos = m_HUD[1]->GetLocalPos();
-	//	ImGui::InputFloat2("Hp Pos : ", &pos.x);
-	//
-	//	Vec2 pos2 = m_HUD[2]->GetLocalPos();
-	//	ImGui::InputFloat2("Mp Pos : ", &pos2.x);
-	//
-	//	m_HUD[1]->SetLocalPos(pos);
-	//	m_HUD[2]->SetLocalPos(pos2);
-	//}
-	//
-	//ImGui::End();
-
-#endif
-
 	for (auto& hud : m_HUD)
 		hud->Tick();
 }
@@ -76,7 +62,6 @@ void CUIComponent::SetPlayerHUD()
 	if (GetOwner())
 	{
 		m_PlayerHUD = make_shared<CUI_PlayerHUD>();
-		//m_PlayerHUD->BeginPlay();
 
 		m_HUD.push_back(m_PlayerHUD);
 
@@ -114,16 +99,23 @@ void CUIComponent::SetInventoryHUD()
 	if (GetOwner())
 	{
 		m_InventoryHUD = make_shared<CUI_InventoryHUD>();
-		//m_InventoryHUD->BeginPlay();
 
 		m_HUD.push_back(m_InventoryHUD);
 
 		auto weapon = CHelper::GetComponent<CWeaponComponent>(GetOwner());
-		if (weapon == nullptr)
-			return;
+		if (weapon == nullptr) return;
+
+		auto status = CHelper::GetComponent<CStatusComponent>(GetOwner());
+		if (status == nullptr) return;
+
+		auto inven = CHelper::GetComponent<CInventoryComponent>(GetOwner());
+		if (inven == nullptr) return;
 
 		dynamic_pointer_cast<CUI_InventoryHUD>(m_InventoryHUD)->GetInvenSkill()->SetWeapon(weapon);
 		dynamic_pointer_cast<CUI_InventoryHUD>(m_InventoryHUD)->GetInvenDesc()->SetWeapon(weapon);
+		dynamic_pointer_cast<CUI_InventoryHUD>(m_InventoryHUD)->GetInvenStatus()->SetStatus(status);
+		dynamic_pointer_cast<CUI_InventoryHUD>(m_InventoryHUD)->GetInvenItem()->SetInven(inven);
+		dynamic_pointer_cast<CUI_InventoryHUD>(m_InventoryHUD)->GetInvenDesc()->SetInventory(inven);
 	}
 }
 

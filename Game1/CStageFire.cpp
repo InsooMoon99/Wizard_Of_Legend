@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "CStageFire.h"
 #include "CActor.h"
+#include "CBlobRoller.h"
 #include "CBoss_TwinMan.h"
 #include "CDummy.h"
+#include "CMonsterBase.h"
 #include "CPlayer.h"
 #include "CResourceManager.h"
 #include "CShopNPC.h"
@@ -11,13 +13,16 @@
 
 CStageFire::CStageFire()
 {
-	// Vec2(2115.f, 2931.f)
 	m_MapSize = Vec2(2304.f, 2560.f) * 3.f;
 	m_PlayerPos = Vec2(516.f, -2593.f);
 
 	Resource_Setting();
+	m_Actors.push_back(m_Player);
+
+	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player.get());
 
 	bStartTile = false;
+
 }
 
 CStageFire::~CStageFire()
@@ -32,31 +37,30 @@ void CStageFire::Init()
 	SOUND->Play("Tutorial");
 	SOUND->SetVolume("Tutorial", 0.05f);
 
+	PARTICLE->Spawn_Particle(L"StartEffect", Vec2(m_PlayerPos.x, m_PlayerPos.y + 180.f), Vec2(1.2f, 1.f));
+
 	for (auto& actor : m_Actors)
 		actor->BeginPlay();
 
-	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
-	player->Get_Collision()->SetWorldPos(m_PlayerPos);
+	//auto dummy = dynamic_pointer_cast<CDummy>(m_TestDummy);
+	//dummy->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(150.f, 50.f));
 
-	CDummy* dummy = dynamic_cast<CDummy*>(m_TestDummy);
-	dummy->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(150.f, 50.f));
+	//auto roller = dynamic_pointer_cast<CBlobRoller>(blobRoller);
+	//roller->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(150.f, 50.f));
 
 	bStartTile = true;
-
+	  
 	if (bStartTile)
 	{
 		TILE->Load_Data(L"../Data/FireTile_First.dat");
 		bStartTile = false;
 	}
 
-
 }
 
 void CStageFire::Update()
 {
 	CScene::Update();
-
-	RENDER->Release();
 
 	Key_Input();
 
@@ -65,7 +69,7 @@ void CStageFire::Update()
 	for (auto& actor : m_Actors)
 	{
 		actor->Tick();
-		RENDER->AddRenderObject(actor);
+		RENDER->AddRenderObject(actor.get());
 	}
 
 	for (const auto& hud : m_PlayerUI->GetHUD())
@@ -91,7 +95,7 @@ void CStageFire::LateUpdate()
 	//CAM->position.x = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().x, -m_MapSize.x + app.GetHalfWidth(), m_MapSize.x - app.GetHalfWidth());
 	//CAM->position.y = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().y + 500.0f, m_MapSize.y, 950.0f - app.GetHalfHeight());
 
-	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
+	auto player = dynamic_pointer_cast<CPlayer>(m_Player);
 	CAM->position = player->Get_Collision()->GetWorldPos();
 
 	if(m_TileTrigger->Intersect(m_Player->Get_Collision().get()) && !bTrigger)
@@ -113,16 +117,10 @@ void CStageFire::Render()
 	TILE->Render();
 	m_TileTrigger->Render();
 
-
 	for (auto& object : m_Objects)
 		object->Render();
 
 	PARTICLE->Render();
-
-	//for (auto& actor : m_Actors)
-	//	actor->Render();
-
-	RENDER->Render();
 }
 
 void CStageFire::Release()
@@ -147,6 +145,15 @@ void CStageFire::Key_Input()
 
 void CStageFire::Resource_Setting()
 {
+	{
+		m_TileTrigger = make_shared<ObRect>();
+		m_TileTrigger->scale = Vec2(200.f, 200.f);
+		m_TileTrigger->SetWorldPos(Vec2(6.f, -1366.f));
+		m_TileTrigger->visible = false;
+		m_TileTrigger->isFilled = false;
+		m_TileTrigger->collider = COLLIDER::RECT;
+	}
+
 	// Map
 	shared_ptr<ObImage> mapShadow = RESOURCE->CreateImage(L"Edit\\SHADOW.bmp", m_MapSize * 1.f, true);
 	mapShadow->SetWorldPos(Vec2(0, 0));
@@ -158,29 +165,25 @@ void CStageFire::Resource_Setting()
 	map->SetLocalPos(Vec2(-185, 46));
 	m_Map.insert({ ESceneType::Stage01, map });
 
-	Vec2 vortexSize = Vec2(13.f, 36.f) * 3.f;
-	shared_ptr<ObImage> vortex = RESOURCE->CreateImage(L"Object\\Torch0.png", vortexSize, true);
-	vortex->SetWorldPos(m_PlayerPos);
-	//vortex->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
-	//vortex->collider = COLLIDER::CIRCLE;
-	//m_Objects.push_back(vortex);
+	Vec2 telpoSize = Vec2(311.f, 298.f);
+	shared_ptr<ObImage> telport = RESOURCE->CreateImage(L"Object\\TELEPORT.png", telpoSize, true);
+	telport->SetWorldPos(Vec2(516.f, -2593.f));
+	m_Objects.push_back(telport);
 
-	m_Player = new CPlayer();
-	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player);
-	m_TestDummy = new CDummy();
+	m_Player	= make_shared<CPlayer>();
+	m_Player->SetSpawnPos(m_Section1_Pos);
 
-	m_TileTrigger = make_shared<ObRect>();
-	m_TileTrigger->scale = Vec2(200.f, 200.f);
-	m_TileTrigger->SetWorldPos(Vec2(6.f, -1366.f));
-	m_TileTrigger->visible = false;
-	m_TileTrigger->isFilled = false;
-	m_TileTrigger->collider = COLLIDER::RECT;
+	m_TestDummy = make_shared<CDummy>();
+	m_TestDummy->SetSpawnPos(m_PlayerPos + Vec2(150.f, 50.f));
 
-	m_ShopNPC = new CShopNPC();
+	m_ShopNPC	= make_shared<CShopNPC>();
+
+	blobRoller = make_shared<CBlobRoller>();
+	blobRoller->SetSpawnPos(m_Section1_Pos);
 
 	m_Actors.push_back(m_ShopNPC);
 	m_Actors.push_back(m_TestDummy);
-	m_Actors.push_back(m_Player);
+	m_Actors.push_back(blobRoller);
 }
 
 

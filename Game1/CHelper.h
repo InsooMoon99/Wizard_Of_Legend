@@ -177,6 +177,10 @@ public:
 		DWRITE->RenderText(text, rect, fontSize, fontName, textColor);
 	}
 
+	static wstring ToW(const string& str)
+	{
+		return wstring(str.begin(), str.end());
+	}
 
 	template<typename T>
 	static T* CreateComponent(CActor* _Owner)

@@ -24,13 +24,13 @@ public:
 	void Resource_Setting();
 
 private:
-	vector<CActor*> m_Actors;
+	vector<shared_ptr<CActor>> m_Actors;
 	vector<shared_ptr<GameObject>> m_Objects;
 
 	Vec2 m_PlayerPos;
 	Vec2 m_MapSize;
 
-	CActor* m_TestDummy;
+	shared_ptr<CActor> m_TestDummy;
 
 	shared_ptr<CUIComponent> m_PlayerUI;
 

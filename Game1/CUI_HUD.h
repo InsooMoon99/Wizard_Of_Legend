@@ -18,7 +18,7 @@ public:
 	void		AddChild(shared_ptr<CUI> _Ui);
 	bool		RemoveChild(shared_ptr<CUI> _Ui);
 
-private:
+protected:
 	vector<shared_ptr<CUI>> m_Children;
 };
 

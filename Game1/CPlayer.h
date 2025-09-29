@@ -55,6 +55,9 @@ public:
 	void Shadow_Size();
 	void Dash_Sprite();
 
+	void AddInteract(shared_ptr<CItem> _InItem);
+	void RemoveInteract(CItem* _InItem);
+
 protected:
 	void Resource_Settings() override;
 
@@ -80,5 +83,8 @@ private:
 
 	float	m_DashTimer    = 0.4f;
 	int		m_DashEndFrame = 11;
+
+	vector<weak_ptr<CItem>> m_Interact;
+	weak_ptr<CItem> m_CurItem;
 };
 

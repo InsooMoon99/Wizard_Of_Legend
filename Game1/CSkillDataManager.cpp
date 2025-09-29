@@ -85,7 +85,7 @@ bool CSkillDataManager::LoadData(const wstring& filename)
 
             else if (row["CoolDown"].is_string())
             {
-                try
+                try 
                 {
                     data.CoolDown = (float)stod(row["CoolDown"].get<string>());
                 }

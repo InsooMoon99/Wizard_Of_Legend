@@ -35,10 +35,6 @@ void CDummy::Tick()
 	ImGui::End();
 #endif
 
-
-	// 위치 세팅
-	Set_WorldPos(m_Collision->GetWorldPos());
-
 	// 상태 또는 방향 변경 시 스프라이트 변경
 	if (m_prevState != m_State->Get_State() || m_prevDir != m_State->Get_Dir())
 		SetSprite(m_State->Get_State(), m_State->Get_Dir());
@@ -118,7 +114,7 @@ void CDummy::Resource_Settings()
 {
 	m_Collision = make_shared<ObRect>();
 	m_Collision->scale = Vec2(100.f, 150.f);
-	m_Collision->visible = false;
+	m_Collision->visible = true;
 	m_Collision->isFilled = false;
 	m_Collision->collider = COLLIDER::RECT;
 	m_Collision->Set_Owner(this);

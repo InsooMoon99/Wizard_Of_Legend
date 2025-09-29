@@ -22,9 +22,25 @@ public:
 	virtual void OnComponentEndOverlap(GameObject* collider, GameObject* other);
 
 public:
-	void	Set_WorldPos(Vector2 pos) { m_Pos = pos; }
+	void	Set_WorldPos(Vector2 pos)
+	{
+		m_Pos = pos;
+		if (m_Collision)
+			m_Collision->SetWorldPos(pos);
+	}
+
+	// 위치 세팅이 된 후 소환되게
+	void SetSpawnPos(const Vec2& pos)
+	{
+		m_PendingSpawnPos = pos;
+		m_HasPendingSpawnPos = true;
+	}
+
 	Vector2	Get_WorldPos() { return m_Pos; }
 
+	void ApplyPendingSpawnPos();
+
+public:
 	virtual void AddComponent(shared_ptr<CComponent> _Component);
 	virtual void RemoveComponent(CComponent* _Component);
 
@@ -33,6 +49,8 @@ public:
 	virtual shared_ptr<GameObject>  Get_Collision() { return m_Collision; }
 	virtual shared_ptr<ObImage>		Get_CurImg() { return m_CurImg; }
 
+
+
 protected:
 	vector<shared_ptr<CComponent>>		m_Components;
 	// Collision
@@ -40,7 +58,8 @@ protected:
 	shared_ptr<GameObject>	m_Collision = nullptr;
 	shared_ptr<ObImage>		m_CurImg;
 
-	Vector2					m_Pos = { 0,0 };
-
+	Vector2 m_Pos = { 0,0 };
+	Vec2	m_PendingSpawnPos;
+	bool    m_HasPendingSpawnPos = false;
 };
 

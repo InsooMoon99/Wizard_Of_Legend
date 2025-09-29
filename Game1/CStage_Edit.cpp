@@ -6,7 +6,7 @@
 
 CStage_Edit::CStage_Edit()
 {
-	m_Player = new CPlayer();
+	m_Player = make_shared<CPlayer>();
 	m_Actors.push_back(m_Player);
 
 	m_MapSize = Vec2(2304.f, 2560.f) * 3.f;
@@ -29,7 +29,7 @@ void CStage_Edit::Init()
 	for (auto& actor : m_Actors)
 		actor->BeginPlay();
 
-	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
+	auto player = dynamic_pointer_cast<CPlayer>(m_Player);
 	player->Get_Collision()->SetWorldPos(m_PlayerPos);
 
 }
@@ -51,7 +51,7 @@ void CStage_Edit::LateUpdate()
 {
 	CScene::LateUpdate();
 
-	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
+	auto player = dynamic_pointer_cast<CPlayer>(m_Player);
 	CAM->position = player->Get_Collision()->GetWorldPos();
 
 }

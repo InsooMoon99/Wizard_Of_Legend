@@ -17,13 +17,32 @@ public:
 	void Release() override;
 
 public:
-	void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
-	void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
+	void SetData(const FItemData& data);
+	void ApplyData();
+
+	const FItemData& GetData() const { return m_ItemData; }
+	const string& GetIconKey() const { return m_ItemData.IconKey; }
+	Vec2 GetIconSize() const { return Vec2(m_ItemData.IconW, m_ItemData.IconH); }
+
+public:
+	virtual void ActivateItem(CActor* actor) abstract {};
+	virtual bool IsDestroy() { return m_PendingKill; }
+	void DisableAndDestroy();
+
+
+public:
+	virtual void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override {};
+	virtual void OnComponentEndOverlap(GameObject* collider, GameObject* other) override {};
+
+
 
 protected:
-	// Json으로 데이터 가져와서 세팅해주기 <- 집가서 ㄱ
 	FItemData m_ItemData;
 
+	shared_ptr<ObImage> m_ItemImg;
+	Vec2 m_Size {};
+
+	bool m_PendingKill = false;
 };
 
 

@@ -2,7 +2,7 @@
 
 #include "CItem.h"
 
-class CItem_Potion : public CItem
+class CItem_Potion : public CItem, public enable_shared_from_this<CItem>
 {
 public:
 	CItem_Potion();
@@ -14,5 +14,13 @@ public:
 	void Render() override;
 	void LateUpdate() override;
 	void Release() override;
+
+public:
+	void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
+	void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
+
+	void ActivateItem(CActor* actor) override;
+
+
 };
 

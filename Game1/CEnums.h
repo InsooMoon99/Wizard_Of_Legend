@@ -115,3 +115,8 @@ enum class EModifyOption
 {
 	Add, Multi, Set, END
 };
+
+enum class EDescMode
+{
+	Skill, Item, END
+};

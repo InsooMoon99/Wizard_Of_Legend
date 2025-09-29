@@ -5,6 +5,7 @@
 #include "CUI_InvenSkill.h"
 #include "CUI_InvenItem.h"
 #include "CUI_InvenDesc.h"
+#include "CUI_InvenStatus.h"
 
 CUI_InventoryHUD::CUI_InventoryHUD()
 {
@@ -13,13 +14,15 @@ CUI_InventoryHUD::CUI_InventoryHUD()
 	m_Background->SetWorldPos(Vec2(-400.f, 0.f));
 	m_Background->color = Color(0.3f, 0.3f, 0.3f, 0.45f);
 
-	m_Cloth = make_shared<CUI_InvenCloth>();
-	m_Skill = make_shared<CUI_InvenSkill>();
-	m_Item  = make_shared<CUI_InvenItem>();
-	m_Desc  = make_shared<CUI_InvenDesc>();
+	m_Cloth =  make_shared<CUI_InvenCloth>();
+	m_Skill =  make_shared<CUI_InvenSkill>();
+	m_Status = make_shared<CUI_InvenStatus>();
+	m_Item  =  make_shared<CUI_InvenItem>();
+	m_Desc  =  make_shared<CUI_InvenDesc>();
 
 	AddChild(m_Cloth);
 	AddChild(m_Skill);
+	AddChild(m_Status);
 	AddChild(m_Item);
 	AddChild(m_Desc);
 
@@ -40,9 +43,14 @@ void CUI_InventoryHUD::BeginPlay()
 			SetRendering(bCheck);
 		});
 
-	m_Skill->FOnIntersectMouse.Add([this](ESkillSlot index)
+	m_Skill->FOnSkillIntersectMouse.Add([this](ESkillSlot index)
 		{
-			m_Desc->OnMouseIntersect(index);
+			m_Desc->OnSkillMouseIntersect(index);
+		});
+
+	m_Item->FOnItemIntersectMouse.Add([this](int index)
+		{
+			m_Desc->OnItemMouseIntersect(index);
 		});
 }
 
@@ -76,8 +84,8 @@ void CUI_InventoryHUD::Render()
 	if (!GetRender()) return;
 
 	m_Background->Render();
-	CUI_HUD::Render();
 
+	CUI_HUD::Render();
 	
 }
 
@@ -85,16 +93,15 @@ void CUI_InventoryHUD::Release()
 {
 	CUI_HUD::Release();
 
-
-
 }
 
 void CUI_InventoryHUD::SetRendering(bool _Render)
 {
 	CUI_HUD::SetRendering(_Render);
 
-	m_Skill->FOnRendering.Broadcast(_Render);
-	m_Item->FOnRendering.Broadcast(_Render);
-	m_Desc->FOnRendering.Broadcast(_Render);
-	m_Cloth->FOnRendering.Broadcast(_Render);
+	for (auto& child : m_Children)
+	{
+		child->FOnRendering.Broadcast(_Render);
+	}
+
 }

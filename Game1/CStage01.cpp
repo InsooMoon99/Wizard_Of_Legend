@@ -10,9 +10,9 @@
 
 CStage01::CStage01()
 {
-	m_Player = new CPlayer();
-	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player);
-	m_TestDummy = new CDummy();
+	m_Player = make_shared<CPlayer>();
+	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player.get());
+	m_TestDummy = make_shared<CDummy>();
 
 	m_Actors.push_back(m_TestDummy);
 	m_Actors.push_back(m_Player);
@@ -39,10 +39,10 @@ void CStage01::Init()
 	for (auto& actor : m_Actors)
 		actor->BeginPlay();
 
-	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
+	auto player = dynamic_pointer_cast<CPlayer>(m_Player);
 	player->Get_Collision()->SetWorldPos(m_PlayerPos);
 
-	CDummy* dummy = dynamic_cast<CDummy*>(m_TestDummy);
+	auto dummy = dynamic_pointer_cast<CDummy>(m_TestDummy);
 	dummy->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(250.f, 150.f));
 
 }
@@ -61,7 +61,7 @@ void CStage01::Update()
 	for (auto& actor : m_Actors)
 	{
 		actor->Tick();
-		RENDER->AddRenderObject(actor);
+		RENDER->AddRenderObject(actor.get());
 	}
 
 	for (const auto& hud : m_PlayerUI->GetHUD())
@@ -89,7 +89,7 @@ void CStage01::LateUpdate()
 	//CAM->position.x = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().x, -m_MapSize.x + app.GetHalfWidth(), m_MapSize.x - app.GetHalfWidth());
 	//CAM->position.y = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().y + 500.0f, m_MapSize.y, 950.0f - app.GetHalfHeight());
 
-	CPlayer* player = dynamic_cast<CPlayer*>(m_Player);
+	auto player = dynamic_pointer_cast<CPlayer>(m_Player);
 	CAM->position = player->Get_Collision()->GetWorldPos();
 
 	if (player->Get_Collision()->Intersect(m_TestDummy->Get_Collision().get()))

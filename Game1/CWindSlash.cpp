@@ -29,7 +29,6 @@ CWindSlash::CWindSlash(FSkillInfo& _Info)
 
 	shared_ptr<ObImage> wind = PARTICLE->Spawn_Particle(L"Wind_Slash", pos);
 	wind->rotation = m_Collision->rotation;
-
 }
 
 CWindSlash::~CWindSlash()

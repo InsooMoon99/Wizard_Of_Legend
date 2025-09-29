@@ -15,8 +15,8 @@
     },
     {
       "Id": "Weapon1",
-      "Name": "칼1",
-      "Desc": "공격 ㄱㄱ",
+      "Name": "[칼1]",
+      "Desc": "공격력 15% 증가",
       "IconKey": "Shop\\무기2.bmp",
       "IconW": 40,
       "IconH": 40,
@@ -24,12 +24,12 @@
       "ItemType": "Weapon",
       "StatType": "Attack",
       "Option": "Multi",
-      "Value": 0.15
+      "Value": 1.15
     },
     {
       "Id": "Armor1",
-      "Name": "방어구1",
-      "Desc": "방어 ㄱㄱ",
+      "Name": "[방어구1]",
+      "Desc": "방어력 20 증가",
       "IconKey": "Shop\\방어구1.bmp",
       "IconW": 40,
       "IconH": 40,

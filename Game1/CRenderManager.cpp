@@ -24,7 +24,8 @@ void CRenderManager::Render()
 	{
 		for (auto& iter : m_RenderQueue[i])
 		{
-			iter->Render();
+			if (iter)
+				iter->Render();
 		}
 	}
 }
