@@ -6,7 +6,8 @@
 
 CMonsterBase::CMonsterBase()
 {
-	
+
+	m_RenderLayer = ERenderLayer::Render_GameObject;
 }
 
 CMonsterBase::~CMonsterBase()

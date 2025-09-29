@@ -86,6 +86,7 @@
     <ClInclude Include="CStateComponent.h" />
     <ClInclude Include="CStatusComponent.h" />
     <ClInclude Include="CStruct.h" />
+    <ClInclude Include="CGhoulLarge.h" />
     <ClInclude Include="CTarget_Orb.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="CTileManager.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="CStar_Collision.cpp" />
     <ClCompile Include="CStateComponent.cpp" />
     <ClCompile Include="CStatusComponent.cpp" />
+    <ClCompile Include="CGhoulLarge.cpp" />
     <ClCompile Include="CTarget_Orb.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTileManager.cpp" />

@@ -4,6 +4,7 @@
 #include "CBlobRoller.h"
 #include "CBoss_TwinMan.h"
 #include "CDummy.h"
+#include "CGhoulLarge.h"
 #include "CMonsterBase.h"
 #include "CPlayer.h"
 #include "CResourceManager.h"
@@ -42,11 +43,8 @@ void CStageFire::Init()
 	for (auto& actor : m_Actors)
 		actor->BeginPlay();
 
-	//auto dummy = dynamic_pointer_cast<CDummy>(m_TestDummy);
-	//dummy->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(150.f, 50.f));
-
-	//auto roller = dynamic_pointer_cast<CBlobRoller>(blobRoller);
-	//roller->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(150.f, 50.f));
+	for (auto& monster : m_Monsters)
+		monster->BeginPlay();
 
 	bStartTile = true;
 	  
@@ -72,6 +70,14 @@ void CStageFire::Update()
 		RENDER->AddRenderObject(actor.get());
 	}
 
+	RemoveDeadMonsters();
+
+	for (auto& monster : m_Monsters)
+	{
+		monster->Tick();
+		RENDER->AddRenderObject(monster.get());
+	}
+
 	for (const auto& hud : m_PlayerUI->GetHUD())
 		RENDER->AddRenderObject(hud.get());
 
@@ -86,8 +92,6 @@ void CStageFire::Update()
 void CStageFire::LateUpdate()
 {
 	CScene::LateUpdate();
-
-	//m_Player->LateUpdate();
 
 	//플레이어 가두기 이건 딱히 필요 없을듯. 타일맵으로 충돌처리
 	//player->Get_PlayerCollision()->SetWorldPosX(Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().x, -3800.0f * 1.5f / 2.0f, 3840.0f * 1.5f / 2.0f));
@@ -105,14 +109,23 @@ void CStageFire::LateUpdate()
 		bTrigger = true;
 	}
 
-	RemoveDeadActors();
-
-	for (auto& actor : m_Actors)
+	if (m_Section1Col->Intersect(m_Player->Get_Collision().get()))
 	{
-		actor->LateUpdate();
+
+		for (auto& actor : m_Monsters)
+		{
+			CMonsterBase* monster = dynamic_cast<CMonsterBase*>(actor.get());
+			if (monster && monster->GetTarget() == nullptr)
+				monster->SetTarget(m_Player);
+		}
 	}
 
 
+	for (auto& actor : m_Actors)
+		actor->LateUpdate();
+
+	for (auto& monster : m_Monsters)
+		monster->LateUpdate();
 }
 
 void CStageFire::Render()
@@ -189,24 +202,31 @@ void CStageFire::Resource_Setting()
 	m_Objects.push_back(telport);
 
 	m_Player	= make_shared<CPlayer>();
-	m_Player->SetSpawnPos(m_Section1_Pos);
-
-	m_TestDummy = make_shared<CDummy>();
-	m_TestDummy->SetSpawnPos(m_PlayerPos + Vec2(150.f, 50.f));
+	m_Player->SetSpawnPos(Vec2(m_Section1_Pos.x - 200.f, m_Section1_Pos.y));
 
 	m_ShopNPC	= make_shared<CShopNPC>();
 
-	blobRoller = make_shared<CBlobRoller>();
-	blobRoller->SetSpawnPos(Vec2(m_Section1_Pos.x + 100.f, m_Section1_Pos.y));
+	m_TestDummy = SpawnMonster<CDummy>(m_PlayerPos + Vec2(150.f, 50.f));
+
+	//auto blob1 = SpawnMonster<CBlobRoller>(Vec2(m_Section1_Pos.x + 100.f, m_Section1_Pos.y));
+	//auto blob2 = SpawnMonster<CBlobRoller>(Vec2(m_Section1_Pos.x - 40.f, m_Section1_Pos.y + 20));
+	//auto blob3 = SpawnMonster<CBlobRoller>(Vec2(m_Section1_Pos.x + 20.f, m_Section1_Pos.y + 10));
+
+	auto ghoul = SpawnMonster<CGhoulLarge>(Vec2(m_Section1_Pos.x + 100.f, m_Section1_Pos.y));
+
+	m_Section1Col = make_shared<ObRect>();
+	m_Section1Col->scale = Vec2(30.f, 160.f);
+	m_Section1Col->visible = true;
+	m_Section1Col->isFilled = false;
+	m_Section1Col->SetWorldPos(Vec2(m_Section1_Pos.x + 700.f, m_Section1_Pos.y + 10.f));
+	m_Objects.push_back(m_Section1Col);
 
 	m_Actors.push_back(m_ShopNPC);
-	m_Actors.push_back(m_TestDummy);
-	m_Actors.push_back(blobRoller);
 }
 
-void CStageFire::RemoveDeadActors()
+void CStageFire::RemoveDeadMonsters()
 {
-	m_Actors.erase(remove_if(m_Actors.begin(),m_Actors.end(),
+	m_Monsters.erase(remove_if(m_Monsters.begin(), m_Monsters.end(),
 			[](const shared_ptr<CActor>& actor)
 			{
 				if (actor && actor->IsDestroy())
@@ -215,7 +235,7 @@ void CStageFire::RemoveDeadActors()
 				}
 
 				return false;
-			}), m_Actors.end()
+			}), m_Monsters.end()
 	);
 }
 

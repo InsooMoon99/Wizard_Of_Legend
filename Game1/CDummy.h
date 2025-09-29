@@ -1,8 +1,9 @@
 #pragma once
 
 #include "CCharacter.h"
+#include "CMonsterBase.h"
 
-class CDummy : public CCharacter
+class CDummy : public CMonsterBase
 {
 public:
 	CDummy();

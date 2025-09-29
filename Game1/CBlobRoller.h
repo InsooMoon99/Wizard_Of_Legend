@@ -40,7 +40,6 @@ protected:
 	void Play_Sprite(ECharacterState _State) override;
 	void Resource_Settings() override;
 
-	void MoveTile(const Vec2& dir, float speed);
 private:
 	bool m_BehaviorCheck = false;
 	bool m_OnLastFrameEdge = false;  

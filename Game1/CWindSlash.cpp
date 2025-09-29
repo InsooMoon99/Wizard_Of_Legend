@@ -18,7 +18,7 @@ CWindSlash::CWindSlash(FSkillInfo& _Info)
 	m_Collision = make_shared<ObCircle>();
 	m_Collision->scale = Vec2(80.f, 80.f);
 	m_Collision->SetWorldPos(pos);
-	m_Collision->visible = true;
+	m_Collision->visible = false;
 	m_Collision->collider = COLLIDER::CIRCLE;
 	m_Collision->isFilled = false;
 	m_Collision->rotation = m_Skill_Info.Angle + rotation_Offset;
@@ -145,7 +145,7 @@ void CWindSlash::OnComponentBeginOverlap(GameObject* collider, GameObject* other
 		SOUND->SetVolume("ImpactAir", 0.1f);
 	}
 
-	m_PendingKill = true;
+	//m_PendingKill = true;
 }
 
 void CWindSlash::OnComponentEndOverlap(GameObject* collider, GameObject* other)

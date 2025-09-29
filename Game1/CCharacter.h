@@ -52,11 +52,14 @@ protected:
 	bool  m_bKnockback = true;
 	int	  m_TeamID = 1;
 
+
 public:
 	bool IsKnockback() const { return m_Knock.active; }
 	void UpdateKnockbackTimer();
 
 	void SetDead();
+
+	virtual void MoveTile(const Vec2& dir, float speed);
 
 protected:
 	FKnockbackState m_Knock;

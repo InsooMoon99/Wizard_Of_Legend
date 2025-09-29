@@ -268,8 +268,15 @@
     <ClInclude Include="CItem_Armor.h">
       <Filter>10. Item</Filter>
     </ClInclude>
-    <ClInclude Include="CBlobRoller.h" />
-    <ClInclude Include="CMonsterBase.h" />
+    <ClInclude Include="CBlobRoller.h">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterBase.h">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CGhoulLarge.h">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -637,8 +644,15 @@
     <ClCompile Include="CItem_Armor.cpp">
       <Filter>10. Item</Filter>
     </ClCompile>
-    <ClCompile Include="CBlobRoller.cpp" />
-    <ClCompile Include="CMonsterBase.cpp" />
+    <ClCompile Include="CBlobRoller.cpp">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterBase.cpp">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CGhoulLarge.cpp">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game1.rc">

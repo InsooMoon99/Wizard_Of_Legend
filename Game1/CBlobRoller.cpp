@@ -10,7 +10,6 @@ CBlobRoller::CBlobRoller()
 {
 	m_Status->SetHp(100.f);
 
-	m_RenderLayer = ERenderLayer::Render_GameObject;
 
 	Resource_Settings();
 }
@@ -116,6 +115,8 @@ void CBlobRoller::Release()
 		COLLISION->RemoveCollider(m_Collision.get());
 		m_Collision.reset();
 	}
+
+	m_vecCol.clear();
 }
 
 void CBlobRoller::State_Idle()
@@ -124,7 +125,7 @@ void CBlobRoller::State_Idle()
 
 	//cout << "Idle : " << m_IdleTimer << endl;
 
-	if (m_IdleTimer > 0.6f && m_Target)
+	if (m_IdleTimer > 1.6f && m_Target)
 	{
 		m_State->Change_State(ECharacterState::Attack1);
 
@@ -161,8 +162,7 @@ void CBlobRoller::State_Attack2()
 
 	if (m_Attack2Timer < 4.f)
 	{
-		// TODO : 플레이어 추격
-		m_Collision->MoveWorldPos(m_TraceDir * 400.f * DELTA);
+		MoveTile(m_TraceDir, 400.f);
 	}
 
 	else if (m_Attack2Timer > 4.f)
@@ -207,14 +207,15 @@ void CBlobRoller::State_Hit()
 
 void CBlobRoller::State_Dead()
 {
-	if (m_CurImg = m_Sprites[ECharacterState::Dead][EPlayerDir::Front])
+	if (m_CurImg == m_Sprites[ECharacterState::Dead][EPlayerDir::Front])
 	{
 		if (CHelper::IsLastFrame(m_CurImg))
 		{
-			// 소멸처리
 			m_PendingKill = true;
 		}
 	}
+
+	
 	
 }
 
@@ -453,72 +454,4 @@ void CBlobRoller::Resource_Settings()
 	// Start Image Setting
 	m_CurImg = m_Sprites[ECharacterState::Idle][EPlayerDir::Front];
 	SetSprite(m_State->Get_State(), m_State->Get_Dir());
-}
-
-void CBlobRoller::MoveTile(const Vec2& dir, float speed)
-{
-	if (!m_Collision) return;
-
-	ECharacterState playerState = m_State->Get_State();
-
-	GameObject* col = m_Collision.get();
-
-	Vec2 nDir = dir;
-	if (nDir.LengthSquared() > 0.f)
-		nDir.Normalize();
-
-	const Vec2 nextMove = nDir * speed * DELTA;
-
-	Vec2 half = col->scale * 0.5f;
-
-	if (nextMove.x != 0.f)
-	{
-		Vec2 pos = col->GetWorldPos();
-		Vec2 dirX = Vec2(nextMove.x, 0.f);
-		Vec2 next = pos + dirX;
-
-		Vec2 minW = next - half;
-		Vec2 maxW = next + half;
-
-		if (!TILE->IsBlocked_ExceptFall(minW, maxW, playerState == ECharacterState::Dash))
-		{
-			col->MoveWorldPos(dirX);
-		}
-		// else : 막히면 X축 이동 스킵
-	}
-
-	if (nextMove.y != 0.f)
-	{
-		Vec2 pos = col->GetWorldPos();
-		Vec2 dirY = Vec2(0.f, nextMove.y);
-		Vec2 next = pos + dirY;
-
-		Vec2 minW = next - half;
-		Vec2 maxW = next + half;
-
-		if (!TILE->IsBlocked_ExceptFall(minW, maxW, playerState == ECharacterState::Dash))
-		{
-			col->MoveWorldPos(dirY);
-		}
-		// else : 막히면 Y축 이동 스킵
-	}
-
-	//Vec2 currentPos = col->GetWorldPos();
-	//Vec2 currentMin = Vec2(currentPos.x - half.x - 5.0f, currentPos.y - half.y - 5.0f);
-	//Vec2 currentMax = Vec2(currentPos.x + half.x - 5.0f, currentPos.y + half.y - 5.0f);
-	//
-	//vector<CTile*> overlappedTiles;
-	//TILE->QueryTilesAABB(currentMin, currentMax, overlappedTiles);
-	//
-	//for (auto* tile : overlappedTiles)
-	//{
-	//	if (tile->Get_DrawID() == (int)ETileType::FALL)
-	//	{
-	//		if (playerState == EPlayerState::Idle || playerState == EPlayerState::Walk)
-	//		{
-	//			// TODO: 플레이어 낙하 로직 구현
-	//			m_Collision->SetWorldPos(Vec2(0.f, 0.f));
-	//		}
-	//	}
-	//}
 }
