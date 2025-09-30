@@ -53,7 +53,7 @@ void CBat_Ball::BeginPlay()
 	m_Arrived = false;
 	m_Timer = 0.f;
 
-	PARTICLE->Spawn_Particle(L"ShockSpark_AS", m_Pos, Vec2(1.3f, 1.5f));
+	PARTICLE->Spawn_ParticleDir(L"ShockSpark_AS", m_Pos, Vec2(1.3f, 1.5f));
 }
 
 void CBat_Ball::Tick()
@@ -143,7 +143,7 @@ void CBat_Ball::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 		{
 			Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
 			Vec2 particlePos = (m_Collision->GetWorldPos());
-			PARTICLE->Spawn_Particle(L"HitSpark", particlePos + randomVec, Vec2(0.6f));
+			PARTICLE->Spawn_ParticleDir(L"HitSpark", particlePos + randomVec, Vec2(0.6f));
 
 			m_PendingKill = true;
 		}

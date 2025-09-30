@@ -117,8 +117,11 @@ void CStage_Start::LateUpdate()
 		{
 			if (m_TextRect[i]->IntersectScreenMouse(INPUT->GetMouseScreenPos()))
 			{
+				//SOUND->StopPlay("Select", 0.5f);
+
 				if (INPUT->KeyDown(VK_LBUTTON))
 				{
+
 					switch (i)
 					{
 					case 0:

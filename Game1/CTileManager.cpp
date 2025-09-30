@@ -277,7 +277,7 @@ void CTileManager::Picking(Vec2 _Pos, int _DrawID, int _Option, bool forceSet)
 
 void CTileManager::Save_Data()
 {
-	HANDLE	hFile = CreateFile(L"../Data/FireTile_Second.dat", // 파일 경로(이름까지 명시)
+	HANDLE	hFile = CreateFile(L"../Data/FireTile_First.dat", // 파일 경로(이름까지 명시)
 		GENERIC_WRITE,		// 파일 접근 모드(GENERIC_WRITE : 쓰기 전용, GENERIC_READ : 읽기 전용)
 		NULL,				// 공유 모드 설정 : 공유하지 않음
 		NULL,				// 보안 속성 설정 : 기본 값 설정
@@ -368,6 +368,17 @@ void CTileManager::ToggleTileImagesVisible()
 			tile->SetTileVisible(m_ShowTileImages);
 		}
 	}
+}
+
+bool CTileManager::IsAllFall(const Vec2& minW, const Vec2& maxW) const
+{
+	return false;
+}
+
+ETileType CTileManager::GetTileTypeAt(const Vec2& world) const
+{
+
+	return ETileType::TILE_END;
 }
 
 void CTileManager::Erase_Tile()

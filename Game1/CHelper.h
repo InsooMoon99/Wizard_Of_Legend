@@ -3,6 +3,8 @@
 #include "CCharacter.h"
 #include "CComponent.h"
 
+static mt19937 g_RandomEngine(static_cast<unsigned int>(time(nullptr)));
+
 class CHelper
 {
 public:
@@ -15,6 +17,7 @@ public:
 		case ECharacterState::Dash:					return "State_Dash";
 		case ECharacterState::Attack1:				return "State_Attack1";
 		case ECharacterState::Attack2:				return "State_Attack2";
+		case ECharacterState::Attack3:				return "State_Attack3";
 		case ECharacterState::Hit:					return "Hit";
 
 		case ECharacterState::Boss_Start:			return "Boss_Start";
@@ -55,7 +58,9 @@ public:
 		{
 		case ESkillType::Fire_Ball:				return "FireBall";
 		case ESkillType::Fire_Dragon:			return "FireDragon";
+		case ESkillType::Fire_Meteor:           return "Meteor";
 		case ESkillType::Wind_Slash:			return "WindSlash";
+		case ESkillType::Wind_Dash:				return "WindDash";
 		case ESkillType::Earth_Shield:          return "EarthShield";
 
 		default:                                return "None";
@@ -180,6 +185,32 @@ public:
 	static wstring ToW(const string& str)
 	{
 		return wstring(str.begin(), str.end());
+	}
+
+	static float AttackMoveFactorByFrame(const ObImage* img)
+	{
+		int f = img->frame.x;
+		int last = max(img->maxFrame.x - 1, 1);
+		float t = (float)f / (float)last; 
+
+		if (t < 0.2f)  return 0.35f;
+
+		if (t < 0.4f)  return 0.15f;
+
+		if (t < 0.8f)  return 0.0f;
+
+		return 0.20f;
+	}
+
+	static float RandF(float min, float max)
+	{
+		if (min > max)
+		{
+			swap(min, max);
+		}
+
+		uniform_real_distribution<float> dist(min, max);
+		return dist(g_RandomEngine);
 	}
 
 	template<typename T>

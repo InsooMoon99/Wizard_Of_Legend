@@ -15,6 +15,9 @@ struct FSkillInfo
 	float	Angle = 0.f;
 	float	Damage = 0.f;
 	float	Mp = 0.f;
+
+	int		WaveMode = 0;
+	float   TravelMax = 0.f;
 };
 
 struct FSkillData

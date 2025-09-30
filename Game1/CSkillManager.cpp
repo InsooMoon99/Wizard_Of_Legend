@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CSkillManager.h"
 
+#include "CAttackActor.h"
 #include "CBat_Dash_Shock.h"
 #include "CSkill_Actor.h"
 #include "CStar_Collision.h"
@@ -49,7 +50,7 @@ void CSkillManager::SkillSettings()
     //shared_ptr<CSkill_Actor> shock = make_shared<CBat_Dash_Shock>();
 }
 
-shared_ptr<CSkill_Actor> CSkillManager::Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info)
+shared_ptr<CSkill_Actor> CSkillManager::Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info, const Vec2& size)
 {
     shared_ptr<CSkill_Actor> newSkill = nullptr;
 
@@ -58,6 +59,9 @@ shared_ptr<CSkill_Actor> CSkillManager::Spawn_SkillActor(ESkillActor _Skill, FSk
     case ESkillActor::Dash_Shock:
         newSkill = make_shared<CBat_Dash_Shock>(_Info);
         break;
+
+    case  ESkillActor::AttackCollision:
+        newSkill = make_shared<CAttackActor>(_Info, size);
 
     }
 

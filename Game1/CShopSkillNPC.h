@@ -5,11 +5,11 @@
 class CShopComponent;
 class CItem;
 
-class CShopNPC : public CCharacter
+class CShopSkillNPC : public CCharacter
 {
 public:
-	CShopNPC();
-	virtual ~CShopNPC();
+	CShopSkillNPC();
+	virtual ~CShopSkillNPC();
 
 public:
 	void BeginPlay() override;

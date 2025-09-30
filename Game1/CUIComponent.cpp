@@ -129,4 +129,8 @@ void CUIComponent::ToggleInventory()
 		m_InventoryHUD->FOnRendering.Broadcast(bToggle);
 		//m_InventoryHUD->SetRender(bToggle);
 	}
+
+	// 인벤토리랑 반대로
+	if (m_PlayerHUD)
+		m_PlayerHUD->FOnRendering.Broadcast(!bToggle);
 }

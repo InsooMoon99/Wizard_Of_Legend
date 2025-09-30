@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CGhoulLarge.h"
 
+#include "CAttackActor.h"
 #include "CPlayer.h"
 #include "CResourceManager.h"
 #include "CStatusComponent.h"
@@ -52,15 +53,17 @@ void CGhoulLarge::Tick()
 	case ECharacterState::Walk:		State_Walk();		 break;
 	case ECharacterState::Attack1:	State_Attack1();	 break;
 	case ECharacterState::Attack2:	State_Attack2();	 break;
-	case ECharacterState::Hit:		State_Hit();		 break;
 	case ECharacterState::Dead:		State_Dead();		 break;
 
 	case ECharacterState::PS_END: break;
 	}
 
-
 	if (m_prevState != m_State->Get_State() || m_prevDir != m_State->Get_Dir())
 		SetSprite(m_State->Get_State(), m_State->Get_Dir());
+
+
+	if (m_CurImg)
+		m_CurImg->reverseLR = (m_TraceDir.x < 0.f);
 
 	// Color º¯°æ
 	Update_Hit();
@@ -87,6 +90,11 @@ void CGhoulLarge::LateUpdate()
 	//{
 	//	m_State->Change_State(ECharacterState::Attack1);
 	//}
+
+	if (INPUT->KeyDown('1'))
+	{
+		m_State->Change_State(ECharacterState::Dead);
+	}
 }
 
 void CGhoulLarge::Render()
@@ -121,13 +129,28 @@ void CGhoulLarge::State_Idle()
 {
 	m_IdleTimer += DELTA;
 
-	//cout << "Idle : " << m_IdleTimer << endl;
-
-	if (m_IdleTimer > 1.6f && m_Target)
+	if (m_IdleTimer >= 2.0f) 
 	{
-		m_State->Change_State(ECharacterState::Walk);
-
 		m_IdleTimer = 0.f;
+
+		if (m_Target && m_Collision)
+		{
+			Vec2 to = m_Target->Get_WorldPos() - m_Collision->GetWorldPos();
+			float distance = to.Length();
+
+			if (distance <= 120.f)
+			{
+				if (rand() % 2 == 0) 
+					m_State->Change_State(ECharacterState::Attack1);
+
+				else                 
+					m_State->Change_State(ECharacterState::Attack2);
+			}
+			else
+			{
+				m_State->Change_State(ECharacterState::Walk);
+			}
+		}
 	}
 }
 
@@ -141,9 +164,24 @@ void CGhoulLarge::State_Walk()
 
 void CGhoulLarge::State_Attack1()
 {
+	if (m_CurImg && m_CurImg->frame.x >= 4) 
+		MoveTile(m_TraceDir, 180.f);
+
+	if (m_CurImg && m_CurImg->frame.x >= 3 && m_AttackCheck)
+	{
+		m_AttackCheck = false;
+
+		FSkillInfo info{};
+		info.Instigator = this;
+		info.SpawnPos = m_Collision->GetWorldPos() + m_TraceDir * 100.f;
+
+		SKILL->Spawn_SkillActor(ESkillActor::AttackCollision, info, Vec2(200.f));
+
+	}
+
 	if (m_CurImg && m_CurImg->Get_AnimState() == ANIMSTATE::STOP)
 	{
-		m_State->Change_State(ECharacterState::Idle);
+		m_State->Change_State(ECharacterState::Idle); 
 	}
 }
 
@@ -151,36 +189,31 @@ void CGhoulLarge::State_Attack2()
 {
 	if (!m_CurImg) return;
 
+	if (m_CurImg->frame.x >= 4)
+		MoveTile(m_TraceDir, 180.f);
+
+	if (m_CurImg && m_CurImg->frame.x >= 3 && m_AttackCheck)
+	{
+		m_AttackCheck = false;
+
+		FSkillInfo info{};
+		info.Instigator = this;
+		info.SpawnPos = m_Collision->GetWorldPos() + m_TraceDir * 100.f;
+
+		SKILL->Spawn_SkillActor(ESkillActor::AttackCollision, info, Vec2(200.f));
+	}
+
 	if (m_CurImg->Get_AnimState() == ANIMSTATE::STOP)
 	{
-		if (m_Target && m_Collision)
-		{
-			Vec2 to = m_Target->Get_WorldPos() - m_Collision->GetWorldPos();
-			float distance = to.Length();
-
-			if (distance > 120.f)
-				m_State->Change_State(ECharacterState::Walk);
-
-			else
-				m_State->Change_State(ECharacterState::Idle);
-		}
-		else {
-			m_State->Change_State(ECharacterState::Idle);
-		}
+		m_State->Change_State(ECharacterState::Idle); 
 	}
 }
 
 
+
 void CGhoulLarge::State_Hit()
 {
-	if (m_CurImg)
-	{
-		if (!m_Knock.active && CHelper::IsLastFrame(m_CurImg))
-		{
-			CHelper::OrignColor(m_CurImg.get());
-			m_HitTimer = 0.f; 
-		}
-	}
+	
 }
 
 void CGhoulLarge::State_Dead()
@@ -208,6 +241,7 @@ void CGhoulLarge::Update_Hit()
 			CHelper::OrignColor(m_CurImg.get());
 		}
 	}
+
 }
 
 void CGhoulLarge::Hit_Color()
@@ -215,7 +249,7 @@ void CGhoulLarge::Hit_Color()
 	IColorChanger::Hit_Color();
 
 	CHelper::HitColor(m_CurImg.get());
-	m_HitTimer = 0.15f;
+	m_HitTimer = 0.05f;
 }
 
 void CGhoulLarge::Hit_Effect()
@@ -253,7 +287,6 @@ void CGhoulLarge::TraceTarget()
 			m_State->Change_State(ECharacterState::Attack2);
 		}
 	}
-
 			
 	else 
 	{
@@ -261,8 +294,6 @@ void CGhoulLarge::TraceTarget()
 			m_State->Change_State(ECharacterState::Walk);
 	}
 
-	if (m_CurImg)
-		m_CurImg->reverseLR = (m_TraceDir.x < 0.f);
 }
 
 
@@ -270,26 +301,23 @@ void CGhoulLarge::OnComponentBeginOverlap(GameObject* collider, GameObject* othe
 {
 	CMonsterBase::OnComponentBeginOverlap(collider, other);
 
-	auto player = dynamic_cast<CPlayer*>(other->Get_Owner());
-	if (!player) return;
-
-	FHitDamage hitDamage;
-
-	Vec2 dir = player->Get_WorldPos() - m_Collision->GetWorldPos();
-	if (dir.LengthSquared() > 1e-8f) 
-		dir.Normalize();
-
-	hitDamage.Dir = dir;
-
-	hitDamage.Damage = 10.f;
-	hitDamage.colldier = collider;
-	hitDamage.other = other;
-	hitDamage.Amount = 700.f;
-	hitDamage.Duration = 0.25;
-	player->TakeDamage(hitDamage);
-
-	m_IdleTimer = 0.f;
-	m_State->Change_State(ECharacterState::Idle);
+	//auto player = dynamic_cast<CPlayer*>(other->Get_Owner());
+	//if (!player) return;
+	//
+	//FHitDamage hitDamage;
+	//
+	//Vec2 dir = player->Get_WorldPos() - m_Collision->GetWorldPos();
+	//if (dir.LengthSquared() > 1e-8f) 
+	//	dir.Normalize();
+	//
+	//hitDamage.Dir = dir;
+	//
+	//hitDamage.Damage = 10.f;
+	//hitDamage.colldier = collider;
+	//hitDamage.other = other;
+	//hitDamage.Amount = 700.f;
+	//hitDamage.Duration = 0.25;
+	//player->TakeDamage(hitDamage);
 
 }
 
@@ -307,7 +335,9 @@ void CGhoulLarge::TakeDamage(FHitDamage _Hit)
 	if (m_CurImg) 
 		CHelper::OrignColor(m_CurImg.get());
 
-	m_State->Change_State(ECharacterState::Hit);
+	Hit_Color();
+
+	//m_State->Change_State(ECharacterState::Hit);
 	m_Status->AddHp(-_Hit.Damage);
 
 	if (m_Status->GetHp() <= 0.f)
@@ -318,8 +348,6 @@ void CGhoulLarge::TakeDamage(FHitDamage _Hit)
 	}
 
 }
-
-
 
 void CGhoulLarge::SetSprite(ECharacterState _State, EPlayerDir _Dir)
 {
@@ -344,11 +372,14 @@ void CGhoulLarge::Play_Sprite(ECharacterState _State)
 {
 	CMonsterBase::Play_Sprite(_State);
 
+	CHelper::OrignColor(m_CurImg.get());
+	m_AttackCheck = false;
+	m_IdleTimer = 0.f;
+
 	switch (_State)
 	{
 	case ECharacterState::Idle:
 		m_CurImg->ChangeAnim(ANIMSTATE::STOP, 0.0f);
-		m_IdleTimer = 0.f;
 		break;
 
 	case ECharacterState::Walk:
@@ -356,22 +387,15 @@ void CGhoulLarge::Play_Sprite(ECharacterState _State)
 		break;
 
 	case ECharacterState::Attack1:
+		m_AttackCheck = true;
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.15f);
-		m_BehaviorCheck = true;
-		m_LastFrameHitCount = 0;
-		m_OnLastFrameEdge = false;
+
 		break;
 
 	case ECharacterState::Attack2:
+		m_AttackCheck = true;
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.15f);
-		m_BehaviorCheck = true;
-		m_Attack2Timer = 0.f;
-		break;
 
-	case ECharacterState::Hit:
-		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
-		CHelper::HitColor(m_CurImg.get());
-		m_HitTimer = 0.1f;   
 		break;
 
 	case ECharacterState::Dead:
@@ -383,8 +407,8 @@ void CGhoulLarge::Play_Sprite(ECharacterState _State)
 void CGhoulLarge::Resource_Settings()
 {
 	m_Collision = make_shared<ObRect>();
-	m_Collision->scale = Vec2(70.f, 70.f);
-	m_Collision->visible = true;
+	m_Collision->scale = Vec2(110.f, 140.f);
+	m_Collision->visible = false;
 	m_Collision->isFilled = false;
 	m_Collision->collider = COLLIDER::RECT;
 	m_Collision->Set_Owner(this);
@@ -397,7 +421,6 @@ void CGhoulLarge::Resource_Settings()
 		Vec2 idleSize = Vec2(48.f, 64.f) * 3.5f;
 		shared_ptr<ObImage> idle = RESOURCE->CreateImage(L"Monster\\GhoulLarge\\GhoulLargeIdle.png", idleSize, true);
 		idle->SetParentRT(*m_Collision);
-		idle->visible = true;
 
 		m_Sprites[ECharacterState::Idle][EPlayerDir::Front] = idle;
 	}
@@ -407,7 +430,6 @@ void CGhoulLarge::Resource_Settings()
 		Vec2 walkSize = Vec2(240.f / 5.f, 64.f) * 3.5f;
 		shared_ptr<ObImage> walk = RESOURCE->CreateSprite(L"Monster\\GhoulLarge\\GhoulLargeWalk.png", walkSize, Int2(5, 1), true);
 		walk->SetParentRT(*m_Collision);
-		walk->visible = true;
 
 		m_Sprites[ECharacterState::Walk][EPlayerDir::Front] = walk;
 	}
@@ -417,7 +439,6 @@ void CGhoulLarge::Resource_Settings()
 		Vec2 attackSize = Vec2(280.f / 5.f, 64.f) * 3.5f;
 		shared_ptr<ObImage> attack = RESOURCE->CreateSprite(L"Monster\\GhoulLarge\\GhoulLargeAttack0.png", attackSize, Int2(5,1), true);
 		attack->SetParentRT(*m_Collision);
-		attack->visible = true;
 
 		m_Sprites[ECharacterState::Attack1][EPlayerDir::Front] = attack;
 	}
@@ -427,17 +448,15 @@ void CGhoulLarge::Resource_Settings()
 		Vec2 attackSize = Vec2(240.f / 5.f, 72.f) * 3.5f;
 		shared_ptr<ObImage> attack = RESOURCE->CreateSprite(L"Monster\\GhoulLarge\\GhoulLargeAttack2.png", attackSize, Int2(5, 1), true);
 		attack->SetParentRT(*m_Collision);
-		attack->visible = true;
 
 		m_Sprites[ECharacterState::Attack2][EPlayerDir::Front] = attack;
 	}
 
 	// Dead
 	{
-		Vec2 deadSize = Vec2(288.f / 5.f, 64.f) * 3.5f;
-		shared_ptr<ObImage> dead = RESOURCE->CreateSprite(L"Monster\\GhoulLarge\\GhoulLargeDead.png", deadSize, Int2(5, 1), true);
+		Vec2 deadSize = Vec2(288.f / 6.f, 64.f) * 3.5f;
+		shared_ptr<ObImage> dead = RESOURCE->CreateSprite(L"Monster\\GhoulLarge\\GhoulLargeDead.png", deadSize, Int2(6, 1), true);
 		dead->SetParentRT(*m_Collision);
-		dead->visible = true;
 
 		m_Sprites[ECharacterState::Dead][EPlayerDir::Front] = dead;
 	}

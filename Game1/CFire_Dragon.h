@@ -26,10 +26,20 @@ public:
 	virtual void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
 
 public:
-	shared_ptr<ObImage> m_FireDragon;
+	shared_ptr<ObImage> m_FireDragonRight;
+	shared_ptr<ObImage> m_FireDragonLeft;
+
+	shared_ptr<ObImage> m_CurFireImg;
+
 	shared_ptr<ObImage> m_FireDragon_Tail;
 	vector<shared_ptr<ObImage>> m_FireDragon_Particle;
 
 	vector<shared_ptr<ObImage>> m_FireBall_Particle;
 
+	float m_SpawnLife = 0.f;
+
+	float m_RandomSpeed;
+	int   m_WaveMode = 0;   
+	float m_WavePhase = 0.f;
+	float m_LastSinOffset = 0.f; 
 };

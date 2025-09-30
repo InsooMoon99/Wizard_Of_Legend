@@ -29,5 +29,6 @@ private:
 	shared_ptr<ObImage> m_FireBall;
 	vector<shared_ptr<ObImage>> m_FireBall_Particle;
 
+	float m_LifeTime = 0.f;
 };
 

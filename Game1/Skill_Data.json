@@ -11,14 +11,24 @@
       "CoolDown": 0
     },
     {
+      "Id": "WindDash",
+      "Name": "[돌진]",
+      "Desc": "바라보는 방향으로 돌진합니다!",
+      "Damage": 10,
+      "IconKey": "UI\\Dash.png",
+      "IconW": 40,
+      "IconH": 40,
+      "CoolDown": 0
+    },
+    {
       "Id": "FireDragon",
       "Name": "[용의 불숨]",
       "Desc": "휘몰아치는 불을 뿜는 용을 소환합니다!",
-      "Damage": 15,
+      "Damage": 5,
       "IconKey": "UI\\ShootFireArc.png",
       "IconW": 40,
       "IconH": 40,
-      "CoolDown": 8
+      "CoolDown": 6
     },
     {
       "Id": "FireBall",
@@ -36,6 +46,16 @@
       "Desc": "명중 시 폭발하는 강력한 화염구를 발사합니다!",
       "Damage": 20,
       "IconKey": "UI\\SummonBoulderShield.png",
+      "IconW": 42,
+      "IconH": 40,
+      "CoolDown": 7
+    },
+    {
+      "Id": "Meteor",
+      "Name": "[운석 충돌]",
+      "Desc": "하늘에서 운석을 소환합니다!",
+      "Damage": 20,
+      "IconKey": "UI\\SummonMeteorStrike.png",
       "IconW": 42,
       "IconH": 40,
       "CoolDown": 9

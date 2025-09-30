@@ -10,11 +10,13 @@
 
 CStageBoss::CStageBoss()
 {
-	m_Player = shared_ptr<CPlayer>();
+	m_PlayerPos = Vec2(-1780.f, 0.f);
+
+	m_Player = make_shared<CPlayer>();
+	m_Player->SetSpawnPos(m_PlayerPos);
 	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player.get());
 
 	m_MapSize = Vec2(1280.f, 1280.f) * 3.f;
-	m_PlayerPos = Vec2(-1780.f, 0.f);
 
 	Resource_Setting();
 }
@@ -46,8 +48,8 @@ void CStageBoss::Init()
 	m_Actors.push_back(m_Boss_Girl);
 	m_Actors.push_back(m_Player.get());
 
-	auto player = dynamic_pointer_cast<CPlayer>(m_Player);
-	player->Get_Collision()->SetWorldPos(m_PlayerPos);
+	//auto player = dynamic_pointer_cast<CPlayer>(m_Player);
+	//player->Get_Collision()->SetWorldPos(m_PlayerPos);
 
 	Vec2 m_BossPos = Vec2(-1815.f, 200.f);
 	m_Boss_Man->Get_Collision()->SetWorldPos(m_BossPos);

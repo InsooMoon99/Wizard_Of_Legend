@@ -51,6 +51,9 @@ public:
 	void	ToggleTileImagesVisible();
 	bool	IsTileImagesVisible() const { return m_ShowTileImages; }
 
+	bool IsAllFall(const Vec2& minW, const Vec2& maxW) const;
+	ETileType GetTileTypeAt(const Vec2& world) const;
+
 private:
 	static CTileManager*	Instance;
 

@@ -124,6 +124,28 @@ void CParticleManager::Resource_Settings()
 		m_Particles.insert({ L"StartEffect", telpoEffect });
 	}
 
+	// Dash Effect
+	{
+		Vec2 dash_Effect_Size = Vec2(96.f / 5.f, 60.f) * 2.5f;
+		float dash_Alpha = 0.25f;
+
+		shared_ptr<ObImage> dash_Front_Effect = RESOURCE->CreateSprite(L"Effect\\Dash_EffectShort.png", dash_Effect_Size, Int2(5, 1), true);
+		dash_Front_Effect->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
+		dash_Front_Effect->color.A(dash_Alpha);
+		//dash_Front_Effect->rotation = -(PI / 2.f);
+
+		m_Particles.insert({ L"DashEffect", dash_Front_Effect });
+	}
+	// Meteor Effect
+	{
+		Vec2 ringSize = Vec2(580.f / 4.f, 70.f) * 2.5f;
+
+		shared_ptr<ObImage> ringEffect = RESOURCE->CreateSprite(L"Particle\\MeteorRing.png", ringSize, Int2(4, 1), true);
+		ringEffect->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"MeteorEffect", ringEffect });
+	}
+
 	// Effect
 	m_Particles.insert({ L"HitEffect", hit_Effect });
 	m_Particles.insert({ L"HitSpark", hit_Spark });
@@ -137,6 +159,17 @@ void CParticleManager::Resource_Settings()
 
 void CParticleManager::Boss_Resource_Settings()
 {
+	// Monster
+	{
+		Vec2 attacParticle = Vec2(484.f / 4.f, 128.f) * 1.2f;
+
+		shared_ptr<ObImage> attackParticle = RESOURCE->CreateSprite(L"Particle\\Knight_Particle.png", attacParticle, Int2(4, 1), true);
+		attackParticle->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+		//dash_Front_Effect->rotation = -(PI / 2.f);
+
+		m_Particles.insert({ L"KnightParticle", attackParticle });
+	}
+
 	{
 		Vec2 start_Lightning_Size = Vec2(350.f / 7.f, 100.f) * 2.f;
 		shared_ptr<ObImage> start_Lightning = RESOURCE->CreateSprite(L"Monster\\Lightning\\Lightning_GirLand.png", start_Lightning_Size, Int2(7, 1), true);
@@ -251,6 +284,29 @@ shared_ptr<ObImage> CParticleManager::Spawn_Particle(const wstring& _Key, const 
 
 	if (_Multiple.y != -1)
 		newParticle->scale.y = find_iter->second->scale.y * _Multiple.y;
+
+	m_ActiveParticles.push_back(newParticle);
+
+	return newParticle;
+}
+
+shared_ptr<ObImage> CParticleManager::Spawn_ParticleDir(const wstring& _Key, const Vec2& _Pos, Vec2 _Multiple, Vec2 Dir)
+{
+	auto find_iter = m_Particles.find(_Key);
+	if (find_iter == m_Particles.end()) return nullptr;
+
+	auto particle = find_iter->second;
+	auto newParticle = make_shared<ObImage>(*particle); // 복사 생성자
+
+	newParticle->SetWorldPos(_Pos);
+
+	if (_Multiple.x != -1)
+		newParticle->scale.x = find_iter->second->scale.x * _Multiple.x;
+
+	if (_Multiple.y != -1)
+		newParticle->scale.y = find_iter->second->scale.y * _Multiple.y;
+
+	newParticle->rotation = Utility::DirToRadian(Dir);
 
 	m_ActiveParticles.push_back(newParticle);
 

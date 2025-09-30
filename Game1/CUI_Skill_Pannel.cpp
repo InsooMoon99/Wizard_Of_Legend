@@ -61,9 +61,10 @@ CUI_Skill_Pannel::CUI_Skill_Pannel()
 	int addOffset = 65;
 	for (int i = 0; i < SKILL_PANEL; i++)
 	{
-		m_WritePos[i] = {
-			66 + (i * addOffset),
-			642,
+		m_WritePos[i] = 
+		{
+			56 + (i * addOffset),
+			645,
 			126 + (i * addOffset),
 			702};
 	}
@@ -80,7 +81,10 @@ void CUI_Skill_Pannel::BeginPlay()
 {
 	CUI::BeginPlay();
 
-
+	FOnRendering.Add([this](bool bCheck)
+		{
+			SetRendering(bCheck);
+		});
 }
 
 void CUI_Skill_Pannel::Tick()
@@ -179,16 +183,20 @@ void CUI_Skill_Pannel::Render()
 
 	m_PanelRect->Render();
 
-	for (int i = 0; i < SKILL_PANEL; i++)
+	if (bRender)
 	{
-		auto& info = m_Skill_Infos[i];
-
-		if (info.IsCoolTime && info.CooldownRemain > 0.f)
+		for (int i = 0; i < SKILL_PANEL; i++)
 		{
-			wstring string = to_wstring((int)ceil(info.CooldownRemain));
+			auto& info = m_Skill_Infos[i];
 
-			DWRITE->RenderText(string, m_WritePos[i], 30.f, L"맑은 고딕", Color(1, 1, 1, 1), DWRITE_FONT_WEIGHT_BOLD);
+			if (info.IsCoolTime && info.CooldownRemain > 0.f)
+			{
+				double coolTime = info.CooldownRemain;
+				wstring string = format(L"{:.1f}", coolTime);       
 
+				DWRITE->RenderText(string, m_WritePos[i], 25.f, L"맑은 고딕", Color(1, 1, 1, 1), DWRITE_FONT_WEIGHT_BOLD);
+
+			}
 		}
 	}
 

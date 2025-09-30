@@ -253,7 +253,7 @@ void CBoss_TwinMan::State_Start2()
 	{
 		Vec2 pos = Vec2(m_Collision->GetWorldPos().x + m_Controller->GetOffSetPos().x, m_Collision->GetWorldPos().y + 50.f);
 
-		PARTICLE->Spawn_Particle(L"Fist_All", pos);
+		PARTICLE->Spawn_ParticleDir(L"Fist_All", pos);
 
 		SOUND->Stop("ImpactLightning");
 		SOUND->Stop("MetalBreak");

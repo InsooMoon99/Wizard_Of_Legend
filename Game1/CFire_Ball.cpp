@@ -34,6 +34,7 @@ CFire_Ball::CFire_Ball(FSkillInfo& _Info) : CSkill_Actor(_Info)
 	m_FireBall->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
 
 	m_FireBall_Particle.resize(4);
+
 }
 
 CFire_Ball::~CFire_Ball()
@@ -78,7 +79,7 @@ void CFire_Ball::BeginPlay()
 
 		Vec2 worldPos = ToWorld(offset[i]);
 
-		auto particle = PARTICLE->Spawn_Particle(key, worldPos);
+		auto particle = PARTICLE->Spawn_ParticleDir(key, worldPos);
 		if (!particle) continue;
 
 		particle->rotation = m_Skill_Info.Angle; 
@@ -160,8 +161,8 @@ bool CFire_Ball::CheckHitWall()
 
 void CFire_Ball::OnHitWall(const Vec2& hitPos)
 {
-	PARTICLE->Spawn_Particle(L"HitSpark", hitPos);
-	PARTICLE->Spawn_Particle(L"Fire_HitEffect2", hitPos);
+	PARTICLE->Spawn_ParticleDir(L"HitSpark", hitPos);
+	PARTICLE->Spawn_ParticleDir(L"Fire_HitEffect2", hitPos);
 
 	SOUND->Stop("FireBall_End");
 	SOUND->Play("FireBall_End");
@@ -181,31 +182,46 @@ void CFire_Ball::OnComponentBeginOverlap(GameObject* collider, GameObject* other
 	if (hit == m_Skill_Info.Instigator) return;
 	//if (IsSameTeam(hit, m_Collision->Get_Instigator())) return;
 
-	if (hit->IsKnockbackPrev())
-	{
-		Vec2 dir = hit->Get_WorldPos() - m_StartPos;
-		dir.Normalize();
-		hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
-	}
-
 	// 색 변경 : Hit Monster에서 인터페이스 상속받아야함
 	IColorChanger* colorChanger = hit;
-	if (colorChanger) 
+	if (colorChanger)
 		colorChanger->Hit_Color();
 
-	auto status = CHelper::GetComponent<CStatusComponent>(hit);
-	if (status)
-		status->SetHp(status->GetHp() - m_Skill_Info.Damage);
+	FHitDamage hitDamage;
+	{
+		Vec2 dir = hit->Get_WorldPos() - m_StartPos;
+		if (dir.LengthSquared() > 1e-8f) dir.Normalize();
+
+		hitDamage.Dir = dir;
+		hitDamage.Damage = m_Skill_Info.Damage;
+		hitDamage.colldier = collider;
+		hitDamage.other = other;
+
+		if (hit->IsKnockbackPrev())
+		{
+			hitDamage.Amount = m_Skill_Info.Amount;
+			hitDamage.Duration = 0.25f;
+		}
+		else
+		{
+			hitDamage.Amount = 0.f;
+			hitDamage.Duration = 0.f;
+		}
+	}
+
+	hit->TakeDamage(hitDamage);
 
 	// Particle
-	Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
-	Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
-	PARTICLE->Spawn_Particle(L"HitSpark", particlePos + randomVec);
-	PARTICLE->Spawn_Particle(L"Fire_HitEffect2", particlePos + randomVec);
+	{
+		Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
+		Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
+		PARTICLE->Spawn_ParticleDir(L"HitSpark", particlePos + randomVec);
+		PARTICLE->Spawn_ParticleDir(L"Fire_HitEffect2", particlePos + randomVec);
 
-	SOUND->Stop("FireBall_End");
-	SOUND->Play("FireBall_End");
-	SOUND->SetVolume("FireBall_End", 0.15f);
+		SOUND->Stop("FireBall_End");
+		SOUND->Play("FireBall_End");
+		SOUND->SetVolume("FireBall_End", 0.15f);
+	}
 
 	m_PendingKill = true;
 }

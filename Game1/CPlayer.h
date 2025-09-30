@@ -45,6 +45,7 @@ public:
 	void State_Walk();
 	void State_Dash();
 	void State_Attack();
+	void State_Attack3();
 	void State_Hit();
 
 	virtual void SetSprite(ECharacterState _State, EPlayerDir _Dir) override;
@@ -57,14 +58,19 @@ public:
 
 	void AddInteract(shared_ptr<CItem> _InItem);
 	void RemoveInteract(CItem* _InItem);
+	void UseItem();
 
-
+	void SwapKeepFrame(ECharacterState state, EPlayerDir newDir);
+	
 protected:
 	void Resource_Settings() override;
 
 private:
 	void Print_ImGui();
 	void MoveTile(const Vec2& dir, float speed);
+	void ResetSpeed();
+
+	float LastDirRotation();
 
 private:
 	Vec2 m_MoveDir = { 0, 0 };
@@ -83,6 +89,7 @@ private:
 	Vec2	m_StartShadowScale;
 	Vec2	m_EndShadowScale;
 
+	float   m_WalkTimer = 0.f;
 	float	m_DashTimer = 0.4f;
 	int		m_DashEndFrame = 11;
 
@@ -93,7 +100,13 @@ private:
 	float m_HitBlurFadeIn = 0.06f;   
 	float m_HitBlurFadeOut = 0.10f;  
 	float m_HitBlurMaxAlpha = 0.35f; 
-	bool  m_HitBlurWantsOn = false;  
+	bool  m_HitBlurWantsOn = false;
 
+	float m_AttackMoveRatio = 0.25f;
+
+	bool  m_SkillMove = false;
 
 };
+
+
+

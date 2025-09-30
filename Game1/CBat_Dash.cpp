@@ -29,7 +29,7 @@ CBat_Dash::CBat_Dash(FSkillInfo& _Info) : CSkill_Actor(_Info)
 	m_DashEffect->SetParentRT(*m_Collision);
 	m_DashEffect->ChangeAnim(ANIMSTATE::STOP, 0.f);
 
-	m_DashEffect2 = PARTICLE->Spawn_Particle(L"Light_Dash_Y", m_Pos);
+	m_DashEffect2 = PARTICLE->Spawn_ParticleDir(L"Light_Dash_Y", m_Pos);
 }
 
 CBat_Dash::~CBat_Dash()

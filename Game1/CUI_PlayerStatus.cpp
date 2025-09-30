@@ -20,7 +20,7 @@ CUI_PlayerStatus::CUI_PlayerStatus()
 
 	m_Gold = RESOURCE->CreateUI(L"UI\\UI_MONEY.png", Vec2(31.f, 31.f), true);
 	m_Gold->SetParentRT(*m_Background);
-	m_Gold->SetLocalPos(Vec2(-60.f, -60.f));
+	m_Gold->SetLocalPos(Vec2(500.f, -580.f));
 
 	m_PlayerStatus.push_back(m_Background);
 	m_PlayerStatus.push_back(m_Hp);
@@ -78,8 +78,8 @@ void CUI_PlayerStatus::Render()
 
 	wstring gold = to_wstring(m_Status->GetGold());
 	
-	//DWRITE->RenderText(gold, RECT{150, 96,230,150},
-	//		30.0f, L"NotoSansCJKkr-Medium", Color(1, 1, 1, 1), DWRITE_FONT_WEIGHT_BOLD);
+	DWRITE->RenderText(gold, RECT{710, 616,900,800},
+			30.0f, L"NotoSansCJKkr-Medium", Color(1, 1, 1, 1), DWRITE_FONT_WEIGHT_BOLD);
 
 	for (auto& status : m_PlayerStatus)
 	{

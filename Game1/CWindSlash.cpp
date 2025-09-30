@@ -27,7 +27,7 @@ CWindSlash::CWindSlash(FSkillInfo& _Info)
 
 	COLLISION->AddCollider(m_Collision.get());
 
-	shared_ptr<ObImage> wind = PARTICLE->Spawn_Particle(L"Wind_Slash", pos);
+	shared_ptr<ObImage> wind = PARTICLE->Spawn_ParticleDir(L"Wind_Slash", pos);
 	wind->rotation = m_Collision->rotation;
 }
 
@@ -130,15 +130,11 @@ void CWindSlash::OnComponentBeginOverlap(GameObject* collider, GameObject* other
 
 	hit->TakeDamage(hitDamage);
 
-	//auto status = CHelper::GetComponent<CStatusComponent>(hit);
-	//if (status)
-	//	status->SetHp(status->GetHp() - m_Skill_Info.Damage);
-
 	// 파티클, 사운드
 	{
 		Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
 		Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
-		PARTICLE->Spawn_Particle(L"HitSpark", Vec2(particlePos) + randomVec);
+		PARTICLE->Spawn_ParticleDir(L"HitSpark", Vec2(particlePos) + randomVec);
 
 		SOUND->Stop("ImpactAir");
 		SOUND->Play("ImpactAir");
@@ -151,4 +147,5 @@ void CWindSlash::OnComponentBeginOverlap(GameObject* collider, GameObject* other
 void CWindSlash::OnComponentEndOverlap(GameObject* collider, GameObject* other)
 {
 	CSkill_Actor::OnComponentEndOverlap(collider, other);
+
 }

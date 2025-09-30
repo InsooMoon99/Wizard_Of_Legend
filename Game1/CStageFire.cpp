@@ -5,25 +5,32 @@
 #include "CBoss_TwinMan.h"
 #include "CDummy.h"
 #include "CGhoulLarge.h"
+#include "CKnight.h"
 #include "CMonsterBase.h"
 #include "CPlayer.h"
 #include "CResourceManager.h"
-#include "CShopNPC.h"
+#include "CShopItemNPC.h"
 #include "CStateComponent.h"
 #include "CUIComponent.h"
+#include "CGolem.h"
+#include "CItem_Gold.h"
+#include "CShopSkillNPC.h"
 
 CStageFire::CStageFire()
 {
 	m_MapSize = Vec2(2304.f, 2560.f) * 3.f;
 	m_PlayerPos = Vec2(516.f, -2593.f);
 
+	m_SectionPos.push_back({-1600.f,-2000.f});
+	m_SectionPos.push_back({7.f, -1011.f});
+	m_SectionPos.push_back({-90.f, 380.f});
+
 	Resource_Setting();
 	m_Actors.push_back(m_Player);
 
 	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player.get());
 
-	bStartTile = false;
-
+	bStartTilevisible = false;
 }
 
 CStageFire::~CStageFire()
@@ -38,20 +45,21 @@ void CStageFire::Init()
 	SOUND->Play("Tutorial");
 	SOUND->SetVolume("Tutorial", 0.05f);
 
-	PARTICLE->Spawn_Particle(L"StartEffect", Vec2(m_PlayerPos.x, m_PlayerPos.y + 180.f), Vec2(1.2f, 1.f));
+	PARTICLE->Spawn_ParticleDir(L"StartEffect", Vec2(m_PlayerPos.x, m_PlayerPos.y + 180.f), Vec2(1.2f, 1.f));
 
 	for (auto& actor : m_Actors)
 		actor->BeginPlay();
 
-	for (auto& monster : m_Monsters)
-		monster->BeginPlay();
+	for (auto& [sec, vec] : m_Monsters)
+		for (auto& m : vec)
+			m->BeginPlay();
 
-	bStartTile = true;
+	bStartTilevisible = true;
 	  
-	if (bStartTile)
+	if (bStartTilevisible)
 	{
 		TILE->Load_Data(L"../Data/FireTile_First.dat");
-		bStartTile = false;
+		bStartTilevisible = false;
 	}
 
 }
@@ -72,11 +80,12 @@ void CStageFire::Update()
 
 	RemoveDeadMonsters();
 
-	for (auto& monster : m_Monsters)
-	{
-		monster->Tick();
-		RENDER->AddRenderObject(monster.get());
-	}
+	for (auto& [sec, vec] : m_Monsters)
+		for (auto& m : vec) { m->Tick();
+			RENDER->AddRenderObject(m.get()); }
+
+	for (auto& section : m_SectionCol)
+		section->Update();
 
 	for (const auto& hud : m_PlayerUI->GetHUD())
 		RENDER->AddRenderObject(hud.get());
@@ -109,23 +118,30 @@ void CStageFire::LateUpdate()
 		bTrigger = true;
 	}
 
-	if (m_Section1Col->Intersect(m_Player->Get_Collision().get()))
+	for (int i = 0; i < Section_END; i++)
 	{
-
-		for (auto& actor : m_Monsters)
+		if (m_SectionCol[i]->Intersect(m_Player->Get_Collision().get()))
 		{
-			CMonsterBase* monster = dynamic_cast<CMonsterBase*>(actor.get());
-			if (monster && monster->GetTarget() == nullptr)
-				monster->SetTarget(m_Player);
+			for (auto& [sec, vec] : m_Monsters)
+			{
+				if (sec == i)
+				{
+					for (auto& monster : vec)
+					{
+						if (monster && monster->GetTarget() == nullptr)
+							monster->SetTarget(m_Player);
+					}
+				}
+			}
 		}
 	}
-
+	
 
 	for (auto& actor : m_Actors)
 		actor->LateUpdate();
 
-	for (auto& monster : m_Monsters)
-		monster->LateUpdate();
+	for (auto& [sec, vec] : m_Monsters)
+		for (auto& m : vec) m->LateUpdate();
 }
 
 void CStageFire::Render()
@@ -134,12 +150,15 @@ void CStageFire::Render()
 
 	for (auto& map : m_Map)
 		map.second->Render();
-	
+
 	TILE->Render();
 	m_TileTrigger->Render();
 
 	for (auto& object : m_Objects)
 		object->Render();
+
+	for (auto& section : m_SectionCol)
+		section->Render();
 
 	PARTICLE->Render();
 }
@@ -158,11 +177,11 @@ void CStageFire::Release()
 
 void CStageFire::Key_Input()
 {
+	// ≈∏¿œ∏  visible
 	if (INPUT->KeyDown(VK_F1))
-	{
 		TILE->ToggleTileImagesVisible();
-	}
 
+	// ≈∏∞Ÿ µπˆ±Î
 	if (INPUT->KeyDown('1'))
 	{
 		for (auto& actor : m_Actors)
@@ -200,43 +219,90 @@ void CStageFire::Resource_Setting()
 	shared_ptr<ObImage> telport = RESOURCE->CreateImage(L"Object\\TELEPORT.png", telpoSize, true);
 	telport->SetWorldPos(Vec2(516.f, -2593.f));
 	m_Objects.push_back(telport);
+	m_Player		= make_shared<CPlayer>();
 
-	m_Player	= make_shared<CPlayer>();
-	m_Player->SetSpawnPos(Vec2(m_Section1_Pos.x - 200.f, m_Section1_Pos.y));
+	m_Player->SetSpawnPos(Vec2(m_SectionPos[2].x, m_SectionPos[2].y - 200.f));
+	m_TestDummy = SpawnMonster<CDummy>(Section1, m_PlayerPos + Vec2(150.f, 50.f));
 
-	m_ShopNPC	= make_shared<CShopNPC>();
+	m_ShopItemNPC	= make_shared<CShopItemNPC>();
+	m_ShopSkillNPC	= make_shared<CShopSkillNPC>();
 
-	m_TestDummy = SpawnMonster<CDummy>(m_PlayerPos + Vec2(150.f, 50.f));
+	m_ShopItemNPC->SetSpawnPos(Vec2(m_PlayerPos.x, m_PlayerPos.y - 50.f));
+	m_ShopSkillNPC->SetSpawnPos(Vec2(m_SectionPos[2].x, m_SectionPos[2].y - 230.f));
 
-	//auto blob1 = SpawnMonster<CBlobRoller>(Vec2(m_Section1_Pos.x + 100.f, m_Section1_Pos.y));
-	//auto blob2 = SpawnMonster<CBlobRoller>(Vec2(m_Section1_Pos.x - 40.f, m_Section1_Pos.y + 20));
-	//auto blob3 = SpawnMonster<CBlobRoller>(Vec2(m_Section1_Pos.x + 20.f, m_Section1_Pos.y + 10));
+	m_Actors.push_back(m_ShopItemNPC);
+	m_Actors.push_back(m_ShopSkillNPC);
 
-	auto ghoul = SpawnMonster<CGhoulLarge>(Vec2(m_Section1_Pos.x + 100.f, m_Section1_Pos.y));
+	auto blob1 = SpawnMonster<CBlobRoller>(Section1, Vec2(m_SectionPos[0].x + 100.f, m_SectionPos[0].y));
+	auto blob2 = SpawnMonster<CBlobRoller>(Section1, Vec2(m_SectionPos[0].x - 40.f, m_SectionPos[0].y + 20));
+	auto blob3 = SpawnMonster<CBlobRoller>(Section1, Vec2(m_SectionPos[0].x + 20.f, m_SectionPos[0].y + 10));
 
-	m_Section1Col = make_shared<ObRect>();
-	m_Section1Col->scale = Vec2(30.f, 160.f);
-	m_Section1Col->visible = true;
-	m_Section1Col->isFilled = false;
-	m_Section1Col->SetWorldPos(Vec2(m_Section1_Pos.x + 700.f, m_Section1_Pos.y + 10.f));
-	m_Objects.push_back(m_Section1Col);
+	auto ghoul = SpawnMonster<CGhoulLarge>(Section1, Vec2(m_SectionPos[0].x + 100.f, m_SectionPos[0].y));
 
-	m_Actors.push_back(m_ShopNPC);
+	auto knight1 = SpawnMonster<CKnight>(Section2, Vec2(m_SectionPos[1].x, m_SectionPos[1].y + 200.f));
+	auto golem = SpawnMonster<CGolem>(Section3, Vec2(m_SectionPos[2].x, m_SectionPos[2].y + 200.f));
+	auto flamezoner = SpawnMonster<CGolem>(Section3, Vec2(m_SectionPos[2].x + 99.f, m_SectionPos[2].y + 150.f));
+
+	auto section1 = make_shared<ObRect>();
+	section1->scale = Vec2(30.f, 160.f);
+	section1->visible = true;
+	section1->isFilled = false;
+	section1->SetWorldPos(Vec2(m_SectionPos[0].x + 700.f, m_SectionPos[0].y + 10.f));
+	m_SectionCol.push_back(section1);
+
+	auto section2 = make_shared<ObRect>();
+	section2->scale = Vec2(300.f, 60.f);
+	section2->visible = true;
+	section2->isFilled = false;
+	section2->pivot = OFFSET_LT;
+	section2->SetWorldPos(Vec2(m_SectionPos[1].x - 150.f, m_SectionPos[1].y + 10.f));
+	m_SectionCol.push_back(section2);
+
+	auto section3 = make_shared<ObRect>();
+	section3->scale = Vec2(600.f, 60.f);
+	section3->visible = true;
+	section3->isFilled = false;
+	section3->pivot = OFFSET_LT;
+	section3->SetWorldPos(Vec2(m_SectionPos[2].x, m_SectionPos[2].y + 10.f));
+	m_SectionCol.push_back(section3);
+
+	// TODO : section 4 √ﬂ∞° øπ¡§
+	m_SectionCol.push_back(section2);
+
+	// ¿”Ω√ ∞ÒµÂ
+	{
+		auto gold = make_shared<CItem_Gold>();
+		gold->SetSpawnPos(Vec2(0.f));
+
+		auto gold1 = make_shared<CItem_Gold>();
+		gold1->SetSpawnPos(Vec2(10.f));
+
+		auto gold2 = make_shared<CItem_Gold>();
+		gold2->SetSpawnPos(Vec2(15.f));
+
+		auto gold3 = make_shared<CItem_Gold>();
+		gold3->SetSpawnPos(Vec2(20.f));
+
+		m_Actors.push_back(gold);
+		m_Actors.push_back(gold2);
+		m_Actors.push_back(gold3);
+	}
+
+
+
 }
 
 void CStageFire::RemoveDeadMonsters()
 {
-	m_Monsters.erase(remove_if(m_Monsters.begin(), m_Monsters.end(),
-			[](const shared_ptr<CActor>& actor)
+	for (auto& [sec, vec] : m_Monsters)
+	{
+		vec.erase(remove_if(vec.begin(), vec.end(),
+			[](const shared_ptr<CMonsterBase>& m)
 			{
-				if (actor && actor->IsDestroy())
-				{
-					return true;
-				}
-
-				return false;
-			}), m_Monsters.end()
-	);
+				return !m || m->IsDestroy();
+			}),
+			vec.end());
+	}
 }
 
 

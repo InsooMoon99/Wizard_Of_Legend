@@ -25,6 +25,8 @@ public:
 	shared_ptr<CUI_PlayerStatus> Get_Status() { return m_PlayerStatus; }
 	shared_ptr<CUI_Skill_Pannel> Get_Panel() { return m_Skill_Panel; }
 
+	virtual void SetRendering(bool _Render) override;
+
 private:
 	shared_ptr<CUI_PlayerStatus>	m_PlayerStatus;
 	shared_ptr<CUI_Skill_Pannel>	m_Skill_Panel;

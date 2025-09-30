@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CFire_Dragon.h"
 
 #include "CBossPawn.h"
@@ -14,6 +14,7 @@ CFire_Dragon::CFire_Dragon(FSkillInfo& _Info) : CSkill_Actor(_Info)
 	m_StartPos = m_Pos;
 
 	Vec2 spawnOffset = m_Skill_Info.Aim_Dir * 50.f;
+	m_WaveMode = m_Skill_Info.WaveMode;
 
 	// Fire_Dragon Collision
 	{
@@ -23,15 +24,18 @@ CFire_Dragon::CFire_Dragon(FSkillInfo& _Info) : CSkill_Actor(_Info)
 		m_Collision->visible = false;
 		m_Collision->collider = COLLIDER::CIRCLE;
 		m_Collision->isFilled = false;
-		m_Collision->rotation = m_Skill_Info.Angle;
+		//m_Collision->rotation = m_Skill_Info.Angle;
 		m_Collision->Set_Owner(this);
 		m_Collision->Set_Instigator(m_Skill_Info.Instigator);
 
 		COLLISION->AddCollider(m_Collision.get());
 	}
 
-	m_FireDragon = RESOURCE->CreateSprite(L"Skill\\DragonArcRight.png", Vec2(37.f, 25.f) * 2.5f, Int2(1, 1), true);
-	m_FireDragon->SetParentRT(*m_Collision);
+	m_FireDragonRight = RESOURCE->CreateSprite(L"Skill\\DragonArcRight.png", Vec2(37.f, 25.f) * 3.2f, Int2(1, 1), true);
+	m_FireDragonRight->SetParentRT(*m_Collision);
+
+	m_FireDragonLeft = RESOURCE->CreateSprite(L"Skill\\DragonArcLeft.png", Vec2(37.f, 25.f) * 3.2f, Int2(1, 1), true);
+	m_FireDragonLeft->SetParentRT(*m_Collision);
 
 	Vec2 fireSize = Vec2(768.f / 6.f, 512.f / 4.f) / 2.5f;
 	m_FireDragon_Tail = RESOURCE->CreateSprite(L"Particle\\Fire_Particle_6.bmp", fireSize, Int2(6, 4), true);
@@ -52,24 +56,22 @@ void CFire_Dragon::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (m_Skill_Info.Aim_Dir.x > 0.f)
+		m_CurFireImg = m_FireDragonRight;
+
+	else
+		m_CurFireImg = m_FireDragonLeft;
+
 	SOUND->Stop("FireArc");
 	SOUND->Play("FireArc");
 	SOUND->SetVolume("FireArc", 0.1f);
 
-	const Vec2 offset[4] =
-	{
-		{ +60.f,  -20.f },
-		{ +60.f,  -10.f },
-		{ +60.f, +10.f },
-		{ +60.f, +20.f },
-	};
 
+	const Vec2 offset[4] = { { +60.f, -20.f },{ +60.f, -10.f },{ +60.f, +10.f },{ +60.f, +20.f } };
 	Vec2 fwd = m_Skill_Info.Aim_Dir; fwd.Normalize();
 	Vec2 right(fwd.y, -fwd.x);
 
-	auto ToWorld = [&](const Vec2& local) {
-		return m_Pos + fwd * local.x + right * local.y;
-		};
+	auto ToWorld = [&](const Vec2& local) { return m_Pos + fwd * local.x + right * local.y; };
 
 	for (int i = 0; i < 4; ++i)
 	{
@@ -85,7 +87,7 @@ void CFire_Dragon::BeginPlay()
 
 		Vec2 worldPos = ToWorld(offset[i]);
 
-		auto particle = PARTICLE->Spawn_Particle(key, worldPos);
+		auto particle = PARTICLE->Spawn_ParticleDir(key, worldPos);
 		if (!particle) continue;
 
 		particle->rotation = m_Skill_Info.Angle;
@@ -95,30 +97,59 @@ void CFire_Dragon::BeginPlay()
 
 	}
 
-	
+	m_WavePhase = (m_WaveMode == 0) ? (PI * 0.5f) : (PI * 1.5f); 
+	float amplitude = 30.f;  
+	m_LastSinOffset = amplitude * sinf(m_WavePhase);
+
+	int random = rand() % 50;
+	m_RandomSpeed = 850.f + random;
 }
 
 void CFire_Dragon::Tick()
 {
 	Super::Tick();
+	if (m_PendingKill) return;
+	if (m_Collision) m_Pos = m_Collision->GetWorldPos();
+	if (CheckHitWall()) return;
 
-	if (m_PendingKill)
-		return;
+	m_SpawnLife += DELTA;
+	if (m_SpawnLife >= 1.5f) { m_PendingKill = true; return; }
 
-	// À§Ä¡ °»½Å
-	if (m_Collision)
-		m_Pos = m_Collision->GetWorldPos();
+	Vec2 dir = m_Skill_Info.Aim_Dir; dir.Normalize();
+	Vec2 right(dir.y, -dir.x);
 
-	// ÀÌµ¿ ÈÄ, º® Ãæµ¹ ¸ÕÀú Ã¼Å©
-	if (CheckHitWall())
-		return;
+	float amplitude = 40.f;  
+	float frequency = 8.f;   
 
-	m_Collision->MoveWorldPos(m_Skill_Info.Aim_Dir * 850.f * DELTA);
+	float sinOffset = amplitude * sinf(m_WavePhase + m_SpawnLife * frequency);
+
+	Vec2 delta = dir * (m_RandomSpeed * DELTA) + right * (sinOffset - m_LastSinOffset);
+	m_Collision->MoveWorldPos(delta);
+	m_LastSinOffset = sinOffset;
+
+	if (delta.LengthSquared() > 1e-6f) 
+	{
+		float rot = atan2f(delta.y, delta.x);
+		if (dir.x >= 0.f)
+		{
+			m_CurFireImg = m_FireDragonRight;
+			m_CurFireImg->rotation = rot;
+			m_CurFireImg->reverseLR = false;
+		}
+		else 
+		{
+			m_CurFireImg = m_FireDragonLeft;
+			m_CurFireImg->rotation = rot + PI;
+			m_CurFireImg->reverseLR = false;
+		}
+		m_FireDragon_Tail->rotation = rot;
+	}
 
 	m_Collision->Update();
-	m_FireDragon->Update();
+	m_CurFireImg->Update();
 	m_FireDragon_Tail->Update();
 }
+
 
 void CFire_Dragon::LateUpdate()
 {
@@ -132,7 +163,7 @@ void CFire_Dragon::Render()
 
 	m_Collision->Render();
 	m_FireDragon_Tail->Render();
-	m_FireDragon->Render();
+	m_CurFireImg->Render();
 
 }
 
@@ -146,7 +177,9 @@ void CFire_Dragon::Release()
 
 		m_Collision.reset();
 	}
-	m_FireDragon.reset();
+	m_FireDragonRight.reset();
+	m_FireDragonLeft.reset();
+	m_CurFireImg.reset();
 
 }
 
@@ -157,8 +190,8 @@ bool CFire_Dragon::CheckHitWall()
 
 void CFire_Dragon::OnHitWall(const Vec2& hitPos)
 {
-	PARTICLE->Spawn_Particle(L"HitSpark", hitPos);
-	PARTICLE->Spawn_Particle(L"Fire_HitEffect2", hitPos);
+	PARTICLE->Spawn_ParticleDir(L"HitSpark", hitPos);
+	PARTICLE->Spawn_ParticleDir(L"Fire_HitEffect2", hitPos);
 
 	SOUND->Stop("FireArc_End");
 	SOUND->Play("FireArc_End");
@@ -174,36 +207,50 @@ void CFire_Dragon::OnComponentBeginOverlap(GameObject* collider, GameObject* oth
 	CCharacter* hit = dynamic_cast<CCharacter*>(other->Get_Owner());
 	if (!hit)return;
 
-	// TODO : ÆÀÅ³/ÀÚ±â ¹«½Ã
+	// TODO : íŒ€í‚¬/ìžê¸° ë¬´ì‹œ
 	if (hit == m_Skill_Info.Instigator) return;
 	//if (IsSameTeam(hit, m_Collision->Get_Instigator())) return;
 
-	if (hit->IsKnockbackPrev())
-	{
-		Vec2 dir = hit->Get_WorldPos() - m_StartPos;
-		dir.Normalize();
-		hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
-	}
-
-	// »ö º¯°æ : Hit Monster¿¡¼­ ÀÎÅÍÆäÀÌ½º »ó¼Ó¹Þ¾Æ¾ßÇÔ
 	IColorChanger* colorChanger = hit;
 	if (colorChanger)
 		colorChanger->Hit_Color();
 
-	auto status = CHelper::GetComponent<CStatusComponent>(hit);
-	if (status)
-		status->SetHp(status->GetHp() - m_Skill_Info.Damage);
+	FHitDamage hitDamage;
+	{
+		Vec2 dir = hit->Get_WorldPos() - m_StartPos;
+		if (dir.LengthSquared() > 1e-8f) dir.Normalize();
+
+		hitDamage.Dir = dir;
+		hitDamage.Damage = m_Skill_Info.Damage;
+		hitDamage.colldier = collider;
+		hitDamage.other = other;
+
+		if (hit->IsKnockbackPrev())
+		{
+			hitDamage.Amount = m_Skill_Info.Amount;
+			hitDamage.Duration = 0.25f;
+		}
+		else
+		{
+			hitDamage.Amount = 0.f;
+			hitDamage.Duration = 0.f;
+		}
+	}
+
+	hit->TakeDamage(hitDamage);
 
 	// Particle
-	Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
-	Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
-	PARTICLE->Spawn_Particle(L"HitSpark", particlePos + randomVec);
-	PARTICLE->Spawn_Particle(L"Fire_HitEffect2", particlePos + randomVec, Vec2(0.7f));
+	{
+		Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
+		Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
+		PARTICLE->Spawn_ParticleDir(L"HitSpark", particlePos + randomVec);
+		PARTICLE->Spawn_ParticleDir(L"Fire_HitEffect2", particlePos + randomVec, Vec2(0.7f));
 
-	SOUND->Stop("FireArc_End");
-	SOUND->Play("FireArc_End");
-	SOUND->SetVolume("FireArc_End", 0.2f);
-
+		SOUND->Stop("FireArc_End");
+		SOUND->Play("FireArc_End");
+		SOUND->SetVolume("FireArc_End", 0.2f);
+	}
+	
 	m_PendingKill = true;
 }
 

@@ -75,6 +75,7 @@ void CResourceManager::SoundSettings()
 	{
 		SOUND->AddSound("PlayerFootstep.wav", "PlayerStep", false);
 		SOUND->AddSound("Dash.wav", "Dash", false);
+		SOUND->AddSound("RunSpeed.wav", "RunSpeed", false);
 	}
 
 	// Skill

@@ -36,5 +36,6 @@ private:
 	float m_ShotDelay = 0.15f; // 샷 간격(초)
 	float m_ShotTimer = 0.f;   // 다음 샷까지 남은 시간
 
+	int m_NextWaveMode = 0;
 };
 

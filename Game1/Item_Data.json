@@ -37,6 +37,19 @@
       "StatType": "Defense",
       "Option": "Add",
       "Value": 10
+    },
+    {
+      "Id": "Gold",
+      "Name": "골드",
+      "Desc": "돈",
+      "IconKey": "UI\\UI_MONEY.png",
+      "IconW": 40,
+      "IconH": 40,
+      "ItemType": "Gold",
+      "StatType": "Etc",
+      "Option": "Add",
+      "Value": 10
     }
+  
   ]
 }

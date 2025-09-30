@@ -1,11 +1,11 @@
 #include "stdafx.h"
-#include "CShopNPC.h"
+#include "CShopItemNPC.h"
 
 #include "CItem.h"
 #include "CShopComponent.h"
 #include "CStateComponent.h"
 
-CShopNPC::CShopNPC()
+CShopItemNPC::CShopItemNPC()
 {
 	m_Shop = CHelper::CreateSharedComponent<CShopComponent>(this);
 
@@ -13,13 +13,13 @@ CShopNPC::CShopNPC()
 	Resource_Settings();
 }
 
-CShopNPC::~CShopNPC()
+CShopItemNPC::~CShopItemNPC()
 {
 	Release();
 
 }
 
-void CShopNPC::BeginPlay()
+void CShopItemNPC::BeginPlay()
 {
 	CCharacter::BeginPlay();
 
@@ -29,7 +29,7 @@ void CShopNPC::BeginPlay()
 
 }
 
-void CShopNPC::Tick()
+void CShopItemNPC::Tick()
 {
 	CCharacter::Tick();
 
@@ -43,13 +43,14 @@ void CShopNPC::Tick()
 		component->TickComponent();
 }
 
-void CShopNPC::LateUpdate()
+void CShopItemNPC::LateUpdate()
 {
 	CCharacter::LateUpdate();
 
+
 }
 
-void CShopNPC::Render()
+void CShopItemNPC::Render()
 {
 	CCharacter::Render();
 
@@ -63,7 +64,7 @@ void CShopNPC::Render()
 		component->Render();
 }
 
-void CShopNPC::Release()
+void CShopItemNPC::Release()
 {
 	CCharacter::Release();
 
@@ -75,19 +76,19 @@ void CShopNPC::Release()
 	}
 }
 
-void CShopNPC::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
+void CShopItemNPC::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 {
 	CCharacter::OnComponentBeginOverlap(collider, other);
 
 }
 
-void CShopNPC::OnComponentEndOverlap(GameObject* collider, GameObject* other)
+void CShopItemNPC::OnComponentEndOverlap(GameObject* collider, GameObject* other)
 {
 	CCharacter::OnComponentEndOverlap(collider, other);
 
 }
 
-void CShopNPC::SetSprite(ECharacterState _State, EPlayerDir _Dir)
+void CShopItemNPC::SetSprite(ECharacterState _State, EPlayerDir _Dir)
 {
 	CCharacter::SetSprite(_State, _Dir);
 
@@ -107,7 +108,7 @@ void CShopNPC::SetSprite(ECharacterState _State, EPlayerDir _Dir)
 
 }
 
-void CShopNPC::Play_Sprite(ECharacterState _State)
+void CShopItemNPC::Play_Sprite(ECharacterState _State)
 {
 	CCharacter::Play_Sprite(_State);
 
@@ -121,7 +122,7 @@ void CShopNPC::Play_Sprite(ECharacterState _State)
 }
 
 
-void CShopNPC::Resource_Settings()
+void CShopItemNPC::Resource_Settings()
 {
 	CCharacter::Resource_Settings();
 

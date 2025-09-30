@@ -58,8 +58,11 @@ void CBlobRoller::Tick()
 	case ECharacterState::PS_END: break;
 	}
 
-	// 플레이어 방향
-	TraceTarget();
+	if (m_TraceDir.x < 0.f)
+		m_CurImg->reverseLR = true;
+
+	else
+		m_CurImg->reverseLR = false;
 
 	if (m_prevState != m_State->Get_State() || m_prevDir != m_State->Get_Dir())
 		SetSprite(m_State->Get_State(), m_State->Get_Dir());
@@ -123,6 +126,9 @@ void CBlobRoller::State_Idle()
 {
 	m_IdleTimer += DELTA;
 
+	// 플레이어 방향
+	TraceTarget();
+
 	//cout << "Idle : " << m_IdleTimer << endl;
 
 	if (m_IdleTimer > 1.6f && m_Target)
@@ -136,6 +142,8 @@ void CBlobRoller::State_Idle()
 void CBlobRoller::State_Attack1()
 {
 	bool isLast = CHelper::IsLastFrame(m_CurImg);
+
+	AttackDir = m_TraceDir;
 
 	if (isLast && !m_OnLastFrameEdge)
 	{
@@ -160,12 +168,12 @@ void CBlobRoller::State_Attack2()
 
 	//cout << "Attack2 : " << m_Attack2Timer << endl;
 
-	if (m_Attack2Timer < 4.f)
+	if (m_Attack2Timer < 1.5f)
 	{
-		MoveTile(m_TraceDir, 400.f);
+		MoveTile(AttackDir, 400.f);
 	}
 
-	else if (m_Attack2Timer > 4.f)
+	else if (m_Attack2Timer > 1.5f)
 	{
 		m_State->Change_State(ECharacterState::Idle);
 
@@ -183,7 +191,11 @@ void CBlobRoller::State_Hit()
 
 		float kTime = 1.f - time;
 		float speed = m_Knock.amount * kTime;
-		MoveTile(m_Knock.dir,speed);
+
+		int random = rand() % 30;
+		Vec2 randomVec = Vec2(AttackDir.x + random, AttackDir.y + random);
+
+		MoveTile(m_Knock.dir, speed);
 
 		m_Knock.t += DELTA;
 		if (m_Knock.t >= m_Knock.duration)
@@ -260,15 +272,7 @@ void CBlobRoller::TraceTarget()
 
 	m_TraceDir.Normalize();
 
-	if (m_TraceDir.x < 0.f)
-	{
-		m_CurImg->reverseLR = true;
-	}
-
-	else
-	{
-		m_CurImg->reverseLR = false;
-	}
+	
 
 }
 
@@ -332,8 +336,6 @@ void CBlobRoller::TakeDamage(FHitDamage _Hit)
 	}
 }
 
-
-
 void CBlobRoller::SetSprite(ECharacterState _State, EPlayerDir _Dir)
 {
 	CMonsterBase::SetSprite(_State, _Dir);
@@ -356,6 +358,8 @@ void CBlobRoller::SetSprite(ECharacterState _State, EPlayerDir _Dir)
 void CBlobRoller::Play_Sprite(ECharacterState _State)
 {
 	CMonsterBase::Play_Sprite(_State);
+
+	CHelper::OrignColor(m_CurImg.get());
 
 	switch (_State)
 	{
@@ -393,7 +397,7 @@ void CBlobRoller::Resource_Settings()
 {
 	m_Collision = make_shared<ObRect>();
 	m_Collision->scale = Vec2(70.f, 70.f);
-	m_Collision->visible = true;
+	m_Collision->visible = false;
 	m_Collision->isFilled = false;
 	m_Collision->collider = COLLIDER::RECT;
 	m_Collision->Set_Owner(this);

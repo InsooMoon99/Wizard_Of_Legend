@@ -92,8 +92,7 @@ void CSkill_Earth_Shield::Activate(CActor* _Owner)
 	auto state = CHelper::GetComponent<CStateComponent>(character);
 	if (!state) return;
 
-	// TODO : 다른 포즈로 변경 예정
-	state->Change_State(state->Set_AttackType());
+	state->Change_State(ECharacterState::Attack3);
 
 	Vec2 dir = CHelper::DirToVec(state->Get_Dir());
 	float radian = Utility::DirToRadian(dir);

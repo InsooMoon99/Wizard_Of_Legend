@@ -247,7 +247,7 @@
     <ClInclude Include="CItemDataManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CShopNPC.h">
+    <ClInclude Include="CShopItemNPC.h">
       <Filter>09. Shop</Filter>
     </ClInclude>
     <ClInclude Include="CItem.h">
@@ -276,6 +276,39 @@
     </ClInclude>
     <ClInclude Include="CGhoulLarge.h">
       <Filter>03. Actors\02. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CAttackActor.h">
+      <Filter>06. Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="CKnight.h">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CGolem.h">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CFlameZoner.h">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_WindDash.h">
+      <Filter>06. Skill\00. Player\00. Skill_Object\01. Wind</Filter>
+    </ClInclude>
+    <ClInclude Include="CItem_Gold.h">
+      <Filter>10. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CShopSkillNPC.h">
+      <Filter>09. Shop</Filter>
+    </ClInclude>
+    <ClInclude Include="CItem_SkillMeteor.h">
+      <Filter>10. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CSkill_FireMeteor.h">
+      <Filter>06. Skill\00. Player\00. Skill_Object\00. Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="CFire_Meteor.h">
+      <Filter>06. Skill\00. Player\01. Skill_Actor\00. Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="CFire_MiddleMeteor.h">
+      <Filter>06. Skill\00. Player\01. Skill_Actor\00. Fire</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -626,7 +659,7 @@
     <ClCompile Include="CShopComponent.cpp">
       <Filter>09. Shop</Filter>
     </ClCompile>
-    <ClCompile Include="CShopNPC.cpp">
+    <ClCompile Include="CShopItemNPC.cpp">
       <Filter>09. Shop</Filter>
     </ClCompile>
     <ClCompile Include="CItem.cpp">
@@ -652,6 +685,39 @@
     </ClCompile>
     <ClCompile Include="CGhoulLarge.cpp">
       <Filter>03. Actors\02. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CAttackActor.cpp">
+      <Filter>06. Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="CKnight.cpp">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CGolem.cpp">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CFlameZoner.cpp">
+      <Filter>03. Actors\02. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_WindDash.cpp">
+      <Filter>06. Skill\00. Player\00. Skill_Object\01. Wind</Filter>
+    </ClCompile>
+    <ClCompile Include="CItem_Gold.cpp">
+      <Filter>10. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CShopSkillNPC.cpp">
+      <Filter>09. Shop</Filter>
+    </ClCompile>
+    <ClCompile Include="CItem_SkillMeteor.cpp">
+      <Filter>10. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CSkill_FireMeteor.cpp">
+      <Filter>06. Skill\00. Player\00. Skill_Object\00. Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="CFire_Meteor.cpp">
+      <Filter>06. Skill\00. Player\01. Skill_Actor\00. Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="CFire_MiddleMeteor.cpp">
+      <Filter>06. Skill\00. Player\01. Skill_Actor\00. Fire</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

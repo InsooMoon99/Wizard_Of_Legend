@@ -114,6 +114,9 @@ void CSkill_FireDragon::Activate(CActor* _Owner)
     bFiring = true;
 
     m_State->Change_State(m_State->Set_AttackType());
+
+    StartCoolDown();
+
 }
 
 void CSkill_FireDragon::Fire()
@@ -121,17 +124,24 @@ void CSkill_FireDragon::Fire()
     m_Dir = CHelper::DirToVec(m_State->Get_Dir());
     float rad = Utility::DirToRadian(m_Dir);
 
+   // if (fabs(m_Dir.x) > 0.5f)
+   //     rad = 0.f;
+
+    m_Skill_Info.Angle = rad;
+
     m_Skill_Info.Instigator = m_Character;
     m_Skill_Info.SpawnPos = m_Character->Get_WorldPos();
     m_Skill_Info.Aim_Dir = m_Dir;
     m_Skill_Info.Angle = rad;
     m_Skill_Info.Damage = m_DataDamage;
-    m_Skill_Info.Amount = 1000.f;
+    m_Skill_Info.Amount = 150.f;
 
-    auto fireDragon = std::make_shared<CFire_Dragon>(m_Skill_Info);
+    m_Skill_Info.WaveMode = m_NextWaveMode;
+    m_NextWaveMode = 1 - m_NextWaveMode;
+
+    auto fireDragon = make_shared<CFire_Dragon>(m_Skill_Info);
     fireDragon->BeginPlay();
 
     m_FireDragon.push_back(fireDragon);
 
-    StartCoolDown();
 }

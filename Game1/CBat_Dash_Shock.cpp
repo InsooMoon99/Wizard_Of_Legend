@@ -23,7 +23,7 @@ CBat_Dash_Shock::CBat_Dash_Shock(FSkillInfo& _Info) : CSkill_Actor(_Info)
 		COLLISION->AddCollider(m_Collision.get());
 	}
 
-	m_Shock = PARTICLE->Spawn_Particle(L"Fist_Lightning_Y", m_Pos, Vec2(1.35f));
+	m_Shock = PARTICLE->Spawn_ParticleDir(L"Fist_Lightning_Y", m_Pos, Vec2(1.35f));
 
 }
 

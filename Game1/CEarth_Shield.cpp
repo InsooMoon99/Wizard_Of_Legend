@@ -112,9 +112,12 @@ void CEarth_Shield::Tick()
 
 	else if (m_SpawnTime <= 0.f)
 	{
+		SOUND->Play("Earth_Shield");
+		SOUND->SetVolume("Earth_Shield", 0.85f);
+
 		for (auto& armor : m_Armor)
 		{
-			PARTICLE->Spawn_Particle(L"Stone3", armor->GetWorldPos());
+			PARTICLE->Spawn_ParticleDir(L"Stone3", armor->GetWorldPos());
 		}
 
 		m_PendingKill = true;
@@ -136,7 +139,6 @@ void CEarth_Shield::LateUpdate()
 
 
 }
-
 
 void CEarth_Shield::Render()
 {
@@ -172,24 +174,37 @@ void CEarth_Shield::OnComponentBeginOverlap(GameObject* collider, GameObject* ot
 	if (hit == m_Skill_Info.Instigator) return;
 	//if (IsSameTeam(hit, m_Collision->Get_Instigator())) return;
 
-	if (hit->IsKnockbackPrev())
-	{
-		Vec2 dir = hit->Get_WorldPos() - m_StartPos;
-		dir.Normalize();
-		hit->Get_Collision()->MoveWorldPos(dir * m_Skill_Info.Amount * DELTA);
-	}
-
 	IColorChanger* colorChanger = hit;
 	if (colorChanger)
 		colorChanger->Hit_Color();
 
-	auto status = CHelper::GetComponent<CStatusComponent>(hit);
-	if (status)
-		status->SetHp(status->GetHp() - m_Skill_Info.Damage);
+	FHitDamage hitDamage;
+	{
+		Vec2 dir = hit->Get_WorldPos() - m_StartPos;
+		if (dir.LengthSquared() > 1e-8f) dir.Normalize();
+
+		hitDamage.Dir = dir;
+		hitDamage.Damage = m_Skill_Info.Damage;
+		hitDamage.colldier = collider;
+		hitDamage.other = other;
+
+		if (hit->IsKnockbackPrev())
+		{
+			hitDamage.Amount = m_Skill_Info.Amount;
+			hitDamage.Duration = 0.25f;
+		}
+		else
+		{
+			hitDamage.Amount = 0.f;
+			hitDamage.Duration = 0.f;
+		}
+	}
+
+	hit->TakeDamage(hitDamage);
 
 	Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
 	Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
-	PARTICLE->Spawn_Particle(L"HitSpark", Vec2(particlePos) + randomVec);
+	PARTICLE->Spawn_ParticleDir(L"HitSpark", Vec2(particlePos) + randomVec);
 
 	//m_PendingKill = true;
 }

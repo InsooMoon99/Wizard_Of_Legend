@@ -24,14 +24,17 @@ void CUI_PlayerHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+	FOnRendering.Add([this](bool bCheck)
+		{
+			SetRendering(bCheck);
+		});
+
 }
 
 void CUI_PlayerHUD::Tick()
 {
 	Super::Tick();
 
-	
 }
 
 void CUI_PlayerHUD::Render()
@@ -46,4 +49,12 @@ void CUI_PlayerHUD::Release()
 	Super::Release();
 
 	
+}
+
+void CUI_PlayerHUD::SetRendering(bool _Render)
+{
+	CUI_HUD::SetRendering(_Render);
+
+	if (m_Skill_Panel)
+		m_Skill_Panel->FOnRendering.Broadcast(_Render);
 }

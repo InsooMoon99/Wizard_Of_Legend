@@ -10,6 +10,8 @@ class CMonsterBase;
 
 class CStageFire : public CScene
 {
+	enum ESectionType { Section1, Section2, Section3, Section4, Section_END};
+
 public:
 	CStageFire();
 	virtual ~CStageFire() override;
@@ -28,32 +30,34 @@ public:
 
 private:
 	vector<shared_ptr<CActor>> m_Actors;
-	vector<shared_ptr<CMonsterBase>> m_Monsters;
 	vector<shared_ptr<GameObject>> m_Objects;
+	unordered_map<ESectionType, vector<shared_ptr<CMonsterBase>>> m_Monsters;
 
 	Vec2 m_PlayerPos;
 	Vec2 m_MapSize;
 
 	shared_ptr<CMonsterBase> m_TestDummy;
 
-	shared_ptr<CActor> m_ShopNPC;
+	shared_ptr<CActor> m_ShopItemNPC;
+	shared_ptr<CActor> m_ShopSkillNPC;
 
 	shared_ptr<CUIComponent> m_PlayerUI;
 	shared_ptr<ObRect> m_TileTrigger;
 
-	bool bStartTile = false;
+	bool bStartTilevisible = false;
 	bool bTrigger = false;
 
-	Vec2 m_Section1_Pos {-1600.f, -2000.f};
-	shared_ptr<ObRect> m_Section1Col;
+	vector<Vec2> m_SectionPos;
+	vector<shared_ptr<ObRect>> m_SectionCol;
+
 
 private:
 	template<typename T, typename... Args>
-	shared_ptr<T> SpawnMonster(const Vector2& pos, Args&&... args)
+	shared_ptr<T> SpawnMonster(ESectionType type, const Vector2& pos, Args&&... args)
 	{
 		auto actor = make_shared<T>(forward<Args>(args)...);
 		actor->SetSpawnPos(pos);
-		m_Monsters.push_back(actor);
+		m_Monsters[type].push_back(actor);
 
 		return actor; 
 	}

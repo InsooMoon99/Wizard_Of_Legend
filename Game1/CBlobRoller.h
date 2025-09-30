@@ -47,5 +47,7 @@ private:
 
 	float m_IdleTimer = 0.f;
 	float m_Attack2Timer = 0.f;
+
+	Vec2 AttackDir;
 };
 

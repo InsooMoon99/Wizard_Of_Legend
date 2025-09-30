@@ -229,7 +229,7 @@ void CUI_InvenSkill::OnIntersectMouse()
 	{
 		if (newHovered != -1)
 		{
-			SOUND->StopPlay("Select", 0.5f);
+			//SOUND->StopPlay("Select", 0.5f);
 			FOnSkillIntersectMouse.Broadcast(static_cast<ESkillSlot>(newHovered));
 		}
 		m_LastHovered = newHovered;

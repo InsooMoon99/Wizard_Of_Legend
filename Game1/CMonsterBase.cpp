@@ -49,3 +49,11 @@ void CMonsterBase::Release()
 	CCharacter::Release();
 
 }
+
+void CMonsterBase::SpriteResetIdle()
+{
+	if (m_CurImg && m_CurImg->Get_AnimState() == ANIMSTATE::STOP)
+	{
+		m_State->Change_State(ECharacterState::Idle);
+	}
+}

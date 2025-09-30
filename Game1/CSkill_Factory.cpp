@@ -13,6 +13,8 @@
 #include "CSkill_Man_Bat.h"
 #include "CSkill_Man_Star.h"
 #include "CSkill_Man_Target.h"
+#include "CSkill_FireMeteor.h"
+#include "CSkill_WindDash.h"
 
 shared_ptr<CSkill> CSkill_Factory::CreateSkill(ESkillType _SkillType)
 {
@@ -25,8 +27,14 @@ shared_ptr<CSkill> CSkill_Factory::CreateSkill(ESkillType _SkillType)
 	case ESkillType::Fire_Dragon:
 		return make_shared<CSkill_FireDragon>();
 
+	case ESkillType::Fire_Meteor:
+		return make_shared<CSkill_FireMeteor>();
+
 	case ESkillType::Wind_Slash:
 		return make_shared<CSkill_WindSlash>();
+
+	case ESkillType::Wind_Dash:
+		return make_shared<CSkill_WindDash>();
 
 	case ESkillType::Earth_Shield:
 		return make_shared<CSkill_Earth_Shield>();

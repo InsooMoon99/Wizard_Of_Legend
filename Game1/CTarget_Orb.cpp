@@ -251,8 +251,8 @@ void CTarget_Orb::OnHitSpear()
 
         SOUND->StopPlay("ImpactLightning", 0.15f);
 
-        PARTICLE->Spawn_Particle(L"ShockSpark_AS", m_Collision->GetWorldPos(), Vec2(1.2f, 1.5f));
-        PARTICLE->Spawn_Particle(L"Light_Long", Vec2(m_Collision->GetWorldPos().x, m_Collision->GetWorldPos().y + 340.f));
+        PARTICLE->Spawn_ParticleDir(L"ShockSpark_AS", m_Collision->GetWorldPos(), Vec2(1.2f, 1.5f));
+        PARTICLE->Spawn_ParticleDir(L"Light_Long", Vec2(m_Collision->GetWorldPos().x, m_Collision->GetWorldPos().y + 340.f));
 
         m_OrbImage_Big->visible = false;
         m_OrbImage_Hit->visible = true;

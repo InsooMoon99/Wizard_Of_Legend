@@ -17,6 +17,7 @@ using Vec2 = Vector2;
 #include <set>
 #include <unordered_set>
 #include <algorithm>
+#include <format>
 
 #include "CEnums.h"
 #include "CDefine.h"

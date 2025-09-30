@@ -39,6 +39,7 @@ public:
 	void Boss_Resource_Settings();
 
 	shared_ptr<ObImage> Spawn_Particle(const wstring& _Key, const Vec2& _Pos, Vec2 _Multiple = Vec2(-1, -1));
+	shared_ptr<ObImage> Spawn_ParticleDir(const wstring& _Key, const Vec2& _Pos, Vec2 _Multiple = Vec2(-1, -1), Vec2 Dir = Vec2(0.f));
 
 private:
 	unordered_map<wstring, shared_ptr<ObImage>> m_Particles;

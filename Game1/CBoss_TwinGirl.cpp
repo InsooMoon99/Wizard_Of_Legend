@@ -487,7 +487,7 @@ void CBoss_TwinGirl::OnStarPos(const Vec2& _Pos)
 	m_CurImg = m_StarStart;
 
 	SOUND->StopPlay("ImpactLightning2", 0.15f);
-	PARTICLE->Spawn_Particle(L"Particle_Land", Vec2(_Pos.x, _Pos.y + 90.f), Vec2(1.5f));
+	PARTICLE->Spawn_ParticleDir(L"Particle_Land", Vec2(_Pos.x, _Pos.y + 90.f), Vec2(1.5f));
 }
 
 void CBoss_TwinGirl::SetSprite(ECharacterState _State, EPlayerDir _Dir)
@@ -563,7 +563,7 @@ void CBoss_TwinGirl::Play_Sprite(ECharacterState _State)
 			Vec2 pos = Vec2(m_Controller->GetManPos().x, m_Controller->GetManPos().y + 20.f);
 			m_Collision->SetWorldPos(pos);
 
-			PARTICLE->Spawn_Particle(L"Light_Land", Vec2(pos.x, pos.y + 120.f), Vec2(1.5f));
+			PARTICLE->Spawn_ParticleDir(L"Light_Land", Vec2(pos.x, pos.y + 120.f), Vec2(1.5f));
 		}
 		bFirst = true;
 		m_JavelinPos = Vec2(0.f);

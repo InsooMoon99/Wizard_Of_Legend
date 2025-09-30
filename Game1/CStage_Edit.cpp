@@ -123,8 +123,8 @@ void CStage_Edit::Key_Input()
 		TILE->Save_Data();
 	if (INPUT->KeyDown('L'))
 	{
-		//TILE->Load_Data(L"../Data/FireTile_First.dat");
-		TILE->Load_Data(L"../Data/FireTile_Second.dat");
+		TILE->Load_Data(L"../Data/FireTile_First.dat");
+		//TILE->Load_Data(L"../Data/FireTile_Second.dat");
 	}
 
 	if (INPUT->KeyDown(VK_F1))

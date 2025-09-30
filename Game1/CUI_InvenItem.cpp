@@ -213,7 +213,7 @@ void CUI_InvenItem::OnIntersectMouse()
     {
         if (newHovered != -1)
         {
-            SOUND->StopPlay("Select", 0.5f);
+            //SOUND->StopPlay("Select", 0.5f);
             FOnItemIntersectMouse.Broadcast(newHovered);
         }
         m_LastHovered = newHovered;

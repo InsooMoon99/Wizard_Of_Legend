@@ -99,7 +99,7 @@ void CSkill_WindSlash::Activate(CActor* _Owner)
 	m_Skill_Info.Aim_Dir = dir;
 	m_Skill_Info.Angle = radian;
 	m_Skill_Info.Damage = m_DataDamage;
-	m_Skill_Info.Amount = 1000.f;
+	m_Skill_Info.Amount = 200.f;
 
 	auto wind = make_shared<CWindSlash>(m_Skill_Info);
 	wind->BeginPlay();

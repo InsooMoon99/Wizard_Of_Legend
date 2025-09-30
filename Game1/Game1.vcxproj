@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CAttackActor.h" />
     <ClInclude Include="CBlobRoller.h" />
     <ClInclude Include="CActor.h" />
     <ClInclude Include="CBat_Ball.h" />
@@ -35,17 +36,25 @@
     <ClInclude Include="CDummy.h" />
     <ClInclude Include="CEarth_Shield.h" />
     <ClInclude Include="CFire_Dragon.h" />
+    <ClInclude Include="CFire_Meteor.h" />
+    <ClInclude Include="CFire_MiddleMeteor.h" />
+    <ClInclude Include="CFlameZoner.h" />
     <ClInclude Include="CGameObject.h" />
+    <ClInclude Include="CGolem.h" />
     <ClInclude Include="CItemDataManager.h" />
     <ClInclude Include="CItem_Armor.h" />
     <ClInclude Include="CItem_Factory.h" />
+    <ClInclude Include="CItem_Gold.h" />
     <ClInclude Include="CItem_Potion.h" />
+    <ClInclude Include="CItem_SkillMeteor.h" />
     <ClInclude Include="CItem_Weapon.h" />
     <ClInclude Include="CJavelin_Spear.h" />
+    <ClInclude Include="CKnight.h" />
     <ClInclude Include="CMonsterBase.h" />
     <ClInclude Include="CRenderManager.h" />
     <ClInclude Include="CShopComponent.h" />
-    <ClInclude Include="CShopNPC.h" />
+    <ClInclude Include="CShopItemNPC.h" />
+    <ClInclude Include="CShopSkillNPC.h" />
     <ClInclude Include="CSkillDataManager.h" />
     <ClInclude Include="CSkillManager.h" />
     <ClInclude Include="CSkill_Girl_Dash.h" />
@@ -58,6 +67,8 @@
     <ClInclude Include="CSkill_Man_Star.h" />
     <ClInclude Include="CSkill_Man_Target.h" />
     <ClInclude Include="CSkill_Girl_SpawnRect.h" />
+    <ClInclude Include="CSkill_FireMeteor.h" />
+    <ClInclude Include="CSkill_WindDash.h" />
     <ClInclude Include="CSkill_WindSlash.h" />
     <ClInclude Include="CSpawn_Rect.h" />
     <ClInclude Include="CStageFire.h" />
@@ -113,6 +124,7 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAttackActor.cpp" />
     <ClCompile Include="CBlobRoller.cpp" />
     <ClCompile Include="CActor.cpp" />
     <ClCompile Include="CBat_Ball.cpp" />
@@ -129,17 +141,25 @@
     <ClCompile Include="CDummy.cpp" />
     <ClCompile Include="CEarth_Shield.cpp" />
     <ClCompile Include="CFire_Dragon.cpp" />
+    <ClCompile Include="CFire_Meteor.cpp" />
+    <ClCompile Include="CFire_MiddleMeteor.cpp" />
+    <ClCompile Include="CFlameZoner.cpp" />
     <ClCompile Include="CGameObject.cpp" />
+    <ClCompile Include="CGolem.cpp" />
     <ClCompile Include="CItemDataManager.cpp" />
     <ClCompile Include="CItem_Armor.cpp" />
     <ClCompile Include="CItem_Factory.cpp" />
+    <ClCompile Include="CItem_Gold.cpp" />
     <ClCompile Include="CItem_Potion.cpp" />
+    <ClCompile Include="CItem_SkillMeteor.cpp" />
     <ClCompile Include="CItem_Weapon.cpp" />
     <ClCompile Include="CJavelin_Spear.cpp" />
+    <ClCompile Include="CKnight.cpp" />
     <ClCompile Include="CMonsterBase.cpp" />
     <ClCompile Include="CRenderManager.cpp" />
     <ClCompile Include="CShopComponent.cpp" />
-    <ClCompile Include="CShopNPC.cpp" />
+    <ClCompile Include="CShopItemNPC.cpp" />
+    <ClCompile Include="CShopSkillNPC.cpp" />
     <ClCompile Include="CSkillDataManager.cpp" />
     <ClCompile Include="CSkillManager.cpp" />
     <ClCompile Include="CSkill_Girl_Dash.cpp" />
@@ -152,6 +172,8 @@
     <ClCompile Include="CSkill_Man_Star.cpp" />
     <ClCompile Include="CSkill_Man_Target.cpp" />
     <ClCompile Include="CSkill_Girl_SpawnRect.cpp" />
+    <ClCompile Include="CSkill_FireMeteor.cpp" />
+    <ClCompile Include="CSkill_WindDash.cpp" />
     <ClCompile Include="CSkill_WindSlash.cpp" />
     <ClCompile Include="CSpawn_Rect.cpp" />
     <ClCompile Include="CStageFire.cpp" />

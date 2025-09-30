@@ -23,7 +23,7 @@ enum class ESceneType
 
 enum class ECharacterState
 {
-	Idle = 0, Walk, Dash, Attack1, Attack2, Hit, Dead,
+	Idle = 0, Walk, Dash, Attack1, Attack2, Attack3, Hit, Dead,
 	Air, Boss_Start, Boss_Start2, Boss_Ready,
 	Boss_Attack1, Boss_Attack1_Ready,
 	Boss_Attack2,
@@ -50,8 +50,8 @@ enum class ETileType
 
 enum class ESkillType
 {
-	Fire_Ball, Fire_Dragon, 
-	Wind_Slash, 
+	Fire_Ball, Fire_Dragon, Fire_Meteor,
+	Wind_Slash, Wind_Dash,
 	Earth_Shield,
 
 	Boss_Man_Bat, Boss_Girl_Dash,
@@ -63,7 +63,7 @@ enum class ESkillType
 
 enum class ESkillActor
 {
-	Dash_Shock, Star_Collision,
+	Dash_Shock, Star_Collision, AttackCollision,
 	 
 	SKILL_END
 };
@@ -108,7 +108,7 @@ enum class EItemType
 
 enum class EItem_StatType
 {
-	None, Hp, Attack, Defense, END
+	None, Hp, Attack, Defense, Gold, END
 };
 
 enum class EModifyOption

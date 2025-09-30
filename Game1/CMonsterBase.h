@@ -21,6 +21,9 @@ public:
 	void Hit_Color() override  {};
 	void Hit_Effect() override {};
 
+public:
+	virtual void SpriteResetIdle();
+
 protected:
 	void Resource_Settings() override {};
 	void SetSprite(ECharacterState _State, EPlayerDir _Dir) override {};
