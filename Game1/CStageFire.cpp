@@ -14,6 +14,7 @@
 #include "CUIComponent.h"
 #include "CGolem.h"
 #include "CItem_Gold.h"
+#include "CItem_SkillMeteor.h"
 #include "CShopSkillNPC.h"
 
 CStageFire::CStageFire()
@@ -283,9 +284,13 @@ void CStageFire::Resource_Setting()
 		auto gold3 = make_shared<CItem_Gold>();
 		gold3->SetSpawnPos(Vec2(20.f));
 
+		auto skill = make_shared<CItem_SkillMeteor>();
+		skill->SetSpawnPos(Vec2(-100.f));
+
 		m_Actors.push_back(gold);
 		m_Actors.push_back(gold2);
 		m_Actors.push_back(gold3);
+		m_Actors.push_back(skill);
 	}
 
 

@@ -3,12 +3,13 @@
 
 #include "CPlayer.h"
 #include "CStatusComponent.h"
+#include "CWeaponComponent.h"
 
 CItem_SkillMeteor::CItem_SkillMeteor()
 {
 	m_Collision = make_shared<ObRect>();
 	m_Collision->scale = Vec2(100.f);
-	m_Collision->SetWorldPos(Vec2(1970.f, -2426.f));
+	//m_Collision->SetWorldPos(Vec2(1970.f, -2426.f));
 	m_Collision->visible = true;
 	m_Collision->isFilled = false;
 	m_Collision->collider = COLLIDER::RECT;
@@ -19,6 +20,11 @@ CItem_SkillMeteor::CItem_SkillMeteor()
 	m_vecCol.push_back(m_Collision.get());
 
 	m_RenderLayer = ERenderLayer::Render_Effect;
+
+	m_ItemImg = RESOURCE->CreateImage(L"Shop\\MeteorCard.png", Vec2(32 ,50) * 2.f, true);
+	m_ItemImg->SetParentRT(*m_Collision);
+
+
 }
 
 CItem_SkillMeteor::~CItem_SkillMeteor()
@@ -30,8 +36,6 @@ void CItem_SkillMeteor::BeginPlay()
 {
 	CItem::BeginPlay();
 
-	m_ItemImg->scale = m_Size * 2.f;
-	m_ItemImg->SetParentRT(*m_Collision);
 }
 
 void CItem_SkillMeteor::Tick()
@@ -103,8 +107,13 @@ void CItem_SkillMeteor::ActivateItem(CActor* actor)
 	auto status = CHelper::GetComponent<CStatusComponent>(player);
 	if (!status) return;
 
+	auto weapon = CHelper::GetComponent<CWeaponComponent>(player);
+	if (!weapon) return;
+
 	int hp = status->GetHp();
 	status->SetHp(hp + m_ItemData.Value);
+
+	weapon->Equip_Skill(ESkillType::Fire_Meteor, ESkillSlot::R);
 
 	player->RemoveInteract(this);
 

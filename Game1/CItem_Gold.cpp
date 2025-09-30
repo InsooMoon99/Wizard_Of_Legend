@@ -9,7 +9,7 @@ CItem_Gold::CItem_Gold()
 {
 	m_Collision = make_shared<ObRect>();
 	m_Collision->scale = Vec2(100.f);
-	m_Collision->SetWorldPos(Vec2(2270.f, -2426.f));
+	//m_Collision->SetWorldPos(Vec2(2270.f, -2426.f));
 	m_Collision->visible = true;
 	m_Collision->isFilled = false;
 	m_Collision->collider = COLLIDER::RECT;
@@ -71,7 +71,6 @@ void CItem_Gold::Tick()
 void CItem_Gold::Render()
 {
 	CItem::Render();
-
 
 	for (auto& iter : m_vecCol)
 	{

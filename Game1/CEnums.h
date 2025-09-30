@@ -103,12 +103,12 @@ enum ESkillSlot
 
 enum class EItemType
 {
-	Consumable, Weapon, Armor, Etc
+	Consumable, Weapon, Armor, Skill, Etc
 };
 
 enum class EItem_StatType
 {
-	None, Hp, Attack, Defense, Gold, END
+	None, Hp, Attack, Defense, Gold, Skill, END
 };
 
 enum class EModifyOption

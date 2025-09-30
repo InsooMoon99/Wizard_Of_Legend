@@ -57,7 +57,7 @@ void CPlayer::BeginPlay()
 		// Fire
 		m_Weapon->Equip_Skill(ESkillType::Fire_Ball, ESkillSlot::Q);
 		m_Weapon->Equip_Skill(ESkillType::Fire_Dragon, ESkillSlot::RButton);
-		m_Weapon->Equip_Skill(ESkillType::Fire_Meteor, ESkillSlot::R);
+		//m_Weapon->Equip_Skill(ESkillType::Fire_Meteor, ESkillSlot::R);
 
 		// Wind
 		m_Weapon->Equip_Skill(ESkillType::Wind_Slash, ESkillSlot::LButton);

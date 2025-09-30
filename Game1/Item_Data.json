@@ -49,6 +49,18 @@
       "StatType": "Etc",
       "Option": "Add",
       "Value": 10
+    },
+    {
+      "Id": "Meteor",
+      "Name": "유성강천",
+      "Desc": "유성낙하",
+      "IconKey": "Shop\\MeteorCard.png",
+      "IconW": 32,
+      "IconH": 50,
+      "ItemType": "Skill",
+      "StatType": "Skill",
+      "Option": "Add",
+      "Value": 10
     }
   
   ]
