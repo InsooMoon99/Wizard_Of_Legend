@@ -18,7 +18,6 @@ void CShopComponent::BeginPlay()
 {
 	CComponent::BeginPlay();
 
-
 }
 
 void CShopComponent::TickComponent()
@@ -58,31 +57,6 @@ void CShopComponent::Release()
 {
 	CComponent::Release();
 
-}
-
-void CShopComponent::Equip_Item(EItemType Type)
-{
-	auto it = m_Items.find(Type);
-	if (it == m_Items.end()) 
-	{ 
-		string id = "";
-		switch (Type)
-		{
-		case EItemType::Consumable:
-			id = "Heal";
-			break;
-
-		case EItemType::Weapon:
-			id = "Weapon1";
-			break;
-
-		case EItemType::Armor:
-			id = "Armor1";
-			break;
-		}
-
-		Equip_ItemById(id);
-	}
 }
 
 void CShopComponent::Equip_ItemById(const string& id)

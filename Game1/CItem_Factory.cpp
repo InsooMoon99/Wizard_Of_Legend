@@ -4,27 +4,7 @@
 #include "CItem_Potion.h"
 #include "CItem_Weapon.h"
 #include "CItem_Armor.h"
-
-shared_ptr<CItem> CItem_Factory::CreateItemType(EItemType _ItemType)
-{
-	switch (_ItemType)
-	{
-	case EItemType::Consumable:
-		return make_shared <CItem_Potion>();
-
-	case EItemType::Weapon:
-
-		break;
-
-	case EItemType::Armor:
-
-		break;
-
-	case EItemType::Etc:
-
-		break;
-	}
-}
+#include "CItem_SkillMeteor.h"
 
 shared_ptr<CItem> CItem_Factory::CreateItemID(const string& id)
 {
@@ -44,8 +24,12 @@ shared_ptr<CItem> CItem_Factory::CreateItemID(const string& id)
 	case EItemType::Armor:
 		item = make_shared<CItem_Armor>();
 		break;
-	case EItemType::Etc:
 
+	case EItemType::Skill:
+		item = make_shared<CItem_SkillMeteor>();
+		break;
+
+	case EItemType::Etc:
 		break;
 	}
 

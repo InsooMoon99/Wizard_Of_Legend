@@ -90,11 +90,29 @@ void CResourceManager::SoundSettings()
 
 		SOUND->AddSound("GAIA_ARMOR_START.mp3", "Earth_Shield");
 
+		SOUND->AddSound("ULT_USE.mp3", "EnhanceCharge");
 	}
 
 	// Hit
 	{
 		SOUND->AddSound("ImpactAir.wav", "ImpactAir");
+		SOUND->AddSound("PLAYER_HITED_1.mp3", "PlayerHit");
+	}
+	// Meteor
+	{
+		SOUND->AddSound("MeteorExplosion.wav", "MeteorEx");
+	}
+
+	// Drop
+	{
+		SOUND->AddSound("DropSpell.wav", "DropSpell");
+		SOUND->AddSound("GoldSpawn.wav", "GoldSpawn");
+	}
+
+	// Inventory
+	{
+		SOUND->AddSound("inventoryON.mp3", "InvenOn");
+		SOUND->AddSound("inventoryOFF.mp3", "InvenOff");
 	}
 
 	// Boss

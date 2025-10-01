@@ -15,7 +15,7 @@ void Main::Init()
 
 	SKILL_DATA->Init();
 	ITEM_DATA->Init();
-
+	OBJECT->Init();
 	TILE->Init();
 	PARTICLE->Init();
 	SCENE->Change_Scene(ESceneType::StageFire);
@@ -39,7 +39,7 @@ void Main::Update()
 	SCENE->Update();
 	COLLISION->Update();
 	SKILL->Update();
-
+	OBJECT->Update();
 }
 
 void Main::LateUpdate()
@@ -61,6 +61,7 @@ void Main::Render()
 {
 	SCENE->Render();
 	SKILL->Render();
+	OBJECT->Render();
 
 	//m_Cursor->Render();
 
@@ -68,7 +69,7 @@ void Main::Render()
 
 	if (ImGui::Begin("Debug"))
 	{
-		ImGui::Text("FPS : %d", TIMER->GetFramePerSecond());
+		ImGui::Text("FPS : %d", TIMER->GetFPS());
 		ImGui::NewLine();
 
 		Vec2 pos = INPUT->GetMouseScreenPos();
@@ -81,6 +82,7 @@ void Main::Render()
 	ImGui::End();
 
 	RENDER->Render();
+	PARTICLE->Render();
 }
 
 void Main::Release()
@@ -88,10 +90,10 @@ void Main::Release()
 	SCENE->Destroy_Instance();
 	TILE->Destroy_Instance();
 	COLLISION->Destroy_Instance();
-	PARTICLE->Destroy_Instance();
 	RENDER->Destroy_Instance();
+	PARTICLE->Destroy_Instance();
 	SKILL->Destroy_Instance();
-
+	OBJECT->Release();
 }
 
 void Main::ResizeScreen()

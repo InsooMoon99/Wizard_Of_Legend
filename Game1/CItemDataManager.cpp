@@ -111,6 +111,7 @@ bool CItemDataManager::ParseItemType(const string& s, EItemType& out)
     if (s == "Consumable" || s == "Potion")     out = EItemType::Consumable;
     else if (s == "Weapon")                     out = EItemType::Weapon;
     else if (s == "Armor")                      out = EItemType::Armor;
+    else if (s == "Skill")                      out = EItemType::Skill;
     else                                        out = EItemType::Etc;
     return true;
 }
@@ -120,6 +121,7 @@ bool CItemDataManager::ParseStatType(const string& s, EItem_StatType& out)
     else if (s == "Hp")           out = EItem_StatType::Hp;
     else if (s == "Attack")       out = EItem_StatType::Attack;
     else if (s == "Defense")      out = EItem_StatType::Defense;
+    else if (s == "Skill")      out = EItem_StatType::Skill;
     else                          out = EItem_StatType::None;
     return true;
 }

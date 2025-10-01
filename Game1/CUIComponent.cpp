@@ -123,6 +123,11 @@ void CUIComponent::ToggleInventory()
 {
 	bToggle = !bToggle;
 
+	if (bToggle)
+		SOUND->StopPlay("InvenOn", 0.5f);
+	else
+		SOUND->StopPlay("InvenOff", 0.5f);
+
 	// 인벤토리 UI, 델리게이트로 변경
 	if (m_InventoryHUD) 
 	{

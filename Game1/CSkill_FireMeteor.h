@@ -27,10 +27,12 @@ private:
 	void SpawnOneMiddleMeteor(int index);
 
 private:
+	weak_ptr<CStatusComponent> m_Status;
+
 	vector<shared_ptr<CSkill_Actor>> m_FireMeteor;
 	vector<shared_ptr<CSkill_Actor>> m_FireMiddleMeteor;
 	shared_ptr<ObImage> m_CastingCircle;
-
+	
 	Vec2 m_PointPos {};
 
 	bool bMiddleCheck = false;

@@ -139,6 +139,8 @@ void CWindSlash::OnComponentBeginOverlap(GameObject* collider, GameObject* other
 		SOUND->Stop("ImpactAir");
 		SOUND->Play("ImpactAir");
 		SOUND->SetVolume("ImpactAir", 0.1f);
+
+		CAM->StartShake(5.f, 8.f, 0.12f);
 	}
 
 	//m_PendingKill = true;

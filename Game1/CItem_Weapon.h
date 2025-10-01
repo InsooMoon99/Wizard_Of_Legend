@@ -21,6 +21,8 @@ public:
 
 	void ActivateItem(CActor* actor) override;
 
-
+private:
+	shared_ptr<ObImage> m_PriceTag;
+	wstring m_Price;
 };
 

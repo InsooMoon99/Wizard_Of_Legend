@@ -17,7 +17,6 @@ public:
 	void Release() override;
 
 public:
-	void Equip_Item(EItemType Type);
 	void Equip_ItemById(const string& id);
 
 private:

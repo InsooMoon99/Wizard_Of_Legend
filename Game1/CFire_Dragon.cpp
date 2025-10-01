@@ -238,6 +238,7 @@ void CFire_Dragon::OnComponentBeginOverlap(GameObject* collider, GameObject* oth
 	}
 
 	hit->TakeDamage(hitDamage);
+	CAM->StartShake(5.f, 4.f, 0.1f);
 
 	// Particle
 	{

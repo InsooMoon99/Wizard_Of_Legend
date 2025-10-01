@@ -33,6 +33,12 @@ void CItem_Weapon::BeginPlay()
 
 	m_ItemImg->scale = m_Size * 2.f;
 	m_ItemImg->SetParentRT(*m_Collision);
+
+	m_PriceTag = RESOURCE->CreateImage(L"Shop\\PriceMarkerGold.png", Vec2(22.f, 10.f) * 3.f, true);
+	m_PriceTag->SetParentRT(*m_ItemImg);
+	m_PriceTag->SetLocalPos(Vec2(0.f, -70.f));
+
+	m_Price = to_wstring(m_ItemData.Price);
 }
 
 void CItem_Weapon::Tick()
@@ -44,6 +50,8 @@ void CItem_Weapon::Tick()
 		if (iter)
 			iter->Update();
 	}
+
+	m_PriceTag->Update();
 }
 
 void CItem_Weapon::Render()
@@ -54,6 +62,21 @@ void CItem_Weapon::Render()
 	{
 		if (iter)
 			iter->Render();
+	}
+
+	m_PriceTag->Render();
+
+	if (m_PriceTag && m_PriceTag->visible)
+	{
+		RECT rc = CHelper::MakeScreenRectFromImage(m_PriceTag.get(), Vec2(26.f, 2.f));
+
+		DWRITE->RenderText(
+			m_Price,
+			rc,
+			22.0f,
+			L"PixelMplus10",
+			Color(0.f, 0.0f, 0.0f, 1.f)
+		);
 	}
 }
 
@@ -92,6 +115,10 @@ void CItem_Weapon::OnComponentEndOverlap(GameObject* collider, GameObject* other
 {
 	CItem::OnComponentEndOverlap(collider, other);
 
+	CPlayer* player = dynamic_cast<CPlayer*>(other->Get_Owner());
+	if (!player) return;
+
+	player->RemoveInteract(this);
 }
 
 void CItem_Weapon::ActivateItem(CActor* actor)
@@ -103,6 +130,9 @@ void CItem_Weapon::ActivateItem(CActor* actor)
 
 	auto status = CHelper::GetComponent<CStatusComponent>(player);
 	if (!status) return;
+
+	bool bGoldCheck = status->GetGold() >= m_ItemData.Price;
+	if (!bGoldCheck) return;
 
 	int attack = status->GetAttack();
 	status->SetAttack(attack * m_ItemData.Value);

@@ -17,6 +17,7 @@
 #include <queue>
 #include <thread>
 #include <mutex>
+#include <algorithm>
 using namespace std;
 
 //DirectX d3d 11
@@ -121,6 +122,7 @@ extern Application app;//Extern Global
 #define INPUT		Input::GetInstance()
 #define TIMER		Timer::GetInstance()
 #define DELTA		Timer::GetInstance()->GetDeltaTime()
+#define SDELTA		Timer::GetInstance()->GetDelta()
 #define RANDOM		Random::GetInstance()
 #define TEXTURE		Texture::GetInstance()
 #define SOUND		Sound::GetInstance()

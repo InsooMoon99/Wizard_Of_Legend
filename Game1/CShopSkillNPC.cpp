@@ -23,9 +23,7 @@ void CShopSkillNPC::BeginPlay()
 {
 	CCharacter::BeginPlay();
 
-	m_Shop->Equip_ItemById("Heal");
-	m_Shop->Equip_ItemById("Weapon1");
-	m_Shop->Equip_ItemById("Armor1");
+	m_Shop->Equip_ItemById("Meteor");
 
 }
 

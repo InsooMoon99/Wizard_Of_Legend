@@ -126,14 +126,18 @@ void CSkill_FireDragon::Fire()
 
    // if (fabs(m_Dir.x) > 0.5f)
    //     rad = 0.f;
+    m_Skill_Info.Instigator = m_Character;
+    auto status = CHelper::GetComponent<CStatusComponent>(m_Character);
+    if (!status) return;
 
     m_Skill_Info.Angle = rad;
 
-    m_Skill_Info.Instigator = m_Character;
+    m_AttackScale = 0.7f;
+
     m_Skill_Info.SpawnPos = m_Character->Get_WorldPos();
     m_Skill_Info.Aim_Dir = m_Dir;
     m_Skill_Info.Angle = rad;
-    m_Skill_Info.Damage = m_DataDamage;
+    m_Skill_Info.Damage = m_DataDamage + (status->GetAttack() * m_AttackScale);
     m_Skill_Info.Amount = 150.f;
 
     m_Skill_Info.WaveMode = m_NextWaveMode;

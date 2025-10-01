@@ -318,7 +318,6 @@ void CBlobRoller::TakeDamage(FHitDamage _Hit)
 		CHelper::OrignColor(m_CurImg.get());
 
 	m_State->Change_State(ECharacterState::Hit);
-	m_Status->AddHp(-_Hit.Damage);
 
 	if (m_Status->GetHp() <= 0.f)
 	{

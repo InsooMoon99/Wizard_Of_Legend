@@ -4,6 +4,7 @@
 #include "CBossPawn.h"
 #include "CResourceManager.h"
 #include "CCharacter.h"
+#include "CFloatingText.h"
 #include "CSkill.h"
 #include "CStatusComponent.h"
 #include "CTile.h"
@@ -210,6 +211,7 @@ void CFire_Ball::OnComponentBeginOverlap(GameObject* collider, GameObject* other
 	}
 
 	hit->TakeDamage(hitDamage);
+	CAM->StartShake(15.f, 14.f, 0.1f);
 
 	// Particle
 	{

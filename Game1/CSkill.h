@@ -53,6 +53,7 @@ protected:
 	float		m_DataDamage;
 	float		m_DataCoolDown = 0.f;
 	float		m_CoolRemain = 0.f;
+	float		m_AttackScale = 1.f;
 
 private:
 	shared_ptr<ObImage> m_Icon;

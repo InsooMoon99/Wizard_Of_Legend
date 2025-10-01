@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "CMonsterBase.h"
+
+#include "CItem_Gold.h"
 #include "CResourceManager.h"
 #include "CStatusComponent.h"
 #include "CStateComponent.h"
@@ -41,7 +43,6 @@ void CMonsterBase::Render()
 	CCharacter::Render();
 
 	
-
 }
 
 void CMonsterBase::Release()
@@ -56,4 +57,34 @@ void CMonsterBase::SpriteResetIdle()
 	{
 		m_State->Change_State(ECharacterState::Idle);
 	}
+}
+
+void CMonsterBase::Play_Sprite(ECharacterState _State)
+{
+	CCharacter::Play_Sprite(_State);
+
+	switch (_State)
+	{
+	case ECharacterState::Dead:
+		DropGold();
+		break;
+	}
+}
+
+void CMonsterBase::DropGold()
+{
+	Vec2 dropPos = m_Collision->GetWorldPos();
+
+	auto gold = make_shared<CItem_Gold>();
+	gold->SetSpawnPos(dropPos);
+
+	OBJECT->SpawnActor(gold);
+}
+
+void CMonsterBase::TakeDamage(FHitDamage _Hit)
+{
+	CCharacter::TakeDamage(_Hit);
+
+	float damage = CHelper::CaculateDamage(_Hit.Damage, m_Status->GetDef());
+	CHelper::ApplyDamage(m_Status, damage, m_Collision->GetWorldPos());
 }

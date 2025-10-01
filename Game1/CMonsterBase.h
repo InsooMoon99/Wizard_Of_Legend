@@ -27,7 +27,7 @@ public:
 protected:
 	void Resource_Settings() override {};
 	void SetSprite(ECharacterState _State, EPlayerDir _Dir) override {};
-	void Play_Sprite(ECharacterState _State) override {};
+	void Play_Sprite(ECharacterState _State) override;
 
 public:
 	shared_ptr<CActor> GetTarget() { return m_Target; }
@@ -40,6 +40,10 @@ public:
 	void SetTraceDir(const Vec2& dir) { m_TraceDir = dir; }
 
 	virtual void TraceTarget() {};
+	virtual void DropGold();
+
+	void TakeDamage(FHitDamage _Hit) override;
+
 protected:
 	shared_ptr<CActor>		m_Target = nullptr;
 	shared_ptr<GameObject>	m_SightRaidus = nullptr;
@@ -47,7 +51,6 @@ protected:
 	Vec2 m_TraceDir;
 
 private:
-
 
 };
 

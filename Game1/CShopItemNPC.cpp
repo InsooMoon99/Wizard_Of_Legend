@@ -9,7 +9,6 @@ CShopItemNPC::CShopItemNPC()
 {
 	m_Shop = CHelper::CreateSharedComponent<CShopComponent>(this);
 
-
 	Resource_Settings();
 }
 

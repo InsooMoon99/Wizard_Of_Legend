@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CItem_Gold.h"
 
+#include "CFloatingText.h"
 #include "CInventoryComponent.h"
 #include "CPlayer.h"
 #include "CStatusComponent.h"
@@ -10,7 +11,7 @@ CItem_Gold::CItem_Gold()
 	m_Collision = make_shared<ObRect>();
 	m_Collision->scale = Vec2(100.f);
 	//m_Collision->SetWorldPos(Vec2(2270.f, -2426.f));
-	m_Collision->visible = true;
+	m_Collision->visible = false;
 	m_Collision->isFilled = false;
 	m_Collision->collider = COLLIDER::RECT;
 	m_Collision->Set_Owner(this);
@@ -21,8 +22,9 @@ CItem_Gold::CItem_Gold()
 
 	m_RenderLayer = ERenderLayer::Render_Effect;
 
-	m_ItemImg = RESOURCE->CreateImage(L"UI\\UI_MONEY.png", Vec2(20, 20), true);
+	m_ItemImg = RESOURCE->CreateSprite(L"Shop\\Gold.png", Vec2(80.f / 4.f, 20.f), Int2(4,1), true);
 	m_ItemImg->SetParentRT(*m_Collision);
+	m_ItemImg->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
 }
 
 CItem_Gold::~CItem_Gold()
@@ -42,7 +44,8 @@ void CItem_Gold::Tick()
 
 	for (auto& iter : m_vecCol)
 	{
-		if (iter) iter->Update();
+		if (iter) 
+			iter->Update();
 	}
 
 	if (m_Attracting && m_Target && m_Collision)
@@ -57,7 +60,7 @@ void CItem_Gold::Tick()
 		dir.Normalize();
 
 		float move = m_Speed * DELTA * 1.5f;
-		if (dist <= move)
+		if (dist - 50.f <= move)
 		{
 			ActivateItem(m_Target);
 		}
@@ -130,6 +133,18 @@ void CItem_Gold::ActivateItem(CActor* actor)
 	// °ñµå È¹µæ
 	int current = status->GetGold();
 	status->SetGold(current + 10);
+	SOUND->StopPlay("GoldSpawn", 0.2f);
+
+	FFloatingTextDesc text;
+	text.text = L"+" + to_wstring(10);
+	text.startPos = m_Collision->GetWorldPos();
+	text.duration = 0.9f;
+	text.rise = 70.f;
+	text.fontSize = 30.f;
+	text.fontStyle = L"PixelMplus10";
+
+	auto font = make_shared<CFloatingText>(text);
+	OBJECT->SpawnActor(font);
 
 	DisableAndDestroy();
 }

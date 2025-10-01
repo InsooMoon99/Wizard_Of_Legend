@@ -47,7 +47,7 @@ void Input::Update()
     {
         for (UINT i = 0; i < 256; i++)
         {
-            byte key = keyState[i] & 0x80;
+            BYTE key = keyState[i] & 0x80;
             //삼항연산자   (bool)? 1{} 0{}
             //키를 누른상태면 1, 아니면 0으로 대입
             keyState[i] = key ? 1 : 0;

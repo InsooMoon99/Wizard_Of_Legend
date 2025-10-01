@@ -27,7 +27,7 @@ CUI_Skill_Pannel::CUI_Skill_Pannel()
 		m_Skill_Panel[i] = RESOURCE->CreateUI(L"UI\\Panel.png", panelSize, true);
 		m_Skill_Panel[i]->SetParentT(*m_PanelRect);
 		m_Skill_Panel[i]->pivot = OFFSET_LT;
-		m_Skill_Panel[i]->SetLocalPos(Vec2(startX + i * (panelSize.x + padding), -48.f));
+		m_Skill_Panel[i]->SetLocalPos(Vec2(startX  + i * (panelSize.x + padding), -48.f));
 	}
 	
 	for (int i = 0; i < SKILL_PANEL; i++)
@@ -55,16 +55,16 @@ CUI_Skill_Pannel::CUI_Skill_Pannel()
 	{
 		m_Skill_Key[i]->SetParentRT(*m_Skill_Panel[i]);
 		m_Skill_Key[i]->SetLocalPos(Vec2(26.f, 15.f));
-	}
+	} 
 
 	// RECT rect = { 66, 642, 126, 702 };
-	int addOffset = 65;
+	int addOffset = 66;
 	for (int i = 0; i < SKILL_PANEL; i++)
 	{
 		m_WritePos[i] = 
 		{
 			56 + (i * addOffset),
-			645,
+			645 + 5,
 			126 + (i * addOffset),
 			702};
 	}
@@ -194,7 +194,7 @@ void CUI_Skill_Pannel::Render()
 				double coolTime = info.CooldownRemain;
 				wstring string = format(L"{:.1f}", coolTime);       
 
-				DWRITE->RenderText(string, m_WritePos[i], 25.f, L"맑은 고딕", Color(1, 1, 1, 1), DWRITE_FONT_WEIGHT_BOLD);
+				DWRITE->RenderText(string, m_WritePos[i], 25.f, L"PixelMplus10", Color(1, 1, 1, 1));
 
 			}
 		}

@@ -91,6 +91,10 @@ void CItem_Potion::OnComponentEndOverlap(GameObject* collider, GameObject* other
 {
 	CItem::OnComponentEndOverlap(collider, other);
 
+	CPlayer* player = dynamic_cast<CPlayer*>(other->Get_Owner());
+	if (!player) return;
+
+	player->RemoveInteract(this);
 }
 
 void CItem_Potion::ActivateItem(CActor* actor)
@@ -103,9 +107,11 @@ void CItem_Potion::ActivateItem(CActor* actor)
 	auto status = CHelper::GetComponent<CStatusComponent>(player);
 	if (!status) return;
 
+	bool bGoldCheck = status->GetGold() >= m_ItemData.Price;
+	if (!bGoldCheck) return;
+
 	int hp = status->GetHp();
 	status->SetHp(hp + m_ItemData.Value);
-
 	player->RemoveInteract(this);
 
 	DisableAndDestroy();

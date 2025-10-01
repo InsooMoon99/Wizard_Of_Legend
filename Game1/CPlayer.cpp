@@ -18,16 +18,16 @@ CPlayer::CPlayer()
 	m_Inven = CHelper::CreateSharedComponent<CInventoryComponent>(this);
 
 	m_Status->SetMaxHp(500.f);
-	m_Status->SetMaxMp(500.f);
+	m_Status->SetMaxMp(100.f);
 
 	m_Status->SetHp(80.f);
-	m_Status->SetMp(60.f);
+	m_Status->SetMp(100.f); // 일단 임시 테스트 100
 	m_Status->SetSpeed(400.f);
 
 	m_Status->SetGold(100);
 
-	m_Status->SetAttack(100);
-	m_Status->SetDef(99);
+	m_Status->SetAttack(20);
+	m_Status->SetDef(15);
 
 	m_TeamID = 0;
 
@@ -619,12 +619,14 @@ void CPlayer::TakeDamage(FHitDamage _Hit)
 	//if (m_State->Get_State() != ECharacterState::Hit)
 	//	return;
 
-	cout << "Player Hit" << endl;
+	SOUND->StopPlay("PlayerHit", 0.5f);
+	CAM->StartShake(5.f, 8.f, 0.15f);
 
 	m_State->Change_State(ECharacterState::Hit);
 	m_HitBlurWantsOn = true;
 
-	m_Status->AddHp(-_Hit.Damage);
+	float damage = CHelper::CaculateDamage(_Hit.Damage, m_Status->GetDef());
+	CHelper::ApplyDamage(m_Status, damage, m_Collision->GetWorldPos());
 
 	if (_Hit.Duration > 1e-4f && _Hit.Amount > 0.f)
 	{
@@ -1079,17 +1081,26 @@ void CPlayer::Print_ImGui()
 		int gold = m_Status->GetGold();
 		float speed = m_Status->GetSpeed();
 
+		float attack = m_Status->GetAttack();
+		float Def = m_Status->GetDef();
+
 		ImGui::InputFloat("Hp", &hp);
 		m_Status->SetHp(hp);
 
 		ImGui::InputFloat("Mp", &mp);
 		m_Status->SetMp(mp);
 
+		ImGui::InputFloat("Attack", &attack);
+		m_Status->SetAttack(attack);
+
+		ImGui::InputFloat("Def", &Def);
+		m_Status->SetDef(Def);
+
 		//ImGui::InputFloat("Speed", &speed);
 		//m_Status->SetSpeed(speed);
 		//
-		//ImGui::InputInt("Gold", &gold);
-		//m_Status->SetGold(gold);
+		ImGui::InputInt("Gold", &gold);
+		m_Status->SetGold(gold);
 
 		ImGui::Text("State : %s", CHelper::ToString_PlayerState(m_State->Get_State()));
 		ImGui::Text("Dir   : %s", CHelper::ToString_PlayerDir(m_State->Get_Dir()));

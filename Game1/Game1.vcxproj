@@ -39,6 +39,7 @@
     <ClInclude Include="CFire_Meteor.h" />
     <ClInclude Include="CFire_MiddleMeteor.h" />
     <ClInclude Include="CFlameZoner.h" />
+    <ClInclude Include="CFloatingText.h" />
     <ClInclude Include="CGameObject.h" />
     <ClInclude Include="CGolem.h" />
     <ClInclude Include="CItemDataManager.h" />
@@ -51,6 +52,7 @@
     <ClInclude Include="CJavelin_Spear.h" />
     <ClInclude Include="CKnight.h" />
     <ClInclude Include="CMonsterBase.h" />
+    <ClInclude Include="CObjectManager.h" />
     <ClInclude Include="CRenderManager.h" />
     <ClInclude Include="CShopComponent.h" />
     <ClInclude Include="CShopItemNPC.h" />
@@ -144,6 +146,7 @@
     <ClCompile Include="CFire_Meteor.cpp" />
     <ClCompile Include="CFire_MiddleMeteor.cpp" />
     <ClCompile Include="CFlameZoner.cpp" />
+    <ClCompile Include="CFloatingText.cpp" />
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CGolem.cpp" />
     <ClCompile Include="CItemDataManager.cpp" />
@@ -156,6 +159,7 @@
     <ClCompile Include="CJavelin_Spear.cpp" />
     <ClCompile Include="CKnight.cpp" />
     <ClCompile Include="CMonsterBase.cpp" />
+    <ClCompile Include="CObjectManager.cpp" />
     <ClCompile Include="CRenderManager.cpp" />
     <ClCompile Include="CShopComponent.cpp" />
     <ClCompile Include="CShopItemNPC.cpp" />

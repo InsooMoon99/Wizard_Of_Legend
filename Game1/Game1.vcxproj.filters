@@ -310,6 +310,10 @@
     <ClInclude Include="CFire_MiddleMeteor.h">
       <Filter>06. Skill\00. Player\01. Skill_Actor\00. Fire</Filter>
     </ClInclude>
+    <ClInclude Include="CObjectManager.h">
+      <Filter>01. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CFloatingText.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -719,6 +723,10 @@
     <ClCompile Include="CFire_MiddleMeteor.cpp">
       <Filter>06. Skill\00. Player\01. Skill_Actor\00. Fire</Filter>
     </ClCompile>
+    <ClCompile Include="CObjectManager.cpp">
+      <Filter>01. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CFloatingText.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game1.rc">

@@ -16,7 +16,7 @@
     {
       "Id": "Weapon1",
       "Name": "[칼1]",
-      "Desc": "공격력 15% 증가",
+      "Desc": "공격력 30% 증가",
       "IconKey": "Shop\\무기2.bmp",
       "IconW": 40,
       "IconH": 40,
@@ -24,7 +24,7 @@
       "ItemType": "Weapon",
       "StatType": "Attack",
       "Option": "Multi",
-      "Value": 1.15
+      "Value": 1.3
     },
     {
       "Id": "Armor1",
@@ -33,6 +33,7 @@
       "IconKey": "Shop\\방어구1.bmp",
       "IconW": 40,
       "IconH": 40,
+      "Price": 150,
       "ItemType": "Armor",
       "StatType": "Defense",
       "Option": "Add",
@@ -45,6 +46,7 @@
       "IconKey": "UI\\UI_MONEY.png",
       "IconW": 40,
       "IconH": 40,
+      "Price": 150,
       "ItemType": "Gold",
       "StatType": "Etc",
       "Option": "Add",
@@ -52,11 +54,12 @@
     },
     {
       "Id": "Meteor",
-      "Name": "유성강천",
+      "Name": "[메테오]",
       "Desc": "유성낙하",
       "IconKey": "Shop\\MeteorCard.png",
       "IconW": 32,
       "IconH": 50,
+      "Price": 150,
       "ItemType": "Skill",
       "StatType": "Skill",
       "Option": "Add",

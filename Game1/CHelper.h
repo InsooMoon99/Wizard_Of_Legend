@@ -2,6 +2,10 @@
 #include "CActor.h"
 #include "CCharacter.h"
 #include "CComponent.h"
+#include "CFloatingText.h"
+#include "CMonsterBase.h"
+#include "CPlayer.h"
+#include "CStatusComponent.h"
 
 static mt19937 g_RandomEngine(static_cast<unsigned int>(time(nullptr)));
 
@@ -211,6 +215,76 @@ public:
 
 		uniform_real_distribution<float> dist(min, max);
 		return dist(g_RandomEngine);
+	}
+
+	static void DrawDamageFont(int damage, Vec2 pos, Color color = Color(1.f, 1.f, 1.f, 1.f))
+	{
+		float jitterX = 18.f, jitterY = 10.f;
+
+		float jx = RANDOM->Float(-jitterX, jitterX);
+		float jy = RANDOM->Float(0.f, jitterY); 
+
+		Vec2 start = pos + Vec2(jx, jy);
+
+		FFloatingTextDesc text;
+		text.text = to_wstring(damage);
+		text.startPos = start;         
+		text.duration = 0.9f;
+		text.rise = 70.f;
+		text.fontSize = 30.f;
+		text.color = color;
+		text.outline = true;
+
+		OBJECT->SpawnActor(make_shared<CFloatingText>(text));
+	}
+
+	static float CaculateDamage(float attack, float defense, int randMin = 1, int randMax = 5)
+	{
+		int random = RANDOM->Int(randMin, randMax);
+		return max(1.f, (attack - defense)) + random;
+	}
+
+	static void ApplyDamage(shared_ptr<CStatusComponent> status, float damage, Vec2 pos)
+	{
+		CPlayer* player = dynamic_cast<CPlayer*>(status->GetOwner());
+		CMonsterBase* monster = dynamic_cast<CMonsterBase*>(status->GetOwner());
+
+		status->AddHp(-damage);
+
+		if (player)
+			DrawDamageFont(damage, pos, Color(0.8f, 0.f, 0.f, 1.0f));
+
+		else if (monster)
+			DrawDamageFont(damage, pos);
+	}
+
+	static RECT MakeScreenRectFromImage(ObImage* img, Vec2 offset = Vec2(0.f, 0.f))
+	{
+		Vec2 world = img->GetWorldPos();
+
+		Vec2 screen = WorldToScreen(world); 
+
+		Vec2 size = img->scale;         
+		Vec2 half = size * 0.5f;
+
+		RECT rc;
+		rc.left = (LONG)floor(screen.x - half.x + offset.x);
+		rc.top = (LONG)floor(screen.y - half.y + offset.y);
+		rc.right = (LONG)ceil(screen.x + half.x + offset.x);
+		rc.bottom = (LONG)ceil(screen.y + half.y + offset.y);
+		return rc;
+	}
+
+	static Vec2 WorldToScreen(const Vec2& world)
+	{
+		Vec2 cam = CAM->GetCameraPos();
+		Vec2 halfScreen(app.GetWidth() * 0.5f, app.GetHeight() * 0.5f);
+
+		// X: 동일, Y: 부호 반전 (cam 기준으로 위가 +인 월드 → 아래가 +인 스크린)
+		float sx = (world.x - cam.x) + halfScreen.x;
+		float sy = (cam.y - world.y) + halfScreen.y; // ★ 여기!
+
+		return Vec2(sx, sy);
 	}
 
 	template<typename T>

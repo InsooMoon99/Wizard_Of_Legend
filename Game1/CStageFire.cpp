@@ -228,7 +228,7 @@ void CStageFire::Resource_Setting()
 	m_ShopItemNPC	= make_shared<CShopItemNPC>();
 	m_ShopSkillNPC	= make_shared<CShopSkillNPC>();
 
-	m_ShopItemNPC->SetSpawnPos(Vec2(m_PlayerPos.x, m_PlayerPos.y - 50.f));
+	m_ShopItemNPC->SetSpawnPos(Vec2(2120., -2307.f));
 	m_ShopSkillNPC->SetSpawnPos(Vec2(m_SectionPos[2].x, m_SectionPos[2].y - 230.f));
 
 	m_Actors.push_back(m_ShopItemNPC);
@@ -284,13 +284,13 @@ void CStageFire::Resource_Setting()
 		auto gold3 = make_shared<CItem_Gold>();
 		gold3->SetSpawnPos(Vec2(20.f));
 
-		auto skill = make_shared<CItem_SkillMeteor>();
-		skill->SetSpawnPos(Vec2(-100.f));
+		//auto skill = make_shared<CItem_SkillMeteor>();
+		//skill->SetSpawnPos(Vec2(-100.f));
 
 		m_Actors.push_back(gold);
 		m_Actors.push_back(gold2);
 		m_Actors.push_back(gold3);
-		m_Actors.push_back(skill);
+		//m_Actors.push_back(skill);
 	}
 
 

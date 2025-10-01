@@ -72,7 +72,7 @@ void CFire_Meteor::Tick()
 	// Life Time
 	m_SpawnLife += DELTA;
 
-	if (m_SpawnLife >= 0.3f && bFirst)
+	if (m_SpawnLife >= 0.15f && bFirst)
 	{
 		bFirst = false;
 
@@ -100,18 +100,19 @@ void CFire_Meteor::Tick()
 			m_bArmed = true;
 		}
 
-		OnHitWall(m_Collision->GetWorldPos());
+		Vec2 pos = m_Collision->GetWorldPos();
+
+		OnHitWall(pos);
+
 		bCood = true;
 		return;
 	}
 
-	// 이동
 	m_Collision->MoveWorldPos(m_Skill_Info.Aim_Dir * nextPos);
 	m_RemainDist -= nextPos;
 
 	m_Collision->Update();
 	m_FireMeteor->Update();
-
 }
 
 void CFire_Meteor::LateUpdate()
@@ -158,9 +159,7 @@ void CFire_Meteor::	OnHitWall(const Vec2& hitPos)
 	PARTICLE->Spawn_Particle(L"HitSpark", hitPos);
 	PARTICLE->Spawn_Particle(L"Fire_HitEffect2", hitPos, Vec2(2.5f));
 
-	SOUND->Stop("FireBall_End");
-	SOUND->Play("FireBall_End");
-	SOUND->SetVolume("FireBall_End", 0.15f);
+	SOUND->StopPlay("MeteorEx", 0.1f);
 
 	m_PendingKill = true;
 }
@@ -212,9 +211,6 @@ void CFire_Meteor::OnComponentBeginOverlap(GameObject* collider, GameObject* oth
 		PARTICLE->Spawn_ParticleDir(L"HitSpark", particlePos + randomVec);
 		PARTICLE->Spawn_ParticleDir(L"Fire_HitEffect2", particlePos + randomVec);
 
-		SOUND->Stop("FireBall_End");
-		SOUND->Play("FireBall_End");
-		SOUND->SetVolume("FireBall_End", 0.15f);
 	}
 
 	//m_PendingKill = true;

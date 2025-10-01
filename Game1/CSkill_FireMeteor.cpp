@@ -6,6 +6,7 @@
 #include "CFire_MiddleMeteor.h"
 #include "CPlayer.h"
 #include "CStateComponent.h"
+#include "CStatusComponent.h"
 
 CSkill_FireMeteor::CSkill_FireMeteor()
 {
@@ -81,7 +82,6 @@ void CSkill_FireMeteor::Tick()
 			m_NextSpawnTime = CHelper::RandF(0.05f, 0.1f);
 		}
 
-		// 소환중일 때 랜덤 타이밍 체크
 		if (bMiddleSpawning && m_MiddleCount < m_MiddleMax)
 		{
 			m_SpawnTimer += DELTA;
@@ -89,14 +89,13 @@ void CSkill_FireMeteor::Tick()
 			if (m_SpawnTimer >= m_NextSpawnTime)
 			{
 				m_SpawnTimer = 0.f;
-				m_NextSpawnTime = CHelper::RandF(0.05f, 0.1f); // 다음 발까지 대기
+				m_NextSpawnTime = CHelper::RandF(0.05f, 0.1f); 
 
-				// ★ MiddleMeteor 하나 생성
 				SpawnOneMiddleMeteor(m_MiddleCount);
 
 				m_MiddleCount++;
 				if (m_MiddleCount >= m_MiddleMax)
-					bMiddleSpawning = false; // 다 만들었으면 종료
+					bMiddleSpawning = false; 
 			}
 		}
 
@@ -104,6 +103,7 @@ void CSkill_FireMeteor::Tick()
 		if (m_CastingCircle->frame.x >= m_CastingCircle->maxFrame.x - 9 && !bMeteorCheck)
 		{
 			bMeteorCheck = true;
+
 			auto meteor = make_shared<CFire_Meteor>(m_Skill_Info);
 			meteor->BeginPlay();
 			m_FireMeteor.push_back(meteor);
@@ -174,6 +174,9 @@ void CSkill_FireMeteor::Activate(CActor* _Owner)
 	auto state = CHelper::GetComponent<CStateComponent>(player);
 	if (!state) return;
 
+	m_Status = CHelper::GetComponent<CStatusComponent>(player);
+	if (!m_Status.lock()) return;
+
 	bMiddleCheck = false;
 	bMeteorCheck = false;
 
@@ -184,7 +187,7 @@ void CSkill_FireMeteor::Activate(CActor* _Owner)
 
 	m_Skill_Info.Instigator = _Owner;
 	m_Skill_Info.SpawnPos = spawnPos;
-	m_Skill_Info.Damage = m_DataDamage;
+	m_Skill_Info.Damage = m_DataDamage + (m_Status.lock()->GetAttack() * m_AttackScale);
 	m_Skill_Info.Amount = 500.f; 
 
 	StartCoolDown();
@@ -219,12 +222,13 @@ void CSkill_FireMeteor::SpawnOneMiddleMeteor(int index)
 	const float H = 200.f;
 	const float angleStep = (2.f * PI) / m_MiddleMax;
 
-	// 메인 메테오 진행 방향(이미 Activate에서 세팅됨)
 	Vec2 mainDir = m_Skill_Info.Aim_Dir;
-	if (mainDir.LengthSquared() < 1e-6f) mainDir = Vec2(0.f, -1.f); // 안전장치
-	else                                  mainDir.Normalize();
 
-	// 5각형 꼭짓점 각도
+	if (mainDir.LengthSquared() < 1e-6f) 
+		mainDir = Vec2(0.f, -1.f);
+	else                                  
+		mainDir.Normalize();
+
 	Vec2 ownerDir = CHelper::DirToVec(
 		CHelper::GetComponent<CStateComponent>(dynamic_cast<CPlayer*>(m_Skill_Info.Instigator))->Get_Dir());
 	float baseAngle = atan2f(ownerDir.y, ownerDir.x);
@@ -233,19 +237,21 @@ void CSkill_FireMeteor::SpawnOneMiddleMeteor(int index)
 	Vec2  offset = Vec2(cosf(ang), sinf(ang)) * radius;
 	Vec2  targetPos = center + offset;
 
-	// ★ 세계 좌표 고정 (H,H) 대신, '메인 진행 방향 기준으로' 뒤쪽에서 스폰
 	Vec2  spawnPos = targetPos - mainDir * H;
 
-	// 직선 이동(사실상 mainDir와 동일)
 	Vec2  toTarget = targetPos - spawnPos;
 	float dist = toTarget.Length();
 	if (dist > 1e-6f) toTarget.Normalize(); else toTarget = mainDir;
 
+	float attackScale = 0.05f;
+
 	FSkillInfo info = m_Skill_Info;
 	info.SpawnPos = spawnPos;
-	info.Aim_Dir = toTarget;                      // 모든 방향에서 일관
+	info.Aim_Dir = toTarget;                      
 	info.Angle = Utility::DirToRadian(-toTarget);
 	info.TravelMax = dist;
+	//info.Damage = m_DataDamage + (m_Status.lock()->GetAttack() * attackScale);
+	info.Damage = 8;
 
 	auto meteor = make_shared<CFire_MiddleMeteor>(info);
 	meteor->BeginPlay();

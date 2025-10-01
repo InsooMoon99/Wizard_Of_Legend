@@ -25,5 +25,18 @@ public:
 private:
 	vector<shared_ptr<CFire_Ball>> m_FireBall;
 
+	bool  m_Bursting = false;   
+	int   m_PendingShots = 0;       
+	float m_ShotInterval = 0.216f;   
+	float m_ShotTimer = 0.f;    
+	bool  m_CooldownStarted = false;   
+
+private:
+	void FireOnce(); 
+
+	bool  m_bulletTimePending = false;
+	float m_btDelay = 0.f;  
+	float m_btRemain = 0.f; 
+
 };
 

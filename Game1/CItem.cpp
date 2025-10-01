@@ -37,9 +37,7 @@ void CItem::Render()
 	if (m_PendingKill) return;
 
 	if (m_ItemImg)
-	m_ItemImg->Render();
-
-	
+		m_ItemImg->Render();
 }
 
 void CItem::LateUpdate()

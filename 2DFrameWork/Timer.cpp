@@ -1,62 +1,185 @@
-#include "framework.h"
+ï»¿#include "framework.h"      // í”„ë¡œì íŠ¸ ê³µìš© í—¤ë”(ì—¬ê¸°ì— Windows.h í¬í•¨ë˜ì–´ ìˆì„ ìˆ˜ ìˆìŒ)
+// #define NOMINMAX        // Windows ë§¤í¬ë¡œ ì¶©ëŒ ë°©ì§€: Windows.hë³´ë‹¤ ë¨¼ì € ì •ì˜ë˜ì–´ì•¼ í•¨
+#include "Timer.h"
+
+#include <thread>           // this_thread::sleep_for
+#include <algorithm>        // min, max, clamp
+#include <cmath>
 
 Timer::Timer()
 {
-    //ÇöÀç ½Ã°£ ÃøÁ¤
     lastTime = chrono::steady_clock::now();
-    //Å¸ÀÌ¸Ó »ı¼º½Ã¿£ °æ°ú½Ã°£À» ¾Ë¼ö¾ø´Ù.
     deltaTime = 0.0f;
-    //Ã³À½ ½ÇÇà½Ã°£Àº 0
     worldTime = 0.0f;
+
     framePerSecond = 0;
     framePerSecondCount = 0;
     framePerSecondTimeElapsed = 0.0f;
+
+    // ìŠ¤ì¼€ì¼ ìƒíƒœ
+    timeScale = 1.0f;
+    targetScale = 1.0f;
+    easeInDur = easeInLeft = 0.f;
+    holdLeft = 0.f;
+    easeOutDur = easeOutLeft = 0.f;
+
+    // ë²„ë ›íƒ€ì„ ì´ˆê¸°í™”
+    m_bt = {};
 }
 
 bool Timer::GetTick(float& time, float interval)
 {
-    time += DELTA;
-    if (time > interval)
-    {
-        time -= interval;
-        return true;
-    }
+    // ì›”ë“œìš©ìœ¼ë¡œ ì‚¬ìš©í•  ê²½ìš° ìŠ¤ì¼€ì¼ëœ ë¸íƒ€ë¥¼ ì‚¬ìš©í•˜ëŠ” ê²Œ ìì—°ìŠ¤ëŸ¬ì›€
+    time += GetDeltaTime(); // scaled
+    if (time > interval) { time -= interval; return true; }
     return false;
+}
+
+bool Timer::GetTick(float& t, float interval, bool scaled)
+{
+    t += (scaled ? GetDeltaTime() : GetDelta());
+    if (t > interval) { t -= interval; return true; }
+    return false;
+}
+
+void Timer::SetTimeScale(float scale, float easeIn, float easeOut)
+{
+    targetScale = max(0.f, scale);
+    easeInDur = easeInLeft = max(0.f, easeIn);
+    easeOutDur = easeOutLeft = max(0.f, easeOut);
+    // ì¦‰ì‹œ ì§„ì…ì„ ì›í•˜ë©´ easeIn=0ìœ¼ë¡œ í˜¸ì¶œ
+}
+
+void Timer::HitStop(float scale, float hold, float easeOut)
+{
+    // ìˆœê°„ì ìœ¼ë¡œ ë°”ë¡œ â€˜íˆ­â€™ ë©ˆì¶”ëŠ” ëŠë‚Œ
+    timeScale = max(0.f, scale);
+    targetScale = 1.0f; // ë³µê·€ ëª©í‘œëŠ” í•­ìƒ 1.0
+    holdLeft = max(0.f, hold);
+    easeOutDur = easeOutLeft = max(0.f, easeOut);
+    // íˆíŠ¸ìŠ¤í†±ì€ ì¼ë°˜ì ìœ¼ë¡œ ì§„ì… ì´ì§•ì„ ì‚¬ìš©í•˜ì§€ ì•ŠìŒ
+}
+
+void Timer::QueueBulletTime(float scale, float easeIn, float hold, float easeOut, float delay)
+{
+    m_bt.queued = true;
+    m_bt.delay = max(0.f, delay);
+    m_bt.active = false;
+    m_bt.remain = max(0.f, hold);
+    m_bt.scale = max(0.f, scale);
+    m_bt.easeIn = max(0.f, easeIn);
+    m_bt.easeOut = max(0.f, easeOut);
+}
+
+void Timer::HitStopThenBulletTime(float stopScale, float stopHold, float stopEaseOut,
+    float bulletScale, float bulletEaseIn, float bulletHold, float bulletEaseOut)
+{
+    HitStop(stopScale, stopHold, stopEaseOut);
+    // íˆíŠ¸ìŠ¤í†± hold + easeOut í›„ ë²„ë ›íƒ€ì„ ì§„ì… ì˜ˆì•½
+    QueueBulletTime(bulletScale, bulletEaseIn, bulletHold, bulletEaseOut,
+        /*delay=*/max(0.f, stopHold + stopEaseOut));
+}
+
+void Timer::ResetTimeScale()
+{
+    timeScale = targetScale = 1.f;
+    easeInLeft = easeInDur = 0.f;
+    holdLeft = 0.f;
+    easeOutLeft = easeOutDur = 0.f;
+    m_bt = {};
 }
 
 void Timer::Chronometry(UINT lock)
 {
-    currentTime = chrono::steady_clock::now();
-    //Áö³­½Ã°£ - ÇöÀç½Ã°£°ªÀ» ³ª³ë ÃÊ´ÜÀ§·Î ¹Ş±â
-    chrono::duration<double> Delta = currentTime - lastTime;
-    //        ÃÊ´ÜÀ§·Î º¯°æÇÏ¿© °ª¹Ş±â
-    deltaTime = (float)Delta.count();
+    using namespace chrono;
 
-    //µ¨Å¸°¡ 1/60º¸´Ù ÀÛ´Ù¸é
-    while (deltaTime < (1.0f / lock))
-    {
-        //ÇöÀç½Ã°£À» ´Ù½ÃÃøÁ¤
-        currentTime = chrono::steady_clock::now();
-        //µ¨Å¸¸¦ ´Ù½Ã°è»ê
-        Delta = currentTime - lastTime;
-        deltaTime = (float)Delta.count();
+    // 1) unscaled ë¸íƒ€ ê³„ì‚°
+    currentTime = steady_clock::now();
+    duration<double> Delta = currentTime - lastTime;
+    deltaTime = static_cast<float>(Delta.count());
+
+    if (lock > 0) {
+        const double minDt = 1.0 / static_cast<double>(lock);
+        if (deltaTime < minDt) {
+            auto sleepDur = std::chrono::duration<double>(minDt - deltaTime);
+            std::this_thread::sleep_for(std::chrono::duration_cast<std::chrono::microseconds>(sleepDur));
+            // ì¬ì¸¡ì •
+            currentTime = std::chrono::steady_clock::now();
+            auto Delta = currentTime - lastTime;
+            deltaTime = static_cast<float>(std::chrono::duration<double>(Delta).count());
+        }
     }
 
-    //¸¶Áö¸· ½Ã°£À» ±â·Ï
+    // 3) ëˆ„ì /í†µê³„
     lastTime = currentTime;
-    //ÀüÃ¼ ½Ã°£ °æ°ú·®À» ¿¬»ê
     worldTime += deltaTime;
 
-    //1ÃÊ¸¦ Àâ¾ÆÁÖ´Â º¯¼ö
     framePerSecondTimeElapsed += deltaTime;
-
     framePerSecondCount++;
-    //FPSTimeElapsed ÀÌ 1ÃÊ°¡ ³Ñ¾úÀ»¶§
-    if (framePerSecondTimeElapsed > 1.0f)
+    if (framePerSecondTimeElapsed >= 1.0f)
     {
         framePerSecond = framePerSecondCount;
         framePerSecondCount = 0;
-        framePerSecondTimeElapsed = 0.0f;
+        // ì •í™•ë„ë¥¼ ìœ„í•´ ë‚¨ì€ ì°Œêº¼ê¸° ì‹œê°„ ìœ ì§€
+        framePerSecondTimeElapsed -= 1.0f;
     }
-    deltaScaleTime = deltaTime * app.deltaScale;
+
+    // 4) íƒ€ì„ìŠ¤ì¼€ì¼ ë³´ê°„ (í•­ìƒ Unscaled ì‹œê°„ ê¸°ì¤€)
+    // 4-1) ì§„ì… ì´ì§•
+    if (easeInLeft > 0.f)
+    {
+        float step = min(deltaTime / max(1e-6f, easeInDur), 1.f);
+        timeScale += (targetScale - timeScale) * step;
+        easeInLeft -= deltaTime;
+        if (easeInLeft <= 0.f) timeScale = targetScale;
+    }
+
+    // 4-2) íˆíŠ¸ìŠ¤í†± ìœ ì§€
+    if (holdLeft > 0.f)
+    {
+        holdLeft -= deltaTime;
+        // ëë‚˜ë©´ ì•„ë˜ 4-3ì—ì„œ ë³µê·€ ì´ì§•ìœ¼ë¡œ 1.0ì— ìˆ˜ë ´
+    }
+
+    // 4-3) ë³µê·€ ì´ì§• (hold ì¢…ë£Œ ì´í›„)
+    if (easeOutLeft > 0.f && holdLeft <= 0.f && timeScale != targetScale)
+    {
+        float step = min(deltaTime / max(1e-6f, easeOutDur), 1.f);
+        timeScale += (targetScale - timeScale) * step;
+        easeOutLeft -= deltaTime;
+        if (easeOutLeft <= 0.f) timeScale = targetScale;
+    }
+
+    // 5) ë²„ë ›íƒ€ì„ ì‹œí€€ìŠ¤(ì§€ì—°â†’ì§„ì…â†’ìœ ì§€â†’ë³µê·€), ëª¨ë‘ Unscaled ê¸°ì¤€
+    if (m_bt.queued && !m_bt.active)
+    {
+        m_bt.delay -= deltaTime;
+        if (m_bt.delay <= 0.f)
+        {
+            // ì§„ì…
+            SetTimeScale(m_bt.scale, m_bt.easeIn, /*easeOut=*/0.f);
+            m_bt.active = true;
+            // remainì€ ìœ ì§€ ì‹œê°„ìœ¼ë¡œ ê³„ì† ê°ì†Œ
+        }
+    }
+    if (m_bt.active)
+    {
+        m_bt.remain -= deltaTime;
+        if (m_bt.remain <= 0.f)
+        {
+            // ë³µê·€
+            SetTimeScale(1.0f, /*easeIn=*/0.f, m_bt.easeOut);
+            m_bt.active = false;
+            m_bt.queued = false;
+        }
+    }
+
+    // 6) ì•ˆì „ í´ë¨í”„
+    timeScale = clamp(timeScale, 0.f, 2.0f);
+
+    // 7) ìµœì¢… scaled delta ì‚°ì¶œ
+    deltaScaleTime = deltaTime * timeScale;
+
+    // (í”„ë¡œì íŠ¸ê°€ app.deltaScaleì„ ì°¸ì¡°í•œë‹¤ë©´ ë™ê¸°í™”)
+    app.deltaScale = timeScale;
 }

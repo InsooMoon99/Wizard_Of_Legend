@@ -116,12 +116,20 @@ void CParticleManager::Resource_Settings()
 	}
 
 	{
-
 		Vec2 telpoEffectSize = Vec2(766.f / 8.f, 512.f);
 		shared_ptr<ObImage> telpoEffect = RESOURCE->CreateSprite(L"Particle\\teleportEffect2.bmp", Vec2(telpoEffectSize), Int2(8, 1), true);
 		telpoEffect->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
 
 		m_Particles.insert({ L"StartEffect", telpoEffect });
+	}
+
+	// Enhance Charge
+	{
+		Vec2 enhanceSize = Vec2(6202.f / 7.f, 721.f) * 0.8f;
+		shared_ptr<ObImage> enhance = RESOURCE->CreateSprite(L"Particle\\ultLight.bmp", Vec2(enhanceSize), Int2(7, 1), true);
+		enhance->ChangeAnim(ANIMSTATE::ONCE, 0.08f);
+
+		m_Particles.insert({ L"Enhance", enhance });
 	}
 
 	// Dash Effect
@@ -141,9 +149,26 @@ void CParticleManager::Resource_Settings()
 		Vec2 ringSize = Vec2(580.f / 4.f, 70.f) * 2.5f;
 
 		shared_ptr<ObImage> ringEffect = RESOURCE->CreateSprite(L"Particle\\MeteorRing.png", ringSize, Int2(4, 1), true);
-		ringEffect->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+		ringEffect->ChangeAnim(ANIMSTATE::ONCE, 0.05f);
 
 		m_Particles.insert({ L"MeteorEffect", ringEffect });
+
+		Vec2 crackSize = Vec2(384.f / 8.f, 49.f) * 2.5f;
+
+		shared_ptr<ObImage> crackEffect = RESOURCE->CreateSprite(L"Particle\\Particle_Crack_Al.png", crackSize, Int2(8, 1), true);
+		crackEffect->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+
+		m_Particles.insert({ L"MeteorCrack", crackEffect });
+	}
+	// Buy Meteor
+	{
+		Vec2 cardSize = Vec2(1034.f / 16.f, 96.f);
+
+		shared_ptr<ObImage> buyCard = RESOURCE->CreateSprite(L"Shop\\BuyCard.png", cardSize, Int2(16, 1), true);
+		buyCard->ChangeAnim(ANIMSTATE::REVERSE_ONCE, 0.1f);
+		//buyCard->space = SPACE::SCREEN;
+
+		m_Particles.insert({ L"BuyCard", buyCard });
 	}
 
 	// Effect

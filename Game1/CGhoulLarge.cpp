@@ -337,9 +337,6 @@ void CGhoulLarge::TakeDamage(FHitDamage _Hit)
 
 	Hit_Color();
 
-	//m_State->Change_State(ECharacterState::Hit);
-	m_Status->AddHp(-_Hit.Damage);
-
 	if (m_Status->GetHp() <= 0.f)
 	{
 		SetDead();

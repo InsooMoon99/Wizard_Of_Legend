@@ -9,7 +9,7 @@
 
 CGolem::CGolem()
 {
-	m_Status->SetHp(100.f);
+	m_Status->SetHp(1000.f);
 
 	Resource_Settings();
 }
@@ -295,9 +295,6 @@ void CGolem::TakeDamage(FHitDamage _Hit)
 		CHelper::OrignColor(m_CurImg.get());
 
 	Hit_Color();
-
-	//m_State->Change_State(ECharacterState::Hit);
-	m_Status->AddHp(-_Hit.Damage);
 
 	if (m_Status->GetHp() <= 0.f)
 	{

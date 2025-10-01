@@ -114,4 +114,17 @@ struct FKnockbackState
 	float amount = 0.f; 
 };
 
+struct FFloatingTextDesc
+{
+	wstring		 text;
+	wstring		 fontStyle = L"Noto Sans Cond Med";
+	Vec2         startPos;     
+	float        duration = 0.8f;
+	float        rise = 60.f;   
+	float        fontSize = 28.f;
+	Color        color = Color(1, 0.9f, 0.2f, 1); 
 
+	bool  outline = false;
+	float outlineThickness = 1.5f;                 
+	Color outlineColor = Color(0, 0, 0, 0.85f);    
+};
