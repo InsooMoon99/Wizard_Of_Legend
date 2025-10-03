@@ -94,7 +94,6 @@ bool CSkill_FireDragon::CanActivate(const FSkillInfo& _Info)
     if (!CSkill::CanActivate(_Info))
         return false;
 
-    // TODO: 쿨타임/마나 등 조건 추가
     return true;
 }
 
@@ -116,7 +115,6 @@ void CSkill_FireDragon::Activate(CActor* _Owner)
     m_State->Change_State(m_State->Set_AttackType());
 
     StartCoolDown();
-
 }
 
 void CSkill_FireDragon::Fire()

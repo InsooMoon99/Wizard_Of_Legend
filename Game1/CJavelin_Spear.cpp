@@ -16,7 +16,7 @@ CJavelin_Spear::CJavelin_Spear(FSkillInfo& _Info) : CSkill_Actor(_Info)
 		m_Collision = make_shared<ObCircle>();
 		m_Collision->scale = Vec2(100.f, 60.f);
 		m_Collision->SetWorldPos(Vec2(m_Pos.x, m_Pos.y));
-		m_Collision->visible = true;
+		m_Collision->visible = false;
 		m_Collision->collider = COLLIDER::CIRCLE;
 		m_Collision->isFilled = false;
 		m_Collision->rotation = -m_Skill_Info.Angle;
@@ -57,6 +57,16 @@ void CJavelin_Spear::Tick()
 	CSkill_Actor::Tick();
 
 	Vec2 targetCenterPos = m_AttackPos + Vec2(0.f, m_Collision->scale.y / 2.f);
+
+	m_LifeTime += DELTA;
+
+	if (m_LifeTime >= 0.7f)
+	{
+		m_PendingKill = true;
+
+		return;
+
+	}
 
 	Vec2 toTarget = targetCenterPos - m_Collision->GetWorldPos();
 	float dist = toTarget.Length();

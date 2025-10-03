@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "CActor.h"
 #include "CCharacter.h"
 #include "CComponent.h"
@@ -119,7 +119,7 @@ public:
 			}
 		}
 		default:
-			return Vec2(1.0f, 0.0f); // ±âº»°ª ¿À¸¥ÂÊÀ¸·Î
+			return Vec2(1.0f, 0.0f); // ê¸°ë³¸ê°’ ì˜¤ë¥¸ìª½ìœ¼ë¡œ
 		}
 	}
 
@@ -246,16 +246,17 @@ public:
 
 	static void ApplyDamage(shared_ptr<CStatusComponent> status, float damage, Vec2 pos)
 	{
-		CPlayer* player = dynamic_cast<CPlayer*>(status->GetOwner());
-		CMonsterBase* monster = dynamic_cast<CMonsterBase*>(status->GetOwner());
-
 		status->AddHp(-damage);
 
-		if (player)
-			DrawDamageFont(damage, pos, Color(0.8f, 0.f, 0.f, 1.0f));
-
-		else if (monster)
-			DrawDamageFont(damage, pos);
+		CActor* owner = status->GetOwner();
+		if (dynamic_cast<CPlayer*>(owner))
+		{
+			DrawDamageFont(damage, pos, Color(0.8f, 0.f, 0.f, 1.0f)); 
+		}
+		else
+		{
+			DrawDamageFont(damage, pos); 
+		}
 	}
 
 	static RECT MakeScreenRectFromImage(ObImage* img, Vec2 offset = Vec2(0.f, 0.f))
@@ -280,9 +281,9 @@ public:
 		Vec2 cam = CAM->GetCameraPos();
 		Vec2 halfScreen(app.GetWidth() * 0.5f, app.GetHeight() * 0.5f);
 
-		// X: µ¿ÀÏ, Y: ºÎÈ£ ¹İÀü (cam ±âÁØÀ¸·Î À§°¡ +ÀÎ ¿ùµå ¡æ ¾Æ·¡°¡ +ÀÎ ½ºÅ©¸°)
+		// X: ë™ì¼, Y: ë¶€í˜¸ ë°˜ì „ (cam ê¸°ì¤€ìœ¼ë¡œ ìœ„ê°€ +ì¸ ì›”ë“œ â†’ ì•„ë˜ê°€ +ì¸ ìŠ¤í¬ë¦°)
 		float sx = (world.x - cam.x) + halfScreen.x;
-		float sy = (cam.y - world.y) + halfScreen.y; // ¡Ú ¿©±â!
+		float sy = (cam.y - world.y) + halfScreen.y; // â˜… ì—¬ê¸°!
 
 		return Vec2(sx, sy);
 	}

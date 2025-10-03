@@ -17,7 +17,7 @@ CFire_Ball::CFire_Ball(FSkillInfo& _Info) : CSkill_Actor(_Info)
 	// Fire_Ball Collision
 	{
 		m_Collision = make_shared<ObCircle>();
-		m_Collision->scale = Vec2(80.f, 80.f);
+		m_Collision->scale = Vec2(100.f, 100.f);
 		m_Collision->SetWorldPos(Vec2(m_Pos.x, m_Pos.y));
 		m_Collision->visible = false;
 		m_Collision->collider = COLLIDER::CIRCLE;
@@ -115,6 +115,16 @@ void CFire_Ball::Tick()
 		return;
 	}
 
+	if (bCheck)
+	{
+		m_CheckTime += DELTA;
+
+		if (m_CheckTime >= 0.05f)
+		{
+			m_PendingKill = true;
+		}
+	}
+
 	m_Collision->MoveWorldPos(m_Skill_Info.Aim_Dir * 1000.f * DELTA);
 
 	m_Collision->Update();
@@ -163,7 +173,7 @@ bool CFire_Ball::CheckHitWall()
 void CFire_Ball::OnHitWall(const Vec2& hitPos)
 {
 	PARTICLE->Spawn_ParticleDir(L"HitSpark", hitPos);
-	PARTICLE->Spawn_ParticleDir(L"Fire_HitEffect2", hitPos);
+	PARTICLE->Spawn_ParticleDir(L"Fire_HitEffect2", hitPos, Vec2(1.5f));
 
 	SOUND->Stop("FireBall_End");
 	SOUND->Play("FireBall_End");
@@ -211,21 +221,21 @@ void CFire_Ball::OnComponentBeginOverlap(GameObject* collider, GameObject* other
 	}
 
 	hit->TakeDamage(hitDamage);
-	CAM->StartShake(15.f, 14.f, 0.1f);
+	CAM->StartShake(21.f, 20.f, 0.1f);
 
 	// Particle
 	{
 		Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
 		Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;
 		PARTICLE->Spawn_ParticleDir(L"HitSpark", particlePos + randomVec);
-		PARTICLE->Spawn_ParticleDir(L"Fire_HitEffect2", particlePos + randomVec);
+		PARTICLE->Spawn_ParticleDir(L"Fire_HitEffect2", particlePos + randomVec, Vec2(1.5f));
 
 		SOUND->Stop("FireBall_End");
 		SOUND->Play("FireBall_End");
 		SOUND->SetVolume("FireBall_End", 0.15f);
 	}
 
-	m_PendingKill = true;
+	bCheck = true;
 }
 
 void CFire_Ball::OnComponentEndOverlap(GameObject* collider, GameObject* other)

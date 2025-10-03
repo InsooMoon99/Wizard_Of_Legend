@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CSkill_Actor.h"
 
@@ -7,8 +7,6 @@ class CSpawn_Rect : public CSkill_Actor
 public:
 	CSpawn_Rect(FSkillInfo& _Info);
 	virtual ~CSpawn_Rect();
-
-
 public:
 	void BeginPlay() override;
 	void Tick() override;

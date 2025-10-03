@@ -1,86 +1,86 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CSceneManager.h"
 
-#include "CStage_Edit.h"
+#include "CStage_Start.h"
 #include "CStage01.h"
 #include "CStageBoss.h"
 #include "CStageFire.h"
-#include "CStage_Start.h"
+#include "CStage_Edit.h"
 #include "Main.h"
+
+#include "CObjectManager.h"
+#include "CCollisionManager.h"
 
 CSceneManager* CSceneManager::Instance = nullptr;
 
 void CSceneManager::Init()
 {
-	
 }
 
 void CSceneManager::Update()
 {
-	if (m_Scene)
-		m_Scene->Update();
+    ApplyPendingChange();
+
+    if (m_Scene) m_Scene->Update();
 }
 
 void CSceneManager::LateUpdate()
 {
-	if (m_Scene)
-		m_Scene->LateUpdate();
+    if (m_Scene) m_Scene->LateUpdate();
 }
 
 void CSceneManager::Render()
 {
-	if (m_Scene)
-		m_Scene->Render();
+    if (m_Scene) m_Scene->Render();
 }
 
 void CSceneManager::Release()
 {
-	if (m_Scene)
-		m_Scene->Release();
+    if (m_Scene) m_Scene->Release();
+
+    OBJECT->Release();        
+
+    SafeDelete(m_Scene);
+    m_SceneType = ESceneType::Stage_End;
+    m_PendingChange = false;
+    m_NextType = ESceneType::Stage_End;
 }
 
 void CSceneManager::Change_Scene(ESceneType _SceneType)
 {
-	if (m_SceneType == _SceneType)
-		return;
+    if (m_Scene && m_SceneType == _SceneType) return;
 
-	CScene* newScene = nullptr;
+    m_NextType = _SceneType;
+    m_PendingChange = true;
+}
 
-	switch (_SceneType)
-	{
-	case ESceneType::Start:
-		newScene = new CStage_Start();
-		m_SceneType = ESceneType::Start;
-		break;
+void CSceneManager::ApplyPendingChange()
+{
+    if (!m_PendingChange) return;
 
-	case ESceneType::Stage01:
-		newScene = new CStage01();
-		m_SceneType = ESceneType::Stage01;
-		break;
+    if (m_Scene) m_Scene->Release();
 
-	case ESceneType::StageFire:
-		newScene = new CStageFire();
-		m_SceneType = ESceneType::StageFire;
-		break;
+    SafeDelete(m_Scene);
 
-	case ESceneType::StageBoss:
-		newScene = new CStageBoss();
-		m_SceneType = ESceneType::StageBoss;
-		break;
+    m_Scene = CreateScene(m_NextType);
+    m_SceneType = m_NextType;
 
-	case ESceneType::Edit:
-		newScene = new CStage_Edit();
-		m_SceneType = ESceneType::Edit;
-		break;
+    m_PendingChange = false;
+    m_NextType = ESceneType::Stage_End;
 
-	case ESceneType::Stage_End: 
-		break;
-	}
+    if (m_Scene) m_Scene->Init();
+}
 
-	SafeDelete(m_Scene);
-
-	m_Scene = newScene;
-	m_SceneType = _SceneType;
-
-	m_Scene->Init();
+CScene* CSceneManager::CreateScene(ESceneType type)
+{
+    switch (type)
+    {
+    case ESceneType::Start:     return new CStage_Start();
+    case ESceneType::Stage01:   return new CStage01();
+    case ESceneType::StageFire: return new CStageFire();
+    case ESceneType::StageBoss: return new CStageBoss();
+    case ESceneType::Edit:      return new CStage_Edit();
+    case ESceneType::Stage_End: break;
+    }
+    return nullptr;
 }

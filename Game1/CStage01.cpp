@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CStage01.h"
 #include "CActor.h"
 #include "CBoss_TwinMan.h"
@@ -83,9 +83,9 @@ void CStage01::LateUpdate()
 
 	//m_Player->LateUpdate();
 
-	//ÇÃ·¹ÀÌ¾î °¡µÎ±â ÀÌ°Ç µüÈ÷ ÇÊ¿ä ¾øÀ»µí. Å¸ÀÏ¸ÊÀ¸·Î Ãæµ¹Ã³¸®
+	//í”Œë ˆì´ì–´ ê°€ë‘ê¸° ì´ê±´ ë”±ížˆ í•„ìš” ì—†ì„ë“¯. íƒ€ì¼ë§µìœ¼ë¡œ ì¶©ëŒì²˜ë¦¬
 	//player->Get_PlayerCollision()->SetWorldPosX(Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().x, -3800.0f * 1.5f / 2.0f, 3840.0f * 1.5f / 2.0f));
-	//Ä·
+	//ìº 
 	//CAM->position.x = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().x, -m_MapSize.x + app.GetHalfWidth(), m_MapSize.x - app.GetHalfWidth());
 	//CAM->position.y = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().y + 500.0f, m_MapSize.y, 950.0f - app.GetHalfHeight());
 

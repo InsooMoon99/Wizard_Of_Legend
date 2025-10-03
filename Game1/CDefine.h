@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CSCeneManager.h"
 #include "CResourceManager.h"

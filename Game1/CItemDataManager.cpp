@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CItemDataManager.h"
 #include "CResourceManager.h"
 
@@ -55,13 +55,13 @@ bool CItemDataManager::LoadFromFile(const wstring& path)
 {
     ifstream ifs(path, ios::binary);
     if (!ifs.is_open()) {
-        wcerr << L"[ItemData] ÆÄÀÏ ¿­±â ½ÇÆÐ: " << path << L"\n";
+        wcerr << L"[ItemData] íŒŒì¼ ì—´ê¸° ì‹¤íŒ¨: " << path << L"\n";
         return false;
     }
     json root;
     try { ifs >> root; }
     catch (...) {
-        wcerr << L"[ItemData] JSON ÆÄ½Ì ½ÇÆÐ(UTF-8 ÀúÀå È®ÀÎ)\n";
+        wcerr << L"[ItemData] JSON íŒŒì‹± ì‹¤íŒ¨(UTF-8 ì €ìž¥ í™•ì¸)\n";
         return false;
     }
     return Parse(root);
@@ -70,7 +70,7 @@ bool CItemDataManager::LoadFromFile(const wstring& path)
 bool CItemDataManager::Parse(const json& root)
 {
     if (!root.contains("Item_Data") || !root["Item_Data"].is_array()) {
-        wcerr << L"[ItemData] 'Item_Data' ¹è¿­ ¾øÀ½\n";
+        wcerr << L"[ItemData] 'Item_Data' ë°°ì—´ ì—†ìŒ\n";
         return false;
     }
 

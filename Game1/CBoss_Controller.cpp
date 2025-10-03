@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CBoss_Controller.h"
 
 #include "CBossPawn.h"
@@ -12,7 +12,10 @@ CBoss_Controller::CBoss_Controller()
 	m_State = CHelper::CreateSharedComponent<CStateComponent>(this);
 	m_UI = CHelper::CreateSharedComponent<CUIComponent>(this);
 
-	m_State->Change_State(ECharacterState::Boss_Start);
+	//m_Status->SetMaxHp(500.f);
+	//m_Status->SetHp(500.f);
+
+	m_State->Change_State(ECharacterState::Boss_Wait);
 }
 
 CBoss_Controller::~CBoss_Controller()
@@ -24,11 +27,11 @@ void CBoss_Controller::BeginPlay()
 {
 	CActor::BeginPlay();
 
-	// HP ÃÊ±â ¼¼ÆÃ
+	// HP ì´ˆê¸° ì„¸íŒ…
 	if (m_Status)
 	{
 		m_Status->SetMaxHp(1000.f); 
-		m_Status->SetHp(800.f);
+		m_Status->SetHp(1000.f);
 	}
 
 	if (m_UI)
@@ -133,12 +136,43 @@ void CBoss_Controller::UnRegisterPawn(CBossPawn* _Pawn)
 	}
 }
 
-void CBoss_Controller::TakeDamage(float _Damage)
+void CBoss_Controller::TakeDamage(float rawDamage, const Vec2& worldPos)
 {
-	if (!m_Status) 
-		return;
+	if (!m_Status) return;
+	if (m_State->Get_State() == ECharacterState::Dead) return;
 
-	m_Status->SetHp(m_Status->GetHp() - _Damage);
+	float damage = CHelper::CaculateDamage(rawDamage, m_Status->GetDef());
+	CHelper::ApplyDamage(m_Status, damage, worldPos);   
+
+	int random = RANDOM->Int(1, 4);
+
+	switch (random)
+	{
+	case 1:
+		SOUND->StopPlay("BHurt1", 0.1f);
+		break;
+
+	case 2:
+		SOUND->StopPlay("BHurt2", 0.1f);
+		break;
+
+	case 3:
+		SOUND->StopPlay("BHurt3", 0.1f);
+		break;
+
+	case 4:
+		SOUND->StopPlay("BHurt4", 0.1f);
+		break;
+
+	}
+
+	if (m_Status->GetHp() <= 0.f)
+	{
+		PARTICLE->Spawn_Particle(L"Enhance", worldPos);
+
+		ChangeState(ECharacterState::Dead);
+		
+	}
 }
 
 void CBoss_Controller::ChangeState(ECharacterState _State)

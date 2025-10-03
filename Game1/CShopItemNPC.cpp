@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CShopItemNPC.h"
 
 #include "CItem.h"
@@ -8,6 +8,8 @@
 CShopItemNPC::CShopItemNPC()
 {
 	m_Shop = CHelper::CreateSharedComponent<CShopComponent>(this);
+
+	m_RenderLayer = ERenderLayer::Render_GameObject;
 
 	Resource_Settings();
 }
@@ -53,11 +55,12 @@ void CShopItemNPC::Render()
 {
 	CCharacter::Render();
 
-	for (auto& col : m_vecCol)
-		col->Render();
-
 	if (m_CurImg)
 		m_CurImg->Render();
+
+
+	for (auto& col : m_vecCol)
+		col->Render();
 
 	for (auto& component : m_Components)
 		component->Render();
@@ -147,9 +150,10 @@ void CShopItemNPC::Resource_Settings()
 		m_Sprites[ECharacterState::Idle][EPlayerDir::Front] = m_IdleImg;
 
 	}
-	// µ¾ÀÚ¸®
+
+	// ë—ìžë¦¬
 	{
-		m_Mat = RESOURCE->CreateImage(L"Shop\\µ¾ÀÚ¸®.bmp", Vec2(577.f, 198.f), true);
+		m_Mat = RESOURCE->CreateImage(L"Shop\\StoreDesk.png", Vec2(112.f, 50.f) * 4.f, true);
 		m_Mat->SetParentRT(*m_Collision);
 		m_Mat->SetLocalPos(Vec2(30.f, -140.f));
 

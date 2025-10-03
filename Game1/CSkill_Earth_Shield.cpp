@@ -1,4 +1,4 @@
-#include "stdafx.h"
+癤�#include "stdafx.h"
 #include "CSkill_Earth_Shield.h"
 #include "CCharacter.h"
 #include "CEarth_Shield.h"
@@ -76,10 +76,9 @@ void CSkill_Earth_Shield::Release()
 bool CSkill_Earth_Shield::CanActivate(const FSkillInfo& _Info)
 {
 	if (!CSkill::CanActivate(_Info))
+		return false;
 
-		// TODO : 나중에 스킬 쿨타임에 따라서 판단
-
-		return true;
+	return true;
 }
 
 void CSkill_Earth_Shield::Activate(CActor* _Owner)

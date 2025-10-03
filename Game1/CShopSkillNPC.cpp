@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CShopSkillNPC.h"
 
 #include "CItem.h"
@@ -145,11 +145,11 @@ void CShopSkillNPC::Resource_Settings()
 		m_Sprites[ECharacterState::Idle][EPlayerDir::Front] = m_IdleImg;
 
 	}
-	// µ¾ÀÚ¸®
+	// ë—ìžë¦¬
 	{
-		m_Mat = RESOURCE->CreateImage(L"Shop\\µ¾ÀÚ¸®.bmp", Vec2(577.f, 198.f), true);
+		m_Mat = RESOURCE->CreateImage(L"Shop\\ë—ìžë¦¬.bmp", Vec2(577.f, 198.f) * 1.0f, true);
 		m_Mat->SetParentRT(*m_Collision);
-		m_Mat->SetLocalPos(Vec2(30.f, -140.f));
+		m_Mat->SetLocalPos(Vec2(10.f, -140.f));
 
 		m_vecCol.push_back(m_Mat.get());
 	}

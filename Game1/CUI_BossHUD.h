@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CUI_HUD.h"
 
@@ -21,6 +21,8 @@ public:
 
 public:
 	shared_ptr<CUI_BossStatus> Get_Status() { return m_BossStatus;; }
+
+	bool bRender = false;
 
 private:
 	shared_ptr<CUI_BossStatus> m_BossStatus;

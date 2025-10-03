@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CFlameZoner.h"
 
 #include "CAttackActor.h"
@@ -66,7 +66,7 @@ void CFlameZoner::Tick()
 	if (m_CurImg)
 		m_CurImg->reverseLR = (m_TraceDir.x > 0.f);
 
-	// Color º¯°æ
+	// Color ë³€ê²½
 	Update_Hit();
 
 	for (auto& col : m_vecCol)
@@ -92,10 +92,6 @@ void CFlameZoner::LateUpdate()
 	//	m_State->Change_State(ECharacterState::Attack1);
 	//}
 
-	if (INPUT->KeyDown('1'))
-	{
-		m_State->Change_State(ECharacterState::Dead);
-	}
 }
 
 void CFlameZoner::Render()
@@ -149,7 +145,7 @@ void CFlameZoner::State_Idle()
 
 void CFlameZoner::State_Walk()
 {
-	// ÇÃ·¹ÀÌ¾î ¹æÇâ
+	// í”Œë ˆì´ì–´ ë°©í–¥
 	TraceTarget();
 
 	MoveTile(m_TraceDir, 200.f);
@@ -174,7 +170,7 @@ void CFlameZoner::State_Attack1()
 
 void CFlameZoner::State_Hit()
 {
-	// ³Ë¹é
+	// ë„‰ë°±
 	if (m_Knock.active)
 	{
 		float t = m_Knock.t / max(m_Knock.duration, 1e-4f);
@@ -473,7 +469,7 @@ void CFlameZoner::MoveTile(const Vec2& dir, float speed)
 		{
 			col->MoveWorldPos(dirX);
 		}
-		// else : ¸·È÷¸é XÃà ÀÌµ¿ ½ºÅµ
+		// else : ë§‰ížˆë©´ Xì¶• ì´ë™ ìŠ¤í‚µ
 	}
 
 	if (nextMove.y != 0.f)
@@ -489,6 +485,6 @@ void CFlameZoner::MoveTile(const Vec2& dir, float speed)
 		{
 			col->MoveWorldPos(dirY);
 		}
-		// else : ¸·È÷¸é YÃà ÀÌµ¿ ½ºÅµ
+		// else : ë§‰ížˆë©´ Yì¶• ì´ë™ ìŠ¤í‚µ
 	}
 }

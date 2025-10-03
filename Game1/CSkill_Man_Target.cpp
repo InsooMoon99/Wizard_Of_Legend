@@ -8,7 +8,10 @@
 #include "CActor.h"
 
 CSkill_Man_Target::CSkill_Man_Target() {}
-CSkill_Man_Target::~CSkill_Man_Target() { Release(); }
+CSkill_Man_Target::~CSkill_Man_Target()
+{
+	Release();
+}
 
 void CSkill_Man_Target::BeginPlay()
 {
@@ -20,9 +23,11 @@ void CSkill_Man_Target::Tick()
     CSkill::Tick();
 
     for (auto& orb : m_Orbs)
-        if (orb) 
+    {
+        if (orb)
             orb->Tick();
-
+    }
+        
     CleanupDeadOrbs();
 }
 
@@ -92,7 +97,7 @@ void CSkill_Man_Target::Activate(CActor* _Owner)
         m_Skill_Info.Damage = kBaseDmg;
         m_Skill_Info.Amount = kKnockAmt;
 
-        auto orb = std::make_shared<CTarget_Orb>(m_Skill_Info);
+        auto orb = make_shared<CTarget_Orb>(m_Skill_Info);
         orb->BeginPlay();                             
         m_Orbs.push_back(orb);
     }

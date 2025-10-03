@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CSkill_WindDash.h"
 #include "CCharacter.h"
 #include "CStateComponent.h"
@@ -58,7 +58,7 @@ bool CSkill_WindDash::CanActivate(const FSkillInfo& _Info)
 {
 	if (!CSkill::CanActivate(_Info))
 
-	// TODO : ³ªÁß¿¡ ½ºÅ³ ÄğÅ¸ÀÓ¿¡ µû¶ó¼­ ÆÇ´Ü
+	// TODO : ë‚˜ì¤‘ì— ìŠ¤í‚¬ ì¿¨íƒ€ì„ì— ë”°ë¼ì„œ íŒë‹¨
 
 	return true;
 

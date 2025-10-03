@@ -4,19 +4,19 @@
       "Id": "Heal",
       "Name": "체력 포션",
       "Desc": "체력을 200만큼 회복합니다.",
-      "IconKey": "Shop\\POTION.png",
+      "IconKey": "Shop\\Potion.png",
       "IconW": 40,
       "IconH": 40,
       "Price": 100,
       "ItemType": "Potion",
       "StatType": "Hp",
       "Option": "Add",
-      "Value": 200
+      "Value": 100
     },
     {
       "Id": "Weapon1",
-      "Name": "[칼1]",
-      "Desc": "공격력 30% 증가",
+      "Name": "[검]",
+      "Desc": "공격력 50% 증가",
       "IconKey": "Shop\\무기2.bmp",
       "IconW": 40,
       "IconH": 40,
@@ -24,16 +24,16 @@
       "ItemType": "Weapon",
       "StatType": "Attack",
       "Option": "Multi",
-      "Value": 1.3
+      "Value": 1.5
     },
     {
       "Id": "Armor1",
-      "Name": "[방어구1]",
+      "Name": "[방어구]",
       "Desc": "방어력 20 증가",
       "IconKey": "Shop\\방어구1.bmp",
       "IconW": 40,
       "IconH": 40,
-      "Price": 150,
+      "Price": 125,
       "ItemType": "Armor",
       "StatType": "Defense",
       "Option": "Add",
@@ -41,7 +41,7 @@
     },
     {
       "Id": "Gold",
-      "Name": "골드",
+      "Name": "[골드]",
       "Desc": "돈",
       "IconKey": "UI\\UI_MONEY.png",
       "IconW": 40,
@@ -54,8 +54,8 @@
     },
     {
       "Id": "Meteor",
-      "Name": "[메테오]",
-      "Desc": "유성낙하",
+      "Name": "[운석 충돌]",
+      "Desc": "하늘에서 운석을 소환합니다!",
       "IconKey": "Shop\\MeteorCard.png",
       "IconW": 32,
       "IconH": 50,

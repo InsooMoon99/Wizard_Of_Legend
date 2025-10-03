@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CCharacter.h"
 #include "CMonsterBase.h"
@@ -21,6 +21,11 @@ public:
 	void Update_Hit() override;
 	void Hit_Color() override;
 	void Hit_Effect() override;
+
+	void OnComponentBeginOverlap(GameObject* collider, GameObject* other) override;
+	void OnComponentEndOverlap(GameObject* collider, GameObject* other) override;
+
+	void TakeDamage(FHitDamage _Hit) override;
 
 protected:
 	void Resource_Settings() override;

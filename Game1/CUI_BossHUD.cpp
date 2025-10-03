@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CUI_BossHUD.h"
 
 #include "CUI_BossStatus.h"
@@ -27,6 +27,13 @@ void CUI_BossHUD::Tick()
 
 void CUI_BossHUD::Render()
 {
+	m_BossStatus->bRender = bRender;
+
+	if (!m_BossStatus->bRender)
+	{
+		return;
+	}
+
 	Super::Render();
 }
 

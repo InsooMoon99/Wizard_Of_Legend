@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CBlobRoller.h"
 
 #include "CPlayer.h"
@@ -67,7 +67,7 @@ void CBlobRoller::Tick()
 	if (m_prevState != m_State->Get_State() || m_prevDir != m_State->Get_Dir())
 		SetSprite(m_State->Get_State(), m_State->Get_Dir());
 
-	// Color º¯°æ
+	// Color ë³€ê²½
 	Update_Hit();
 
 	for (auto& col : m_vecCol)
@@ -75,6 +75,8 @@ void CBlobRoller::Tick()
 
 	if (m_CurImg)
 		m_CurImg->Update();
+
+	m_Shadow->Update();
 
 	for (auto& component : m_Components)
 		component->TickComponent();
@@ -101,6 +103,8 @@ void CBlobRoller::Render()
 	for (auto& col : m_vecCol)
 		col->Render();
 
+	m_Shadow->Render();
+
 	if (m_CurImg)
 		m_CurImg->Render();
 
@@ -126,7 +130,7 @@ void CBlobRoller::State_Idle()
 {
 	m_IdleTimer += DELTA;
 
-	// ÇÃ·¹ÀÌ¾î ¹æÇâ
+	// í”Œë ˆì´ì–´ ë°©í–¥
 	TraceTarget();
 
 	//cout << "Idle : " << m_IdleTimer << endl;
@@ -183,7 +187,7 @@ void CBlobRoller::State_Attack2()
 
 void CBlobRoller::State_Hit()
 {
-	// ³Ë¹é
+	// ë„‰ë°±
 	if (m_Knock.active)
 	{
 		float time = m_Knock.t / max(m_Knock.duration, 1e-4f);
@@ -204,7 +208,7 @@ void CBlobRoller::State_Hit()
 		}
 	}
 
-	// ÀÌ¹ÌÁö
+	// ì´ë¯¸ì§€
 	if (m_CurImg)
 	{
 		if (!m_Knock.active && CHelper::IsLastFrame(m_CurImg))
@@ -375,6 +379,7 @@ void CBlobRoller::Play_Sprite(ECharacterState _State)
 		break;
 
 	case ECharacterState::Attack2:
+		SOUND->StopPlay("BlobAttack", 0.2f);
 		m_CurImg->ChangeAnim(ANIMSTATE::LOOP, 0.06f);
 		m_BehaviorCheck = true;
 		m_Attack2Timer = 0.f;
@@ -387,6 +392,7 @@ void CBlobRoller::Play_Sprite(ECharacterState _State)
 		break;
 
 	case ECharacterState::Dead:
+		SOUND->StopPlay("BlobDead", 0.2f);
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
 		break;
 	}
@@ -453,7 +459,13 @@ void CBlobRoller::Resource_Settings()
 
 		m_Sprites[ECharacterState::Dead][EPlayerDir::Front] = dead;
 	}
-	
+
+	m_Shadow = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(60.f, 60.f) * 1.85f);
+	m_Shadow->SetParentRT(*m_Collision);
+	m_Shadow->color = Color(0.0f, 0.0f, 0.0f, 0.25f);
+	m_Shadow->SetLocalPos(Vec2(0.f, -40.f));
+	m_Shadow->visible = true;
+
 	// Start Image Setting
 	m_CurImg = m_Sprites[ECharacterState::Idle][EPlayerDir::Front];
 	SetSprite(m_State->Get_State(), m_State->Get_Dir());

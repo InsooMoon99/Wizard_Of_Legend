@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "CEnums.h"
 
@@ -29,7 +29,7 @@ struct FSkillData
 	float	Damage = 0.f;
 	float	CoolDown = 0.f;
 
-	string  IconKey; // ÀÌ¹ÌÁö ¸»°í, °æ·Î¸¸ µé°íÀÖ±â
+	string  IconKey; // ì´ë¯¸ì§€ ë§ê³ , ê²½ë¡œë§Œ ë“¤ê³ ìˆê¸°
 	int     IconW = 0;
 	int     IconH = 0;
 };

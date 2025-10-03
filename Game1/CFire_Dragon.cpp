@@ -20,7 +20,7 @@ CFire_Dragon::CFire_Dragon(FSkillInfo& _Info) : CSkill_Actor(_Info)
 	{
 		m_Collision = make_shared<ObCircle>();
 		m_Collision->scale = Vec2(80.f, 80.f);
-		m_Collision->SetWorldPos(Vec2(m_Pos.x, m_Pos.y) + spawnOffset);
+		m_Collision->SetWorldPos(Vec2(m_Pos.x, m_Pos.y));
 		m_Collision->visible = false;
 		m_Collision->collider = COLLIDER::CIRCLE;
 		m_Collision->isFilled = false;
@@ -31,10 +31,10 @@ CFire_Dragon::CFire_Dragon(FSkillInfo& _Info) : CSkill_Actor(_Info)
 		COLLISION->AddCollider(m_Collision.get());
 	}
 
-	m_FireDragonRight = RESOURCE->CreateSprite(L"Skill\\DragonArcRight.png", Vec2(37.f, 25.f) * 3.2f, Int2(1, 1), true);
+	m_FireDragonRight = RESOURCE->CreateSprite(L"Skill\\DragonArcRight.png", Vec2(37.f, 25.f) * 3.5f, Int2(1, 1), true);
 	m_FireDragonRight->SetParentRT(*m_Collision);
 
-	m_FireDragonLeft = RESOURCE->CreateSprite(L"Skill\\DragonArcLeft.png", Vec2(37.f, 25.f) * 3.2f, Int2(1, 1), true);
+	m_FireDragonLeft = RESOURCE->CreateSprite(L"Skill\\DragonArcLeft.png", Vec2(37.f, 25.f) * 3.5f, Int2(1, 1), true);
 	m_FireDragonLeft->SetParentRT(*m_Collision);
 
 	Vec2 fireSize = Vec2(768.f / 6.f, 512.f / 4.f) / 2.5f;
@@ -113,7 +113,11 @@ void CFire_Dragon::Tick()
 	if (CheckHitWall()) return;
 
 	m_SpawnLife += DELTA;
-	if (m_SpawnLife >= 1.5f) { m_PendingKill = true; return; }
+	if (m_SpawnLife >= 1.f)
+	{
+		m_PendingKill = true;
+		return;
+	}
 
 	Vec2 dir = m_Skill_Info.Aim_Dir; dir.Normalize();
 	Vec2 right(dir.y, -dir.x);
@@ -162,7 +166,7 @@ void CFire_Dragon::Render()
 	Super::Render();
 
 	m_Collision->Render();
-	m_FireDragon_Tail->Render();
+	//m_FireDragon_Tail->Render();
 	m_CurFireImg->Render();
 
 }
@@ -195,7 +199,7 @@ void CFire_Dragon::OnHitWall(const Vec2& hitPos)
 
 	SOUND->Stop("FireArc_End");
 	SOUND->Play("FireArc_End");
-	SOUND->SetVolume("FireArc_End", 0.2f);
+	SOUND->SetVolume("FireArc_End", 0.13f);
 
 	m_PendingKill = true;
 }
@@ -249,7 +253,7 @@ void CFire_Dragon::OnComponentBeginOverlap(GameObject* collider, GameObject* oth
 
 		SOUND->Stop("FireArc_End");
 		SOUND->Play("FireArc_End");
-		SOUND->SetVolume("FireArc_End", 0.2f);
+		SOUND->SetVolume("FireArc_End", 0.13f);
 	}
 	
 	m_PendingKill = true;

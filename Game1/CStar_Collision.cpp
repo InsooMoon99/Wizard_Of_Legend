@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CStar_Collision.h"
 
 #include "CPlayer.h"
@@ -12,7 +12,7 @@ CStar_Collision::CStar_Collision(FSkillInfo& _Info, EStarType _Type) : CSkill_Ac
 		m_Collision = make_shared<ObRect>();
 		//m_Collision->scale = Vec2(190.f, 15.f);
 		m_Collision->SetWorldPos(Vec2(m_Pos.x, m_Pos.y));
-		m_Collision->visible  = true;
+		m_Collision->visible  = false;
 		m_Collision->isFilled = false;
 		m_Collision->rotation = _Info.Angle;
 		m_Collision->Set_Owner(this);
@@ -125,7 +125,7 @@ void CStar_Collision::OnComponentBeginOverlap(GameObject* collider, GameObject* 
 	hit->TakeDamage(hitDamage);
 	
 
-	cout << "�浹 ? " << endl;
+	cout << "충돌 ? " << endl;
 
 	bCheck = true;
 

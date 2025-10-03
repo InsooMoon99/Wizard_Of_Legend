@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CComponent.h"
 
 class CUI;
@@ -22,11 +22,13 @@ public:
 public:
 	void SetPlayerHUD();
 	void SetBossHUD();
+	void SetMiddleHUD();
 	void SetInventoryHUD();
 
 	const vector<shared_ptr<CGameObject>>& GetHUD() { return m_HUD; }
 	const shared_ptr<CUI> GetPlayerHUD()  { return m_PlayerHUD; }
 	const shared_ptr<CUI> GetBossHUD() { return m_BossHUD; }
+	const shared_ptr<CUI> GetMiddleBossHUD() { return m_MiddleBossHUD; }
 	const shared_ptr<CUI> GetInventoryHUD() { return m_InventoryHUD; }
 
 	bool GetToggle() { return bToggle; }
@@ -37,6 +39,7 @@ private:
 
 	shared_ptr<CUI>		m_PlayerHUD;
 	shared_ptr<CUI>		m_BossHUD;
+	shared_ptr<CUI>		m_MiddleBossHUD;
 	shared_ptr<CUI>		m_InventoryHUD;
 
 	bool bToggle = false;

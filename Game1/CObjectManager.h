@@ -21,6 +21,7 @@ public:
     void Update();
     void Render();
     void Release();
+    void RequestClear(); 
 
     shared_ptr<CActor> SpawnActor(std::shared_ptr<CActor> actor);
 
@@ -38,10 +39,16 @@ public:
 private:
     CObjectManager() = default;
 
+    void ForceClear();
+    void FlushPendingAdds(); 
+
+private:
+    bool m_IsIterating = false;   
+    bool m_PendingClear = false;  
+
     vector<shared_ptr<CActor>> m_PendingAdd;
     vector<shared_ptr<CActor>> m_ActiveObjects;
 
-    bool m_IsIterating = false;
 };
 
 

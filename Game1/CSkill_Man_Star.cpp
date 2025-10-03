@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CSkill_Man_Star.h"
 
 CSkill_Man_Star::CSkill_Man_Star()

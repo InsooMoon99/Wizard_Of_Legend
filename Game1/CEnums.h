@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 enum class EStartStageType
 {
@@ -9,7 +9,7 @@ enum class EStartStageType
 
 enum class ERenderLayer
 {
-	Render_Background, Render_GameObject, Render_Effect, Render_UI,
+	Render_Background, Render_GameObject, RenderPlayer, Render_Effect, Render_UI,
 
 	Render_END
 };
@@ -28,7 +28,8 @@ enum class ECharacterState
 	Boss_Attack1, Boss_Attack1_Ready,
 	Boss_Attack2,
 	Boss_Attack3,
-	Boss_Teleport,
+	Boss_Wait,
+	Boss_Teleport, Middle_Spawn,
 
 	PS_END
 };
@@ -57,6 +58,8 @@ enum class ESkillType
 	Boss_Man_Bat, Boss_Girl_Dash,
 	Boss_Man_Target, Boss_Girl_Javelin,
 	Boss_Man_Star, Boss_Girl_Star,
+
+	Middle_Fire, Middle_Ball, Middle_SpawnBall,
 
 	SKILL_END
 };

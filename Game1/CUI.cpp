@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CUI.h"
 
 CUI::CUI() : CGameObject(ERenderLayer::Render_UI)

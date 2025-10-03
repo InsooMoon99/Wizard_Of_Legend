@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "CSkill_Actor.h"
 
@@ -50,7 +50,7 @@ private:
 
     float m_boomTimer = 0.3f;
 
-    // ¼ö¸í °ü¸®
+    // ìˆ˜ëª… ê´€ë¦¬
     float m_Life = 5.0f;
 
     float m_StopRadius = 40.f;   

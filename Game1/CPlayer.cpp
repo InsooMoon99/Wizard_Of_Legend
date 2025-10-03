@@ -20,11 +20,11 @@ CPlayer::CPlayer()
 	m_Status->SetMaxHp(500.f);
 	m_Status->SetMaxMp(100.f);
 
-	m_Status->SetHp(80.f);
-	m_Status->SetMp(100.f); // 일단 임시 테스트 100
+	m_Status->SetHp(380.f);
+	m_Status->SetMp(40.f);    
 	m_Status->SetSpeed(400.f);
 
-	m_Status->SetGold(100);
+	m_Status->SetGold(500);
 
 	m_Status->SetAttack(20);
 	m_Status->SetDef(15);
@@ -40,7 +40,7 @@ CPlayer::CPlayer()
 		m_UI->SetInventoryHUD();
 	}
 
-	
+	m_RenderLayer = ERenderLayer::RenderPlayer;
 }
 
 CPlayer::~CPlayer()
@@ -57,7 +57,7 @@ void CPlayer::BeginPlay()
 		// Fire
 		m_Weapon->Equip_Skill(ESkillType::Fire_Ball, ESkillSlot::Q);
 		m_Weapon->Equip_Skill(ESkillType::Fire_Dragon, ESkillSlot::RButton);
-		//m_Weapon->Equip_Skill(ESkillType::Fire_Meteor, ESkillSlot::R);
+		m_Weapon->Equip_Skill(ESkillType::Fire_Meteor, ESkillSlot::R);
 
 		// Wind
 		m_Weapon->Equip_Skill(ESkillType::Wind_Slash, ESkillSlot::LButton);
@@ -74,6 +74,15 @@ void CPlayer::Tick()
 	CActor::Tick();
 
 	Print_ImGui();
+
+	float currentMp = m_Status->GetMp();
+	float maxMp = m_Status->GetMaxMp();
+
+	currentMp += 0.1f;
+
+	float clampedMp = min(currentMp, maxMp);
+
+	m_Status->SetMp(clampedMp);
 
 	if (m_Collision)
 		m_Pos = m_Collision->GetWorldPos();

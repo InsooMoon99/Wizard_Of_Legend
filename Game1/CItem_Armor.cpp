@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CItem_Armor.h"
 
 #include "CInventoryComponent.h"
@@ -8,9 +8,10 @@
 CItem_Armor::CItem_Armor()
 {
 	m_Collision = make_shared<ObRect>();
-	m_Collision->scale = Vec2(100.f);
-	m_Collision->SetWorldPos(Vec2(2270.f, -2426.f));
-	m_Collision->visible = true;
+	m_Collision->scale = Vec2(100.f, 200.f);
+	m_Collision->pivot = OFFSET_T;
+	m_Collision->SetWorldPos(Vec2(2320.f, -2324.f));
+	m_Collision->visible = false;
 	m_Collision->isFilled = false;
 	m_Collision->collider = COLLIDER::RECT;
 	m_Collision->Set_Owner(this);
@@ -19,7 +20,6 @@ CItem_Armor::CItem_Armor()
 
 	m_vecCol.push_back(m_Collision.get());
 
-	m_RenderLayer = ERenderLayer::Render_Effect;
 }
 
 CItem_Armor::~CItem_Armor()
@@ -31,12 +31,12 @@ void CItem_Armor::BeginPlay()
 {
 	CItem::BeginPlay();
 
-	m_ItemImg->scale = m_Size * 2.f;
+	m_ItemImg->scale = m_Size * 1.5f;
 	m_ItemImg->SetParentRT(*m_Collision);
 
 	m_PriceTag = RESOURCE->CreateImage(L"Shop\\PriceMarkerGold.png", Vec2(22.f, 10.f) * 3.f, true);
 	m_PriceTag->SetParentRT(*m_ItemImg);
-	m_PriceTag->SetLocalPos(Vec2(0.f, -70.f));
+	m_PriceTag->SetLocalPos(Vec2(0.f, -45.f));
 
 	m_Price = to_wstring(m_ItemData.Price);
 }
@@ -134,6 +134,8 @@ void CItem_Armor::ActivateItem(CActor* actor)
 	bool bGoldCheck = status->GetGold() >= m_ItemData.Price;
 	if (!bGoldCheck) return;
 
+	status->SetGold(status->GetGold() - m_ItemData.Price);
+
 	int def = status->GetDef();
 	status->SetDef(def + m_ItemData.Value);
 
@@ -142,6 +144,8 @@ void CItem_Armor::ActivateItem(CActor* actor)
 
 	auto self = shared_from_this();
 	inven->AddItem(self);
+
+	SOUND->StopPlay("BuyItem", 0.2f);
 
 	player->RemoveInteract(this);
 	DisableAndDestroy();

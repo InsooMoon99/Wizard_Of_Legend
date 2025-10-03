@@ -1,4 +1,4 @@
-#include "stdafx.h"
+Ôªø#include "stdafx.h"
 #include "CStageFire.h"
 #include "CActor.h"
 #include "CBlobRoller.h"
@@ -15,7 +15,9 @@
 #include "CGolem.h"
 #include "CItem_Gold.h"
 #include "CItem_SkillMeteor.h"
+#include "CMiddleBoss.h"
 #include "CShopSkillNPC.h"
+#include "CUI_Minimap.h"
 
 CStageFire::CStageFire()
 {
@@ -25,6 +27,7 @@ CStageFire::CStageFire()
 	m_SectionPos.push_back({-1600.f,-2000.f});
 	m_SectionPos.push_back({7.f, -1011.f});
 	m_SectionPos.push_back({-90.f, 380.f});
+	m_SectionPos.push_back({1094.f, 1175.f});
 
 	Resource_Setting();
 	m_Actors.push_back(m_Player);
@@ -32,6 +35,9 @@ CStageFire::CStageFire()
 	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player.get());
 
 	bStartTilevisible = false;
+
+	//m_Cursor = RESOURCE->CreateImage(L"UI\\MouseCursor0.png", Vec2(32.f, 32.f) * 3.f, true);
+	//m_Cursor->space = SPACE::SCREEN;
 }
 
 CStageFire::~CStageFire()
@@ -46,7 +52,8 @@ void CStageFire::Init()
 	SOUND->Play("Tutorial");
 	SOUND->SetVolume("Tutorial", 0.05f);
 
-	PARTICLE->Spawn_ParticleDir(L"StartEffect", Vec2(m_PlayerPos.x, m_PlayerPos.y + 180.f), Vec2(1.2f, 1.f));
+	PARTICLE->Spawn_ParticleDir(L"StartEffect", Vec2(m_PlayerPos.x, m_PlayerPos.y + 180.f), Vec2(1.4f, 1.f));
+	SOUND->StopPlay("Teleport", 0.2f);
 
 	for (auto& actor : m_Actors)
 		actor->BeginPlay();
@@ -60,14 +67,30 @@ void CStageFire::Init()
 	if (bStartTilevisible)
 	{
 		TILE->Load_Data(L"../Data/FireTile_First.dat");
+		//TILE->Load_Data(L"../Data/FireTile_Second.dat");
 		bStartTilevisible = false;
 	}
 
+	auto player = dynamic_pointer_cast<CPlayer>(m_Player);
+	m_Minimap = make_shared<CUI_Minimap>(player);
+
+	auto mapImg = m_Map.find(ESceneType::Stage01)->second;
+	Vec2 mapCenter = mapImg->GetWorldPos(); // (0, 0)
+	Vec2 mapHalf = mapImg->scale * 0.5f;
+
+	Vec2 worldMin = mapCenter - mapHalf; // Ïòà: (-W/2, -H/2)
+	Vec2 worldMax = mapCenter + mapHalf; // Ïòà: (W/2, H/2)
+
+	m_Minimap->SetWorldBounds(worldMin, worldMax);
+
+	m_Minimap->BeginPlay();
 }
 
 void CStageFire::Update()
 {
 	CScene::Update();
+
+	//ShowCursor(false);
 
 	Key_Input();
 
@@ -79,7 +102,16 @@ void CStageFire::Update()
 		RENDER->AddRenderObject(actor.get());
 	}
 
+	if (INPUT->KeyDown('2'))
+	{
+		auto middleBoss = SpawnMonster<CMiddleBoss>(Section4, Vec2(1986, 2654));
+		middleBoss->SetTarget(m_Player);
+	}
+
 	RemoveDeadMonsters();
+
+	if (m_Minimap)
+		m_Minimap->Tick();
 
 	for (auto& [sec, vec] : m_Monsters)
 		for (auto& m : vec) { m->Tick();
@@ -97,15 +129,21 @@ void CStageFire::Update()
 	for (auto& object : m_Objects)
 		object->Update();
 
+	if (m_Minimap)
+		RENDER->AddRenderObject(m_Minimap.get());
+
+	//m_Cursor->SetWorldPos(INPUT->GetMouseWorldPos());
+	//m_Cursor->Update();
+
 }
 
 void CStageFire::LateUpdate()
 {
 	CScene::LateUpdate();
 
-	//«√∑π¿ÃæÓ ∞°µŒ±‚ ¿Ã∞« µ¸»˜ « ø‰ æ¯¿ªµÌ. ≈∏¿œ∏ ¿∏∑Œ √Êµπ√≥∏Æ
+	//ÌîåÎ†àÏù¥Ïñ¥ Í∞ÄÎëêÍ∏∞ Ïù¥Í±¥ Îî±Ìûà ÌïÑÏöî ÏóÜÏùÑÎìØ. ÌÉÄÏùºÎßµÏúºÎ°ú Ï∂©ÎèåÏ≤òÎ¶¨
 	//player->Get_PlayerCollision()->SetWorldPosX(Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().x, -3800.0f * 1.5f / 2.0f, 3840.0f * 1.5f / 2.0f));
-	//ƒ∑
+	//Ï∫†
 	//CAM->position.x = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().x, -m_MapSize.x + app.GetHalfWidth(), m_MapSize.x - app.GetHalfWidth());
 	//CAM->position.y = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().y + 500.0f, m_MapSize.y, 950.0f - app.GetHalfHeight());
 
@@ -136,6 +174,15 @@ void CStageFire::LateUpdate()
 			}
 		}
 	}
+
+	if (m_BossTeleport->Intersect(m_Player->Get_Collision().get()))
+	{
+		if (INPUT->KeyDown('F'))
+		{
+			PARTICLE->Spawn_Particle(L"StartEffect", Vec2(m_BossTeleport->GetWorldPos().x, m_BossTeleport->GetWorldPos().y + 300.f), Vec2(1.5f));
+			SOUND->StopPlay("Teleport", 0.2f);
+		}
+	}
 	
 
 	for (auto& actor : m_Actors)
@@ -162,6 +209,8 @@ void CStageFire::Render()
 		section->Render();
 
 	PARTICLE->Render();
+	//m_Cursor->Render();
+
 }
 
 void CStageFire::Release()
@@ -178,11 +227,11 @@ void CStageFire::Release()
 
 void CStageFire::Key_Input()
 {
-	// ≈∏¿œ∏  visible
+	// ÌÉÄÏùºÎßµ visible
 	if (INPUT->KeyDown(VK_F1))
 		TILE->ToggleTileImagesVisible();
 
-	// ≈∏∞Ÿ µπˆ±Î
+	// ÌÉÄÍ≤ü ÎîîÎ≤ÑÍπÖ
 	if (INPUT->KeyDown('1'))
 	{
 		for (auto& actor : m_Actors)
@@ -211,89 +260,108 @@ void CStageFire::Resource_Setting()
 	mapShadow->color = Color(0.0f, 0.0f, 0.0f, 1.0f);
 	m_Map.insert({ ESceneType::Shadow, mapShadow });
 
-	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\Fire_End.png", m_MapSize, true);
+	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\FireTile.png", m_MapSize, true);
 	map->SetWorldPos(Vec2(0, 0));
 	map->SetLocalPos(Vec2(-185, 46));
 	m_Map.insert({ ESceneType::Stage01, map });
 
-	Vec2 telpoSize = Vec2(311.f, 298.f);
-	shared_ptr<ObImage> telport = RESOURCE->CreateImage(L"Object\\TELEPORT.png", telpoSize, true);
-	telport->SetWorldPos(Vec2(516.f, -2593.f));
-	m_Objects.push_back(telport);
-	m_Player		= make_shared<CPlayer>();
+	{
+		Vec2 telpoSize = Vec2(311.f, 298.f);
+		shared_ptr<ObImage> telport = RESOURCE->CreateImage(L"Object\\TELEPORT.png", telpoSize, true);
+		telport->SetWorldPos(Vec2(516.f, -2593.f));
+		m_Objects.push_back(telport);
+	}
+	{
+		Vec2 telpoSize = Vec2(311.f, 298.f);
+		m_BossTeleport = RESOURCE->CreateImage(L"Object\\TELEPORT.png", telpoSize, true);
+		m_BossTeleport->SetWorldPos(Vec2(1966.f, 3006.f));
+		m_BossTeleport->collider = COLLIDER::RECT;
+		m_Objects.push_back(m_BossTeleport);
+	}
 
-	m_Player->SetSpawnPos(Vec2(m_SectionPos[2].x, m_SectionPos[2].y - 200.f));
-	m_TestDummy = SpawnMonster<CDummy>(Section1, m_PlayerPos + Vec2(150.f, 50.f));
+	m_Player = make_shared<CPlayer>();
+
+	//m_Player->SetSpawnPos(Vec2(m_SectionPos[3].x + 170.f, m_SectionPos[3].y - 100.f));
+	//m_Player->SetSpawnPos(Vec2(2225.f, 849.f));
+	m_Player->SetSpawnPos(m_StartPos);
+
+	m_TestDummy = SpawnMonster<CDummy>(Section1, m_PlayerPos + Vec2(200.f, 100.f));
+	shared_ptr<CDummy> testDummy2 = SpawnMonster<CDummy>(Section1, m_PlayerPos + Vec2(200.f, 20.f));
+	shared_ptr<CDummy> testDummy3 = SpawnMonster<CDummy>(Section1, Vec2(2450.f, -2500.f));
 
 	m_ShopItemNPC	= make_shared<CShopItemNPC>();
 	m_ShopSkillNPC	= make_shared<CShopSkillNPC>();
 
-	m_ShopItemNPC->SetSpawnPos(Vec2(2120., -2307.f));
-	m_ShopSkillNPC->SetSpawnPos(Vec2(m_SectionPos[2].x, m_SectionPos[2].y - 230.f));
+	m_ShopItemNPC->SetSpawnPos(Vec2(2120., -2237.f));
+	m_ShopSkillNPC->SetSpawnPos(Vec2(2384.f, 1071.f));
 
 	m_Actors.push_back(m_ShopItemNPC);
 	m_Actors.push_back(m_ShopSkillNPC);
 
-	auto blob1 = SpawnMonster<CBlobRoller>(Section1, Vec2(m_SectionPos[0].x + 100.f, m_SectionPos[0].y));
-	auto blob2 = SpawnMonster<CBlobRoller>(Section1, Vec2(m_SectionPos[0].x - 40.f, m_SectionPos[0].y + 20));
-	auto blob3 = SpawnMonster<CBlobRoller>(Section1, Vec2(m_SectionPos[0].x + 20.f, m_SectionPos[0].y + 10));
+	auto ghoul1 = SpawnMonster<CGhoulLarge>(Section1, Vec2(m_SectionPos[0].x + 100.f, m_SectionPos[0].y));
+	auto ghoul2 = SpawnMonster<CGhoulLarge>(Section1, Vec2(m_SectionPos[0].x - 100.f, m_SectionPos[0].y));
 
-	auto ghoul = SpawnMonster<CGhoulLarge>(Section1, Vec2(m_SectionPos[0].x + 100.f, m_SectionPos[0].y));
+	auto knight1 = SpawnMonster<CKnight>(Section1, Vec2(m_SectionPos[0].x - 100, m_SectionPos[0].y + 200.f));
+	auto knight2 = SpawnMonster<CKnight>(Section1, Vec2(m_SectionPos[0].x - 100, m_SectionPos[0].y - 150.f));
+	auto knight3 = SpawnMonster<CKnight>(Section1, Vec2(m_SectionPos[0].x + 100, m_SectionPos[0].y + 200.f));
+	auto knight4 = SpawnMonster<CKnight>(Section1, Vec2(m_SectionPos[0].x + 100, m_SectionPos[0].y - 150.f));
 
-	auto knight1 = SpawnMonster<CKnight>(Section2, Vec2(m_SectionPos[1].x, m_SectionPos[1].y + 200.f));
-	auto golem = SpawnMonster<CGolem>(Section3, Vec2(m_SectionPos[2].x, m_SectionPos[2].y + 200.f));
-	auto flamezoner = SpawnMonster<CGolem>(Section3, Vec2(m_SectionPos[2].x + 99.f, m_SectionPos[2].y + 150.f));
+	auto blob1 = SpawnMonster<CBlobRoller>(Section2, Vec2(m_SectionPos[1].x + 40.f, m_SectionPos[1].y + 150));
+	auto blob2 = SpawnMonster<CBlobRoller>(Section2, Vec2(m_SectionPos[1].x - 40.f, m_SectionPos[1].y + 120));
+	auto blob3 = SpawnMonster<CBlobRoller>(Section2, Vec2(m_SectionPos[1].x + 20.f, m_SectionPos[1].y + 10));
 
-	auto section1 = make_shared<ObRect>();
-	section1->scale = Vec2(30.f, 160.f);
-	section1->visible = true;
-	section1->isFilled = false;
-	section1->SetWorldPos(Vec2(m_SectionPos[0].x + 700.f, m_SectionPos[0].y + 10.f));
-	m_SectionCol.push_back(section1);
+	//auto knight1 = SpawnMonster<CKnight>(Section2, Vec2(m_SectionPos[1].x, m_SectionPos[1].y + 200.f));
+	auto golem1 = SpawnMonster<CGolem>(Section3, Vec2(m_SectionPos[2].x, m_SectionPos[2].y + 300.f));
+	auto golem2 = SpawnMonster<CGolem>(Section3, Vec2(m_SectionPos[2].x + 219.f, m_SectionPos[2].y + 350.f));
 
-	auto section2 = make_shared<ObRect>();
-	section2->scale = Vec2(300.f, 60.f);
-	section2->visible = true;
-	section2->isFilled = false;
-	section2->pivot = OFFSET_LT;
-	section2->SetWorldPos(Vec2(m_SectionPos[1].x - 150.f, m_SectionPos[1].y + 10.f));
-	m_SectionCol.push_back(section2);
-
-	auto section3 = make_shared<ObRect>();
-	section3->scale = Vec2(600.f, 60.f);
-	section3->visible = true;
-	section3->isFilled = false;
-	section3->pivot = OFFSET_LT;
-	section3->SetWorldPos(Vec2(m_SectionPos[2].x, m_SectionPos[2].y + 10.f));
-	m_SectionCol.push_back(section3);
-
-	// TODO : section 4 √ﬂ∞° øπ¡§
-	m_SectionCol.push_back(section2);
-
-	// ¿”Ω√ ∞ÒµÂ
 	{
-		auto gold = make_shared<CItem_Gold>();
-		gold->SetSpawnPos(Vec2(0.f));
-
-		auto gold1 = make_shared<CItem_Gold>();
-		gold1->SetSpawnPos(Vec2(10.f));
-
-		auto gold2 = make_shared<CItem_Gold>();
-		gold2->SetSpawnPos(Vec2(15.f));
-
-		auto gold3 = make_shared<CItem_Gold>();
-		gold3->SetSpawnPos(Vec2(20.f));
-
-		//auto skill = make_shared<CItem_SkillMeteor>();
-		//skill->SetSpawnPos(Vec2(-100.f));
-
-		m_Actors.push_back(gold);
-		m_Actors.push_back(gold2);
-		m_Actors.push_back(gold3);
-		//m_Actors.push_back(skill);
+		auto blob1 = SpawnMonster<CBlobRoller>(Section3, Vec2(m_SectionPos[2].x + 240.f, m_SectionPos[2].y + 250));
+		auto blob2 = SpawnMonster<CBlobRoller>(Section3, Vec2(m_SectionPos[2].x - 40.f, m_SectionPos[2].y + 120));
+		auto blob3 = SpawnMonster<CBlobRoller>(Section3, Vec2(m_SectionPos[2].x + 120.f, m_SectionPos[2].y + 100));
 	}
 
+	{
+		auto ghoul1 = SpawnMonster<CGhoulLarge>(Section4, Vec2(800, 1600));
+		auto ghoul2 = SpawnMonster<CGhoulLarge>(Section4, Vec2(500, 1550));
 
+		auto knight1 = SpawnMonster<CKnight>(Section4, Vec2(400, 1600));
+		auto knight2 = SpawnMonster<CKnight>(Section4, Vec2(900, 1500));
+	}
+
+	//auto middleBoss = SpawnMonster<CMiddleBoss>(Section4, Vec2(m_SectionPos[3].x, m_SectionPos[3].y + 300.f));
+
+	{
+		auto section1 = make_shared<ObRect>();
+		section1->scale = Vec2(30.f, 160.f);
+		section1->visible = false;
+		section1->isFilled = false;
+		section1->SetWorldPos(Vec2(m_SectionPos[0].x + 700.f, m_SectionPos[0].y + 10.f));
+		m_SectionCol.push_back(section1);
+
+		auto section2 = make_shared<ObRect>();
+		section2->scale = Vec2(300.f, 60.f);
+		section2->visible = false;
+		section2->isFilled = false;
+		section2->pivot = OFFSET_LT;
+		section2->SetWorldPos(Vec2(m_SectionPos[1].x - 150.f, m_SectionPos[1].y + 10.f));
+		m_SectionCol.push_back(section2);
+
+		auto section3 = make_shared<ObRect>();
+		section3->scale = Vec2(600.f, 60.f);
+		section3->visible = false;
+		section3->isFilled = false;
+		section3->pivot = OFFSET_LT;
+		section3->SetWorldPos(Vec2(m_SectionPos[2].x, m_SectionPos[2].y + 10.f));
+		m_SectionCol.push_back(section3);
+
+		auto section4 = make_shared<ObRect>();
+		section4->scale = Vec2(400.f, 200.f);
+		section4->visible = false;
+		section4->isFilled = false;
+		section4->pivot = OFFSET_LT;
+		section4->SetWorldPos(Vec2(m_SectionPos[3].x, m_SectionPos[3].y + 100.f));
+		m_SectionCol.push_back(section4);
+	}
 
 }
 

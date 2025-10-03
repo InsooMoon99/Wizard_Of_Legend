@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CUI_InventoryHUD.h"
 #include "CResourceManager.h"
 #include "CUI_InvenCloth.h"

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CBossPawn.h"
 
@@ -37,6 +37,7 @@ public:
 	virtual void OnStateChange(ECharacterState _State, EPlayerDir _Dir) override;
 
 public:
+	void State_Wait();
 	void State_Start();
 	void State_Start2();
 	void State_Ready();
@@ -48,12 +49,16 @@ public:
 	void State_Attack2();
 	void State_Attack3();
 
+	void State_Dead();
+
+	void TakeDamage(FHitDamage _Hit) override;
 
 protected:
 	void SetSprite(ECharacterState _State, EPlayerDir _Dir) override;
 	void Play_Sprite(ECharacterState _State) override;
 
 	void Resource_Settings() override;
+
 
 private:
 	bool bAnimStarted = false;
@@ -77,5 +82,7 @@ private:
 	shared_ptr<ObImage> m_Target_Throw;
 
 	shared_ptr<ObImage> m_FloorCrater;
+
+	shared_ptr<ObImage> m_Shadow;
 };
 

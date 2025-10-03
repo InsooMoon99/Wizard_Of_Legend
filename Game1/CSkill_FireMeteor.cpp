@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CSkill_FireMeteor.h"
 #include "CFire_Ball.h"
 #include "CCharacter.h"
@@ -72,7 +72,7 @@ void CSkill_FireMeteor::Tick()
 
 	if (m_CastingCircle)
 	{
-		// Ä³½ºÆÃ ¾Ö´Ï ³¡³ª°¥ ¶§ ¼ÒÈ¯ ½ÃÀÛ
+		// ìºìŠ¤íŒ… ì• ë‹ˆ ëë‚˜ê°ˆ ë•Œ ì†Œí™˜ ì‹œìž‘
 		if (m_CastingCircle->frame.x >= m_CastingCircle->maxFrame.x - 20 && !bMiddleCheck)
 		{
 			bMiddleCheck = true;
@@ -99,7 +99,7 @@ void CSkill_FireMeteor::Tick()
 			}
 		}
 
-		// ¸ÞÀÎ ¸ÞÅ×¿À(Áß¾Ó)´Â µû·Î, ±âÁ¸´ë·Î
+		// ë©”ì¸ ë©”í…Œì˜¤(ì¤‘ì•™)ëŠ” ë”°ë¡œ, ê¸°ì¡´ëŒ€ë¡œ
 		if (m_CastingCircle->frame.x >= m_CastingCircle->maxFrame.x - 9 && !bMeteorCheck)
 		{
 			bMeteorCheck = true;
@@ -149,18 +149,10 @@ void CSkill_FireMeteor::Render()
 
 bool CSkill_FireMeteor::CanActivate(const FSkillInfo& _Info)
 {
-	//if (!CSkill::CanActivate(_Info))
-	//	return false;
-	//
-	//// ºÎ¸ðÂÊ CSkill¿¡¼­ CoolRemainÀ¸·Î Ã³¸®
-	//
-	//return true;
-
 	if (!CSkill::CanActivate(_Info))
+		return false;
 
-		// TODO : ³ªÁß¿¡ ½ºÅ³ ÄðÅ¸ÀÓ¿¡ µû¶ó¼­ ÆÇ´Ü
-
-		return true;
+	return true;
 }
 
 void CSkill_FireMeteor::Activate(CActor* _Owner)

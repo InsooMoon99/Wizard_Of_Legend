@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CEarth_Shield.h"
 
 #include "CBossPawn.h"
@@ -35,7 +35,7 @@ void CEarth_Shield::BeginPlay()
 	for (int i = 0; i < EARTH_SHIELD; ++i)
 	{
 		m_Armor[i] = make_shared<ObCircle>();
-		m_Armor[i]->scale = Vec2(40.f, 40.f);
+		m_Armor[i]->scale = Vec2(55.f, 55.f);
 		m_Armor[i]->SetParentRT(*m_Skill_Info.Instigator->Get_Collision());
 		m_Armor[i]->isFilled = false;
 		m_Armor[i]->visible = false;
@@ -83,7 +83,7 @@ void CEarth_Shield::Tick()
 
 	if (m_PendingKill) return;
 
-	// À§Ä¡ °»½Å
+	// ìœ„ì¹˜ ê°±ì‹ 
 	if (m_Collision)
 		m_Pos = m_Collision->GetWorldPos();
 
@@ -201,6 +201,7 @@ void CEarth_Shield::OnComponentBeginOverlap(GameObject* collider, GameObject* ot
 	}
 
 	hit->TakeDamage(hitDamage);
+	SOUND->StopPlay("ImpactEarth", 0.12f);
 
 	Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
 	Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;

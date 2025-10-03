@@ -1,7 +1,7 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CUI_InvenCloth.h"
 
-CUI_InvenCloth::CUI_InvenCloth() : m_Cloth_Panel(L"Èñ¸Á")
+CUI_InvenCloth::CUI_InvenCloth() : m_Cloth_Panel(L"í¬ë§")
 {
 	Vec2 outRectSize = Vec2(128.f * 1.1f, 26.f) * 3.f;
 	m_OutRect = RESOURCE->CreateUI(L"UI\\Inventory_OutRect.png", outRectSize, true);

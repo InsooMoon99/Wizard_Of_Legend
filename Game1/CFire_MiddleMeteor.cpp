@@ -50,7 +50,7 @@ void CFire_MiddleMeteor::BeginPlay()
 
 	SOUND->Stop("FireBall");
 	SOUND->Play("FireBall");
-	SOUND->SetVolume("FireBall", 0.1f);
+	SOUND->SetVolume("FireBall", 0.08f);
 
 }
 

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CWeaponComponent.h"
 
 #include "CSkill_Factory.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CSkill_Girl_SpawnRect.h"
 
 CSkill_Girl_SpawnRect::CSkill_Girl_SpawnRect()

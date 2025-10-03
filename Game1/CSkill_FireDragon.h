@@ -32,9 +32,9 @@ private:
 	Vec2	m_Dir{};
 	float	m_Radian;
 
-	int   m_FireCount = 0;     // 남은 발사 수
-	float m_ShotDelay = 0.15f; // 샷 간격(초)
-	float m_ShotTimer = 0.f;   // 다음 샷까지 남은 시간
+	int   m_FireCount = 0;     
+	float m_ShotDelay = 0.15f; 
+	float m_ShotTimer = 0.f;   
 
 	int m_NextWaveMode = 0;
 };

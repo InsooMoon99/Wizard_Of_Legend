@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CResourceManager.h"
 
 CResourceManager* CResourceManager::Instance = nullptr;
@@ -51,7 +51,7 @@ shared_ptr<ObImage> CResourceManager::CreateUI(const wstring& _path, const Vec2&
 
 void CResourceManager::AddImage(ECharacterState _state, EPlayerDir _dir, ObImage* _img)
 {
-	// TODO : ¸®¼Ò½º ¸Å´ÏÀú¿¡¼­ Sprites °ü¸®ÇÒ°Å¸é Ãß°¡
+	// TODO : ë¦¬ì†ŒìŠ¤ ë§¤ë‹ˆì €ì—ì„œ Sprites ê´€ë¦¬í• ê±°ë©´ ì¶”ê°€
 }
 
 ObImage* CResourceManager::GetImage(ECharacterState _state, EPlayerDir _dir)
@@ -95,18 +95,52 @@ void CResourceManager::SoundSettings()
 
 	// Hit
 	{
+		SOUND->AddSound("ImpactEarth.wav", "ImpactEarth");
 		SOUND->AddSound("ImpactAir.wav", "ImpactAir");
 		SOUND->AddSound("PLAYER_HITED_1.mp3", "PlayerHit");
 	}
 	// Meteor
 	{
+		SOUND->AddSound("GhoulGrowl.wav", "Ghoul");
 		SOUND->AddSound("MeteorExplosion.wav", "MeteorEx");
+		SOUND->AddSound("Teleport.wav", "Teleport");
+	}
+
+	// Blob
+	{
+		SOUND->AddSound("BlobAttack.wav", "BlobAttack");
+		SOUND->AddSound("BlobCharge.wav", "BlobCharge");
+		SOUND->AddSound("BlobDead.wav", "BlobDead");
+		SOUND->AddSound("BlobHurt.wav", "BlobHurt");
+	}
+
+	// Golem
+	{
+		SOUND->AddSound("golem_atk.mp3", "GAtk");
+		SOUND->AddSound("golem_die.mp3", "GDie");
+		SOUND->AddSound("golem_hit.mp3", "GHit");
+	}
+
+	// Wizard
+	{
+		SOUND->AddSound("OldWizard1.wav", "WAtk");
+		SOUND->AddSound("EnemyDead6.wav", "WDead");
+	}
+
+	// Knight
+	{
+		SOUND->AddSound("knight_walkL.mp3", "KWalk");
+		SOUND->AddSound("knight_atk0.mp3", "KAtk");
+		SOUND->AddSound("knight_die.mp3", "Kdie");
+		SOUND->AddSound("knight_hit1.mp3", "Khit");
 	}
 
 	// Drop
 	{
 		SOUND->AddSound("DropSpell.wav", "DropSpell");
 		SOUND->AddSound("GoldSpawn.wav", "GoldSpawn");
+
+		SOUND->AddSound("MenuBuy.wav", "BuyItem");
 	}
 
 	// Inventory
@@ -121,6 +155,11 @@ void CResourceManager::SoundSettings()
 		SOUND->AddSound("ImpactLightning.wav", "ImpactLightning2");
 		SOUND->AddSound("MetalBreak.wav", "MetalBreak");
 		SOUND->AddSound("MetalClang.wav", "MetalClang");
+
+		SOUND->AddSound("LightningBossHurt0.wav", "BHurt1");
+		SOUND->AddSound("LightningBossHurt1.wav", "BHurt2");
+		SOUND->AddSound("LightningBossHurt2.wav", "BHurt3");
+		SOUND->AddSound("LightningBossHurt3.wav", "BHurt4");
 
 	}
 }

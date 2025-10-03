@@ -1,11 +1,11 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CUI_InvenSkill.h"
 #include "CWeaponComponent.h"
 #include "CSkillDataManager.h"
 
 CUI_InvenSkill::CUI_InvenSkill()
 {
-	m_Panel_Name = L"- ¾Æ¸£Ä«³ª - ";
+	m_Panel_Name = L"- ì•„ë¥´ì¹´ë‚˜ - ";
 
 	Vec2 outRectSize = Vec2(128.f * 1.1f, 56.f) * 3.f;
 	m_OutRect = RESOURCE->CreateUI(L"UI\\Inventory_OutRect.png", outRectSize, true);
@@ -83,7 +83,7 @@ void CUI_InvenSkill::Tick()
 {
 	CUI::Tick();
 
-	// TODO : ½½·ÔÀÇ ½ºÅ³ÀÌ ¹Ù²¼À¸¸é, UI ÃÖ½ÅÈ­ ÇØÁà¾ßÇÔ
+	// TODO : ìŠ¬ë¡¯ì˜ ìŠ¤í‚¬ì´ ë°”ê¼ˆìœ¼ë©´, UI ìµœì‹ í™” í•´ì¤˜ì•¼í•¨
 	auto weapon = m_Weapon.lock();
 	if (weapon)
 	{
@@ -93,7 +93,7 @@ void CUI_InvenSkill::Tick()
 		{
 			m_Skill_Infos = std::move(infos);
 
-			// ±âÁ¸ Å¬·Ğ »èÁ¦ÇÏ±â
+			// ê¸°ì¡´ í´ë¡  ì‚­ì œí•˜ê¸°
 			for (auto& clone : m_IconClones)
 				clone.reset();
 
@@ -180,7 +180,7 @@ void CUI_InvenSkill::Release()
 	m_Skill_Panel.clear();
 	m_Skill_Key.clear();
 
-	// ÂüÁ¶ ÇØÁ¦
+	// ì°¸ì¡° í•´ì œ
 	m_Weapon.reset();
 }
 

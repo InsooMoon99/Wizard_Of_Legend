@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CSkill_Girl_Dash.h"
 #include "CBat_Dash.h"
 #include "CBossPawn.h"
@@ -69,7 +69,7 @@ bool CSkill_Girl_Dash::CanActivate(const FSkillInfo& _Info)
 	if (!CSkill::CanActivate(_Info))
 		return false;
 
-	// TODO : º¸½º´Â ±»ÀÌ ÀÌ°Å ÆÇ´ÜÇØ¾ß ÇÏ³ª?
+	// TODO : ë³´ìŠ¤ëŠ” êµ³ì´ ì´ê±° íŒë‹¨í•´ì•¼ í•˜ë‚˜?
 
 	return true;
 

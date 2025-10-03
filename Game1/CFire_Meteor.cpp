@@ -159,7 +159,7 @@ void CFire_Meteor::	OnHitWall(const Vec2& hitPos)
 	PARTICLE->Spawn_Particle(L"HitSpark", hitPos);
 	PARTICLE->Spawn_Particle(L"Fire_HitEffect2", hitPos, Vec2(2.5f));
 
-	SOUND->StopPlay("MeteorEx", 0.1f);
+	SOUND->StopPlay("MeteorEx", 0.08f);
 
 	m_PendingKill = true;
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CUI.h"
 
@@ -16,6 +16,8 @@ public:
 
 	void SetStatus(CStatusComponent* _Status) { m_Status = _Status; }
 
+	bool bRender = true;;
+
 private:
 	vector<shared_ptr<ObImage>> m_BossStatus;
 
@@ -25,5 +27,13 @@ private:
 	CStatusComponent* m_Status;
 
 	Vec2 m_HpScale = Vec2(178.f * 1.41f, 14.f * 1.6f);
+
+	shared_ptr<ObImage> m_Hp_back;
+	float m_InstantRatio = 1.0f;
+	float m_HurtRatio = 1.0f;
+
+	float m_HurtLerpSpeed = 1.0f;
+
+	
 };
 

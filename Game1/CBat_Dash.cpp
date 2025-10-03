@@ -1,8 +1,9 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CBat_Dash.h"
 
 #include "CBat_Dash_Shock.h"
 #include "CBossPawn.h"
+#include "CBoss_TwinMan.h"
 #include "CSkillManager.h"
 
 CBat_Dash::CBat_Dash(FSkillInfo& _Info) : CSkill_Actor(_Info)
@@ -10,13 +11,13 @@ CBat_Dash::CBat_Dash(FSkillInfo& _Info) : CSkill_Actor(_Info)
 	m_Pos = _Info.SpawnPos;
 	m_StartPos = m_Pos;
 	 
-	// �浹ü
+	// 충돌체
 	{
-		m_Collision = make_shared<ObCircle>();
-		m_Collision->scale = Vec2(50.f, 50.f);
+		m_Collision = make_shared<ObRect>();
+		m_Collision->scale = Vec2(200.f, 200.f);
 		m_Collision->SetWorldPos(Vec2(m_Pos.x - 50.f, m_Pos.y));
 		m_Collision->visible = false;
-		m_Collision->collider = COLLIDER::CIRCLE;
+		m_Collision->collider = COLLIDER::RECT;
 		m_Collision->isFilled = false;
 		m_Collision->Set_Owner(this);
 		m_Collision->Set_Instigator(m_Skill_Info.Instigator);
@@ -122,8 +123,11 @@ void CBat_Dash::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 {
 	CSkill_Actor::OnComponentBeginOverlap(collider, other);
 
-	CSkill_Actor* hit_Actor = dynamic_cast<CSkill_Actor*>(other->Get_Owner());
-	if (!hit_Actor) return;
+	if (dynamic_cast<CPlayer*>(other->Get_Owner()) == nullptr)
+		return;
+
+	auto boss = dynamic_cast<CBoss_TwinMan*>(other->Get_Owner());
+	if (boss) return;
 
 	m_PendingKill = true;
 }

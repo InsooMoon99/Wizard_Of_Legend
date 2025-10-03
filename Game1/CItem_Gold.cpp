@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CItem_Gold.h"
 
 #include "CFloatingText.h"
@@ -130,7 +130,7 @@ void CItem_Gold::ActivateItem(CActor* actor)
 	auto status = CHelper::GetComponent<CStatusComponent>(player);
 	if (!status) return;
 
-	// °ñµå È¹µæ
+	// ê³¨ë“œ íšë“
 	int current = status->GetGold();
 	status->SetGold(current + 10);
 	SOUND->StopPlay("GoldSpawn", 0.2f);

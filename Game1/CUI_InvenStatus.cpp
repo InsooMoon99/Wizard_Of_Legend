@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CUI_InvenStatus.h"
 
 #include "CStatusComponent.h"
@@ -17,7 +17,7 @@ CUI_InvenStatus::CUI_InvenStatus()
 	m_InRect->SetLocalPos(Vec2(-197.f, 15.f));
 	m_InRect->color = Color(0.5f, 0.5f, 0.5f, 0.45f);
 
-	m_Item_Panel = L"- ½ºÅ×ÀÌÅÍ½º - ";
+	m_Item_Panel = L"- ìŠ¤í…Œì´í„°ìŠ¤ - ";
 }
 
 CUI_InvenStatus::~CUI_InvenStatus()
@@ -62,10 +62,10 @@ void CUI_InvenStatus::Render()
 	DWRITE->RenderText(m_Item_Panel, RECT{ 192, 280,450,330 },
 		18.0f, L"Noto Sans Cond Med", Color(1, 1, 1, 1));
 
-	DWRITE->RenderText(L"°ø°İ·Â : " + to_wstring(m_Attack), RECT{ 118, 328,340,400 },
+	DWRITE->RenderText(L"ê³µê²©ë ¥ : " + to_wstring(m_Attack), RECT{ 118, 328,340,400 },
 		17.0f, L"Noto Sans Cond Med", Color(1, 1, 1, 1));
 
-	DWRITE->RenderText(L"¹æ¾î·Â : " + to_wstring(m_Def), RECT{ 265, 328,440,400 },
+	DWRITE->RenderText(L"ë°©ì–´ë ¥ : " + to_wstring(m_Def), RECT{ 265, 328,440,400 },
 		17.0f, L"Noto Sans Cond Med", Color(1, 1, 1, 1));
 
 	m_OutRect->Render();

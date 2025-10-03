@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CMonsterBase.h"
 
@@ -50,5 +50,7 @@ private:
 	float m_Attack2Timer = 0.f;
 
 	bool m_AttackCheck = false;
+
+	shared_ptr<ObImage> m_Shadow;
 };
 

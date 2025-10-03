@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CAttackActor.h"
 
 #include "CPlayer.h"
@@ -12,7 +12,7 @@ CAttackActor::CAttackActor(FSkillInfo& _Info, const Vec2& Size) : CSkill_Actor(_
 		m_Collision = make_shared<ObRect>();
 		m_Collision->scale = Size;
 		m_Collision->SetWorldPos(m_Pos);
-		m_Collision->visible  = true;
+		m_Collision->visible  = false;
 		m_Collision->isFilled = false;
 		m_Collision->Set_Owner(this);
 		m_Collision->Set_Instigator(m_Skill_Info.Instigator);

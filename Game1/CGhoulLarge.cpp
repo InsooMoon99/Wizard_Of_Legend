@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CGhoulLarge.h"
 
 #include "CAttackActor.h"
@@ -9,7 +9,7 @@
 
 CGhoulLarge::CGhoulLarge()
 {
-	m_Status->SetHp(100.f);
+	m_Status->SetHp(250.f);
 
 	Resource_Settings();
 }
@@ -65,7 +65,7 @@ void CGhoulLarge::Tick()
 	if (m_CurImg)
 		m_CurImg->reverseLR = (m_TraceDir.x < 0.f);
 
-	// Color º¯°æ
+	// Color ë³€ê²½
 	Update_Hit();
 
 	for (auto& col : m_vecCol)
@@ -76,6 +76,8 @@ void CGhoulLarge::Tick()
 
 	for (auto& component : m_Components)
 		component->TickComponent();
+
+	m_Shadow->Update();
 
 	m_prevState = m_State->Get_State();
 	m_prevDir = m_State->Get_Dir();
@@ -91,10 +93,6 @@ void CGhoulLarge::LateUpdate()
 	//	m_State->Change_State(ECharacterState::Attack1);
 	//}
 
-	if (INPUT->KeyDown('1'))
-	{
-		m_State->Change_State(ECharacterState::Dead);
-	}
 }
 
 void CGhoulLarge::Render()
@@ -103,6 +101,8 @@ void CGhoulLarge::Render()
 
 	for (auto& col : m_vecCol)
 		col->Render();
+
+	m_Shadow->Render();
 
 	if (m_CurImg)
 		m_CurImg->Render();
@@ -156,7 +156,7 @@ void CGhoulLarge::State_Idle()
 
 void CGhoulLarge::State_Walk()
 {
-	// ÇÃ·¹ÀÌ¾î ¹æÇâ
+	// í”Œë ˆì´ì–´ ë°©í–¥
 	TraceTarget();
 
 	MoveTile(m_TraceDir, 200.f);
@@ -385,12 +385,14 @@ void CGhoulLarge::Play_Sprite(ECharacterState _State)
 
 	case ECharacterState::Attack1:
 		m_AttackCheck = true;
+		SOUND->StopPlay("Ghoul", 0.2f);
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.15f);
 
 		break;
 
 	case ECharacterState::Attack2:
 		m_AttackCheck = true;
+		SOUND->StopPlay("Ghoul", 0.2f);
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.15f);
 
 		break;
@@ -457,6 +459,13 @@ void CGhoulLarge::Resource_Settings()
 
 		m_Sprites[ECharacterState::Dead][EPlayerDir::Front] = dead;
 	}
+
+	m_Shadow = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(60.f, 60.f) * 3.25f);
+	m_Shadow->SetParentRT(*m_Collision);
+	m_Shadow->color = Color(0.0f, 0.0f, 0.0f, 0.25f);
+	m_Shadow->SetLocalPos(Vec2(5.f, -80.f));
+	m_Shadow->visible = true;
+
 	
 	// Start Image Setting
 	m_CurImg = m_Sprites[ECharacterState::Idle][EPlayerDir::Front];
@@ -492,7 +501,7 @@ void CGhoulLarge::MoveTile(const Vec2& dir, float speed)
 		{
 			col->MoveWorldPos(dirX);
 		}
-		// else : ¸·È÷¸é XÃà ÀÌµ¿ ½ºÅµ
+		// else : ë§‰íˆë©´ Xì¶• ì´ë™ ìŠ¤í‚µ
 	}
 
 	if (nextMove.y != 0.f)
@@ -508,6 +517,6 @@ void CGhoulLarge::MoveTile(const Vec2& dir, float speed)
 		{
 			col->MoveWorldPos(dirY);
 		}
-		// else : ¸·È÷¸é YÃà ÀÌµ¿ ½ºÅµ
+		// else : ë§‰íˆë©´ Yì¶• ì´ë™ ìŠ¤í‚µ
 	}
 }

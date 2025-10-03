@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CCharacter.h"
 
@@ -40,7 +40,7 @@ public:
 	void SetTraceDir(const Vec2& dir) { m_TraceDir = dir; }
 
 	virtual void TraceTarget() {};
-	virtual void DropGold();
+	virtual void DropItem();
 
 	void TakeDamage(FHitDamage _Hit) override;
 

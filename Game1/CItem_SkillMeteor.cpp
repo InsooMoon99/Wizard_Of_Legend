@@ -9,8 +9,8 @@ CItem_SkillMeteor::CItem_SkillMeteor()
 {
 	m_Collision = make_shared<ObRect>();
 	m_Collision->scale = Vec2(100.f);
-	m_Collision->SetWorldPos(Vec2(-100.f));
-	m_Collision->visible = true;
+	m_Collision->SetWorldPos(Vec2(2384.f, 950.f));
+	m_Collision->visible = false;
 	m_Collision->isFilled = false;
 	m_Collision->collider = COLLIDER::RECT;
 	m_Collision->Set_Owner(this);

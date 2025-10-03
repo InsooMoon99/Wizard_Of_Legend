@@ -131,6 +131,25 @@ void CBoss_TwinGirl::Tick()
 	case ECharacterState::Boss_Attack3:
 		State_Attack3();
 		break;
+
+	case ECharacterState::Dead:
+		State_Dead();
+		break;
+	}
+
+	if (m_Knock.active)
+	{
+		float time = m_Knock.t / max(m_Knock.duration, 1e-4f);
+		time = clamp(time, 0.f, 1.f);
+
+		float kTime = 1.f - time;           // 초반에 강하고, 끝으로 갈수록 줄어듦
+		float speed = m_Knock.amount * kTime;
+
+		MoveTile(m_Knock.dir, speed);       // 플레이어와 동일한 타일 이동 함수 사용
+
+		m_Knock.t += DELTA;
+		if (m_Knock.t >= m_Knock.duration)
+			m_Knock.active = false;
 	}
 
 	// Color 변경
@@ -144,6 +163,8 @@ void CBoss_TwinGirl::Tick()
 
 	if (m_CurImg)
 		m_CurImg->Update();
+
+	m_Shadow->Update();
 
 	for (auto& component : m_Components)
 		component->TickComponent();
@@ -174,6 +195,8 @@ void CBoss_TwinGirl::Render()
 		col->Render();
 
 	m_Teleport->Render();
+
+	m_Shadow->Render();
 
 	if (m_CurImg)
 		m_CurImg->Render();
@@ -247,6 +270,11 @@ void CBoss_TwinGirl::OnStateChange(ECharacterState _State, EPlayerDir _Dir)
 	SetSprite(_State, _Dir);
 }
 
+void CBoss_TwinGirl::State_Wait()
+{
+
+}
+
 void CBoss_TwinGirl::State_Start()
 {
 	if (!m_CurImg) 
@@ -268,6 +296,11 @@ void CBoss_TwinGirl::State_Ready()
 {
 	
 
+}
+
+void CBoss_TwinGirl::State_Dead()
+{
+	m_CurImg->visible = false;
 }
 
 void CBoss_TwinGirl::State_Air()
@@ -490,6 +523,29 @@ void CBoss_TwinGirl::OnStarPos(const Vec2& _Pos)
 	PARTICLE->Spawn_ParticleDir(L"Particle_Land", Vec2(_Pos.x, _Pos.y + 90.f), Vec2(1.5f));
 }
 
+void CBoss_TwinGirl::TakeDamage(FHitDamage _Hit)
+{
+	CBossPawn::TakeDamage(_Hit);
+
+	auto bossStatus = CHelper::GetComponent<CStatusComponent>(m_Controller);
+	if (!bossStatus) return;
+
+	const Vec2 pos = m_Collision ? m_Collision->GetWorldPos() : Get_WorldPos();
+	if (m_Controller) m_Controller->TakeDamage(_Hit.Damage, pos);
+
+	if (_Hit.Duration > 1e-4f && _Hit.Amount > 0.f)
+	{
+		m_Knock.active = true;
+		m_Knock.dir = _Hit.Dir;
+		m_Knock.t = 0.f;
+		m_Knock.duration = _Hit.Duration;
+		m_Knock.amount = _Hit.Amount;
+	}
+
+
+	// CAM->StartShake(...);  SOUND->Play(...);
+}
+
 void CBoss_TwinGirl::SetSprite(ECharacterState _State, EPlayerDir _Dir)
 {
 	CBossPawn::SetSprite(_State, _Dir);
@@ -513,8 +569,15 @@ void CBoss_TwinGirl::Play_Sprite(ECharacterState _State)
 {
 	CBossPawn::Play_Sprite(_State);
 
+	m_Shadow->visible = true;
+	m_Shadow->SetLocalPos(Vec2(0.f, -65.f));
+
 	switch (_State)
 	{
+	case ECharacterState::Boss_Wait:
+		m_CurImg->ChangeAnim(ANIMSTATE::STOP, 0.f);
+		break;
+
 	case ECharacterState::Idle:
 		m_JavelinPos = Vec2(0.f);
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
@@ -534,11 +597,13 @@ void CBoss_TwinGirl::Play_Sprite(ECharacterState _State)
 		break;
 
 	case ECharacterState::Boss_Start2:
+		m_Shadow->SetLocalPos(Vec2(+20.f, -65.f));
 		m_CurImg->visible = false;
 		break;
 
 	case ECharacterState::Boss_Ready:
 		m_CurImg->visible = false;
+		m_Shadow->visible = false;
 		//m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
 
 		{
@@ -579,6 +644,11 @@ void CBoss_TwinGirl::Play_Sprite(ECharacterState _State)
 
 		break;
 
+	case ECharacterState::Dead:
+		m_CurImg->visible = false;
+
+		break;
+
 	}
 }
 
@@ -590,7 +660,7 @@ void CBoss_TwinGirl::Resource_Settings()
 	{
 		m_Collision = make_shared<ObRect>();
 		m_Collision->scale = Vec2(80.f, 80.f);
-		m_Collision->visible = true;
+		m_Collision->visible = false;
 		m_Collision->isFilled = false;
 		m_Collision->pivot = OFFSET_N;
 		m_Collision->collider = COLLIDER::RECT;
@@ -603,7 +673,7 @@ void CBoss_TwinGirl::Resource_Settings()
 
 	// Start Setting
 	{
-		Vec2 start_Idle_Size = Vec2(500.f / 10.f, 100.f) * 3.f;
+		Vec2 start_Idle_Size = Vec2(500.f / 10.f, 100.f) * 3.4f;
 		shared_ptr<ObImage> start_Idle = RESOURCE->CreateSprite(L"Monster\\Lightning\\GirlLand_Full.png", start_Idle_Size, Int2(10,1), false);
 		start_Idle->SetParentRT(*m_Collision);
 		start_Idle->SetLocalPos(Vec2(2.f,78.f));
@@ -618,9 +688,18 @@ void CBoss_TwinGirl::Resource_Settings()
 		m_Sprites[ECharacterState::Boss_Start2][EPlayerDir::Front] = m_BossTaunt;
 	}
 
+	// Wait
+	{
+		Vec2 start_Size = Vec2(24.f, 40.f) * 3.4f;
+		shared_ptr<ObImage> start = RESOURCE->CreateImage(L"Monster\\Lightning\\Boss_GirlHandHip.png", start_Size);
+		start->SetParentRT(*m_Collision);
+
+		m_Sprites[ECharacterState::Boss_Wait][EPlayerDir::Front] = start;
+	}
+
 	// Idle
 	{
-		Vec2 start_Size = Vec2(24.f, 40.f) * 3.f;
+		Vec2 start_Size = Vec2(24.f, 40.f) * 3.4f;
 		shared_ptr<ObImage> start = RESOURCE->CreateImage(L"Monster\\Lightning\\Boss_GirlHandHip.png", start_Size);
 		start->SetParentRT(*m_Collision);
 
@@ -629,7 +708,7 @@ void CBoss_TwinGirl::Resource_Settings()
 
 	// Ready : 필요없을듯 ? Man을 Main으로 하면
 	{
-		Vec2 size = Vec2(840.f / 12.f, 110.f) * 3.f;
+		Vec2 size = Vec2(840.f / 12.f, 110.f) * 3.4f;
 		shared_ptr<ObImage> ready = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Ready.png", size, Int2(12, 1));
 		ready->SetParentRT(*m_Collision);
 		
@@ -638,12 +717,12 @@ void CBoss_TwinGirl::Resource_Settings()
 
 	// Teleport
 	{
-		Vec2 size = Vec2(150.f / 5.f, 60.f) * 3.f;
+		Vec2 size = Vec2(150.f / 5.f, 60.f) * 3.4f;
 		m_Teleport = RESOURCE->CreateSprite(L"Monster\\Lightning\\Lightning_Teleport_Long.png", size, Int2(5, 1));
 		m_Teleport->SetParentRT(*m_Collision);
 		m_Teleport->SetLocalPosY(40.f);
 
-		Vec2 size2 = Vec2(210.f / 6.f, 55.f) * 3.f;
+		Vec2 size2 = Vec2(210.f / 6.f, 55.f) * 3.4f;
 		m_Teleport_Floor = RESOURCE->CreateSprite(L"Monster\\Lightning\\Lightning_TeleportFloor.png", size2, Int2(6, 1));
 		m_Teleport_Floor->SetParentRT(*m_Collision);
 
@@ -654,7 +733,7 @@ void CBoss_TwinGirl::Resource_Settings()
 
 	// Dash
 	{
-		Vec2 size = Vec2(240.f / 6.f, 50.f) * 3.f;
+		Vec2 size = Vec2(240.f / 6.f, 50.f) * 3.4f;
 		m_Dash_Left = RESOURCE->CreateSprite(L"Monster\\Lightning\\Girl_LeftDash.png", size, Int2(6,1));
 		m_Dash_Left->SetParentRT(*m_Collision);
 
@@ -664,17 +743,17 @@ void CBoss_TwinGirl::Resource_Settings()
 
 	// Javelin
 	{
-		Vec2 jump_Size = Vec2(160.f / 2.f, 80.f) * 3.f;
+		Vec2 jump_Size = Vec2(160.f / 2.f, 80.f) * 3.4f;
 		m_Jump = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Girl_Jump.png", jump_Size, Int2(2, 1));
 		m_Jump->SetParentRT(*m_Collision);
 
 		m_Sprites[ECharacterState::Boss_Attack2][EPlayerDir::Front] = m_Jump;
 
-		Vec2 javelin_SpawnSize = Vec2(240.f / 3.f, 80.f) * 3.f;
+		Vec2 javelin_SpawnSize = Vec2(240.f / 3.f, 80.f) * 3.4f;
 		m_JavelinSpawn = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Girl_JavelinSpawn.png", javelin_SpawnSize, Int2(3, 1), true);
 		m_JavelinSpawn->SetParentRT(*m_Collision);
 
-		Vec2 javelin_ThrowSize = Vec2(320.f / 4.f, 80.f) * 3.f;
+		Vec2 javelin_ThrowSize = Vec2(320.f / 4.f, 80.f) * 3.4f;
 		m_JavelinThrow = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Girl_JavelinThrow.png", javelin_ThrowSize, Int2(4, 1), true);
 		m_JavelinThrow->SetParentRT(*m_Collision);
 
@@ -689,12 +768,18 @@ void CBoss_TwinGirl::Resource_Settings()
 	{
 		m_Sprites[ECharacterState::Boss_Attack3][EPlayerDir::Front] = m_Jump;
 
-		Vec2 startSize = Vec2(736.f / 23.f, 48.f) * 3.f;
+		Vec2 startSize = Vec2(736.f / 23.f, 48.f) * 3.4f;
 		m_StarStart = RESOURCE->CreateSprite(L"Monster\\Lightning\\LightningGirlPBAoE_LOOP_premultiplied.png", startSize, Int2(23,1), true);
 		m_StarStart->SetParentRT(*m_Collision);
 		m_StarStart->SetLocalPosY(20.f);
 		//m_StarStart->color = Color(0.5f, 0.5f, 0.5f, 0.5f);
 	}
+
+	m_Shadow = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(65.f, 60.f) * 2.25f);
+	m_Shadow->SetParentRT(*m_Collision);
+	m_Shadow->color = Color(0.0f, 0.0f, 0.0f, 0.15f);
+	m_Shadow->SetLocalPos(Vec2(0.f, -65.f));
+	m_Shadow->visible = true;
 
 	m_Pos = m_Collision->GetWorldPos();
 

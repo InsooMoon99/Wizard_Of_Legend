@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CDummy.h"
 #include "CResourceManager.h"
 #include "CStatusComponent.h"
@@ -35,11 +35,12 @@ void CDummy::Tick()
 	ImGui::End();
 #endif
 
-	// »óÅÂ ¶Ç´Â ¹æÇâ º¯°æ ½Ã ½ºÇÁ¶óÀÌÆ® º¯°æ
+
+	// ìƒíƒœ ë˜ëŠ” ë°©í–¥ ë³€ê²½ ì‹œ ìŠ¤í”„ë¼ì´íŠ¸ ë³€ê²½
 	if (m_prevState != m_State->Get_State() || m_prevDir != m_State->Get_Dir())
 		SetSprite(m_State->Get_State(), m_State->Get_Dir());
 
-	// Color º¯°æ
+	// Color ë³€ê²½
 	Update_Hit();
 
 	for (auto& col : m_vecCol)
@@ -110,11 +111,45 @@ void CDummy::Hit_Effect()
 
 }
 
+void CDummy::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
+{
+	CMonsterBase::OnComponentBeginOverlap(collider, other);
+
+
+}
+
+void CDummy::OnComponentEndOverlap(GameObject* collider, GameObject* other)
+{
+	CMonsterBase::OnComponentEndOverlap(collider, other);
+
+
+}
+
+void CDummy::TakeDamage(FHitDamage _Hit)
+{
+	CMonsterBase::TakeDamage(_Hit);
+
+	if (m_CurImg)
+		//CHelper::OrignColor(m_CurImg.get());
+
+	m_State->Change_State(ECharacterState::Hit);
+
+
+	if (_Hit.Duration > 1e-4f && _Hit.Amount > 0.f)
+	{
+		m_Knock.active = true;
+		m_Knock.dir = _Hit.Dir;
+		m_Knock.t = 0.f;
+		m_Knock.duration = _Hit.Duration;
+		m_Knock.amount = _Hit.Amount;
+	}
+}
+
 void CDummy::Resource_Settings()
 {
 	m_Collision = make_shared<ObRect>();
 	m_Collision->scale = Vec2(100.f, 150.f);
-	m_Collision->visible = true;
+	m_Collision->visible = false;
 	m_Collision->isFilled = false;
 	m_Collision->collider = COLLIDER::RECT;
 	m_Collision->Set_Owner(this);
@@ -128,6 +163,7 @@ void CDummy::Resource_Settings()
 	Dummy_Image->visible = true;
 
 	m_Sprites[ECharacterState::Idle][EPlayerDir::Front] = Dummy_Image;
+	m_Sprites[ECharacterState::Hit][EPlayerDir::Front] = Dummy_Image;
 	
 	// Start Image Setting
 	m_CurImg = m_Sprites[ECharacterState::Idle][EPlayerDir::Front];

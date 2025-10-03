@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CSkill_Man_Bat.h"
 #include "CBat_Ball.h"
 #include "CBossPawn.h"
@@ -68,7 +68,7 @@ bool CSkill_Man_Bat::CanActivate(const FSkillInfo& _Info)
 	if (!CSkill::CanActivate(_Info))
 		return false;
 
-	// TODO : º¸½º´Â ±»ÀÌ ÀÌ°Å ÆÇ´ÜÇØ¾ß ÇÏ³ª?
+	// TODO : ë³´ìŠ¤ëŠ” êµ³ì´ ì´ê±° íŒë‹¨í•´ì•¼ í•˜ë‚˜?
 
 	return true;
 

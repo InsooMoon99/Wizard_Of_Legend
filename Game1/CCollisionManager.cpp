@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CCollisionManager.h"
 
 CCollisionManager* CCollisionManager::Instance = nullptr;
@@ -23,15 +23,15 @@ void CCollisionManager::Update()
 			{
 				if (src->Get_CollisionMap().contains(dst) == false)
 				{
-					// ÀÚ±â ÀÚ½Å Ãæµ¹ X
+					// ìžê¸° ìžì‹  ì¶©ëŒ X
 					if (src->Get_Owner() == dst->Get_Owner())continue;
-					// °ø°Ý °´Ã¼ °°À¸¸é Ãæµ¹ X
+					// ê³µê²© ê°ì²´ ê°™ìœ¼ë©´ ì¶©ëŒ X
 					if (src->Get_Instigator() == dst->Get_Instigator()) continue;
 
 					if (src->Get_Instigator() && src->Get_Instigator() == dst->Get_Owner()) continue;
 					if (dst->Get_Instigator() && dst->Get_Instigator() == src->Get_Owner()) continue;
 
-					// Á×À¸¸é ¹«½Ã
+					// ì£½ìœ¼ë©´ ë¬´ì‹œ
 					if (src->Get_Owner()->IsDestroy()) continue;
 					if (dst->Get_Owner()->IsDestroy()) continue;
 

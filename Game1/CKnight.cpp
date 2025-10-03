@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CKnight.h"
 
 #include "CAttackActor.h"
@@ -66,7 +66,7 @@ void CKnight::Tick()
 	if (m_CurImg)
 		m_CurImg->reverseLR = (m_TraceDir.x > 0.f);
 
-	// Color º¯°æ
+	// Color ë³€ê²½
 	Update_Hit();
 
 	for (auto& col : m_vecCol)
@@ -74,6 +74,8 @@ void CKnight::Tick()
 
 	if (m_CurImg)
 		m_CurImg->Update();
+
+	m_Shadow->Update();
 
 	for (auto& component : m_Components)
 		component->TickComponent();
@@ -92,10 +94,6 @@ void CKnight::LateUpdate()
 	//	m_State->Change_State(ECharacterState::Attack1);
 	//}
 
-	if (INPUT->KeyDown('1'))
-	{
-		m_State->Change_State(ECharacterState::Dead);
-	}
 }
 
 void CKnight::Render()
@@ -104,6 +102,8 @@ void CKnight::Render()
 
 	for (auto& col : m_vecCol)
 		col->Render();
+
+	m_Shadow->Render();
 
 	if (m_CurImg)
 		m_CurImg->Render();
@@ -149,7 +149,7 @@ void CKnight::State_Idle()
 
 void CKnight::State_Walk()
 {
-	// ÇÃ·¹ÀÌ¾î ¹æÇâ
+	// í”Œë ˆì´ì–´ ë°©í–¥
 	TraceTarget();
 
 	MoveTile(m_TraceDir, 200.f);
@@ -174,7 +174,7 @@ void CKnight::State_Attack1()
 
 void CKnight::State_Hit()
 {
-	// ³Ë¹é
+	// ë„‰ë°±
 	if (m_Knock.active)
 	{
 		float t = m_Knock.t / max(m_Knock.duration, 1e-4f);
@@ -358,26 +358,30 @@ void CKnight::Play_Sprite(ECharacterState _State)
 	{
 	case ECharacterState::Idle:
 		m_CurImg->ChangeAnim(ANIMSTATE::STOP, 0.0f);
+		m_Shadow->SetLocalPos(Vec2(0.f, -50.f));
 		break;
 
 	case ECharacterState::Walk:
 		m_CurImg->ChangeAnim(ANIMSTATE::LOOP, 0.1f);
+		m_Shadow->SetLocalPos(Vec2(0.f, -70.f));
 		break;
 
 	case ECharacterState::Attack1:
 		m_AttackCheck = true;
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
-
+		SOUND->StopPlay("KAtk", 0.2f);
 		break;
 
 	case ECharacterState::Hit:
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
 		CHelper::HitColor(m_CurImg.get()); 
-		m_HitTimer = 0.15f;               
+		m_HitTimer = 0.15f;
+		SOUND->StopPlay("Khit", 0.2f);
 		break;
 
 	case ECharacterState::Dead:
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+		SOUND->StopPlay("Kdie", 0.2f);
 		break;
 	}
 }
@@ -438,6 +442,11 @@ void CKnight::Resource_Settings()
 
 		m_Sprites[ECharacterState::Dead][EPlayerDir::Front] = dead;
 	}
+
+	m_Shadow = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(60.f, 60.f) * 2.25f);
+	m_Shadow->SetParentRT(*m_Collision);
+	m_Shadow->color = Color(0.0f, 0.0f, 0.0f, 0.25f);
+	m_Shadow->visible = true;
 	
 	// Start Image Setting
 	m_CurImg = m_Sprites[ECharacterState::Idle][EPlayerDir::Front];
@@ -473,7 +482,7 @@ void CKnight::MoveTile(const Vec2& dir, float speed)
 		{
 			col->MoveWorldPos(dirX);
 		}
-		// else : ¸·È÷¸é XÃà ÀÌµ¿ ½ºÅµ
+		// else : ë§‰ížˆë©´ Xì¶• ì´ë™ ìŠ¤í‚µ
 	}
 
 	if (nextMove.y != 0.f)
@@ -489,6 +498,6 @@ void CKnight::MoveTile(const Vec2& dir, float speed)
 		{
 			col->MoveWorldPos(dirY);
 		}
-		// else : ¸·È÷¸é YÃà ÀÌµ¿ ½ºÅµ
+		// else : ë§‰ížˆë©´ Yì¶• ì´ë™ ìŠ¤í‚µ
 	}
 }

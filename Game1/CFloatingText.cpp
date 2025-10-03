@@ -6,7 +6,7 @@ CFloatingText::CFloatingText(const FFloatingTextDesc& desc)
     : m_Desc(desc)
 {
     m_RenderLayer = ERenderLayer::Render_Effect;
-    m_WorldPos = desc.startPos; // ★ 월드 좌표로 시작
+    m_WorldPos = desc.startPos; 
 }
 
 void CFloatingText::BeginPlay()
@@ -21,13 +21,10 @@ void CFloatingText::Tick()
 
     m_Elapsed += DELTA;
     float t = clamp(m_Elapsed / m_Desc.duration, 0.f, 1.f);
-
-    // 월드 좌표에서 위로 떠오르기
     float rise = -m_Desc.rise * EaseOutCubic(t);
     m_WorldPos = m_Desc.startPos;
     m_WorldPos.y -= rise;
 
-    // 페이드
     if (t >= 0.6f) {
         float k = (t - 0.6f) / 0.4f;
         m_Alpha = clamp(1.f - k, 0.f, 1.f);
@@ -36,7 +33,6 @@ void CFloatingText::Tick()
         m_Alpha = 1.f;
     }
 
-    // 팝 스케일
     if (m_Elapsed <= 0.2f) {
         float k = clamp(m_Elapsed / 0.2f, 0.f, 1.f);
         m_Scale = 1.25f - 0.25f * k;

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CBossPawn.h"
 
 #include "CBoss_Controller.h"
@@ -98,8 +98,8 @@ shared_ptr<CStateComponent> CBossPawn::GetControlState()
 
 void CBossPawn::ReportHit(float _Damage)
 {
-	// ÄÁÆ®·Ñ·¯·Î µ¥¹ÌÁö Àü´Þ
-	if (m_Controller)
-		m_Controller->TakeDamage(_Damage);
+	// ì»¨íŠ¸ë¡¤ëŸ¬ë¡œ ë°ë¯¸ì§€ ì „ë‹¬
+	//if (m_Controller)
+	//	m_Controller->TakeDamage(_Damage);
 
 }

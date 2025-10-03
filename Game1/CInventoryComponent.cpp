@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CInventoryComponent.h"
 
 #include "CItem.h"
@@ -37,7 +37,7 @@ bool CInventoryComponent::AddItem(shared_ptr<CItem> item)
 	if (!item) return false;
 
 
-	m_Items.push_back(std::move(item));
+	m_Items.push_back(move(item));
 
 	return true;
 }
@@ -53,10 +53,10 @@ void CInventoryComponent::RemoveItem(CItem* item)
 
 vector<FItemUIInfo> CInventoryComponent::GetItem_UiInfo(int maxCount) const
 {
-    std::vector<FItemUIInfo> out;
+    vector<FItemUIInfo> out;
     out.reserve(maxCount);
 
-    auto n = std::min<int>((int)m_Items.size(), maxCount);
+    auto n = min<int>((int)m_Items.size(), maxCount);
     for (int i = 0; i < n; ++i)
     {
         const auto& it = m_Items[i];
@@ -76,11 +76,11 @@ vector<FItemUIInfo> CInventoryComponent::GetItem_UiInfo(int maxCount) const
         ui.IconPathW = ITEM_DATA->GetIconPathW(data.Id); 
         ui.IsEmpty = false;
 
-        out.push_back(std::move(ui));
+        out.push_back(move(ui));
     }
 
     for (int i = n; i < maxCount; ++i)
-        out.push_back(FItemUIInfo{}); // ºó½½·ÔÀ¸·Î ¹Ù·Î Ã¤¿ì±â
+        out.push_back(FItemUIInfo{}); 
 
     return out;
 }

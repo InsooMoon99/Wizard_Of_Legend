@@ -1,6 +1,7 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CBat_Dash_Shock.h"
 
+#include "CBat_Ball.h"
 #include "CPlayer.h"
 
 CBat_Dash_Shock::CBat_Dash_Shock(FSkillInfo& _Info) : CSkill_Actor(_Info)
@@ -8,7 +9,7 @@ CBat_Dash_Shock::CBat_Dash_Shock(FSkillInfo& _Info) : CSkill_Actor(_Info)
 	m_Pos = _Info.SpawnPos;
 	m_StartPos = m_Pos;
 
-	// �浹ü
+	// 충돌체
 	{
 		m_Collision = make_shared<ObCircle>();
 		m_Collision->scale = Vec2(240.f, 240.f);
@@ -86,6 +87,11 @@ void CBat_Dash_Shock::Release()
 void CBat_Dash_Shock::OnComponentBeginOverlap(GameObject* collider, GameObject* other)
 {
 	CSkill_Actor::OnComponentBeginOverlap(collider, other);
+
+	if (auto ball = dynamic_cast<CBat_Ball*>(other))
+	{
+		other->visible = false;
+	}
 
 	CPlayer* player = dynamic_cast<CPlayer*>(other->Get_Owner());
 	if (!player) return;

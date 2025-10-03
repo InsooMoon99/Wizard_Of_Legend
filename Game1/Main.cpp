@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "Main.h"
 #include "CSceneManager.h"
 #include "CCollisionManager.h"
@@ -8,7 +8,7 @@
 
 void Main::Init()
 {
-	// cmd¿¡¼­ UTF-8 Ãâ·Â
+	// cmdì—ì„œ UTF-8 ì¶œë ¥
 	//SetConsoleOutputCP(CP_UTF8);
 
 	RESOURCE->Init();
@@ -18,19 +18,12 @@ void Main::Init()
 	OBJECT->Init();
 	TILE->Init();
 	PARTICLE->Init();
-	SCENE->Change_Scene(ESceneType::StageFire);
+	SCENE->Change_Scene(ESceneType::StageBoss);
 	SKILL->Init();
-
-	m_Cursor = RESOURCE->CreateImage(L"UI\\MouseCursor0.png", Vec2(32.f, 32.f) * 3.f, true);
-	//m_Cursor->space = SPACE::SCREEN;
 }
 
 void Main::Update()
 {
-	//ShowCursor(false);
-	//
-	//m_Cursor->SetWorldPos(INPUT->GetMouseWorldPos());
-	//m_Cursor->Update();
 
 	RENDER->Release();
 
@@ -63,7 +56,6 @@ void Main::Render()
 	SKILL->Render();
 	OBJECT->Render();
 
-	//m_Cursor->Render();
 
 	//PARTICLE->Render();
 
@@ -83,6 +75,7 @@ void Main::Render()
 
 	RENDER->Render();
 	PARTICLE->Render();
+
 }
 
 void Main::Release()

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CMonsterBase.h"
 
 #include "CItem_Gold.h"
@@ -66,12 +66,12 @@ void CMonsterBase::Play_Sprite(ECharacterState _State)
 	switch (_State)
 	{
 	case ECharacterState::Dead:
-		DropGold();
+		DropItem();
 		break;
 	}
 }
 
-void CMonsterBase::DropGold()
+void CMonsterBase::DropItem()
 {
 	Vec2 dropPos = m_Collision->GetWorldPos();
 

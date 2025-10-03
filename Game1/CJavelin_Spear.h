@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CSkill_Actor.h"
 
@@ -26,6 +26,8 @@ public:
 private:
 	bool bReleaseCheck = false;
 	float m_ReleaseTime = 0.3f;
+
+	float m_LifeTime = 0.f;
 
 	CBoss_Controller* m_BossController;
 	CBoss_TwinGirl* m_Boss;

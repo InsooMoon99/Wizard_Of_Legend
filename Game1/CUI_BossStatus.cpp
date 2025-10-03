@@ -1,4 +1,4 @@
-#include "stdafx.h"
+Ôªø#include "stdafx.h"
 #include "CUI_BossStatus.h"
 
 #include "CStatusComponent.h"
@@ -17,8 +17,18 @@ CUI_BossStatus::CUI_BossStatus()
 	m_Hp->collider = COLLIDER::NONE;
 	m_Hp->space = SPACE::SCREEN;
 
+	m_Hp_back = RESOURCE->CreateUI(L"UI\\HPBarHurtFill.png", Vec2(m_HpScale.x, m_HpScale.y), true);
+	m_Hp_back->SetParentRT(*m_Background);
+	m_Hp_back->SetLocalPos(Vec2(-123.5f, -1.8f));
+	m_Hp_back->pivot = OFFSET_L;
+	m_Hp_back->collider = COLLIDER::NONE;
+	m_Hp_back->space = SPACE::SCREEN;
+
 	m_BossStatus.push_back(m_Background);
+	m_BossStatus.push_back(m_Hp_back);
 	m_BossStatus.push_back(m_Hp);
+
+	m_RenderLayer = ERenderLayer::Render_UI;
 }
 
 CUI_BossStatus::~CUI_BossStatus()
@@ -37,15 +47,33 @@ void CUI_BossStatus::Tick()
 
 	if (m_Status)
 	{
-		float hpRatio = m_Status->GetHp() / m_Status->GetMaxHp();
-		m_Hp->scale.x = m_HpScale.x * hpRatio;
-	
+		const float target = max(0.f, min(1.f, m_Status->GetHp() / m_Status->GetMaxHp()));
+
+		m_InstantRatio = target;
+		m_Hp->scale.x = m_HpScale.x * m_InstantRatio;
+
+		if (m_HurtRatio > target)
+		{
+			float t = DELTA * m_HurtLerpSpeed;
+			if (t > 1.f) t = 1.f;
+			m_HurtRatio = m_HurtRatio + (target - m_HurtRatio) * t;
+
+			if (fabsf(m_HurtRatio - target) < 0.002f)
+				m_HurtRatio = target;
+		}
+		else
+		{
+			m_HurtRatio = target;
+		}
+
+		m_Hp_back->scale.x = m_HpScale.x * m_HurtRatio;
 	}
 
-	for (auto& status : m_BossStatus)
-	{
-		status->Update();
-	}
+	for (auto& ui : m_BossStatus)
+		ui->Update();
+
+
+	RENDER->AddRenderObject(this);
 }
 
 void CUI_BossStatus::Render()
@@ -64,10 +92,10 @@ void CUI_BossStatus::Render()
 //	ImGui::End();
 //#endif
 
-	wstring bossName = L"√µµ’π¯∞≥ Ω÷µ’¿Ã";
+	wstring bossName = L"Ï≤úÎë•Î≤àÍ∞ú ÏåçÎë•Ïù¥";
 
 	DWRITE->RenderText(bossName, RECT{ 550, 25,750,50 },
-		25.0f, L"∏º¿∫ ∞ÌµÒ", Color(1, 1, 1, 1), DWRITE_FONT_WEIGHT_BOLD);
+		25.0f, L"ÎßëÏùÄ Í≥†Îîï", Color(1, 1, 1, 1), DWRITE_FONT_WEIGHT_BOLD);
 
 
 	for (auto& status : m_BossStatus)

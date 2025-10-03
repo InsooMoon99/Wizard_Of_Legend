@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "CActor.h"
 #include "CDelegate.h"
@@ -26,8 +26,8 @@ public:
 	void RegisterPawn(CBossPawn* _Pawn);
 	void UnRegisterPawn(CBossPawn* _Pawn);
 
-	// Pawn -> Controller µ¥¹ÌÁö º¸°íÇÏ´Â Çü½ÄÀ¸·Î
-	void TakeDamage(float _Damage);
+	// Pawn -> Controller ë°ë¯¸ì§€ ë³´ê³ í•˜ëŠ” í˜•ì‹ìœ¼ë¡œ êµ¬í˜„í•˜ê¸°
+	void TakeDamage(float rawDamage, const Vec2& worldPos);
 	void ChangeState(ECharacterState _State);
 	ECharacterState GetState() { return m_State->Get_State(); }
 

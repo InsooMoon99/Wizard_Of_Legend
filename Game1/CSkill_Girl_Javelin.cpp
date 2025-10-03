@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CSkill_Girl_Javelin.h"
 
 #include "CBossPawn.h"

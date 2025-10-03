@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CRenderManager.h"
 
 CRenderManager* CRenderManager::Instance = nullptr;

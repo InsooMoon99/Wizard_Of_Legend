@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CSkill_FireBall.h"
 #include "CFire_Ball.h"
 #include "CCharacter.h"
@@ -88,8 +88,11 @@ void CSkill_FireBall::Release()
 
 bool CSkill_FireBall::CanActivate(const FSkillInfo& _Info)
 {
-    if (m_Bursting) return false;       
-    if (!CSkill::CanActivate(_Info)) return false;
+    if (m_Bursting) return false;
+
+    if (!CSkill::CanActivate(_Info)) 
+        return false;
+
     return true;
 }
 
@@ -114,6 +117,8 @@ void CSkill_FireBall::Activate(CActor* _Owner)
         m_PendingShots = 3;
         m_ShotTimer = 0.f;
         m_CooldownStarted = false;
+
+        status->SetMp(0.f);
 
         FireOnce();
         --m_PendingShots;

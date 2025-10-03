@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CSkill_Actor.h"
 
 #include "CTile.h"
@@ -7,6 +7,7 @@ CSkill_Actor::CSkill_Actor(FSkillInfo& _Info)
 	: m_Skill_Info(_Info)
 {
 
+	
 }	
 
 CSkill_Actor::~CSkill_Actor()

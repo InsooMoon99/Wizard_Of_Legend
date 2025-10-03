@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CWindSlash.h"
 
 #include "CBossPawn.h"
@@ -52,7 +52,7 @@ void CWindSlash::Tick()
 
 	if (m_PendingKill) return;
 
-	// À§Ä¡ °»½Å
+	// ìœ„ì¹˜ ê°±ì‹ 
 	if (m_Collision)
 		m_Pos = m_Collision->GetWorldPos();
 
@@ -130,7 +130,7 @@ void CWindSlash::OnComponentBeginOverlap(GameObject* collider, GameObject* other
 
 	hit->TakeDamage(hitDamage);
 
-	// ÆÄÆ¼Å¬, »ç¿îµå
+	// íŒŒí‹°í´, ì‚¬ìš´ë“œ
 	{
 		Vec2 randomVec = Vec2(rand() % 20, rand() % 40);
 		Vec2 particlePos = (collider->GetWorldPos() + other->GetWorldPos()) / 2.0f;

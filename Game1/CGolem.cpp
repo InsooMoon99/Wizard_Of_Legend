@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CGolem.h"
 
 #include "CAttackActor.h"
@@ -9,7 +9,7 @@
 
 CGolem::CGolem()
 {
-	m_Status->SetHp(1000.f);
+	m_Status->SetHp(400.f);
 
 	Resource_Settings();
 }
@@ -63,11 +63,13 @@ void CGolem::Tick()
 	if (m_CurImg)
 		m_CurImg->reverseLR = (m_TraceDir.x < 0.f);
 
-	// Color º¯°æ
+	// Color ë³€ê²½
 	Update_Hit();
 
 	for (auto& col : m_vecCol)
 		col->Update();
+
+	m_Shadow->Update();
 
 	if (m_CurImg)
 		m_CurImg->Update();
@@ -89,10 +91,6 @@ void CGolem::LateUpdate()
 	//	m_State->Change_State(ECharacterState::Attack1);
 	//}
 
-	if (INPUT->KeyDown('1'))
-	{
-		m_State->Change_State(ECharacterState::Dead);
-	}
 }
 
 void CGolem::Render()
@@ -101,6 +99,8 @@ void CGolem::Render()
 
 	for (auto& col : m_vecCol)
 		col->Render();
+
+	m_Shadow->Render();
 
 	if (m_CurImg)
 		m_CurImg->Render();
@@ -150,7 +150,7 @@ void CGolem::State_Idle()
 
 void CGolem::State_Walk()
 {
-	// ÇÃ·¹ÀÌ¾î ¹æÇâ
+	// í”Œë ˆì´ì–´ ë°©í–¥
 	TraceTarget();
 
 	MoveTile(m_TraceDir, 200.f);
@@ -170,7 +170,6 @@ void CGolem::State_Attack1()
 		info.SpawnPos = m_Collision->GetWorldPos() + m_TraceDir * 100.f;
 
 		SKILL->Spawn_SkillActor(ESkillActor::AttackCollision, info, Vec2(200.f));
-
 	}
 
 	if (m_CurImg && m_CurImg->Get_AnimState() == ANIMSTATE::STOP)
@@ -344,10 +343,12 @@ void CGolem::Play_Sprite(ECharacterState _State)
 
 	case ECharacterState::Attack1:
 		m_AttackCheck = true;
-		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.35f);
+		SOUND->StopPlay("GAtk", 0.2f);
+		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.45f);
 		break;
 
 	case ECharacterState::Dead:
+		SOUND->StopPlay("GDie", 0.2f);
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
 		break;
 	}
@@ -400,6 +401,12 @@ void CGolem::Resource_Settings()
 
 		m_Sprites[ECharacterState::Dead][EPlayerDir::Front] = dead;
 	}
+
+	m_Shadow = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(75.f, 60.f) * 4.25f);
+	m_Shadow->SetParentRT(*m_Collision);
+	m_Shadow->color = Color(0.0f, 0.0f, 0.0f, 0.25f);
+	m_Shadow->SetLocalPos(Vec2(5.f, -80.f));
+	m_Shadow->visible = true;
 	
 	// Start Image Setting
 	m_CurImg = m_Sprites[ECharacterState::Idle][EPlayerDir::Front];
@@ -435,7 +442,7 @@ void CGolem::MoveTile(const Vec2& dir, float speed)
 		{
 			col->MoveWorldPos(dirX);
 		}
-		// else : ¸·È÷¸é XÃà ÀÌµ¿ ½ºÅµ
+		// else : ë§‰íˆë©´ Xì¶• ì´ë™ ìŠ¤í‚µ
 	}
 
 	if (nextMove.y != 0.f)
@@ -451,6 +458,6 @@ void CGolem::MoveTile(const Vec2& dir, float speed)
 		{
 			col->MoveWorldPos(dirY);
 		}
-		// else : ¸·È÷¸é YÃà ÀÌµ¿ ½ºÅµ
+		// else : ë§‰íˆë©´ Yì¶• ì´ë™ ìŠ¤í‚µ
 	}
 }

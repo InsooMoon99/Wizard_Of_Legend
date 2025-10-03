@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <unordered_map>
 #include <memory>
@@ -37,7 +37,7 @@ private:
     bool LoadFromFile(const wstring& path);
     bool Parse(const json& root);
 
-    // ¹®ÀÚ¿­ -> enum
+    // ë¬¸ìì—´ -> enum
     static bool ParseItemType(const string& s, EItemType& out);
     static bool ParseStatType(const string& s, EItem_StatType& out);
     static bool ParseOption(const string& s, EModifyOption& out);
@@ -48,9 +48,9 @@ private:
 
 
 private:
-    // Id Á¶È¸ÇØ¼­ Data
+    // Id ì¡°íšŒí•´ì„œ Data
     unordered_map<string, FItemData> m_Table;
-    // IconKey Ã£¾Æ¼­ ÀÌ¹ÌÁö ¼¼ÆÃ Image
+    // IconKey ì°¾ì•„ì„œ ì´ë¯¸ì§€ ì„¸íŒ… Image
     unordered_map<string, shared_ptr<ObImage>> m_IconCache;
 
     wstring m_LastPath;

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CUI_InvenItem.h"
 
 #include "CInventoryComponent.h"
@@ -46,7 +46,7 @@ CUI_InvenItem::CUI_InvenItem()
         m_Panel_Gold[i]->SetLocalPos(pos);
     }
 
-	m_Item_Panel = L"- À¯¹° - ";
+	m_Item_Panel = L"- ìœ ë¬¼ - ";
 }
 
 CUI_InvenItem::~CUI_InvenItem()

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CSkillDataManager.h"
 #include "CResourceManager.h"   
 #include <fstream>
@@ -38,7 +38,7 @@ bool CSkillDataManager::LoadData(const wstring& filename)
     json j;
     try { file >> j; }
     catch (...) {
-        wcerr << L"Error: JSON parse fail (UTF-8·Î ÀúÀå È®ÀÎ).\n";
+        wcerr << L"Error: JSON parse fail (UTF-8ë¡œ ì €ìž¥ í™•ì¸).\n";
         return false;
     }
 
@@ -48,7 +48,7 @@ bool CSkillDataManager::LoadData(const wstring& filename)
     }
 
     m_ById.clear();
-    m_IconCache.clear(); // µ¥ÀÌÅÍ ¹Ù²î¸é ¾ÆÀÌÄÜ ´Ù½Ã ·Îµå
+    m_IconCache.clear(); // ë°ì´í„° ë°”ë€Œë©´ ì•„ì´ì½˜ ë‹¤ì‹œ ë¡œë“œ
 
     for (auto& row : j["Skill_Data"])
     {
@@ -58,7 +58,7 @@ bool CSkillDataManager::LoadData(const wstring& filename)
         data.Name = ConvertUtf8ToWString(row.value("Name", ""));
         data.Desc = ConvertUtf8ToWString(row.value("Desc", ""));
 
-        // µ¥¹ÌÁö
+        // ë°ë¯¸ì§€
         if (row.contains("Damage")) 
         {
             if (row["Damage"].is_number())
@@ -126,7 +126,7 @@ shared_ptr<ObImage> CSkillDataManager::GetIconById(const string& id)
     auto hit = m_IconCache.find(data->IconKey);
     if (hit != m_IconCache.end()) return hit->second;
 
-    // ·Îµå
+    // ë¡œë“œ
     wstring pathW = ConvertUtf8ToWString(data->IconKey);
     Vec2 size = (data->IconW > 0 && data->IconH > 0) ? Vec2((float)data->IconW, (float)data->IconH)
         : Vec2(40.f, 40.f);

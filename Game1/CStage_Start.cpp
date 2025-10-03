@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CStage_Start.h"
 
 CStage_Start::CStage_Start()
@@ -42,6 +42,19 @@ CStage_Start::CStage_Start()
 	m_Images.push_back(m_Title_Image);
 	m_Images.push_back(m_Title_Shadow);
 	m_Images.push_back(m_Title_Text);
+
+	m_LoadOutSelectStart = RESOURCE->CreateImage(L"UI\\LoadoutSelectMarker.png", Vec2(170.f, 45.f) * 1.2f, false);
+	m_LoadOutSelectStart->SetParentRT(*rect1);
+
+	m_LoadOutSelectEdit = RESOURCE->CreateImage(L"UI\\LoadoutSelectMarker.png", Vec2(170.f, 45.f) * 1.2f, false);
+	m_LoadOutSelectEdit->SetParentRT(*rect2);
+
+	m_LoadOutSelectExit = RESOURCE->CreateImage(L"UI\\LoadoutSelectMarker.png", Vec2(170.f, 45.f) * 1.2f, false);
+	m_LoadOutSelectExit->SetParentRT(*rect3);
+
+	m_Images.push_back(m_LoadOutSelectStart);
+	m_Images.push_back(m_LoadOutSelectEdit);
+	m_Images.push_back(m_LoadOutSelectExit);
 
 }
 
@@ -98,72 +111,87 @@ void CStage_Start::LateUpdate()
 			m_Title_Shadow->visible = true;
 		}
 	}
-	if (bStartCheck == true)
+
+	if (!bStartCheck) return;
+
+	m_UpTimer += DELTA;
+	if (m_UpTimer < 0.3f) m_Title_Text->MoveWorldPos(UP * 500.f * DELTA);
+	if (m_UpTimer > 0.3f) bVisible = true;
+
+	int newHovered = -1;
+	Vec2 mouse = INPUT->GetMouseScreenPos();
+
+	for (int i = 0; i < 3; ++i)
 	{
-		m_UpTimer += DELTA;
+		bool hover = m_TextRect[i]->IntersectScreenMouse(mouse);
 
-		if (m_UpTimer < 0.3f)
+		if (hover)
 		{
-			m_Title_Text->MoveWorldPos(UP * 500.f * DELTA);
-		}
+			if (newHovered == -1) 
+				newHovered = i;
 
-		if (m_UpTimer > 0.3f)
-		{
-			bVisible = true;
-		}
+			m_ChangeColor[i] = Color(1, 1, 1, 1);
 
-		// ¸¶¿ì½º Ãæµ¹
-		for (int i = 0; i < 3; i++)
-		{
-			if (m_TextRect[i]->IntersectScreenMouse(INPUT->GetMouseScreenPos()))
+			if (newHovered == 0)
 			{
-				//SOUND->StopPlay("Select", 0.5f);
+				m_LoadOutSelectStart->visible = true;
+				m_LoadOutSelectEdit->visible = false;
+				m_LoadOutSelectExit->visible = false;
+			}
 
-				if (INPUT->KeyDown(VK_LBUTTON))
+			else if (newHovered == 1)
+			{
+				m_LoadOutSelectStart->visible = false;
+				m_LoadOutSelectEdit->visible = true;
+				m_LoadOutSelectExit->visible = false;
+			}
+
+			else if (newHovered == 2)
+			{
+				m_LoadOutSelectStart->visible = false;
+				m_LoadOutSelectEdit->visible = false;
+				m_LoadOutSelectExit->visible = true;
+			}
+
+			if (INPUT->KeyDown(VK_LBUTTON))
+			{
+				switch (i)
 				{
-
-					switch (i)
-					{
-					case 0:
-						SCENE->Change_Scene(ESceneType::StageFire);
-						return;
-
-					case 1:
-						SCENE->Change_Scene(ESceneType::Edit);
-						return;
-
-					case 2:
-						PostQuitMessage(0);
-						break;
-					}
+				case 0: SCENE->Change_Scene(ESceneType::StageFire); return;
+				case 1: SCENE->Change_Scene(ESceneType::Edit);      return;
+				case 2: PostQuitMessage(0);                  break;
 				}
-
-				m_ChangeColor[i] = Color(1, 1, 1, 1);
-			}
-
-			else
-			{
-				m_ChangeColor[i] = Color(0.3, 0.3, 0.3, 1);
 			}
 		}
-		
+		else
+		{
+			m_ChangeColor[i] = Color(0.4f, 0.4f, 0.4f, 1);
+		}
 	}
 
-	
+	if (newHovered != m_LastHovered)
+	{
+		if (newHovered != -1)
+		{
+			SOUND->StopPlay("Select", 0.5f);
+		}
+		m_LastHovered = newHovered;
+	}
 }
+
 
 void CStage_Start::Render()
 {
 	CScene::Render();
 
 	if (bStartCheck == false)
-		CHelper::OutlineText(L"¾Æ¹« ¹öÆ°ÀÌ³ª ´©¸£¼¼¿ä", m_DrawRect[(int)EStartStageType::Pressed], 35.f, m_Font, Color(1,1,1,1));
+		CHelper::OutlineText(L"ì•„ë¬´ ë²„íŠ¼ì´ë‚˜ ëˆ„ë¥´ì„¸ìš”", m_DrawRect[(int)EStartStageType::Pressed], 35.f, m_Font, Color(1,1,1,1));
 
 	if (bStartCheck && bVisible)
 	{
-		CHelper::OutlineText(L"°ÔÀÓ ½ÃÀÛ", m_DrawRect[(int)EStartStageType::GameStart], 35.f, m_Font, m_ChangeColor[0]);
-		CHelper::OutlineText(L"¸Ê ¿¡µğÅÍ", m_DrawRect[(int)EStartStageType::Editor], 35.f, m_Font, m_ChangeColor[1]);
-		CHelper::OutlineText(L"°ÔÀÓ Á¾·á", m_DrawRect[(int)EStartStageType::Exit], 35.f, m_Font, m_ChangeColor[2]);
+		CHelper::OutlineText(L"ê²Œì„ ì‹œì‘", m_DrawRect[(int)EStartStageType::GameStart], 35.f, m_Font, m_ChangeColor[0]);
+		CHelper::OutlineText(L"ë§µ ì—ë””í„°", m_DrawRect[(int)EStartStageType::Editor], 35.f, m_Font, m_ChangeColor[1]);
+		CHelper::OutlineText(L"ê²Œì„ ì¢…ë£Œ", m_DrawRect[(int)EStartStageType::Exit], 35.f, m_Font, m_ChangeColor[2]);
 	}
 
 	for (auto& title : m_Images)

@@ -18,7 +18,7 @@ CTarget_Orb::CTarget_Orb(FSkillInfo& _Info) : CSkill_Actor(_Info)
         m_Collision = std::make_shared<ObCircle>();
         m_Collision->scale = Vec2(60.f, 60.f);
         m_Collision->isFilled = false;
-        m_Collision->visible = true;
+        m_Collision->visible = false;
         m_Collision->collider = COLLIDER::CIRCLE;
         m_Collision->Set_Owner(this);
         m_Collision->Set_Instigator(m_Skill_Info.Instigator); 
@@ -198,6 +198,7 @@ void CTarget_Orb::OnComponentBeginOverlap(GameObject* collider, GameObject* othe
 
     CCharacter* hit = dynamic_cast<CCharacter*>(other->Get_Owner());
     if (!hit) return;
+
 
     if (dynamic_cast<CBossPawn*>(hit)) return;
 

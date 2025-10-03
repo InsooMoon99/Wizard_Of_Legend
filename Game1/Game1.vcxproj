@@ -51,6 +51,10 @@
     <ClInclude Include="CItem_Weapon.h" />
     <ClInclude Include="CJavelin_Spear.h" />
     <ClInclude Include="CKnight.h" />
+    <ClInclude Include="CMiddleBoss.h" />
+    <ClInclude Include="CMiddle_Fire.h" />
+    <ClInclude Include="CMiddle_Ball.h" />
+    <ClInclude Include="CMiddle_SpawnBall.h" />
     <ClInclude Include="CMonsterBase.h" />
     <ClInclude Include="CObjectManager.h" />
     <ClInclude Include="CRenderManager.h" />
@@ -70,6 +74,9 @@
     <ClInclude Include="CSkill_Man_Target.h" />
     <ClInclude Include="CSkill_Girl_SpawnRect.h" />
     <ClInclude Include="CSkill_FireMeteor.h" />
+    <ClInclude Include="CSkill_Middle_Fire.h" />
+    <ClInclude Include="CSkill_Middle_Ball.h" />
+    <ClInclude Include="CSkill_Middle_SpawnBall.h" />
     <ClInclude Include="CSkill_WindDash.h" />
     <ClInclude Include="CSkill_WindSlash.h" />
     <ClInclude Include="CSpawn_Rect.h" />
@@ -92,7 +99,6 @@
     <ClInclude Include="CSkill_FireBall.h" />
     <ClInclude Include="CStage01.h" />
     <ClInclude Include="CStageBoss.h" />
-    <ClInclude Include="CStage_Loading.h" />
     <ClInclude Include="CStage_Start.h" />
     <ClInclude Include="CStar.h" />
     <ClInclude Include="CStar_Collision.h" />
@@ -114,6 +120,9 @@
     <ClInclude Include="CUI_InvenSkill.h" />
     <ClInclude Include="CUI_InvenStatus.h" />
     <ClInclude Include="CUI_InventoryHUD.h" />
+    <ClInclude Include="CUI_MiddleBossHUD.h" />
+    <ClInclude Include="CUI_MiddleBossStatus.h" />
+    <ClInclude Include="CUI_Minimap.h" />
     <ClInclude Include="CUI_PlayerStatus.h" />
     <ClInclude Include="CUI_Skill_Pannel.h" />
     <ClInclude Include="CWeaponComponent.h" />
@@ -158,6 +167,10 @@
     <ClCompile Include="CItem_Weapon.cpp" />
     <ClCompile Include="CJavelin_Spear.cpp" />
     <ClCompile Include="CKnight.cpp" />
+    <ClCompile Include="CMiddleBoss.cpp" />
+    <ClCompile Include="CMiddle_Fire.cpp" />
+    <ClCompile Include="CMiddle_Ball.cpp" />
+    <ClCompile Include="CMiddle_SpawnBall.cpp" />
     <ClCompile Include="CMonsterBase.cpp" />
     <ClCompile Include="CObjectManager.cpp" />
     <ClCompile Include="CRenderManager.cpp" />
@@ -177,6 +190,9 @@
     <ClCompile Include="CSkill_Man_Target.cpp" />
     <ClCompile Include="CSkill_Girl_SpawnRect.cpp" />
     <ClCompile Include="CSkill_FireMeteor.cpp" />
+    <ClCompile Include="CSkill_Middle_Fire.cpp" />
+    <ClCompile Include="CSkill_Middle_Ball.cpp" />
+    <ClCompile Include="CSkill_Middle_SpawnBall.cpp" />
     <ClCompile Include="CSkill_WindDash.cpp" />
     <ClCompile Include="CSkill_WindSlash.cpp" />
     <ClCompile Include="CSpawn_Rect.cpp" />
@@ -196,7 +212,6 @@
     <ClCompile Include="CSkill_FireBall.cpp" />
     <ClCompile Include="CStage01.cpp" />
     <ClCompile Include="CStageBoss.cpp" />
-    <ClCompile Include="CStage_Loading.cpp" />
     <ClCompile Include="CStage_Start.cpp" />
     <ClCompile Include="CStar.cpp" />
     <ClCompile Include="CStar_Collision.cpp" />
@@ -217,6 +232,9 @@
     <ClCompile Include="CUI_InvenSkill.cpp" />
     <ClCompile Include="CUI_InvenStatus.cpp" />
     <ClCompile Include="CUI_InventoryHUD.cpp" />
+    <ClCompile Include="CUI_MiddleBossHUD.cpp" />
+    <ClCompile Include="CUI_MiddleBossStatus.cpp" />
+    <ClCompile Include="CUI_Minimap.cpp" />
     <ClCompile Include="CUI_PlayerStatus.cpp" />
     <ClCompile Include="CUI_Skill_Pannel.cpp" />
     <ClCompile Include="CWeaponComponent.cpp" />

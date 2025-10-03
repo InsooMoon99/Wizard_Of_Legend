@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CParticleManager.h"
 #include "CResourceManager.h"
 
@@ -17,7 +17,7 @@ void CParticleManager::Update()
 		auto particle = *it;
 		particle->Update();
 
-		// ½ºÇÁ¶óÀÌÆ® Àç»ýÀÌ ³¡³­ ÆÄÆ¼Å¬ Á¦°Å
+		// ìŠ¤í”„ë¼ì´íŠ¸ ìž¬ìƒì´ ëë‚œ íŒŒí‹°í´ ì œê±°
 		if (particle->Get_AnimState() == ANIMSTATE::STOP)
 		{
 			it = m_ActiveParticles.erase(it);
@@ -300,7 +300,7 @@ shared_ptr<ObImage> CParticleManager::Spawn_Particle(const wstring& _Key, const 
 	if (find_iter == m_Particles.end()) return nullptr;
 
 	auto particle = find_iter->second;
-	auto newParticle = make_shared<ObImage>(*particle); // º¹»ç »ý¼ºÀÚ
+	auto newParticle = make_shared<ObImage>(*particle); // ë³µì‚¬ ìƒì„±ìž
 
 	newParticle->SetWorldPos(_Pos);
 
@@ -321,7 +321,7 @@ shared_ptr<ObImage> CParticleManager::Spawn_ParticleDir(const wstring& _Key, con
 	if (find_iter == m_Particles.end()) return nullptr;
 
 	auto particle = find_iter->second;
-	auto newParticle = make_shared<ObImage>(*particle); // º¹»ç »ý¼ºÀÚ
+	auto newParticle = make_shared<ObImage>(*particle); // ë³µì‚¬ ìƒì„±ìž
 
 	newParticle->SetWorldPos(_Pos);
 

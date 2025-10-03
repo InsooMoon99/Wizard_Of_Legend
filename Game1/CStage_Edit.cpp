@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CStage_Edit.h"
 #include "CPlayer.h"
 #include "CUIComponent.h"
@@ -9,11 +9,22 @@ CStage_Edit::CStage_Edit()
 	m_Player = make_shared<CPlayer>();
 	m_Actors.push_back(m_Player);
 
-	m_MapSize = Vec2(2304.f, 2560.f) * 3.f;
-	m_PlayerPos = Vec2(516.f, -2593.f);
+	//m_MapSize = Vec2(2304.f, 2560.f) * 3.f;
+	m_MapSize = Vec2(1280.f, 1280.f) * 3.f;
+	//m_PlayerPos = Vec2(516.f, -2593.f);
+	m_PlayerPos = Vec2(-1780.f, 0.f);
 
-	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\Fire_End.png", m_MapSize, true);
-	map->SetLocalPos(Vec2(-185, 46));
+	//shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\FireTile.png", m_MapSize, true);
+	//map->SetLocalPos(Vec2(-185, 46));
+	//m_Map.insert({ ESceneType::Edit, map });
+
+	shared_ptr<ObImage> mapShadow = RESOURCE->CreateImage(L"Edit\\stage0_bg.png", Vec2(1920.f, 1080.f) * 4.f, true);
+	mapShadow->SetWorldPos(m_PlayerPos);
+	m_Map.insert({ ESceneType::Shadow, mapShadow });
+
+	Vec2 mapPos = Vec2(-1780.f + 225.f, -800.f);
+	shared_ptr<ObImage> map = RESOURCE->CreateImage(L"Edit\\BossMap_Remove.png", m_MapSize, true);
+	map->SetWorldPos(mapPos);
 	m_Map.insert({ ESceneType::Edit, map });
 }
 
@@ -63,18 +74,6 @@ void CStage_Edit::Render()
 	Vec2 pos = m_Map[ESceneType::Edit]->GetWorldPos();
 	Vec2 size = m_MapSize;
 
-	if (ImGui::Begin("Debug"))
-	{
-		Vec2 min_pos = -size * 0.5f;
-		Vec2 max_pos = size * 0.5f;
-
-		ImGui::SliderFloat2("Stage Position", (float*)&pos, -200.f, +200.f);
-
-		//m_Map[ESceneType::Edit]->SetWorldPos(pos);
-	}
-
-	ImGui::End();
-
 	for (auto& map : m_Map)
 		map.second->Render();
 
@@ -123,8 +122,9 @@ void CStage_Edit::Key_Input()
 		TILE->Save_Data();
 	if (INPUT->KeyDown('L'))
 	{
-		TILE->Load_Data(L"../Data/FireTile_First.dat");
+		//TILE->Load_Data(L"../Data/FireTile_First.dat");
 		//TILE->Load_Data(L"../Data/FireTile_Second.dat");
+		TILE->Load_Data(L"../Data/FireTile_Boss.dat");
 	}
 
 	if (INPUT->KeyDown(VK_F1))

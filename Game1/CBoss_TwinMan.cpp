@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CBoss_TwinMan.h"
 
 #include "CBoss_Controller.h"
@@ -62,6 +62,10 @@ void CBoss_TwinMan::Tick()
 
 	switch (m_State->Get_State())
 	{
+	case ECharacterState::Boss_Wait:
+		State_Wait();
+		break;
+
 	case ECharacterState::Boss_Start:
 		State_Start();
 		break;
@@ -97,6 +101,25 @@ void CBoss_TwinMan::Tick()
 	case ECharacterState::Boss_Attack3:
 		State_Attack3();
 		break;
+
+	case ECharacterState::Dead:
+		State_Dead();
+		break;
+	}
+
+	if (m_Knock.active)
+	{
+		float time = m_Knock.t / max(m_Knock.duration, 1e-4f);
+		time = clamp(time, 0.f, 1.f);
+
+		float kTime = 1.f - time;           
+		float speed = m_Knock.amount * kTime;
+
+		MoveTile(m_Knock.dir, speed);      
+
+		m_Knock.t += DELTA;
+		if (m_Knock.t >= m_Knock.duration)
+			m_Knock.active = false;
 	}
 
 	if (INPUT->KeyDown('1'))
@@ -114,12 +137,19 @@ void CBoss_TwinMan::Tick()
 		m_Controller->ChangeState(ECharacterState::Boss_Attack3);
 	}
 
-	// Color º¯°æ
+	if (INPUT->KeyDown('5'))
+	{
+		m_Controller->ChangeState(ECharacterState::Dead);
+	}
+
+	// Color ë³€ê²½
 	Update_Hit();
 
 	// Update
 	for (auto& col : m_vecCol)
 		col->Update();
+
+	m_Shadow->Update();
 
 	m_FloorCrater->Update();
 
@@ -157,6 +187,7 @@ void CBoss_TwinMan::Render()
 
 	//PARTICLE->Render();
 
+	m_Shadow->Render();
 	m_FloorCrater->Render();
 
 	if (m_CurImg)
@@ -185,23 +216,23 @@ void CBoss_TwinMan::Update_Hit()
 {
 	Super::Update_Hit();
 
-	if (m_HitTimer > 0.f)
-	{
-		m_HitTimer -= DELTA;
-
-		if (m_HitTimer <= 0.f)
-		{
-			CHelper::OrignColor(m_CurImg.get());
-		}
-	}
+	//if (m_HitTimer > 0.f)
+	//{
+	//	m_HitTimer -= DELTA;
+	//
+	//	if (m_HitTimer <= 0.f)
+	//	{
+	//		CHelper::OrignColor(m_CurImg.get());
+	//	}
+	//}
 }
 
 void CBoss_TwinMan::Hit_Color()
 {
 	Super::Hit_Color();
 
-	CHelper::HitColor(m_CurImg.get());
-	m_HitTimer = 0.15f;
+	//CHelper::HitColor(m_CurImg.get());
+	//m_HitTimer = 0.15f;
 }
 
 void CBoss_TwinMan::Hit_Effect()
@@ -214,8 +245,11 @@ void CBoss_TwinMan::OnComponentBeginOverlap(GameObject* collider, GameObject* ot
 {
 	Super::OnComponentBeginOverlap(collider, other);
 
+
 	// Boss Hit
 	//ReportHit(10.f);
+
+	
 	//cout << "Twin Man Hit" << endl;
 }
 
@@ -243,7 +277,6 @@ void CBoss_TwinMan::State_Start()
 			bAnimStarted = false;
 		}
 	}
-
 }
 
 void CBoss_TwinMan::State_Start2()
@@ -282,12 +315,12 @@ void CBoss_TwinMan::State_Ready()
 
 void CBoss_TwinMan::State_Idle()
 {
-	// TODO : °ø°Ý ´ë±â ½Ã°£
+	// TODO : ê³µê²© ëŒ€ê¸° ì‹œê°„
 }
 
 void CBoss_TwinMan::State_Walk()
 {
-	// TODO : ÇÃ·¹ÀÌ¾î Ãß°Ý
+	// TODO : í”Œë ˆì´ì–´ ì¶”ê²©
 }
 
 void CBoss_TwinMan::State_Attack1_Ready()
@@ -328,11 +361,12 @@ void CBoss_TwinMan::State_Attack1()
 			SOUND->Stop("MetalClang");
 			SOUND->Play("MetalClang");
 			SOUND->SetVolume("MetalClang", 0.2f);
+			CAM->StartShake(21.f, 20.f, 0.1f);
 
 			bCountBat = true;
 
 			m_MetalOrb_Man->visible = true;
-			m_MetalOrb_Man->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+			m_MetalOrb_Man->ChangeAnim(ANIMSTATE::ONCE, 0.15f);
 			m_MetalOrb_Man->frame = Int2(0, 0);
 
 			m_Controller->SetBallMovePos(Vec2(0, 0));
@@ -420,12 +454,43 @@ void CBoss_TwinMan::State_Attack3()
 
 }
 
+void CBoss_TwinMan::State_Dead()
+{
+
+}
+
+void CBoss_TwinMan::TakeDamage(FHitDamage _Hit)
+{
+	CBossPawn::TakeDamage(_Hit);
+
+	auto bossStatus = CHelper::GetComponent<CStatusComponent>(m_Controller);
+	if (!bossStatus) return;
+
+	const Vec2 pos = m_Collision ? m_Collision->GetWorldPos() : Get_WorldPos();
+	if (m_Controller) m_Controller->TakeDamage(_Hit.Damage, pos); 
+
+	if (_Hit.Duration > 1e-4f && _Hit.Amount > 0.f)
+	{
+		m_Knock.active = true;
+		m_Knock.dir = _Hit.Dir;
+		m_Knock.t = 0.f;
+		m_Knock.duration = _Hit.Duration;
+		m_Knock.amount = _Hit.Amount;
+	}
+
+}
+
 void CBoss_TwinMan::OnStateChange(ECharacterState _State, EPlayerDir _Dir)
 {
 	CBossPawn::OnStateChange(_State, _Dir);
 
 	m_State->Change_State(_State);
 	SetSprite(_State, _Dir);
+}
+
+void CBoss_TwinMan::State_Wait()
+{
+
 }
 
 void CBoss_TwinMan::SetSprite(ECharacterState _State, EPlayerDir _Dir)
@@ -451,10 +516,18 @@ void CBoss_TwinMan::Play_Sprite(ECharacterState _State)
 {
 	Super::Play_Sprite(_State);
 
+	m_Shadow->SetLocalPos(Vec2(0.f, -65.f));
+
+	m_FloorCrater->visible = false;
+
 	switch (_State)
 	{
+	case ECharacterState::Boss_Wait:
+		m_CurImg->ChangeAnim(ANIMSTATE::STOP, 0.0f);
+		break;
+
 	case ECharacterState::Idle:
-		m_CurImg->ChangeAnim(ANIMSTATE::STOP, 0.1f);
+		m_CurImg->ChangeAnim(ANIMSTATE::STOP, 0.0f);
 		break;
 
 	case ECharacterState::Walk:
@@ -474,6 +547,7 @@ void CBoss_TwinMan::Play_Sprite(ECharacterState _State)
 
 	case ECharacterState::Boss_Start2:
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+		m_Shadow->SetLocalPos(Vec2(-20.f, -65.f));
 		bAnimStarted = true;
 		break;
 
@@ -495,7 +569,6 @@ void CBoss_TwinMan::Play_Sprite(ECharacterState _State)
 
 	case ECharacterState::Boss_Attack2:
 		m_Weapon->Activate_Skill(ESkillType::Boss_Man_Target);
-
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.25f);
 		m_CurImg->frame = Int2(0, 0);
 		bAttack2 = true;
@@ -504,6 +577,11 @@ void CBoss_TwinMan::Play_Sprite(ECharacterState _State)
 		break;
 
 	case ECharacterState::Boss_Attack3:
+		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
+		break;
+
+	case ECharacterState::Dead:
+		TIMER->HitStop(0.05f, 0.36f, 0.06f);
 		m_CurImg->ChangeAnim(ANIMSTATE::ONCE, 0.1f);
 		break;
 
@@ -519,7 +597,7 @@ void CBoss_TwinMan::Resource_Settings()
 	{
 		m_Collision = make_shared<ObRect>();
 		m_Collision->scale = Vec2(80.f, 80.f);
-		m_Collision->visible = true;
+		m_Collision->visible = false;
 		m_Collision->isFilled = false;
 		m_Collision->pivot = OFFSET_N;
 		m_Collision->collider = COLLIDER::RECT;
@@ -532,22 +610,31 @@ void CBoss_TwinMan::Resource_Settings()
 	
 	// Start Setting
 	{
-		Vec2 start_Size = Vec2(225.f / 9.f, 45.f) * 3.f;
+		Vec2 start_Size = Vec2(225.f / 9.f, 45.f) * 3.4f;
 		shared_ptr<ObImage> start = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_ManStart.png", start_Size, Int2(9, 1), true);
 		start->SetParentRT(*m_Collision);
 
 		m_Sprites[ECharacterState::Boss_Start][EPlayerDir::Front] = start;
 
-		m_BossTaunt = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Taunt.png", Vec2(1200.f / 15.f, 60.f) * 3.f, Int2(15, 1), false);
+		m_BossTaunt = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Taunt.png", Vec2(1200.f / 15.f, 60.f) * 3.4f, Int2(15, 1), false);
 		m_BossTaunt->SetParentRT(*m_Collision);
 		m_BossTaunt->SetLocalPos(Vec2(20.f,0.f));
 
 		m_Sprites[ECharacterState::Boss_Start2][EPlayerDir::Front] = m_BossTaunt;
 	}
 
+	// Wait
+	{
+		Vec2 start_Size = Vec2(24.f, 40.f) * 3.4f;
+		shared_ptr<ObImage> start = RESOURCE->CreateImage(L"Monster\\Lightning\\Boss_Idle.png", start_Size);
+		start->SetParentRT(*m_Collision);
+
+		m_Sprites[ECharacterState::Boss_Wait][EPlayerDir::Front] = start;
+	}
+
 	// Idle
 	{
-		Vec2 start_Size = Vec2(24.f, 40.f) * 3.f;
+		Vec2 start_Size = Vec2(24.f, 40.f) * 3.4f;
 		shared_ptr<ObImage> start = RESOURCE->CreateImage(L"Monster\\Lightning\\Boss_Idle.png", start_Size);
 		start->SetParentRT(*m_Collision);
 
@@ -556,7 +643,7 @@ void CBoss_TwinMan::Resource_Settings()
 
 	// Ready
 	{
-		Vec2 size = Vec2(720.f / 12.f, 105.f) * 3.f;
+		Vec2 size = Vec2(720.f / 12.f, 105.f) * 3.4f;
 		shared_ptr<ObImage> ready = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Attack1_Ready.png", size, Int2(12,1));
 		ready->SetParentRT(*m_Collision);
 		ready->SetLocalPos(Vec2(7.f, 100.f));
@@ -566,29 +653,29 @@ void CBoss_TwinMan::Resource_Settings()
 
 	// Bat
 	{
-		Vec2 bat_Spawn_Size = Vec2(150.f / 3.f, 50.f) * 3.f;
+		Vec2 bat_Spawn_Size = Vec2(150.f / 3.f, 50.f) * 3.4f;
 		m_Bat_Spawn = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Bat_Spawn.png", bat_Spawn_Size, Int2(3, 1), true);
 		m_Bat_Spawn->SetParentRT(*m_Collision);
 		m_Bat_Spawn->SetLocalPosX(-15.f);
 		m_Sprites[ECharacterState::Boss_Attack1_Ready][EPlayerDir::Front] = m_Bat_Spawn;
 
-		Vec2 bat_Windup_Size = Vec2(150.f / 3.f, 50.f) * 3.6f;
+		Vec2 bat_Windup_Size = Vec2(150.f / 3.f, 50.f) * 3.8f;
 		m_Bat_Windup = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Bat_Windup.png", bat_Windup_Size, Int2(3, 1), true);
 		m_Bat_Windup->SetParentRT(*m_Collision);
 
-		Vec2 bat_Throw_Size = Vec2(520.f / 8.f, 65.f) * 3.f;
+		Vec2 bat_Throw_Size = Vec2(520.f / 8.f, 65.f) * 3.4f;
 		m_Bat_Throw = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Bat_Throw.png", bat_Throw_Size, Int2(8, 1), true);
 		m_Bat_Throw->SetParentRT(*m_Collision);
 
-		Vec2 bat_Idle_Size = Vec2(150.f / 3.f, 50.f) * 3.f;
+		Vec2 bat_Idle_Size = Vec2(150.f / 3.f, 50.f) * 3.4f;
 		shared_ptr<ObImage> bat_Idle = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Bat_Idle.png", bat_Idle_Size, Int2(3, 1), true);
 		bat_Idle->SetParentRT(*m_Collision);
 
-		Vec2 bat_Swing_Size = Vec2(390.f / 6.f, 65.f) * 3.f;
+		Vec2 bat_Swing_Size = Vec2(390.f / 6.f, 65.f) * 3.4f;
 		shared_ptr<ObImage> bat_Swing = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Bat_Swing.png", bat_Swing_Size, Int2(6, 1), true);
 		bat_Swing->SetParentRT(*m_Collision);
 
-		Vec2 metal_Orb_Size = Vec2(224.f / 7.f, 32.f) * 3.f;
+		Vec2 metal_Orb_Size = Vec2(224.f / 7.f, 32.f) * 3.4f;
 		m_MetalOrb_Man = RESOURCE->CreateSprite(L"Monster\\Lightning\\MetalOrb_Man.png", metal_Orb_Size, Int2(7, 1), false);
 		m_MetalOrb_Man->SetParentRT(*m_Collision);
 		m_MetalOrb_Man->SetLocalPosY(-45.f);
@@ -598,13 +685,13 @@ void CBoss_TwinMan::Resource_Settings()
 
 	// Target Orb
 	{
-		Vec2 spawn_Size = Vec2(325.f / 5.f, 65.f) * 3.f;
+		Vec2 spawn_Size = Vec2(325.f / 5.f, 65.f) * 3.4f;
 		m_Target_Spawn = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_OrbSummon.png", spawn_Size, Int2(5,1), true);
 		m_Target_Spawn->SetParentRT(*m_Collision);
 
 		m_Sprites[ECharacterState::Boss_Attack2][EPlayerDir::Front] = m_Target_Spawn;
 
-		Vec2 throw_Size = Vec2(400.f / 5.f, 60.f) * 3.f;
+		Vec2 throw_Size = Vec2(400.f / 5.f, 60.f) * 3.4f;
 		m_Target_Throw = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Throw.png", spawn_Size, Int2(5, 1), true);
 		m_Target_Throw->SetParentRT(*m_Collision);
 
@@ -613,7 +700,7 @@ void CBoss_TwinMan::Resource_Settings()
 
 	// Star
 	{
-		Vec2 star_Size = Vec2(195.f / 3.f, 65.f) * 3.f;
+		Vec2 star_Size = Vec2(195.f / 3.f, 65.f) * 3.4f;
 		shared_ptr<ObImage> ground = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_GroundSlam.png", star_Size, Int2(3, 1), true);
 		ground->SetParentRT(*m_Collision);
 
@@ -621,8 +708,23 @@ void CBoss_TwinMan::Resource_Settings()
 
 		m_FloorCrater = RESOURCE->CreateImage(L"Monster\\Lightning\\FloorCrater.png", Vec2(180.f, 180.f), false);
 		m_FloorCrater->SetParentRT(*m_Collision);
-		m_FloorCrater->SetLocalPosY(-50.f);
+		m_FloorCrater->SetLocalPosY(-50.f); 
 	}
+
+	// Down
+	{
+		Vec2 dead_Size = Vec2(195.f / 3.f, 65.f) * 3.4f;
+		shared_ptr<ObImage> dead = RESOURCE->CreateSprite(L"Monster\\Lightning\\Boss_Down.png", dead_Size, Int2(3, 1), true);
+		dead->SetParentRT(*m_Collision);
+
+		m_Sprites[ECharacterState::Dead][EPlayerDir::Front] = dead;
+	}
+
+	m_Shadow = RESOURCE->CreateImage(L"Shadow\\NORMAL_SHADOW.bmp", Vec2(60.f, 60.f) * 2.25f);
+	m_Shadow->SetParentRT(*m_Collision);
+	m_Shadow->color = Color(0.0f, 0.0f, 0.0f, 0.15f);
+	m_Shadow->SetLocalPos(Vec2(0.f, -65.f));
+	m_Shadow->visible = true;
 
 	m_CurImg = m_Sprites[ECharacterState::Boss_Start][EPlayerDir::Front];
 

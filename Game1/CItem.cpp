@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CItem.h"
 
 CItem::CItem()
@@ -15,6 +15,7 @@ void CItem::BeginPlay()
 {
 	CActor::BeginPlay();
 
+	m_RenderLayer = ERenderLayer::RenderPlayer;
 
 }
 

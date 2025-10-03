@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CUI_InvenDesc.h"
 
 #include "CInventoryComponent.h"
@@ -20,7 +20,7 @@ CUI_InvenDesc::CUI_InvenDesc()
 
 	m_Skill_Infos.resize(SKILL_PANEL);
 
-	m_Panel = L"- Á¤º¸ -";
+	m_Panel = L"- ì •ë³´ -";
 }
 
 CUI_InvenDesc::~CUI_InvenDesc()
@@ -117,7 +117,7 @@ void CUI_InvenDesc::RenderSkillDesc()
 	const auto& ui = m_Skill_Infos[m_SelectSlot];
 	if (ui.Id.empty()) 
 	{
-		DWRITE->RenderText(L"[ºó ½½·Ô]", RECT{ 57,602,420,662 }, 16.f,
+		DWRITE->RenderText(L"[ë¹ˆ ìŠ¬ë¡¯]", RECT{ 57,602,420,662 }, 16.f,
 			L"Noto Sans Cond Med", Color(1, 1, 1, 1));
 		return;
 	}
@@ -133,7 +133,7 @@ void CUI_InvenDesc::RenderItemDesc()
 	const auto& ui = m_Item_Infos[m_SelectItemSlot];
 	if (ui.IsEmpty || ui.Id.empty()) 
 	{
-		DWRITE->RenderText(L"[ºó ½½·Ô]", RECT{ 57,602,420,662 }, 16.f,
+		DWRITE->RenderText(L"[ë¹ˆ ìŠ¬ë¡¯]", RECT{ 57,602,420,662 }, 16.f,
 			L"Noto Sans Cond Med", Color(1, 1, 1, 1));
 		return;
 	}

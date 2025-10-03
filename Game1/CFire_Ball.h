@@ -30,5 +30,8 @@ private:
 	vector<shared_ptr<ObImage>> m_FireBall_Particle;
 
 	float m_LifeTime = 0.f;
+
+	bool bCheck = false;
+	float m_CheckTime = 0.f;
 };
 

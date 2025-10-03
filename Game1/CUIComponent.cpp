@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CUIComponent.h"
 #include "CResourceManager.h"
 #include "CCharacter.h"
@@ -13,6 +13,8 @@
 #include "CUI_InvenSkill.h"
 #include "CUI_InvenStatus.h"
 #include "CUI_InventoryHUD.h"
+#include "CUI_MiddleBossHUD.h"
+#include "CUI_MiddleBossStatus.h"
 #include "CUI_PlayerHUD.h"
 #include "CUI_Skill_Pannel.h"
 #include "CWeaponComponent.h"
@@ -48,6 +50,9 @@ void CUIComponent::Render()
 
 	//for (auto& hud : m_HUD)
 	//	hud->Render();
+
+	if(m_MiddleBossHUD)
+		m_MiddleBossHUD->Render();
 }
 
 void CUIComponent::Release()
@@ -94,6 +99,23 @@ void CUIComponent::SetBossHUD()
 	}
 }
 
+void CUIComponent::SetMiddleHUD()
+{
+	if (GetOwner())
+	{
+		m_MiddleBossHUD = make_shared<CUI_MiddleBossHUD>();
+		//m_MiddleBossHUD->BeginPlay();
+
+		m_HUD.push_back(m_MiddleBossHUD);
+
+		auto status = CHelper::GetComponent<CStatusComponent>(GetOwner());
+		if (status == nullptr)
+			return;
+
+		dynamic_pointer_cast<CUI_MiddleBossHUD>(m_MiddleBossHUD)->Get_Status()->SetStatus(status.get());
+	}
+}
+
 void CUIComponent::SetInventoryHUD()
 {
 	if (GetOwner())
@@ -128,14 +150,14 @@ void CUIComponent::ToggleInventory()
 	else
 		SOUND->StopPlay("InvenOff", 0.5f);
 
-	// ÀÎº¥Åä¸® UI, µ¨¸®°ÔÀÌÆ®·Î º¯°æ
+	// ì¸ë²¤í† ë¦¬ UI, ë¸ë¦¬ê²Œì´íŠ¸ë¡œ ë³€ê²½
 	if (m_InventoryHUD) 
 	{
 		m_InventoryHUD->FOnRendering.Broadcast(bToggle);
 		//m_InventoryHUD->SetRender(bToggle);
 	}
 
-	// ÀÎº¥Åä¸®¶û ¹Ý´ë·Î
+	// ì¸ë²¤í† ë¦¬ëž‘ ë°˜ëŒ€ë¡œ
 	if (m_PlayerHUD)
 		m_PlayerHUD->FOnRendering.Broadcast(!bToggle);
 }

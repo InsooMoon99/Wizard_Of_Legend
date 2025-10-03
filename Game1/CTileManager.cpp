@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CTileManager.h"
 
 #include "CTile.h"
@@ -19,7 +19,7 @@ void CTileManager::Init()
 {
 	m_vecTile.clear();
 
-	// Å¸ÀÏ ÃÊ±â »ı¼º X
+	// íƒ€ì¼ ì´ˆê¸° ìƒì„± X
 	//for (int i = 0; i < TILEY; ++i)
 	//{
 	//	for (int j = 0; j <  TILEX; ++j)
@@ -277,13 +277,13 @@ void CTileManager::Picking(Vec2 _Pos, int _DrawID, int _Option, bool forceSet)
 
 void CTileManager::Save_Data()
 {
-	HANDLE	hFile = CreateFile(L"../Data/FireTile_First.dat", // ÆÄÀÏ °æ·Î(ÀÌ¸§±îÁö ¸í½Ã)
-		GENERIC_WRITE,		// ÆÄÀÏ Á¢±Ù ¸ğµå(GENERIC_WRITE : ¾²±â Àü¿ë, GENERIC_READ : ÀĞ±â Àü¿ë)
-		NULL,				// °øÀ¯ ¸ğµå ¼³Á¤ : °øÀ¯ÇÏÁö ¾ÊÀ½
-		NULL,				// º¸¾È ¼Ó¼º ¼³Á¤ : ±âº» °ª ¼³Á¤
-		CREATE_ALWAYS,		// »ı¼º ¹æ½Ä : ¾²±â Àü¿ëÀÎ °æ¿ì ÆÄÀÏÀÌ ¾øÀ¸¸é »ı¼ºÇÏ¿© ÀúÀå, OPEN_EXISTING : ÀĞ±â Àü¿ë ¸ğµåÀÏ ¶§ ÆÄÀÏÀÌ ÀÖÀ» °æ¿ì¿¡¸¸ ºÒ·¯¿À±â ½ÇÇà)
-		FILE_ATTRIBUTE_NORMAL,	// ÆÄÀÏ ¼Ó¼º : ÀÏ¹İ ÆÄÀÏ
-		NULL); // »ı¼ºµÉ ÆÄÀÏÀÇ ¼Ó¼ºÀ» Á¦°øÇÒ ÅÛÇÃ¸´ ÆÄÀÏ ÁÖ¼Ò(»ç¿ëÇÏÁö ¾Ê±â ¶§¹®¿¡ null)
+	HANDLE	hFile = CreateFile(L"../Data/FireTile_Boss.dat", // íŒŒì¼ ê²½ë¡œ(ì´ë¦„ê¹Œì§€ ëª…ì‹œ)
+		GENERIC_WRITE,		// íŒŒì¼ ì ‘ê·¼ ëª¨ë“œ(GENERIC_WRITE : ì“°ê¸° ì „ìš©, GENERIC_READ : ì½ê¸° ì „ìš©)
+		NULL,				// ê³µìœ  ëª¨ë“œ ì„¤ì • : ê³µìœ í•˜ì§€ ì•ŠìŒ
+		NULL,				// ë³´ì•ˆ ì†ì„± ì„¤ì • : ê¸°ë³¸ ê°’ ì„¤ì •
+		CREATE_ALWAYS,		// ìƒì„± ë°©ì‹ : ì“°ê¸° ì „ìš©ì¸ ê²½ìš° íŒŒì¼ì´ ì—†ìœ¼ë©´ ìƒì„±í•˜ì—¬ ì €ì¥, OPEN_EXISTING : ì½ê¸° ì „ìš© ëª¨ë“œì¼ ë•Œ íŒŒì¼ì´ ìˆì„ ê²½ìš°ì—ë§Œ ë¶ˆëŸ¬ì˜¤ê¸° ì‹¤í–‰)
+		FILE_ATTRIBUTE_NORMAL,	// íŒŒì¼ ì†ì„± : ì¼ë°˜ íŒŒì¼
+		NULL); // ìƒì„±ë  íŒŒì¼ì˜ ì†ì„±ì„ ì œê³µí•  í…œí”Œë¦¿ íŒŒì¼ ì£¼ì†Œ(ì‚¬ìš©í•˜ì§€ ì•Šê¸° ë•Œë¬¸ì— null)
 
 	DWORD	dwByte(0);
 	int iDrawID(0), iOption(0);
@@ -308,17 +308,17 @@ void CTileManager::Load_Data(const wchar_t* _Path)
 {
 	if (!_Path) return;
 
-	// ÇÊ¿äÇÏ¸é ±âÁ¸ Å¸ÀÏ ºñ¿ì±â
+	// í•„ìš”í•˜ë©´ ê¸°ì¡´ íƒ€ì¼ ë¹„ìš°ê¸°
 	for (auto& p : m_vecTile) SafeDelete(p);
 	m_vecTile.clear();
 
-	HANDLE	hFile = CreateFile(_Path, // ÆÄÀÏ °æ·Î(ÀÌ¸§±îÁö ¸í½Ã)
-		GENERIC_READ,		// ÆÄÀÏ Á¢±Ù ¸ğµå(GENERIC_WRITE : ¾²±â Àü¿ë, GENERIC_READ : ÀĞ±â Àü¿ë)
-		NULL,				// °øÀ¯ ¸ğµå ¼³Á¤ : °øÀ¯ÇÏÁö ¾ÊÀ½
-		NULL,				// º¸¾È ¼Ó¼º ¼³Á¤ : ±âº» °ª ¼³Á¤
-		OPEN_EXISTING,		// »ı¼º ¹æ½Ä : ¾²±â Àü¿ëÀÎ °æ¿ì ÆÄÀÏÀÌ ¾øÀ¸¸é »ı¼ºÇÏ¿© ÀúÀå, OPEN_EXISTING : ÀĞ±â Àü¿ë ¸ğµåÀÏ ¶§ ÆÄÀÏÀÌ ÀÖÀ» °æ¿ì¿¡¸¸ ºÒ·¯¿À±â ½ÇÇà)
-		FILE_ATTRIBUTE_NORMAL,	// ÆÄÀÏ ¼Ó¼º : ÀÏ¹İ ÆÄÀÏ
-		NULL); // »ı¼ºµÉ ÆÄÀÏÀÇ ¼Ó¼ºÀ» Á¦°øÇÒ ÅÛÇÃ¸´ ÆÄÀÏ ÁÖ¼Ò(»ç¿ëÇÏÁö ¾Ê±â ¶§¹®¿¡ null)
+	HANDLE	hFile = CreateFile(_Path, // íŒŒì¼ ê²½ë¡œ(ì´ë¦„ê¹Œì§€ ëª…ì‹œ)
+		GENERIC_READ,		// íŒŒì¼ ì ‘ê·¼ ëª¨ë“œ(GENERIC_WRITE : ì“°ê¸° ì „ìš©, GENERIC_READ : ì½ê¸° ì „ìš©)
+		NULL,				// ê³µìœ  ëª¨ë“œ ì„¤ì • : ê³µìœ í•˜ì§€ ì•ŠìŒ
+		NULL,				// ë³´ì•ˆ ì†ì„± ì„¤ì • : ê¸°ë³¸ ê°’ ì„¤ì •
+		OPEN_EXISTING,		// ìƒì„± ë°©ì‹ : ì“°ê¸° ì „ìš©ì¸ ê²½ìš° íŒŒì¼ì´ ì—†ìœ¼ë©´ ìƒì„±í•˜ì—¬ ì €ì¥, OPEN_EXISTING : ì½ê¸° ì „ìš© ëª¨ë“œì¼ ë•Œ íŒŒì¼ì´ ìˆì„ ê²½ìš°ì—ë§Œ ë¶ˆëŸ¬ì˜¤ê¸° ì‹¤í–‰)
+		FILE_ATTRIBUTE_NORMAL,	// íŒŒì¼ ì†ì„± : ì¼ë°˜ íŒŒì¼
+		NULL); // ìƒì„±ë  íŒŒì¼ì˜ ì†ì„±ì„ ì œê³µí•  í…œí”Œë¦¿ íŒŒì¼ ì£¼ì†Œ(ì‚¬ìš©í•˜ì§€ ì•Šê¸° ë•Œë¬¸ì— null)
 
 	if (hFile == INVALID_HANDLE_VALUE)
 		return;
@@ -343,7 +343,7 @@ void CTileManager::Load_Data(const wchar_t* _Path)
 		pTile->BeginPlay();
 		pTile->Set_WorldPos(pos);
 
-		// À§Ä¡ µ¿±âÈ­
+		// ìœ„ì¹˜ ë™ê¸°í™”
 		if (auto* tile = dynamic_cast<CTile*>(pTile))
 			if (auto col = tile->Get_Collision())
 				col->SetWorldPos(pos);

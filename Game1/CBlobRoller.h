@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CMonsterBase.h"
 
@@ -49,5 +49,7 @@ private:
 	float m_Attack2Timer = 0.f;
 
 	Vec2 AttackDir;
+
+	shared_ptr<ObImage> m_Shadow;
 };
 

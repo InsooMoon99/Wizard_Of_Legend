@@ -1,4 +1,4 @@
-#pragma once
+ο»Ώ#pragma once
 
 #include "CGameObject.h"
 
@@ -29,7 +29,7 @@ public:
 			m_Collision->SetWorldPos(pos);
 	}
 
-	// ΐ§Δ΅ ΌΌΖΓΐΜ µΘ ΘΔ ΌÒΘ―µΗ°Τ
+	// μ„μΉ μ„Έν…μ΄ λ ν›„ μ†ν™λκ²
 	void SetSpawnPos(const Vec2& pos)
 	{
 		m_PendingSpawnPos = pos;

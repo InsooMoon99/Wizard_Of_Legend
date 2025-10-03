@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CStageBoss.h"
 #include "CActor.h"
 #include "CBoss_Controller.h"
@@ -10,11 +10,18 @@
 
 CStageBoss::CStageBoss()
 {
-	m_PlayerPos = Vec2(-1780.f, 0.f);
+	m_PlayerPos = Vec2(m_StartPos.x, m_StartPos.y + 100.f);
 
 	m_Player = make_shared<CPlayer>();
 	m_Player->SetSpawnPos(m_PlayerPos);
 	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player.get());
+	
+	m_ReadyRect = make_shared<ObRect>();
+	m_ReadyRect->SetWorldPos(m_ReadyPos);
+	m_ReadyRect->visible = false;
+	m_ReadyRect->isFilled = false;
+	m_ReadyRect->scale = Vec2(400.f, 200.f);
+	m_ReadyRect->collider = COLLIDER::RECT;
 
 	m_MapSize = Vec2(1280.f, 1280.f) * 3.f;
 
@@ -23,12 +30,15 @@ CStageBoss::CStageBoss()
 
 CStageBoss::~CStageBoss()
 {
-
+	Release();
 }
 
 void CStageBoss::Init()
 {
 	CScene::Init();
+
+	PARTICLE->Spawn_ParticleDir(L"StartEffect", Vec2(m_PlayerPos.x, m_PlayerPos.y + 180.f), Vec2(1.4f, 1.f));
+	SOUND->StopPlay("Teleport", 0.2f);
 
 	SOUND->Play("BossMap");
 	SOUND->SetVolume("BossMap", 0.1f);
@@ -40,7 +50,7 @@ void CStageBoss::Init()
 
 	m_Boss_Man  = new CBoss_TwinMan(m_BossController);
 	m_Boss_Girl = new CBoss_TwinGirl(m_BossController);
-	// ÇÃ·¹ÀÌ¾î ¼¼ÆÃ
+	// í”Œë ˆì´ì–´ ì„¸íŒ…
 	m_Boss_Man->SetPlayer(m_Player.get());
 	m_Boss_Girl->SetPlayer(m_Player.get());
 
@@ -51,7 +61,7 @@ void CStageBoss::Init()
 	//auto player = dynamic_pointer_cast<CPlayer>(m_Player);
 	//player->Get_Collision()->SetWorldPos(m_PlayerPos);
 
-	Vec2 m_BossPos = Vec2(-1815.f, 200.f);
+	Vec2 m_BossPos = Vec2(-1815.f, 100.f);
 	m_Boss_Man->Get_Collision()->SetWorldPos(m_BossPos);
 	m_Boss_Girl->Get_Collision()->SetWorldPos(Vec2(m_BossPos.x + 50, m_BossPos.y));
 
@@ -66,7 +76,6 @@ void CStageBoss::Update()
 {
 	CScene::Update();
 
-	// ±âÁ¸ Render Å¥ ºñ¿ì±â
 	RENDER->Release(); 
 
 	for (auto& actor : m_Actors)
@@ -86,6 +95,8 @@ void CStageBoss::Update()
 
 	for (auto& object : m_Objects)
 		object->Update();
+
+	m_ReadyRect->Update();
 }
 
 void CStageBoss::LateUpdate()
@@ -94,6 +105,66 @@ void CStageBoss::LateUpdate()
 
 	auto player = dynamic_pointer_cast<CPlayer>(m_Player);
 	CAM->position = player->Get_Collision()->GetWorldPos();
+
+	if (m_ReadyRect->Intersect(m_Player->Get_Collision().get()))
+	{
+		IsCameraSat = true;
+
+		if (IsFirstCheck)
+		{
+			IsFirstCheck = false;
+
+			TILE->Load_Data(L"../Data/FireTile_Boss.dat");
+
+			m_BossController->ChangeState(ECharacterState::Boss_Start);
+
+			if (!m_BlendToClamp) { m_BlendToClamp = true; m_ClampBlendT = 0.0f; }
+		}
+	}
+
+	if (IsCameraSat)
+	{
+		Vec2 freeCam = player->Get_Collision()->GetWorldPos();
+
+		const float minX = -2605.f, maxX = -937.f;
+		const float yA = 542.f, yB = -382.f;
+		const float minY = min(yA, yB), maxY = max(yA, yB);
+
+		float halfW = app.GetHalfWidth();
+		float halfH = app.GetHalfHeight();
+
+		Vec2 hard = freeCam; 
+		if ((maxX - minX) <= halfW * 2.f)
+			hard.x = (minX + maxX) * 0.5f;
+
+		else                              
+			hard.x = Utility::Saturate(freeCam.x, minX + halfW, maxX - halfW);
+
+		if ((maxY - minY) <= halfH * 2.f) 
+			hard.y = (minY + maxY) * 0.5f;
+
+		else                               
+			hard.y = Utility::Saturate(freeCam.y, minY + halfH, maxY - halfH);
+
+		if (m_BlendToClamp && m_ClampBlendT < 1.0f)
+		{
+			m_ClampBlendT += DELTA / max(m_ClampBlendTime, 1e-4f);
+			float t = clamp(m_ClampBlendT, 0.f, 1.f);
+			float s = t * t * (3.f - 2.f * t);
+
+			CAM->position = Utility::Lerp(freeCam, hard, s);
+
+			if (t >= 1.f) m_BlendToClamp = false; 
+		}
+		else
+		{
+			CAM->position = hard;
+		}
+	}
+	else
+	{
+		CAM->position = player->Get_Collision()->GetWorldPos();
+	}
 }
 
 void CStageBoss::Render()
@@ -107,6 +178,8 @@ void CStageBoss::Render()
 
 	for (auto& object : m_Objects)
 		object->Render();
+
+	m_ReadyRect->Render();
 
 	PARTICLE->Render();
 	RENDER->Render();
@@ -122,8 +195,8 @@ void CStageBoss::Release()
 void CStageBoss::Resource_Setting()
 {
 	// Map
-	shared_ptr<ObImage> mapShadow = RESOURCE->CreateImage(L"Edit\\stage1_skyMove.bmp", m_MapSize * 5.f, true);
-	mapShadow->SetWorldPos(Vec2(0, 0));
+	shared_ptr<ObImage> mapShadow = RESOURCE->CreateImage(L"Edit\\stage0_bg.png", Vec2(1920.f, 1080.f) * 4.f, true);
+	mapShadow->SetWorldPos(m_PlayerPos);
 	m_Map.insert({ ESceneType::Shadow, mapShadow });
 
 	Vec2 mapPos = Vec2(-1780.f + 225.f, -800.f);
@@ -132,6 +205,6 @@ void CStageBoss::Resource_Setting()
 	m_Map.insert({ ESceneType::StageBoss, map });
 
 	shared_ptr<ObImage> teleport = RESOURCE->CreateImage(L"Object\\TELEPORT.png", Vec2(311.f, 298.f), true);
-	teleport->SetWorldPos(m_PlayerPos);
-	//m_Objects.push_back(teleport);
+	teleport->SetWorldPos(Vec2(m_StartPos.x, m_StartPos.y + 100.f));
+	m_Objects.push_back(teleport);
 }

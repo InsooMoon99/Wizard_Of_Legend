@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CStruct.h"
 
 class CSkill_Actor;
@@ -39,8 +39,6 @@ private:
 	static CSkillManager* Instance;
 
 public:
-	void SkillSettings();
-
 	shared_ptr<CSkill_Actor> Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info, const Vec2& size = Vec2(0.f));
 	shared_ptr<CSkill_Actor> Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info, EStarType _Star);
 

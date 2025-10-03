@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CDelegate.h"
 #include "CGameObject.h"

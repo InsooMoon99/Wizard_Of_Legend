@@ -1,4 +1,4 @@
-#include "stdafx.h"
+Ôªø#include "stdafx.h"
 #include "CSkillManager.h"
 
 #include "CAttackActor.h"
@@ -42,12 +42,6 @@ void CSkillManager::Render()
 void CSkillManager::Release()
 {
     m_ActiveSkills.clear();
-}
-
-void CSkillManager::SkillSettings()
-{
-    // « ø‰«—∞°?
-    //shared_ptr<CSkill_Actor> shock = make_shared<CBat_Dash_Shock>();
 }
 
 shared_ptr<CSkill_Actor> CSkillManager::Spawn_SkillActor(ESkillActor _Skill, FSkillInfo& _Info, const Vec2& size)

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CSkill_Factory.h"
 
 #include "CSkill_FireBall.h"
@@ -14,6 +14,9 @@
 #include "CSkill_Man_Star.h"
 #include "CSkill_Man_Target.h"
 #include "CSkill_FireMeteor.h"
+#include "CSkill_Middle_Fire.h"
+#include "CSkill_Middle_Ball.h"
+#include "CSkill_Middle_SpawnBall.h"
 #include "CSkill_WindDash.h"
 
 shared_ptr<CSkill> CSkill_Factory::CreateSkill(ESkillType _SkillType)
@@ -57,6 +60,16 @@ shared_ptr<CSkill> CSkill_Factory::CreateSkill(ESkillType _SkillType)
 
 	case ESkillType::Boss_Girl_Star:
 		return make_shared<CSkill_Girl_Star>();
+
+	// Middle
+	case ESkillType::Middle_Fire:
+		return make_shared<CSkill_Middle_Ball>();
+
+	case ESkillType::Middle_Ball:
+		return make_shared<CSkill_Middle_Fire>();
+
+	case ESkillType::Middle_SpawnBall:
+		return make_shared<CSkill_Middle_SpawnBall>();
 
 	case ESkillType::SKILL_END:
 		break;

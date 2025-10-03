@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CScene.h"
 
@@ -35,6 +35,7 @@ private:
 
 	Vec2 m_PlayerPos;
 	Vec2 m_MapSize;
+	Vec2 m_StartPos = Vec2(521.f, -2544.f);
 
 	shared_ptr<CMonsterBase> m_TestDummy;
 
@@ -50,6 +51,11 @@ private:
 	vector<Vec2> m_SectionPos;
 	vector<shared_ptr<ObRect>> m_SectionCol;
 
+	shared_ptr<ObImage> m_BossTeleport;
+
+	shared_ptr<class CUI_Minimap> m_Minimap;
+
+	shared_ptr<ObImage> m_Cursor;
 
 private:
 	template<typename T, typename... Args>
@@ -58,6 +64,8 @@ private:
 		auto actor = make_shared<T>(forward<Args>(args)...);
 		actor->SetSpawnPos(pos);
 		m_Monsters[type].push_back(actor);
+
+		actor->BeginPlay();
 
 		return actor; 
 	}

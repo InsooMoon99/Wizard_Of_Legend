@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CFire_Ball.h"
 #include "CObject.h"

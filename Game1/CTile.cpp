@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CTile.h"
 
 CTile::CTile()
@@ -105,4 +105,5 @@ void CTile::SetTileVisible(bool bCheck)
 	{
 		img.second->visible = bCheck;
 	}
+
 }

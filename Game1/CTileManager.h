@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 class CActor;
 class CTile;
@@ -47,7 +47,7 @@ public:
 	void	Save_Data();
 	void	Load_Data(const wchar_t* _Path);
 
-	// ÀÌ¹ÌÁö ·»´õ Ã³¸®
+	// ì´ë¯¸ì§€ ë Œë” ì²˜ë¦¬
 	void	ToggleTileImagesVisible();
 	bool	IsTileImagesVisible() const { return m_ShowTileImages; }
 

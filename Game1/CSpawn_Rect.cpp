@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CSpawn_Rect.h"
 
 CSpawn_Rect::CSpawn_Rect(FSkillInfo& _Info) : CSkill_Actor(_Info)
@@ -7,6 +7,7 @@ CSpawn_Rect::CSpawn_Rect(FSkillInfo& _Info) : CSkill_Actor(_Info)
 
 CSpawn_Rect::~CSpawn_Rect()
 {
+
 }
 
 void CSpawn_Rect::BeginPlay()

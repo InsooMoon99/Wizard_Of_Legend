@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CShopComponent.h"
 
 #include "CItem.h"
@@ -76,6 +76,6 @@ void CShopComponent::Equip_ItemById(const string& id)
 
 	else
 	{
-		// TODO : ÀÌ¹Ì °°Àº Å¸ÀÔÀÌ ÀÖÀ¸¸é Ãß°¡ Ã³¸®?
+		// TODO : ì´ë¯¸ ê°™ì€ íƒ€ì…ì´ ìˆìœ¼ë©´ ì¶”ê°€ ì²˜ë¦¬?
 	}
 }

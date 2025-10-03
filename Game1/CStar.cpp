@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CStar.h"
 
 #include "CBossPawn.h"
@@ -26,7 +26,7 @@ CStar::CStar(FSkillInfo& _Info) : CSkill_Actor(_Info)
 	{
 		m_Circles[i] = make_shared<ObCircle>();
 		m_Circles[i]->scale = Vec2(30.f, 30.f);
-		m_Circles[i]->visible = true;
+		m_Circles[i]->visible = false;
 		m_Circles[i]->isFilled = false;
 		m_Circles[i]->Set_Owner(this);
 		m_Circles[i]->Set_Instigator(m_Skill_Info.Instigator);

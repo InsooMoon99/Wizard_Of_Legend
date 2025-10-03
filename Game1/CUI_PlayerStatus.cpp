@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CUI_PlayerStatus.h"
 #include "CResourceManager.h"
 #include "CStatusComponent.h"
@@ -20,7 +20,7 @@ CUI_PlayerStatus::CUI_PlayerStatus()
 
 	m_Gold = RESOURCE->CreateUI(L"UI\\UI_MONEY.png", Vec2(31.f, 31.f), true);
 	m_Gold->SetParentRT(*m_Background);
-	m_Gold->SetLocalPos(Vec2(500.f, -580.f));
+	m_Gold->SetLocalPos(Vec2(350.f, -610.f));
 
 	m_PlayerStatus.push_back(m_Background);
 	m_PlayerStatus.push_back(m_Hp);
@@ -78,7 +78,7 @@ void CUI_PlayerStatus::Render()
 
 	wstring gold = to_wstring(m_Status->GetGold());
 	
-	DWRITE->RenderText(gold, RECT{710, 622,900,800},
+	DWRITE->RenderText(gold, RECT{560, 652,900,800},
 			30.0f, L"PixelMplus10", Color(1, 1, 1, 1), DWRITE_FONT_WEIGHT_BOLD);
 
 	for (auto& status : m_PlayerStatus)

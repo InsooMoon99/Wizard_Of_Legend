@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "CCharacter.h"
 #include "CStateComponent.h"
 #include "CStatusComponent.h"
@@ -107,7 +107,7 @@ void CCharacter::MoveTile(const Vec2& dir, float speed)
 		{
 			col->MoveWorldPos(dirX);
 		}
-		// else : ¸·È÷¸é XÃà ÀÌµ¿ ½ºÅµ
+		// else : ë§‰ížˆë©´ Xì¶• ì´ë™ ìŠ¤í‚µ
 	}
 
 	if (nextMove.y != 0.f)
@@ -123,7 +123,7 @@ void CCharacter::MoveTile(const Vec2& dir, float speed)
 		{
 			col->MoveWorldPos(dirY);
 		}
-		// else : ¸·È÷¸é YÃà ÀÌµ¿ ½ºÅµ
+		// else : ë§‰ížˆë©´ Yì¶• ì´ë™ ìŠ¤í‚µ
 	}
 
 	//Vec2 currentPos = col->GetWorldPos();
@@ -139,7 +139,7 @@ void CCharacter::MoveTile(const Vec2& dir, float speed)
 	//	{
 	//		if (playerState == EPlayerState::Idle || playerState == EPlayerState::Walk)
 	//		{
-	//			// TODO: ÇÃ·¹ÀÌ¾î ³«ÇÏ ·ÎÁ÷ ±¸Çö
+	//			// TODO: í”Œë ˆì´ì–´ ë‚™í•˜ ë¡œì§ êµ¬í˜„
 	//			m_Collision->SetWorldPos(Vec2(0.f, 0.f));
 	//		}
 	//	}

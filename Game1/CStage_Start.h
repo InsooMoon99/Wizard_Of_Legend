@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CScene.h"
 
@@ -23,6 +23,10 @@ private:
 	shared_ptr<ObImage> m_Title_Text;
 	shared_ptr<ObImage> m_Title_Shadow;
 
+	shared_ptr<ObImage> m_LoadOutSelectStart;
+	shared_ptr<ObImage> m_LoadOutSelectEdit;
+	shared_ptr<ObImage> m_LoadOutSelectExit;
+
 	vector<EStartStageType> m_Settings;
 
 	EStartStageType StartType = EStartStageType::Pressed;
@@ -35,5 +39,7 @@ private:
 	bool bVisible = false;
 
 	float m_UpTimer = 0.f;
+
+	int m_LastHovered = -1;
 };
 
