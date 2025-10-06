@@ -313,7 +313,6 @@ public:
 			return nullptr;
 
 		auto component = make_shared<T>();
-		//component->BeginPlay();
 		component->SetOwner(_Owner);
 
 		_Owner->AddComponent(component);

@@ -36,8 +36,8 @@ CPlayer::CPlayer()
 
 	if (m_UI)
 	{
-		m_UI->SetPlayerHUD();
-		m_UI->SetInventoryHUD();
+		//m_UI->SetPlayerHUD();
+		//m_UI->SetInventoryHUD();
 	}
 
 	m_RenderLayer = ERenderLayer::RenderPlayer;
@@ -110,7 +110,6 @@ void CPlayer::Tick()
 			m_State->Change_State(ECharacterState::Idle);
 		}
 	}
-
 
 	switch (m_State->Get_State())
 	{

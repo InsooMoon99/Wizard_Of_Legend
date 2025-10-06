@@ -18,7 +18,7 @@ void Main::Init()
 	OBJECT->Init();
 	TILE->Init();
 	PARTICLE->Init();
-	SCENE->Change_Scene(ESceneType::StageBoss);
+	SCENE->Change_Scene(ESceneType::Stage01);
 	SKILL->Init();
 }
 

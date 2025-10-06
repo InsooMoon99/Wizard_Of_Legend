@@ -10,7 +10,7 @@ CSkillManager* CSkillManager::Instance = nullptr;
 
 void CSkillManager::Init()
 {
-	SkillSettings();
+	
 }
 
 void CSkillManager::Update()

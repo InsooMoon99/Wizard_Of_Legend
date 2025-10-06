@@ -1,10 +1,8 @@
-﻿#include "framework.h"      // 프로젝트 공용 헤더(여기에 Windows.h 포함되어 있을 수 있음)
-// #define NOMINMAX        // Windows 매크로 충돌 방지: Windows.h보다 먼저 정의되어야 함
+﻿#include "framework.h"      
 #include "Timer.h"
 
-#include <thread>           // this_thread::sleep_for
-#include <algorithm>        // min, max, clamp
-#include <cmath>
+#include <thread>           
+#include <algorithm>        
 
 Timer::Timer()
 {
