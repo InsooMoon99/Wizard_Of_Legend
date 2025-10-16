@@ -123,3 +123,4 @@ enum class EDescMode
 {
 	Skill, Item, END
 };
+

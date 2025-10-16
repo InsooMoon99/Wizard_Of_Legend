@@ -9,10 +9,6 @@
 
 static mt19937 g_RandomEngine(static_cast<unsigned int>(time(nullptr)));
 
-static void NumberOfTest()
-{
-	cout << "This Call" << endl;
-}
 
 class CHelper
 {

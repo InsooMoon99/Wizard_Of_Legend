@@ -44,6 +44,8 @@ protected:
 	void Resource_Settings() override;
 
 	void MoveTile(const Vec2& dir, float speed);
+	void Print_ImGui();
+
 private:
 	bool m_BehaviorCheck = false;
 	bool m_OnLastFrameEdge = false;  

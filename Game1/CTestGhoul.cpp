@@ -525,3 +525,22 @@ void CTestGhoul::MoveTile(const Vec2& dir, float speed)
 		// else : 막히면 Y축 이동 스킵
 	}
 }
+
+void CTestGhoul::Print_ImGui()
+{
+#ifdef _DEBUG
+	if (ImGui::Begin("Debug"))
+	{
+		float hp = m_Status->GetHp();
+		const char* state = CHelper::ToString_PlayerState(m_State->Get_State());
+
+		ImGui::InputFloat("Hp", &hp);
+		m_Status->SetHp(hp);
+
+		ImGui::Text(state);
+	}
+
+	ImGui::End();
+
+#endif
+}

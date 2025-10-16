@@ -349,6 +349,37 @@
     <ClInclude Include="CMonster_Factory.h">
       <Filter>97. Design</Filter>
     </ClInclude>
+    <ClInclude Include="CBTTask.h">
+      <Filter>100. AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CAIComponent.h">
+      <Filter>100. AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlackboard.h">
+      <Filter>100. AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CBTComposite.h">
+      <Filter>100. AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CBTDecorator.h">
+      <Filter>100. AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CBTNode.h">
+      <Filter>100. AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CBTSelector.h">
+      <Filter>100. AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CBTSequence.h">
+      <Filter>100. AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CBT_Ghoul.h">
+      <Filter>100. AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CBTService.h">
+      <Filter>100. AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CAIHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -464,6 +495,9 @@
     </Filter>
     <Filter Include="10. Item">
       <UniqueIdentifier>{ed003341-bd21-45c7-8046-a904fe7c5a18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="100. AI">
+      <UniqueIdentifier>{cfea9618-16b5-42d2-bcb8-7b34c30cf892}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -796,6 +830,36 @@
     <ClCompile Include="CMonster_Melee.cpp" />
     <ClCompile Include="CMonster_Factory.cpp">
       <Filter>97. Design</Filter>
+    </ClCompile>
+    <ClCompile Include="CAIComponent.cpp">
+      <Filter>100. AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlackboard.cpp">
+      <Filter>100. AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CBTComposite.cpp">
+      <Filter>100. AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CBTDecorator.cpp">
+      <Filter>100. AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CBTNode.cpp">
+      <Filter>100. AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CBTSelector.cpp">
+      <Filter>100. AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CBTSequence.cpp">
+      <Filter>100. AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CBTTask.cpp">
+      <Filter>100. AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CBT_Ghoul.cpp">
+      <Filter>100. AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CBTService.cpp">
+      <Filter>100. AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

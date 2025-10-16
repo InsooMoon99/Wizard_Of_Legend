@@ -11,6 +11,9 @@
 #include "CItemDataManager.h"
 #include "CObjectManager.h"
 
+using int32 = int;
+using uint32 = unsigned int;
+
 #define WINCX 1280
 #define WINCY 720
 

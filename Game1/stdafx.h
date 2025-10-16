@@ -5,12 +5,15 @@
 extern int loadingCount;
 extern mutex m;
 
+#include "CAIHelper.h"
+
 // Json
 #include "json.hpp"
 #include <fstream>
 using json = nlohmann::json;
 
 using Vec2 = Vector2;
+using Vec3 = Vector3;
 
 #include <map>
 #include <unordered_map>

@@ -143,3 +143,4 @@ struct FMeleeParams
 
 	string AttackSound = "None";
 };
+
