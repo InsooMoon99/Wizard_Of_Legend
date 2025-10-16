@@ -36,8 +36,8 @@ CPlayer::CPlayer()
 
 	if (m_UI)
 	{
-		//m_UI->SetPlayerHUD();
-		//m_UI->SetInventoryHUD();
+		m_UI->SetPlayerHUD();
+		m_UI->SetInventoryHUD();
 	}
 
 	m_RenderLayer = ERenderLayer::RenderPlayer;

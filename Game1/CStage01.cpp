@@ -6,6 +6,7 @@
 #include "CPlayer.h"
 #include "CResourceManager.h"
 #include "CStateComponent.h"
+#include "CTestGhoul.h"
 #include "CUIComponent.h"
 
 CStage01::CStage01()
@@ -13,6 +14,7 @@ CStage01::CStage01()
 	m_Player = make_shared<CPlayer>();
 	m_PlayerUI = CHelper::GetComponent<CUIComponent>(m_Player.get());
 	m_TestDummy = make_shared<CDummy>();
+	m_TestGhoul = make_shared<CTestGhoul>();
 
 	m_Actors.push_back(m_TestDummy);
 	m_Actors.push_back(m_Player);
@@ -44,6 +46,12 @@ void CStage01::Init()
 
 	auto dummy = dynamic_pointer_cast<CDummy>(m_TestDummy);
 	dummy->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(250.f, 150.f));
+
+	auto test = dynamic_pointer_cast<CTestGhoul>(m_TestGhoul);
+	test->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(250.f, 0.f));
+	test->SetTarget(player);
+
+	m_Actors.push_back(test);
 
 }
 
@@ -81,30 +89,9 @@ void CStage01::LateUpdate()
 {
 	CScene::LateUpdate();
 
-	//m_Player->LateUpdate();
-
-	//플레이어 가두기 이건 딱히 필요 없을듯. 타일맵으로 충돌처리
-	//player->Get_PlayerCollision()->SetWorldPosX(Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().x, -3800.0f * 1.5f / 2.0f, 3840.0f * 1.5f / 2.0f));
-	//캠
-	//CAM->position.x = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().x, -m_MapSize.x + app.GetHalfWidth(), m_MapSize.x - app.GetHalfWidth());
-	//CAM->position.y = Utility::Saturate(player->Get_PlayerCollision()->GetWorldPos().y + 500.0f, m_MapSize.y, 950.0f - app.GetHalfHeight());
-
 	auto player = dynamic_pointer_cast<CPlayer>(m_Player);
 	CAM->position = player->Get_Collision()->GetWorldPos();
 
-	if (player->Get_Collision()->Intersect(m_TestDummy->Get_Collision().get()))
-	{
-		//auto state = CHelper::GetComponent<CStateComponent>(player);
-		//if (state->Get_State() != ECharacterState::Hit)
-		//{
-		//	//state->Change_State(ECharacterState::Hit);
-		//}
-	}
-
-	if (m_Objects[1]->Intersect(m_Player->Get_Collision().get()))
-	{
-		SCENE->Change_Scene(ESceneType::StageBoss);
-	}
 }
 
 void CStage01::Render()

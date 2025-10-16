@@ -29,7 +29,10 @@ bool Timer::GetTick(float& time, float interval)
 {
     // 월드용으로 사용할 경우 스케일된 델타를 사용하는 게 자연스러움
     time += GetDeltaTime(); // scaled
-    if (time > interval) { time -= interval; return true; }
+    if (time > interval)
+    {
+	    time -= interval; return true;
+    }
     return false;
 }
 

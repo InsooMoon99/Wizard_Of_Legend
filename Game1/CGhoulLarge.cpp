@@ -209,8 +209,6 @@ void CGhoulLarge::State_Attack2()
 	}
 }
 
-
-
 void CGhoulLarge::State_Hit()
 {
 	

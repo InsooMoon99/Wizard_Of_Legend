@@ -128,3 +128,18 @@ struct FFloatingTextDesc
 	float outlineThickness = 1.5f;                 
 	Color outlineColor = Color(0, 0, 0, 0.85f);    
 };
+
+struct FMeleeParams
+{
+	float moveStart = 0.15f;
+	float moveEnd   = 1.15f;
+	float moveDist  = 120.f;
+
+	float hitTime  = 0.20f;
+	float duration = 0.60f;
+
+	float damage	 = 30.f;
+	Vec2  hitBoxSize = Vec2(80.f, 40.f);
+
+	string AttackSound = "None";
+};

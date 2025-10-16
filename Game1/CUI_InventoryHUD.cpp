@@ -6,6 +6,7 @@
 #include "CUI_InvenItem.h"
 #include "CUI_InvenDesc.h"
 #include "CUI_InvenStatus.h"
+#include "CHelper.h"
 
 CUI_InventoryHUD::CUI_InventoryHUD()
 {
@@ -32,6 +33,7 @@ CUI_InventoryHUD::CUI_InventoryHUD()
 CUI_InventoryHUD::~CUI_InventoryHUD()
 {
 	Release();
+
 }	
 
 void CUI_InventoryHUD::BeginPlay()

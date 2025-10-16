@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CMonster_Factory.h" />
+    <ClInclude Include="CMonster_Melee.h" />
     <ClInclude Include="CAttackActor.h" />
     <ClInclude Include="CBlobRoller.h" />
     <ClInclude Include="CActor.h" />
@@ -107,6 +109,7 @@
     <ClInclude Include="CStruct.h" />
     <ClInclude Include="CGhoulLarge.h" />
     <ClInclude Include="CTarget_Orb.h" />
+    <ClInclude Include="CTestGhoul.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="CTileManager.h" />
     <ClInclude Include="CUI.h" />
@@ -128,6 +131,7 @@
     <ClInclude Include="CWeaponComponent.h" />
     <ClInclude Include="CWindSlash.h" />
     <ClInclude Include="IColorChanger.h" />
+    <ClInclude Include="IMonsterAction.h" />
     <ClInclude Include="JsonTable.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="CUI_PlayerHUD.h" />
@@ -135,6 +139,8 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CMonster_Factory.cpp" />
+    <ClCompile Include="CMonster_Melee.cpp" />
     <ClCompile Include="CAttackActor.cpp" />
     <ClCompile Include="CBlobRoller.cpp" />
     <ClCompile Include="CActor.cpp" />
@@ -219,6 +225,7 @@
     <ClCompile Include="CStatusComponent.cpp" />
     <ClCompile Include="CGhoulLarge.cpp" />
     <ClCompile Include="CTarget_Orb.cpp" />
+    <ClCompile Include="CTestGhoul.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTileManager.cpp" />
     <ClCompile Include="CUI.cpp" />
@@ -240,6 +247,7 @@
     <ClCompile Include="CWeaponComponent.cpp" />
     <ClCompile Include="CWindSlash.cpp" />
     <ClCompile Include="IColorChanger.cpp" />
+    <ClCompile Include="IMonsterAction.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="CUI_PlayerHUD.cpp" />
     <ClCompile Include="stdafx.cpp">

@@ -31,6 +31,7 @@ private:
 	Vec2 m_MapSize;
 
 	shared_ptr<CActor> m_TestDummy;
+	shared_ptr<CActor> m_TestGhoul;
 
 	shared_ptr<CUIComponent> m_PlayerUI;
 

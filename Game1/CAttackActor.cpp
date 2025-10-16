@@ -12,7 +12,7 @@ CAttackActor::CAttackActor(FSkillInfo& _Info, const Vec2& Size) : CSkill_Actor(_
 		m_Collision = make_shared<ObRect>();
 		m_Collision->scale = Size;
 		m_Collision->SetWorldPos(m_Pos);
-		m_Collision->visible  = false;
+		m_Collision->visible  = true;
 		m_Collision->isFilled = false;
 		m_Collision->Set_Owner(this);
 		m_Collision->Set_Instigator(m_Skill_Info.Instigator);
@@ -23,7 +23,6 @@ CAttackActor::CAttackActor(FSkillInfo& _Info, const Vec2& Size) : CSkill_Actor(_
 	}
 
 	m_Lifetime = 0.f;
-
 }
 
 CAttackActor::~CAttackActor()
@@ -45,7 +44,7 @@ void CAttackActor::Tick()
 
 	m_Lifetime += DELTA;
 
-	if (m_Lifetime >= 0.1f)
+	if (m_Lifetime >= 0.5f)
 	{
 		m_PendingKill = true;
 	}
@@ -97,7 +96,7 @@ void CAttackActor::OnComponentBeginOverlap(GameObject* collider, GameObject* oth
 
 	hitDamage.Dir = dir;
 
-	hitDamage.Damage = 10.f;
+	hitDamage.Damage = m_Skill_Info.Damage;
 	hitDamage.colldier = collider;
 	hitDamage.other = other;
 	hitDamage.Amount = 700.f;

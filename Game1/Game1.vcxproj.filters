@@ -310,7 +310,6 @@
     <ClInclude Include="CObjectManager.h">
       <Filter>01. Manager</Filter>
     </ClInclude>
-    <ClInclude Include="CFloatingText.h" />
     <ClInclude Include="CMiddleBoss.h">
       <Filter>03. Actors</Filter>
     </ClInclude>
@@ -338,7 +337,18 @@
     <ClInclude Include="CUI_MiddleBossStatus.h">
       <Filter>98.UI\01. Boss</Filter>
     </ClInclude>
-    <ClInclude Include="CUI_Minimap.h" />
+    <ClInclude Include="CTestGhoul.h" />
+    <ClInclude Include="CUI_Minimap.h">
+      <Filter>98.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CFloatingText.h">
+      <Filter>98.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMonsterAction.h" />
+    <ClInclude Include="CMonster_Melee.h" />
+    <ClInclude Include="CMonster_Factory.h">
+      <Filter>97. Design</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -748,7 +758,6 @@
     <ClCompile Include="CObjectManager.cpp">
       <Filter>01. Manager</Filter>
     </ClCompile>
-    <ClCompile Include="CFloatingText.cpp" />
     <ClCompile Include="CMiddleBoss.cpp">
       <Filter>03. Actors</Filter>
     </ClCompile>
@@ -776,7 +785,18 @@
     <ClCompile Include="CUI_MiddleBossStatus.cpp">
       <Filter>98.UI\01. Boss</Filter>
     </ClCompile>
-    <ClCompile Include="CUI_Minimap.cpp" />
+    <ClCompile Include="CTestGhoul.cpp" />
+    <ClCompile Include="CUI_Minimap.cpp">
+      <Filter>98.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CFloatingText.cpp">
+      <Filter>98.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMonsterAction.cpp" />
+    <ClCompile Include="CMonster_Melee.cpp" />
+    <ClCompile Include="CMonster_Factory.cpp">
+      <Filter>97. Design</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game1.rc">

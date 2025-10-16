@@ -9,6 +9,11 @@
 
 static mt19937 g_RandomEngine(static_cast<unsigned int>(time(nullptr)));
 
+static void NumberOfTest()
+{
+	cout << "This Call" << endl;
+}
+
 class CHelper
 {
 public:
@@ -286,6 +291,11 @@ public:
 		float sy = (cam.y - world.y) + halfScreen.y; // ★ 여기!
 
 		return Vec2(sx, sy);
+	}
+
+	static float FrameToTime(int frameIndex, float fps, float animSpeed = 1.f)
+	{
+		return (frameIndex / fps / max(0.0001f, animSpeed));
 	}
 
 	template<typename T>
