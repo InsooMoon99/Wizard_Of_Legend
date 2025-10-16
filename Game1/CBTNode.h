@@ -1,4 +1,5 @@
 #pragma once
+#include "CBlackboard.h"
 
 enum class BTResult
 {
@@ -7,9 +8,8 @@ enum class BTResult
 
 struct BTContext
 {
-	CActor* Owner;
-
-	map<string, void*> Blackboard;
+	CActor* Owner = nullptr;
+	CBlackboard Blackboard;
 };
 
 

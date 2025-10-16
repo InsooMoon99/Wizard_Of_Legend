@@ -25,10 +25,11 @@ void CAIComponent::TickComponent()
 {
 	CComponent::TickComponent();
 
-	if (m_RootNode)
-	{
-		BTResult result = m_RootNode->Tick(m_Context);
-	}
+	if (!m_RootNode) return;
+
+	
+
+	m_RootNode->Tick(m_Context);
 }
 
 void CAIComponent::Render()
