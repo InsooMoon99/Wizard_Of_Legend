@@ -2,7 +2,7 @@
 
 #include "CActor.h"
 
-namespace BlackBoardKey
+namespace BBKey
 {
 	const string Target = "Target";
 	const string ToTargetDist = "ToTargetDist";
@@ -31,18 +31,19 @@ public:
 	Vec3	GetValueAsVector3(const Key& key, Vec3 _default = Vec3(0.f, 0.f, 0.f));
 
 	// Has : 키가 있는지 확인
-	bool HasObject(const Key& k) const { return m_Actors.count(k) > 0; }
-	bool HasFloat(const Key& k) const { return m_Floats.count(k) > 0; }
-	bool HasInt(const Key& k) const { return m_Ints.count(k) > 0; }
-	bool HasBool(const Key& k) const { return m_Bools.count(k) > 0; }
-	bool HasVector2(const Key& k) const { return m_Vec2.count(k) > 0; }
-	bool HasVector3(const Key& k) const { return m_Vec3.count(k) > 0; }
+	bool HasObject(const Key& key) const	{ return m_Actors.count(key) > 0; }
+	bool HasFloat(const Key& key) const		{ return m_Floats.count(key) > 0; }
+	bool HasInt(const Key& key) const		{ return m_Ints.count(key) > 0; }
+	bool HasBool(const Key& key) const		{ return m_Bools.count(key) > 0; }
+	bool HasVector2(const Key& key) const	{ return m_Vec2.count(key) > 0; }
+	bool HasVector3(const Key& key) const	{ return m_Vec3.count(key) > 0; }
 
 	void ClearKey(const Key& k)
 	{
 		m_Actors.erase(k); m_Floats.erase(k); m_Ints.erase(k);
 		m_Bools.erase(k);   m_Vec2.erase(k);   m_Vec3.erase(k);
 	}
+
 	void ClearAll()
 	{
 		m_Actors.clear(); m_Floats.clear(); m_Ints.clear();
@@ -51,11 +52,11 @@ public:
 
 private:
 	unordered_map<Key, CActor*> m_Actors;
-	unordered_map<Key, float> m_Floats;
-	unordered_map<Key, int> m_Ints;
-	unordered_map<Key, bool> m_Bools;
-	unordered_map<Key, Vec2> m_Vec2;
-	unordered_map<Key, Vec3> m_Vec3;
+	unordered_map<Key, float>	m_Floats;
+	unordered_map<Key, int>		m_Ints;
+	unordered_map<Key, bool>	m_Bools;
+	unordered_map<Key, Vec2>	m_Vec2;
+	unordered_map<Key, Vec3>	m_Vec3;
 
 };
 

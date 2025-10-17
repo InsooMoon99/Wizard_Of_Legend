@@ -380,6 +380,7 @@
       <Filter>100. AI</Filter>
     </ClInclude>
     <ClInclude Include="CAIHelper.h" />
+    <ClInclude Include="CBTService_Ghoul.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. MainGame">
@@ -861,6 +862,7 @@
     <ClCompile Include="CBTService.cpp">
       <Filter>100. AI</Filter>
     </ClCompile>
+    <ClCompile Include="CBTService_Ghoul.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game1.rc">

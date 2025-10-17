@@ -23,6 +23,8 @@ public:
 
 private:
 	CActor* m_Owner;
+	CActor* m_Target;
+
 	shared_ptr<CBTNode> m_RootNode;
 	BTContext m_Context;
 };

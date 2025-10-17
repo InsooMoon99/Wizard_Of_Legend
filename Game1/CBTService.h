@@ -15,6 +15,9 @@ public:
 
 	void Tick(BTContext& ctx, float delta);
 
+public:
+	virtual void OnTick(BTContext& ctx) {}
+
 private:
 	float	m_Period = 0.2f;
 	float	m_Timer = 0.f;

@@ -9,7 +9,6 @@ void CBTService::Tick(BTContext& ctx, float delta)
 	{
 		m_Timer -= m_Period;
 
-		if (m_OnTick)
-			m_OnTick(ctx);
+		OnTick(ctx);
 	}
 }

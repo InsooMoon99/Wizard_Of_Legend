@@ -27,6 +27,7 @@
     <ClInclude Include="CBlackboard.h" />
     <ClInclude Include="CBTSelector.h" />
     <ClInclude Include="CBTSequence.h" />
+    <ClInclude Include="CBTService_Ghoul.h" />
     <ClInclude Include="CBTTask.h" />
     <ClInclude Include="CBT_Ghoul.h" />
     <ClInclude Include="CBTService.h" />
@@ -157,6 +158,7 @@
     <ClCompile Include="CBlackboard.cpp" />
     <ClCompile Include="CBTSelector.cpp" />
     <ClCompile Include="CBTSequence.cpp" />
+    <ClCompile Include="CBTService_Ghoul.cpp" />
     <ClCompile Include="CBTTask.cpp" />
     <ClCompile Include="CBT_Ghoul.cpp" />
     <ClCompile Include="CBTService.cpp" />
