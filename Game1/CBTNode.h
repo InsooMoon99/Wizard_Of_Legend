@@ -9,9 +9,9 @@ enum class BTResult
 struct BTContext
 {
 	CActor* Owner = nullptr;
+
 	CBlackboard Blackboard;
 };
-
 
 class CBTNode
 {

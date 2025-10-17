@@ -36,6 +36,9 @@ public:
 
     const vector<shared_ptr<CActor>>& GetActives() const { return m_ActiveObjects; }
 
+    shared_ptr<CActor> GetPlayer() { return m_Player; }
+    void SetPlayer(shared_ptr<CActor> player) { m_Player = player; };
+
 private:
     CObjectManager() = default;
 
@@ -49,6 +52,7 @@ private:
     vector<shared_ptr<CActor>> m_PendingAdd;
     vector<shared_ptr<CActor>> m_ActiveObjects;
 
+    shared_ptr<CActor> m_Player;
 };
 
 

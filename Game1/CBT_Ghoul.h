@@ -11,7 +11,7 @@ struct FGhoulParams
 };
 
 // BT_Selector를 루트로 세팅
-class CBT_Ghoul
+class CBT_Ghoul : public CBTSelector
 {
 public:
 	explicit CBT_Ghoul(const FGhoulParams& params);

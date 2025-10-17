@@ -4,5 +4,9 @@
 void CBTComposite::TickServices(BTContext& ctx, float delta)
 {
 	for (auto& service : m_Services)
-		service->Tick(ctx, delta);
+	{
+		if (service)
+			service->Tick(ctx, delta);
+
+	}
 }

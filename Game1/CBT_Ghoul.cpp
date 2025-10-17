@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "CBT_Ghoul.h"
 
+#include "CBTService_Ghoul.h"
+
 static const char* BB_Target = "Target";
+static const char* BB_ToTargetDis = "ToTargetDist";
 
 CBT_Ghoul::CBT_Ghoul(const FGhoulParams& params)
 {
@@ -11,13 +14,10 @@ CBT_Ghoul::CBT_Ghoul(const FGhoulParams& params)
 	innerSelector->AddChild(MakeChaseSeq(params));
 
 	// == Service »ý¼º, ºÎÂø ==
-	auto service = make_shared<CBTService>(0.2f);
-	service->SetOnTick([](BTContext& ctx)
-		{
-			CActor* ghoul = ctx.Owner;
-		//CActor* target = Find
-		});
+	auto service = make_shared<CBTService_Ghoul>(0.2f);
+	innerSelector->AddService(service);
 
+	AddChild(innerSelector);
 }
 
 CBT_Ghoul::~CBT_Ghoul()

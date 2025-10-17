@@ -43,6 +43,7 @@ void CStage01::Init()
 
 	auto player = dynamic_pointer_cast<CPlayer>(m_Player);
 	player->Get_Collision()->SetWorldPos(m_PlayerPos);
+	OBJECT->SetPlayer(player);
 
 	auto dummy = dynamic_pointer_cast<CDummy>(m_TestDummy);
 	dummy->Get_Collision()->SetWorldPos(m_PlayerPos + Vec2(250.f, 150.f));

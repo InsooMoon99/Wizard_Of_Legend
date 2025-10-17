@@ -1,5 +1,7 @@
 #pragma once
+
 #include "CBTComposite.h"
+
 class CBTSelector : public CBTComposite
 {
 public:
