@@ -21,14 +21,12 @@ Timer::Timer()
     holdLeft = 0.f;
     easeOutDur = easeOutLeft = 0.f;
 
-    // 버렛타임 초기화
     m_bt = {};
 }
 
 bool Timer::GetTick(float& time, float interval)
 {
-    // 월드용으로 사용할 경우 스케일된 델타를 사용하는 게 자연스러움
-    time += GetDeltaTime(); // scaled
+    time += GetDeltaTime(); 
     if (time > interval)
     {
 	    time -= interval; return true;
@@ -48,17 +46,14 @@ void Timer::SetTimeScale(float scale, float easeIn, float easeOut)
     targetScale = max(0.f, scale);
     easeInDur = easeInLeft = max(0.f, easeIn);
     easeOutDur = easeOutLeft = max(0.f, easeOut);
-    // 즉시 진입을 원하면 easeIn=0으로 호출
 }
 
 void Timer::HitStop(float scale, float hold, float easeOut)
 {
-    // 순간적으로 바로 ‘툭’ 멈추는 느낌
     timeScale = max(0.f, scale);
     targetScale = 1.0f; // 복귀 목표는 항상 1.0
     holdLeft = max(0.f, hold);
     easeOutDur = easeOutLeft = max(0.f, easeOut);
-    // 히트스톱은 일반적으로 진입 이징을 사용하지 않음
 }
 
 void Timer::QueueBulletTime(float scale, float easeIn, float hold, float easeOut, float delay)
@@ -76,7 +71,6 @@ void Timer::HitStopThenBulletTime(float stopScale, float stopHold, float stopEas
     float bulletScale, float bulletEaseIn, float bulletHold, float bulletEaseOut)
 {
     HitStop(stopScale, stopHold, stopEaseOut);
-    // 히트스톱 hold + easeOut 후 버렛타임 진입 예약
     QueueBulletTime(bulletScale, bulletEaseIn, bulletHold, bulletEaseOut,
         /*delay=*/max(0.f, stopHold + stopEaseOut));
 }
@@ -94,7 +88,6 @@ void Timer::Chronometry(UINT lock)
 {
     using namespace chrono;
 
-    // 1) unscaled 델타 계산
     currentTime = steady_clock::now();
     duration<double> Delta = currentTime - lastTime;
     deltaTime = static_cast<float>(Delta.count());
@@ -111,7 +104,6 @@ void Timer::Chronometry(UINT lock)
         }
     }
 
-    // 3) 누적/통계
     lastTime = currentTime;
     worldTime += deltaTime;
 
@@ -121,12 +113,9 @@ void Timer::Chronometry(UINT lock)
     {
         framePerSecond = framePerSecondCount;
         framePerSecondCount = 0;
-        // 정확도를 위해 남은 찌꺼기 시간 유지
         framePerSecondTimeElapsed -= 1.0f;
     }
 
-    // 4) 타임스케일 보간 (항상 Unscaled 시간 기준)
-    // 4-1) 진입 이징
     if (easeInLeft > 0.f)
     {
         float step = min(deltaTime / max(1e-6f, easeInDur), 1.f);
@@ -135,14 +124,11 @@ void Timer::Chronometry(UINT lock)
         if (easeInLeft <= 0.f) timeScale = targetScale;
     }
 
-    // 4-2) 히트스톱 유지
     if (holdLeft > 0.f)
     {
         holdLeft -= deltaTime;
-        // 끝나면 아래 4-3에서 복귀 이징으로 1.0에 수렴
     }
 
-    // 4-3) 복귀 이징 (hold 종료 이후)
     if (easeOutLeft > 0.f && holdLeft <= 0.f && timeScale != targetScale)
     {
         float step = min(deltaTime / max(1e-6f, easeOutDur), 1.f);
